@@ -55,7 +55,7 @@ In your component (e.g. AppComponent) you can then define your colums like this:
 ```
 columns = [
   new TableColumn<TestData, 'key'>('Key', 'key')
-    .withWidth(100).withTransform(data => data.substring(3)),
+    .withWidth(100).withTransform(data => data.substring(3)).withAlign(Align.CENTER),
   new TableColumn<TestData, 'value'>('Value', 'value')
 ];
 ```
@@ -68,7 +68,7 @@ You already specified the property name in the generics, but since information a
 Fortunately, the property in the constructor is also typesafe.
 
 TableColumn has three more optional parameters, allowing you to further customize the table:
-- transform (add it using the 3rd constructor parameter or .withTransform()): Transform is a function that takes the property of your model (e.g. the key of TestData) and returns a string representation. 
+- transform (3rd constructor parameter or .withTransform()): Transform is a function that takes the property of your model (e.g. the key of TestData) and returns a string representation. 
 This is helpful if e.g. your Model contains a Date but you do not want the standard JS string representation of date to show, but rather your preferred format. 
 - width (4th contructor parameter or .withWidth()): Here you can specify the width of the column in pixel. If you do not specify the width, the flex value 1 1 0px will be used.
 - align (5th constructor parameter or .withAlign()): Sets the text align within the column. Header and Cell content will both be aligned. Default is left align. 
