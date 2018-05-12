@@ -116,6 +116,46 @@
           }
         }
       }
+    },
+    "simplemattable": {
+      "root": "projects/simplemattable",
+      "sourceRoot": "projects/simplemattable/src",
+      "projectType": "library",
+      "prefix": "smc",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/simplemattable/tsconfig.lib.json",
+            "project": "projects/simplemattable/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "projects/simplemattable/ng-package.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/simplemattable/src/test.ts",
+            "tsConfig": "projects/simplemattable/tsconfig.spec.json",
+            "karmaConfig": "projects/simplemattable/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/simplemattable/tsconfig.lib.json",
+              "projects/simplemattable/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "simplematcomponents"

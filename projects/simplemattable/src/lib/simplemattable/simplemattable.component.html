@@ -1,0 +1,26 @@
+<div fxLayout="column" style="padding: 10px">
+  <div *ngIf="filter">
+    <mat-form-field style="width: 100%;">
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
+  </div>
+
+  <mat-table #table [dataSource]="dataSource">
+    <ng-container *ngFor="let tcol of columns">
+      <ng-container matColumnDef="{{tcol.property}}">
+        <mat-header-cell *matHeaderCellDef [fxFlex]="getFxFlex(tcol)">{{tcol.name}}</mat-header-cell>
+        <mat-cell *matCellDef="let element" [fxFlex]="getFxFlex(tcol)"> {{tcol.transform ?
+          tcol.transform(element[tcol.property]) : element[tcol.property]}}
+        </mat-cell>
+      </ng-container>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+
+  <mat-paginator *ngIf="paginator" #pg style="margin-top: 10px"
+                 [pageSize]="10"
+                 [pageSizeOptions]="[5, 10, 20]"
+                 [showFirstLastButtons]="true">
+  </mat-paginator>
+</div>

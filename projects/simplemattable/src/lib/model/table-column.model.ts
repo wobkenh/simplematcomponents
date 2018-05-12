@@ -1,0 +1,18 @@
+export class TableColumn<T, P extends keyof T> {
+
+  constructor(public name: string,
+              public property: P,
+              public transform?: (data: T[P]) => string,
+              public width?: number) {
+  }
+
+  public withTransform(transformFn: (data: T[P]) => string) {
+    this.transform = transformFn;
+    return this;
+  }
+
+  public withWidth(width: number) {
+    this.width = width;
+    return this;
+  }
+}
