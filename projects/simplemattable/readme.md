@@ -7,7 +7,7 @@ This is perfect if you just want to display some data in a table and do not need
 
 This Dependency is for use with Angular Material Design only. As of the first version, it requires Angular Material 6.0 or above.
 
-### Installing
+## Installing
 
 Start with a normal Angular App with Material Design installed.
 
