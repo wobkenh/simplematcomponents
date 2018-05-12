@@ -67,10 +67,11 @@ The Constructor of TableColumn requires you to specify the string that will be d
 You already specified the property name in the generics, but since information about generics is not available at runtime, you need to specify it here again. 
 Fortunately, the property in the constructor is also typesafe.
 
-TableColumn has two more optional parameters, allowing you to further customize the table:
+TableColumn has three more optional parameters, allowing you to further customize the table:
 - transform (add it using the 3rd constructor parameter or .withTransform()): Transform is a function that takes the property of your model (e.g. the key of TestData) and returns a string representation. 
 This is helpful if e.g. your Model contains a Date but you do not want the standard JS string representation of date to show, but rather your preferred format. 
-- width (add it using the 4th contructor parameter or .withWidth()): here you can specify the width of the column in pixel. If you do not specify the with, the flex value 1 1 0px will be used.
+- width (4th contructor parameter or .withWidth()): Here you can specify the width of the column in pixel. If you do not specify the width, the flex value 1 1 0px will be used.
+- align (5th constructor parameter or .withAlign()): Sets the text align within the column. Header and Cell content will both be aligned. Default is left align. 
 
 After you defined your table columns, you can bind them to the html element using:
 
@@ -91,7 +92,16 @@ If anyone is interested in contributing, email me and I will transfer this libra
 
 ## Versioning
 
-There will be new versions when new features are added or a new Angular version releases. 
+There will be new versions when new features are added or a new Angular version releases.
+
+History (Version in paranthesis is required Angular Version):
++ 0.0 (6.0): First Version
++ 0.1 (6.0): Alignment
+
+## Upcoming Features
++ Filter using display values and not object property values
++ Padding corrections for more space on small screens (xs)
++ Edit-Mode: Clicking a new edit button in the last column will turn all the fields into form fields for editing
 
 ## Authors
 

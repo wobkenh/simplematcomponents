@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {TableColumn} from '../../projects/simplemattable/src/lib/model/table-column.model';
+import {Align} from '../../projects/simplemattable/src/lib/model/align.model';
 
 @Component({
   selector: 'smc-root',
@@ -19,7 +20,7 @@ export class AppComponent implements OnInit {
     ];
     this.columns = [
       new TableColumn<TestData, 'key'>('Key', 'key')
-        .withWidth(100).withTransform(data => data.substring(3)),
+        .withWidth(100).withTransform(data => data.substring(3)).withAlign(Align.CENTER),
       new TableColumn<TestData, 'value'>('Value', 'value')
     ];
   }

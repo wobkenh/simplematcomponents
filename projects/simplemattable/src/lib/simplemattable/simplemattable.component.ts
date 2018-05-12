@@ -1,6 +1,7 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {TableColumn} from '../model/table-column.model';
 import {MatPaginator, MatTableDataSource} from '@angular/material';
+import {Align} from '../model/align.model';
 
 @Component({
   selector: 'smc-simplemattable',
@@ -39,4 +40,5 @@ export class SimplemattableComponent implements OnChanges {
 
   getFxFlex = (tcol: TableColumn<any, any>): string => tcol.width ? '0 0 ' + tcol.width + 'px' : '1 1 0px';
 
+  getAlign = (align: Align): string => align === Align.LEFT ? 'flex-start' : align === Align.CENTER ? 'center' : 'flex-end';
 }

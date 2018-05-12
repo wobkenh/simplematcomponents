@@ -8,9 +8,13 @@
   <mat-table #table [dataSource]="dataSource">
     <ng-container *ngFor="let tcol of columns">
       <ng-container matColumnDef="{{tcol.property}}">
-        <mat-header-cell *matHeaderCellDef [fxFlex]="getFxFlex(tcol)">{{tcol.name}}</mat-header-cell>
-        <mat-cell *matCellDef="let element" [fxFlex]="getFxFlex(tcol)"> {{tcol.transform ?
-          tcol.transform(element[tcol.property]) : element[tcol.property]}}
+        <mat-header-cell *matHeaderCellDef [fxFlex]="getFxFlex(tcol)"
+                         [ngStyle]="{'justify-content': getAlign(tcol.align), 'display': 'flex'}">
+          {{tcol.name}}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element" [fxFlex]="getFxFlex(tcol)"
+                  [ngStyle]="{'justify-content': getAlign(tcol.align), 'display': 'flex'}">
+          {{tcol.transform ? tcol.transform(element[tcol.property]) : element[tcol.property]}}
         </mat-cell>
       </ng-container>
     </ng-container>
