@@ -1,6 +1,6 @@
 import {Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import {TableColumn} from '../model/table-column.model';
-import {MatPaginator, MatTableDataSource} from '@angular/material';
+import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {Align} from '../model/align.model';
 
 @Component({
@@ -16,8 +16,10 @@ export class SimplemattableComponent implements OnChanges {
   @Input() columns: TableColumn<any, any>[] = [];
   @Input() filter: boolean = false;
   @Input() paginator: boolean = false;
+  @Input() sorting: boolean = false;
 
   @ViewChild(MatPaginator) matPaginator: MatPaginator;
+  @ViewChild(MatSort) matSort: MatSort;
 
   constructor() {
   }
@@ -30,6 +32,7 @@ export class SimplemattableComponent implements OnChanges {
           .indexOf(filter.toLowerCase().trim()) >= 0;
       if (this.paginator) {
         this.dataSource.paginator = this.matPaginator;
+        this.dataSource.sort = this.matSort;
       }
       this.displayedColumns = this.columns.map(col => col.property);
     }

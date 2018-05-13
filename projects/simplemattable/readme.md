@@ -70,20 +70,21 @@ Fortunately, the property in the constructor is also typesafe.
 TableColumn has three more optional parameters, allowing you to further customize the table:
 - transform (3rd constructor parameter or .withTransform()): Transform is a function that takes the property of your model (e.g. the key of TestData) and returns a string representation. 
 This is helpful if e.g. your Model contains a Date but you do not want the standard JS string representation of date to show, but rather your preferred format. 
-- width (4th contructor parameter or .withWidth()): Here you can specify the width of the column in pixel. If you do not specify the width, the flex value 1 1 0px will be used.
-- align (5th constructor parameter or .withAlign()): Sets the text align within the column. Header and Cell content will both be aligned. Default is left align. 
+- width (4th constructor parameter or .withWidth()): Here you can specify the width of the column in pixel. If you do not specify the width, the flex value 1 1 0px will be used.
+- align (5th constructor parameter or .withAlign()): Sets the text align within the column. Header and Cell content will both be aligned. Default is left align.
+- sortable (6th constructor parameter or .isSortable()): If sorting is enabled, you can disable sorting for certain columns by setting this property to false (default: true) 
 
 After you defined your table columns, you can bind them to the html element using:
 
 ```
-<smc-simplemattable [data]="testData" [columns]="columns" [paginator]="true" [filter]="true"></smc-simplemattable>
+<smc-simplemattable [data]="testData" [columns]="columns" [paginator]="true" [filter]="true" [sorting]="true"></smc-simplemattable>
 ```
 
 where testData is an array of your model and columns are the TableColumns you defined earlier.
 
-Additionally, you can turn on a paginator and a filter. These are the standard MatTable Features that are also well described at
+Additionally, you can turn on a paginator, a filter and sorting. These are the standard MatTable Features that are also well described at
 https://material.angular.io/components/table/overview.
-The paginator and filter are optional. If omitted, the flags will default to false.
+The paginator, filter and sorting are optional. If omitted, the flags will default to false.
 
 ## Contributing
 
@@ -98,11 +99,13 @@ History (Version in paranthesis is required Angular Version):
 + 0.0 (6.0): First Version
 + 0.1 (6.0): Alignment
 + 0.2 (6.0): Filtering using display values instead of object property values
++ 0.3 (6.0): Sorting
 
 ## Upcoming Features
-+ Padding corrections for more space on small screens (xs) (low priority)
-+ Support for Sorting
-+ Edit-Mode: Clicking a new edit button in the last column will turn all the fields into form fields for editing
++ (Optional) Padding corrections for more space on small screens (xs) (low priority)
++ Edit-Mode: Clicking a new edit button in the last column will turn all the fields into form fields for editing. 
+Next to the edit button in each row, there will be an (optional) delete button. 
+Additionally, there will be an (optional) add-button in the table header.
 
 ## Authors
 
