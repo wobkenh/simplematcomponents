@@ -97,10 +97,11 @@ There will be new versions when new features are added or a new Angular version 
 History (Version in paranthesis is required Angular Version):
 + 0.0 (6.0): First Version
 + 0.1 (6.0): Alignment
++ 0.2 (6.0): Filtering using display values instead of object property values
 
 ## Upcoming Features
-+ Filter using display values and not object property values
-+ Padding corrections for more space on small screens (xs)
++ Padding corrections for more space on small screens (xs) (low priority)
++ Support for Sorting
 + Edit-Mode: Clicking a new edit button in the last column will turn all the fields into form fields for editing
 
 ## Authors

@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import {TableColumn} from '../model/table-column.model';
 import {MatPaginator, MatTableDataSource} from '@angular/material';
 import {Align} from '../model/align.model';
@@ -25,6 +25,9 @@ export class SimplemattableComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.data) {
       this.dataSource = new MatTableDataSource(changes.data.currentValue);
+      this.dataSource.filterPredicate = (data: any, filter: string) =>
+        this.columns.reduce((str, col) => str + this.getStringRepresentation(col, data).toLowerCase().trim(), '')
+          .indexOf(filter.toLowerCase().trim()) >= 0;
       if (this.paginator) {
         this.dataSource.paginator = this.matPaginator;
       }
@@ -40,5 +43,9 @@ export class SimplemattableComponent implements OnChanges {
 
   getFxFlex = (tcol: TableColumn<any, any>): string => tcol.width ? '0 0 ' + tcol.width + 'px' : '1 1 0px';
 
+  getStringRepresentation = (tcol: TableColumn<any, any>, element: any) =>
+    tcol.transform ? tcol.transform(element[tcol.property]) : element[tcol.property].toString();
+
   getAlign = (align: Align): string => align === Align.LEFT ? 'flex-start' : align === Align.CENTER ? 'center' : 'flex-end';
+
 }
