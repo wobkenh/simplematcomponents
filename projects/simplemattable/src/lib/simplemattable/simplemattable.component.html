@@ -5,10 +5,10 @@
     </mat-form-field>
   </div>
 
-  <mat-table #table [dataSource]="dataSource">
+  <mat-table #table [dataSource]="dataSource" matSort [matSortDisabled]="!sorting">
     <ng-container *ngFor="let tcol of columns">
       <ng-container matColumnDef="{{tcol.property}}">
-        <mat-header-cell *matHeaderCellDef [fxFlex]="getFxFlex(tcol)"
+        <mat-header-cell *matHeaderCellDef [fxFlex]="getFxFlex(tcol)" mat-sort-header [disabled]="!tcol.sortable"
                          [ngStyle]="{'justify-content': getAlign(tcol.align), 'display': 'flex'}">
           {{tcol.name}}
         </mat-header-cell>

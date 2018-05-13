@@ -6,7 +6,8 @@ export class TableColumn<T, P extends keyof T> {
               public property: P,
               public transform?: (data: T[P]) => string,
               public width?: number,
-              public align: Align = Align.LEFT) {
+              public align: Align = Align.LEFT,
+              public sortable: boolean = true) {
   }
 
   public withTransform(transformFn: (data: T[P]) => string) {
@@ -21,6 +22,11 @@ export class TableColumn<T, P extends keyof T> {
 
   public withAlign(align: Align) {
     this.align = align;
+    return this;
+  }
+
+  public isSortable(sortable: boolean) {
+    this.sortable = sortable;
     return this;
   }
 }
