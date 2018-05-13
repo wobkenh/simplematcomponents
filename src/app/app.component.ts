@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
     ];
     this.columns = [
       new TableColumn<TestData, 'key'>('Key', 'key')
-        .withWidth(100).withTransform(data => data.substring(3)).withAlign(Align.CENTER),
+        .withWidth(100).withTransform(data => data.substring(3)).withAlign(Align.LEFT),
       new TableColumn<TestData, 'value'>('Value', 'value')
     ];
   }
