@@ -85,7 +85,7 @@ This is helpful if e.g. your Model contains a Date but you do not want the stand
 - sortTransform (7th parameter or .withSortTransform()): If you need custom sorting, you can specify sortTransform, which is is a function that takes the property of your model 
 and returns a number or string representation that is used to sort the table. Sorting will use the following representation of a column:
   1. If sortTransform is available, it will apply the data to the supplied function
-  2. If the property is of type Date, it will use .toISOString()
+  2. If the property is of type Date, it will use .toISOString(). This will not work with nested objects. The date has to be a property of your model class.
   3. If the property is of type object and transform is available, it will apply the data to the supplied function
   4. If earlier checks failed, it will use the property value
 
