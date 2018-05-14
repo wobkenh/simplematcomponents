@@ -111,7 +111,7 @@ columns = [
 ];
 ```
 
-Of course, you can also use .withTransform instead of the 3rd constructor parameter.
+You can also use .withTransform instead of the 3rd constructor parameter (see next section "TableColumn Options").
 
 ### TableColumn Options
 
@@ -121,7 +121,7 @@ This is helpful if e.g. your Model contains a Date but you do not want the stand
 - width (4th constructor parameter or .withWidth()): Here you can specify the width of the column in pixel. If you do not specify the width, the flex value 1 1 0px will be used.
 - align (5th constructor parameter or .withAlign()): Sets the text align within the column. Header and Cell content will both be aligned. Default is left align.
 - sortable (6th constructor parameter or .isSortable()): If sorting is enabled, you can disable sorting for certain columns by setting this property to false (default: true)
-- sortTransform (7th parameter or .withSortTransform()): If you need custom sorting, you can specify sortTransform, which is is a function that takes the property of your model 
+- sortTransform (7th parameter or .withSortTransform()): If you need custom sorting, you can specify sortTransform, which is a function that takes the property of your model 
 and returns a number or string representation that is used to sort the table. Sorting will use the following representation of a column:
   1. If sortTransform is available, it will apply the data to the supplied function
   2. If the property is of type Date, it will use .toISOString(). This will not work with nested objects. The date has to be a property of your model class.
@@ -153,6 +153,8 @@ History (Version in paranthesis is required Angular Version):
 + Edit-Mode: Clicking an edit button in the last column will turn all the fields of the row into form fields for editing. 
 Next to the edit button in each row, there will be an (optional) delete button. 
 Additionally, there will be an (optional) add-button in the table header.
++ Right now, the sort icons in the table header are invisible if disabled, but are still registered in the dom with their full size. 
+If center Align is supplied, this makes the header move a little to the left, which is unintended. I will try to fix this in a future version.
 
 ## Authors
 
