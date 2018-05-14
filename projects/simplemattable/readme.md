@@ -99,22 +99,22 @@ The paginator, filter and sorting are optional. If omitted, the flags will defau
 
 If you have a more complex model, for example
 
-`
+```
 class ComplexTestData {
   constructor(public id: number, public description: string, public data: TestData) {
   }
 }
-`
+```
 
 and you want to display the description property as well as key and value of the data property, you can specify the colums like this:
 
-`
+```
 columns = [
   new TableColumn<ComplexTestData, 'description'>('Description', 'description'),
   new TableColumn<ComplexTestData, 'data'>('Key', 'data', (data) => data.key),
   new TableColumn<ComplexTestData, 'data'>('Value', 'data', (data) => data.value)
 ];
-`
+```
 
 Of course, you can also use .withTransform instead of the 3rd constructor parameter.
 
