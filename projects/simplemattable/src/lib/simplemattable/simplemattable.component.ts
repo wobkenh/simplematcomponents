@@ -34,7 +34,7 @@ export class SimplemattableComponent implements OnChanges {
         this.dataSource.paginator = this.matPaginator;
         this.dataSource.sort = this.matSort;
       }
-      this.displayedColumns = this.columns.map(col => col.property);
+      this.displayedColumns = this.columns.map((col, i) => i.toString() + col.property);
     }
   }
 

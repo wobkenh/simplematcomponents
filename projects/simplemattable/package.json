@@ -1,7 +1,7 @@
 {
   "name": "simplemattable",
-  "version": "0.4.0",
-  "description": "A simplified MatTable using @angular/material",
+  "version": "0.5.0",
+  "description": "A simplified, declarative Table using @angular/material's MatTable",
   "author": "Henning Wobken",
   "license": "MIT",
   "keywords": [

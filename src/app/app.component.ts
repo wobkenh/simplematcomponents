@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {TableColumn} from '../../projects/simplemattable/src/lib/model/table-column.model';
-import {Align} from '../../projects/simplemattable/src/lib/model/align.model';
 
 @Component({
   selector: 'smc-root',
@@ -9,19 +8,19 @@ import {Align} from '../../projects/simplemattable/src/lib/model/align.model';
 })
 export class AppComponent implements OnInit {
   title = 'smc';
-  testData: TestData[] = [];
-  columns: TableColumn<TestData, any>[] = [];
+  testData: ComplexTestData[] = [];
+  columns = [];
 
   ngOnInit(): void {
     this.testData = [
-      new TestData('Key1', 'Value1'),
-      new TestData('Key2', 'Value2'),
-      new TestData('Key3', 'Value3'),
+      new ComplexTestData(1, 'test1', new TestData('Key1', 'Value1')),
+      new ComplexTestData(2, 'test2', new TestData('Key2', 'Value2')),
+      new ComplexTestData(3, 'test3', new TestData('Key3', 'Value3')),
     ];
     this.columns = [
-      new TableColumn<TestData, 'key'>('Key', 'key')
-        .withWidth(100).withTransform(data => data.substring(3)).withAlign(Align.LEFT),
-      new TableColumn<TestData, 'value'>('Value', 'value')
+      new TableColumn<ComplexTestData, 'description'>('Description', 'description'),
+      new TableColumn<ComplexTestData, 'data'>('Key', 'data', (data) => data.key),
+      new TableColumn<ComplexTestData, 'data'>('Value', 'data', (data) => data.value)
     ];
   }
 
@@ -29,5 +28,10 @@ export class AppComponent implements OnInit {
 
 class TestData {
   constructor(public key: string, public value: string) {
+  }
+}
+
+class ComplexTestData {
+  constructor(public id: number, public description: string, public data: TestData) {
   }
 }

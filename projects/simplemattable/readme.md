@@ -3,9 +3,12 @@
 SimpleMatTable is an abstraction of MatTable from the @angular/material dependency. It allows you to quickly and in a typesafe way define simple tables. 
 This is perfect if you just want to display some data in a table and do not need full control over the table HTML.
 
+Instead of copy/pasting the html for each column, you can describe the columns in a declarative way via Typescript code.
+
 ### Prerequisites
 
-This Dependency is for use with Angular Material Design only. As of the first version, it requires Angular Material 6.0 or above.
+This Dependency is for use with Angular Material Design only. As of the first version, 
+it requires Angular Material 6.0 or above (see Version section for more information).
 
 ## Installing
 
@@ -41,6 +44,8 @@ export class AppModule { }
 
 ## Usage
 
+### Model
+
 Lets say you have a model that you want to display in a table, for example:
 
 ```
@@ -50,7 +55,9 @@ class TestData {
 }
 ```
 
-In your component (e.g. AppComponent) you can then define your colums like this:
+### TableColumns
+
+In your component (e.g. AppComponent) you can then define your columns like this:
 
 ```
 columns = [
@@ -74,6 +81,8 @@ This is helpful if e.g. your Model contains a Date but you do not want the stand
 - align (5th constructor parameter or .withAlign()): Sets the text align within the column. Header and Cell content will both be aligned. Default is left align.
 - sortable (6th constructor parameter or .isSortable()): If sorting is enabled, you can disable sorting for certain columns by setting this property to false (default: true) 
 
+### Table
+
 After you defined your table columns, you can bind them to the html element using:
 
 ```
@@ -85,6 +94,30 @@ where testData is an array of your model and columns are the TableColumns you de
 Additionally, you can turn on a paginator, a filter and sorting. These are the standard MatTable Features that are also well described at
 https://material.angular.io/components/table/overview.
 The paginator, filter and sorting are optional. If omitted, the flags will default to false.
+
+### Complex Models
+
+If you have a more complex model, for example
+
+`
+class ComplexTestData {
+  constructor(public id: number, public description: string, public data: TestData) {
+  }
+}
+`
+
+and you want to display the description property as well as key and value of the data property, you can specify the colums like this:
+
+`
+columns = [
+  new TableColumn<ComplexTestData, 'description'>('Description', 'description'),
+  new TableColumn<ComplexTestData, 'data'>('Key', 'data', (data) => data.key),
+  new TableColumn<ComplexTestData, 'data'>('Value', 'data', (data) => data.value)
+];
+`
+
+Of course, you can also use .withTransform instead of the 3rd constructor parameter.
+
 
 ## Contributing
 
@@ -101,10 +134,12 @@ History (Version in paranthesis is required Angular Version):
 + 0.2 (6.0): Filtering using display values instead of object property values
 + 0.3 (6.0): Sorting
 + 0.4 (6.0): Removed outer div, now using V6.0 of Angular fxFlex (@angular/flex-layout)
++ 0.5 (6.0): Allow for multiple columns to use the same property
 
 ## Upcoming Features
-+ Support for Links, Buttons and Icons in tablecells
-+ Edit-Mode: Clicking a new edit button in the last column will turn all the fields into form fields for editing. 
++ Support for Links, Buttons and Icons in table cells
++ Visibility-Property for TableColumn to hide columns
++ Edit-Mode: Clicking an edit button in the last column will turn all the fields of the row into form fields for editing. 
 Next to the edit button in each row, there will be an (optional) delete button. 
 Additionally, there will be an (optional) add-button in the table header.
 
