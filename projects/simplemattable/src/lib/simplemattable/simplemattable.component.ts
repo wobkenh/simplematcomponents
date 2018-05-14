@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, DoCheck, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import {TableColumn} from '../model/table-column.model';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {Align} from '../model/align.model';
@@ -8,12 +8,13 @@ import {Align} from '../model/align.model';
   templateUrl: './simplemattable.component.html',
   styleUrls: ['./simplemattable.component.css']
 })
-export class SimplemattableComponent implements OnChanges {
+export class SimplemattableComponent implements DoCheck, OnChanges {
 
   displayedColumns = [];
   dataSource: MatTableDataSource<any>;
   @Input() data: any[] = [];
   @Input() columns: TableColumn<any, any>[] = [];
+  private oldColumns: TableColumn<any, any>[] = [];
   @Input() filter: boolean = false;
   @Input() paginator: boolean = false;
   @Input() sorting: boolean = false;
@@ -24,9 +25,59 @@ export class SimplemattableComponent implements OnChanges {
   constructor() {
   }
 
+  getDisplayedCols = (cols: TableColumn<any, any>[]): TableColumn<any, any>[] => cols.filter(col => col.visible);
+
+  applyFilter(filterValue: string) {
+    filterValue = filterValue.trim(); // Remove whitespace
+    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+    this.dataSource.filter = filterValue;
+  }
+
+  getFxFlex = (tcol: TableColumn<any, any>): string => tcol.width ? '0 0 ' + tcol.width + 'px' : '1 1 0px';
+
+  getStringRepresentation(tcol: TableColumn<any, any>, element: any): string {
+    return tcol.transform ? tcol.transform(element[tcol.property]) : element[tcol.property].toString();
+  }
+
+
+  getAlign = (align: Align): string => align === Align.LEFT ? 'flex-start' : align === Align.CENTER ? 'center' : 'flex-end';
+
+
+  /* -----------------------
+      DIRTY CHECKING
+     ----------------------- */
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.data) {
-      this.dataSource = new MatTableDataSource(changes.data.currentValue);
+      this.recreateDataSource();
+    }
+  }
+
+  ngDoCheck(): void {
+    if (this.checkForDifferences()) {
+      this.recreateDataSource();
+      this.oldColumns = this.columns.map(col => Object.assign({}, col)); // copy cols to lose references
+    }
+  }
+
+  checkForDifferences(): boolean {
+    if (this.oldColumns.length !== this.columns.length) {
+      return true;
+    }
+    return this.oldColumns.some((col, i) => {
+      for (const key in col) {
+        if (col[key] !== this.columns[i][key]) {
+          return true;
+        }
+      }
+    });
+  }
+
+  recreateDataSource() {
+    if (this.columns && this.data) {
+      console.log(this.columns);
+      console.log(this.data);
+      this.dataSource = new MatTableDataSource(this.data);
       this.dataSource.filterPredicate = (data: any, filter: string) =>
         this.columns.reduce((str, col) => str + this.getStringRepresentation(col, data).toLowerCase().trim(), '')
           .indexOf(filter.toLowerCase().trim()) >= 0;
@@ -58,22 +109,9 @@ export class SimplemattableComponent implements OnChanges {
           return data[tcol.property];
         };
       }
-      this.displayedColumns = this.columns.map((col, i) => i.toString() + '_' + col.property);
+      this.displayedColumns = this.getDisplayedCols(this.columns).map((col, i) => i.toString() + '_' + col.property);
     }
   }
 
-  applyFilter(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
-    this.dataSource.filter = filterValue;
-  }
-
-  getFxFlex = (tcol: TableColumn<any, any>): string => tcol.width ? '0 0 ' + tcol.width + 'px' : '1 1 0px';
-
-  getStringRepresentation(tcol: TableColumn<any, any>, element: any): string {
-    return tcol.transform ? tcol.transform(element[tcol.property]) : element[tcol.property].toString();
-  }
-
-  getAlign = (align: Align): string => align === Align.LEFT ? 'flex-start' : align === Align.CENTER ? 'center' : 'flex-end';
 
 }
