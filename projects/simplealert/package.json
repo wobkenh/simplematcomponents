@@ -1,0 +1,23 @@
+{
+  "name": "simplealert",
+  "license": "MIT",
+  "description": "A simple info/error alert component for Angular 6+ using @angular/material",
+  "author": "Henning Wobken",
+  "version": "0.0.1",
+  "keywords": [
+    "Angular",
+    "Material Design",
+    "Material Icons",
+    "Alert",
+    "Info Alert",
+    "Error Alert",
+    "Angular 6"
+  ],
+  "peerDependencies": {
+    "@angular/common": "^6.0.0",
+    "@angular/core": "^6.0.0",
+    "@angular/material": "^6.0.0",
+    "@angular/platform-browser": "^6.0.0",
+    "@angular/flex-layout": "^6.0.0-beta.15"
+  }
+}
