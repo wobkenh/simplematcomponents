@@ -95,7 +95,7 @@ Additionally, you can turn on a paginator, a filter and sorting. These are the s
 https://material.angular.io/components/table/overview.
 The paginator, filter and sorting are optional. If omitted, the flags will default to false.
 
-### Complex Models
+### Complex Model
 
 If you have a more complex model, for example
 
