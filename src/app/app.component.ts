@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {TableColumn} from '../../projects/simplemattable/src/lib/model/table-column.model';
+import {AlertType} from '../../projects/simplealert/src/simplealert/alert-type.model';
 
 @Component({
   selector: 'smc-root',
@@ -7,9 +8,11 @@ import {TableColumn} from '../../projects/simplemattable/src/lib/model/table-col
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'smc';
   testData: ComplexTestData[] = [];
   columns = [];
+  isInfoOpen = true;
+  isErrorOpen = true;
+  alertType = AlertType;
 
   ngOnInit(): void {
     this.testData = [
@@ -22,6 +25,14 @@ export class AppComponent implements OnInit {
       new TableColumn<ComplexTestData, 'data'>('Key', 'data', (data) => data.key),
       new TableColumn<ComplexTestData, 'data'>('Value', 'data', (data) => data.value)
     ];
+  }
+
+  openInfo() {
+    this.isInfoOpen = true;
+  }
+
+  openError() {
+    this.isErrorOpen = true;
   }
 
 }

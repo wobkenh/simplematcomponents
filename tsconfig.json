@@ -19,6 +19,9 @@
     "paths": {
       "simplemattable": [
         "dist/simplemattable"
+      ],
+      "simplealert": [
+        "dist/simplealert"
       ]
     }
   }

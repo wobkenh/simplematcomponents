@@ -156,6 +156,46 @@
           }
         }
       }
+    },
+    "simplealert": {
+      "root": "projects/simplealert",
+      "sourceRoot": "projects/simplealert/src",
+      "projectType": "library",
+      "prefix": "smc",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/simplealert/tsconfig.lib.json",
+            "project": "projects/simplealert/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "projects/simplealert/ng-package.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/simplealert/src/test.ts",
+            "tsConfig": "projects/simplealert/tsconfig.spec.json",
+            "karmaConfig": "projects/simplealert/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/simplealert/tsconfig.lib.json",
+              "projects/simplealert/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "simplematcomponents"

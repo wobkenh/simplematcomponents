@@ -10,5 +10,15 @@
                         [sorting]="true"></smc-simplemattable>
   </div>
   <hr>
+  <h2>SimpleAlert</h2>
+  <div style="padding: 10px">
+    <button (click)="openInfo()" mat-raised-button>open info</button>
+    <smc-simplealert [(isOpen)]="isInfoOpen" [type]="alertType.INFO">This is an info alert!</smc-simplealert>
+  </div>
+  <div style="padding: 10px">
+    <button (click)="openError()" mat-raised-button>open error</button>
+    <smc-simplealert [(isOpen)]="isErrorOpen" [type]="alertType.ERROR">This is an error alert!</smc-simplealert>
+  </div>
+  <hr>
   <div>More coming soon TM</div>
 </div>

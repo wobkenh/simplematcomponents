@@ -1,0 +1,13 @@
+.info-box {
+  color: #31708f;
+  background-color: #d9edf7;
+  border: 1px solid #bce8f1;
+  padding: 10px;
+}
+
+.error-box {
+  color: #a94442;
+  background-color: #f2dede;
+  border: 1px solid #ebccd1;
+  padding: 10px;
+}
