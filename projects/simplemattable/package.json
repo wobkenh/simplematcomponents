@@ -1,6 +1,6 @@
 {
   "name": "simplemattable",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A simplified MatTable using @angular/material",
   "author": "Henning Wobken",
   "license": "MIT",
@@ -15,11 +15,11 @@
     "typesafe"
   ],
   "peerDependencies": {
-    "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
-    "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
+    "@angular/common": "^6.0.0",
+    "@angular/core": "^6.0.0",
     "@angular/material": "^6.0.0",
     "@angular/cdk": "^6.0.0",
     "@angular/platform-browser": "^6.0.0",
-    "@angular/flex-layout": "github:angular/flex-layout-builds"
+    "@angular/flex-layout": "^6.0.0-beta.15"
   }
 }

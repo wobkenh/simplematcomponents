@@ -100,9 +100,10 @@ History (Version in paranthesis is required Angular Version):
 + 0.1 (6.0): Alignment
 + 0.2 (6.0): Filtering using display values instead of object property values
 + 0.3 (6.0): Sorting
++ 0.4 (6.0): Removed outer div, now using V6.0 of Angular fxFlex (@angular/flex-layout)
 
 ## Upcoming Features
-+ (Optional) Padding corrections for more space on small screens (xs) (low priority)
++ Support for Links, Buttons and Icons in tablecells
 + Edit-Mode: Clicking a new edit button in the last column will turn all the fields into form fields for editing. 
 Next to the edit button in each row, there will be an (optional) delete button. 
 Additionally, there will be an (optional) add-button in the table header.

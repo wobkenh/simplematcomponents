@@ -23,7 +23,7 @@
     "@angular/router": "^6.0.0",
     "@angular/material": "^6.0.0",
     "@angular/cdk": "^6.0.0",
-    "@angular/flex-layout": "github:angular/flex-layout-builds",
+    "@angular/flex-layout": "^6.0.0-beta.15",
     "core-js": "^2.5.4",
     "rxjs": "^6.0.0",
     "zone.js": "^0.8.26"
