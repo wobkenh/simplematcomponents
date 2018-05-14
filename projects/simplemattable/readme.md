@@ -74,20 +74,7 @@ The Constructor of TableColumn requires you to specify the string that will be d
 You already specified the property name in the generics, but since information about generics is not available at runtime, you need to specify it here again. 
 Fortunately, the property in the constructor is also typesafe.
 
-If you just want to get started and do not want to get into details right now, jump the the next section (Table) and come back later.  
-
-TableColumn has several more optional parameters, allowing you to further customize the table:
-- transform (3rd constructor parameter or .withTransform()): Transform is a function that takes the property of your model (e.g. the key of TestData) and returns a string representation. 
-This is helpful if e.g. your Model contains a Date but you do not want the standard JS string representation of date to show, but rather your preferred format. 
-- width (4th constructor parameter or .withWidth()): Here you can specify the width of the column in pixel. If you do not specify the width, the flex value 1 1 0px will be used.
-- align (5th constructor parameter or .withAlign()): Sets the text align within the column. Header and Cell content will both be aligned. Default is left align.
-- sortable (6th constructor parameter or .isSortable()): If sorting is enabled, you can disable sorting for certain columns by setting this property to false (default: true)
-- sortTransform (7th parameter or .withSortTransform()): If you need custom sorting, you can specify sortTransform, which is is a function that takes the property of your model 
-and returns a number or string representation that is used to sort the table. Sorting will use the following representation of a column:
-  1. If sortTransform is available, it will apply the data to the supplied function
-  2. If the property is of type Date, it will use .toISOString(). This will not work with nested objects. The date has to be a property of your model class.
-  3. If the property is of type object and transform is available, it will apply the data to the supplied function
-  4. If earlier checks failed, it will use the property value
+If you are looking for more customization options for you columns, have a look at section "TableColumn Options" later in this chapter.
 
 ### Table
 
@@ -125,6 +112,21 @@ columns = [
 ```
 
 Of course, you can also use .withTransform instead of the 3rd constructor parameter.
+
+### TableColumn Options
+
+TableColumn has several optional parameters, allowing you to further customize the table:
+- transform (3rd constructor parameter or .withTransform()): Transform is a function that takes the property of your model (e.g. the key of TestData) and returns a string representation. 
+This is helpful if e.g. your Model contains a Date but you do not want the standard JS string representation of date to show, but rather your preferred format. 
+- width (4th constructor parameter or .withWidth()): Here you can specify the width of the column in pixel. If you do not specify the width, the flex value 1 1 0px will be used.
+- align (5th constructor parameter or .withAlign()): Sets the text align within the column. Header and Cell content will both be aligned. Default is left align.
+- sortable (6th constructor parameter or .isSortable()): If sorting is enabled, you can disable sorting for certain columns by setting this property to false (default: true)
+- sortTransform (7th parameter or .withSortTransform()): If you need custom sorting, you can specify sortTransform, which is is a function that takes the property of your model 
+and returns a number or string representation that is used to sort the table. Sorting will use the following representation of a column:
+  1. If sortTransform is available, it will apply the data to the supplied function
+  2. If the property is of type Date, it will use .toISOString(). This will not work with nested objects. The date has to be a property of your model class.
+  3. If the property is of type object and transform is available, it will apply the data to the supplied function
+  4. If earlier checks failed, it will use the property value
 
 
 ## Contributing
