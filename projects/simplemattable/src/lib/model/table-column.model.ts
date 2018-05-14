@@ -8,7 +8,8 @@ export class TableColumn<T, P extends keyof T> {
               public width?: number,
               public align: Align = Align.LEFT,
               public sortable: boolean = true,
-              public sortTransform?: (data: T[P]) => number | string) {
+              public sortTransform?: (data: T[P]) => number | string,
+              public visible: boolean = true) {
   }
 
   public withTransform(transformFn: (data: T[P]) => string) {
@@ -33,6 +34,11 @@ export class TableColumn<T, P extends keyof T> {
 
   public isSortable(sortable: boolean) {
     this.sortable = sortable;
+    return this;
+  }
+
+  public isVisible(visible: boolean) {
+    this.visible = visible;
     return this;
   }
 }

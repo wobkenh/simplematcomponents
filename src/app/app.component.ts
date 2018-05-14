@@ -9,7 +9,7 @@ import {AlertType} from '../../projects/simplealert/src/simplealert/alert-type.m
 })
 export class AppComponent implements OnInit {
   testData: ComplexTestData[] = [];
-  columns = [];
+  columns: TableColumn<any, any>[] = [];
   isInfoOpen = true;
   isErrorOpen = true;
   alertType = AlertType;
@@ -34,11 +34,16 @@ export class AppComponent implements OnInit {
     ];
     this.columns = [
       new TableColumn<ComplexTestData, 'description'>('Description', 'description'),
+      new TableColumn<ComplexTestData, 'description'>('Description2', 'description').isVisible(false),
       new TableColumn<ComplexTestData, 'data'>('Key', 'data', (data) => data.key),
       new TableColumn<ComplexTestData, 'data'>('Value', 'data', (data) => data.value),
       new TableColumn<ComplexTestData, 'data'>('Datum', 'data', (data) => this.getDateStr(data.date))
         .withSortTransform(data => data.date.toISOString())
     ];
+  }
+
+  toggleVisibility() {
+    this.columns[1].visible = !this.columns[1].visible;
   }
 
   getDateStr = (date: Date) => date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear();

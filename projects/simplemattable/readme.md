@@ -3,7 +3,7 @@
 SimpleMatTable is an abstraction of MatTable from the @angular/material dependency. It allows you to quickly and in a typesafe way define simple tables. 
 This is perfect if you just want to display some data in a table and do not need full control over the table HTML.
 
-Instead of copy/pasting the html for each column, you can describe the columns in a declarative way via Typescript code.
+Instead of copy/pasting the HTML for each column, you can describe the columns in a declarative way via Typescript code.
 
 ### Prerequisites
 
@@ -127,6 +127,7 @@ and returns a number or string representation that is used to sort the table. So
   2. If the property is of type Date, it will use .toISOString(). This will not work with nested objects. The date has to be a property of your model class.
   3. If the property is of type object and transform is available, it will apply the data to the supplied function
   4. If earlier checks failed, it will use the property value
+- visible (8th parameter or .isVisible()): Can be used to change the visibility of a column
 
 
 ## Contributing
@@ -146,10 +147,10 @@ History (Version in paranthesis is required Angular Version):
 + 0.4 (6.0): Removed outer div, now using V6.0 of Angular fxFlex (@angular/flex-layout)
 + 0.5 (6.0): Allow for multiple columns to use the same property
 + 0.6 (6.0): Sort Transform Function for custom sorting
++ 0.7 (6.0): Hidden columns and better listening mechanism for data change detection
 
 ## Upcoming Features
 + Support for Links, Buttons and Icons in table cells
-+ Visibility-Property for TableColumn to hide columns
 + Edit-Mode: Clicking an edit button in the last column will turn all the fields of the row into form fields for editing. 
 Next to the edit button in each row, there will be an (optional) delete button. 
 Additionally, there will be an (optional) add-button in the table header.
