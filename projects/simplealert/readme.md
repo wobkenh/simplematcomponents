@@ -10,8 +10,8 @@ it requires Angular Material 6.0 or above (see version section for more informat
 
 ## Preview
 
-![Info Alert](img/info.png?raw=true "Info Alert")
-![Error Alert](img/error.png?raw=true "Error Alert")
+![Info Alert](https://simplex24.de/info.png "Info Alert")
+![Error Alert](https://simplex24.de/error.png "Error Alert")
 
 ## Installing
 
