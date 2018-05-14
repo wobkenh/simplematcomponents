@@ -7,11 +7,17 @@ export class TableColumn<T, P extends keyof T> {
               public transform?: (data: T[P]) => string,
               public width?: number,
               public align: Align = Align.LEFT,
-              public sortable: boolean = true) {
+              public sortable: boolean = true,
+              public sortTransform?: (data: T[P]) => number | string) {
   }
 
   public withTransform(transformFn: (data: T[P]) => string) {
     this.transform = transformFn;
+    return this;
+  }
+
+  public withSortTransform(transformFn: (data: T[P]) => number | string) {
+    this.sortTransform = transformFn;
     return this;
   }
 

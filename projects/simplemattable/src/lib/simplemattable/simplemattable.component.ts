@@ -30,11 +30,35 @@ export class SimplemattableComponent implements OnChanges {
       this.dataSource.filterPredicate = (data: any, filter: string) =>
         this.columns.reduce((str, col) => str + this.getStringRepresentation(col, data).toLowerCase().trim(), '')
           .indexOf(filter.toLowerCase().trim()) >= 0;
+
       if (this.paginator) {
         this.dataSource.paginator = this.matPaginator;
-        this.dataSource.sort = this.matSort;
       }
-      this.displayedColumns = this.columns.map((col, i) => i.toString() + col.property);
+      if (this.sorting) {
+        this.dataSource.sort = this.matSort;
+        this.dataSource.sortingDataAccessor = (data, sortHeaderId) => {
+          /*  Order:
+              1. SortTransform
+              2. Date --> ISO-String
+              3. Transform (if object)
+              4. Property value
+           */
+          const tcol = this.columns[sortHeaderId.split('_')[0]];
+          if (tcol.sortTransform) {
+            return tcol.sortTransform(data[tcol.property]);
+          }
+          if (data[tcol.property] instanceof Date) {
+            return data[tcol.property].toISOString();
+          }
+          // Cant sort if data is object of a format i do not know since toString will be [object Object].
+          // Therefore, try to use transform if possible
+          if (tcol.transform && typeof data[tcol.property] === 'object') {
+            return tcol.transform(data[tcol.property]);
+          }
+          return data[tcol.property];
+        };
+      }
+      this.displayedColumns = this.columns.map((col, i) => i.toString() + '_' + col.property);
     }
   }
 
@@ -46,8 +70,9 @@ export class SimplemattableComponent implements OnChanges {
 
   getFxFlex = (tcol: TableColumn<any, any>): string => tcol.width ? '0 0 ' + tcol.width + 'px' : '1 1 0px';
 
-  getStringRepresentation = (tcol: TableColumn<any, any>, element: any) =>
-    tcol.transform ? tcol.transform(element[tcol.property]) : element[tcol.property].toString();
+  getStringRepresentation(tcol: TableColumn<any, any>, element: any): string {
+    return tcol.transform ? tcol.transform(element[tcol.property]) : element[tcol.property].toString();
+  }
 
   getAlign = (align: Align): string => align === Align.LEFT ? 'flex-start' : align === Align.CENTER ? 'center' : 'flex-end';
 
