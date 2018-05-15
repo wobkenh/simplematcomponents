@@ -3,7 +3,7 @@
   "license": "MIT",
   "description": "A simple info/error alert component for Angular 6+ using @angular/material",
   "author": "Henning Wobken",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "keywords": [
     "Angular",
     "Material Design",

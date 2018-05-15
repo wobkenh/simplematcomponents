@@ -75,6 +75,7 @@ If this happens, the state will be synced back to isOpen using two-way-databindi
 
 The Sourcecode is in a private repository for now. 
 If anyone is interested in contributing, email me and I will transfer this library to a public github or gitlab repository.
+For my email address, see the [authors section](#Authors).
 
 ## Versioning
 
