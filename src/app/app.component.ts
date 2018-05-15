@@ -33,7 +33,8 @@ export class AppComponent implements OnInit {
       new ComplexTestData(3, 'test3', new TestData('Key3', 'Value3', d3)),
     ];
     this.columns = [
-      new TableColumn<ComplexTestData, 'description'>('Description', 'description'),
+      new TableColumn<ComplexTestData, 'description'>('Description', 'description')
+        .withIcon((desc, ele) => ele.id < 3 ? 'add' : 'delete'),
       new TableColumn<ComplexTestData, 'description'>('Description2', 'description').isVisible(false),
       new TableColumn<ComplexTestData, 'data'>('Key', 'data', (data) => data.key),
       new TableColumn<ComplexTestData, 'data'>('Value', 'data', (data) => data.value),

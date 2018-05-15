@@ -36,9 +36,8 @@ export class SimplemattableComponent implements DoCheck, OnChanges {
   getFxFlex = (tcol: TableColumn<any, any>): string => tcol.width ? '0 0 ' + tcol.width + 'px' : '1 1 0px';
 
   getStringRepresentation(tcol: TableColumn<any, any>, element: any): string {
-    return tcol.transform ? tcol.transform(element[tcol.property]) : element[tcol.property].toString();
+    return tcol.transform ? tcol.transform(element[tcol.property], element) : element[tcol.property].toString();
   }
-
 
   getAlign = (align: Align): string => align === Align.LEFT ? 'flex-start' : align === Align.CENTER ? 'center' : 'flex-end';
 
@@ -96,7 +95,7 @@ export class SimplemattableComponent implements DoCheck, OnChanges {
            */
           const tcol = this.columns[sortHeaderId.split('_')[0]];
           if (tcol.sortTransform) {
-            return tcol.sortTransform(data[tcol.property]);
+            return tcol.sortTransform(data[tcol.property], data);
           }
           if (data[tcol.property] instanceof Date) {
             return data[tcol.property].toISOString();
