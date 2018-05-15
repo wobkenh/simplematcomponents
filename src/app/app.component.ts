@@ -41,7 +41,7 @@ export class AppComponent implements OnInit {
         .withOnClick((data) => console.log(data)).withAlign(Align.CENTER),
       new TableColumn<ComplexTestData, 'data'>('Value', 'data', (data) => data.value),
       new TableColumn<ComplexTestData, 'data'>('Datum', 'data', (data) => this.getDateStr(data.date))
-        .withSortTransform(data => data.date.toISOString())
+        .withSortTransform(data => data.date.toISOString()).withAlign(Align.RIGHT)
     ];
   }
 

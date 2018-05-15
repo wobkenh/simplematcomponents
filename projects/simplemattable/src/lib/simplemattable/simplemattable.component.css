@@ -11,15 +11,3 @@
 .no-sort ::ng-deep .mat-sort-header-arrow {
   display: none;
 }
-
-.with-sort ::ng-deep .mat-sort-header-arrow {
-  display: none;
-}
-
-.with-sort:hover ::ng-deep .mat-sort-header-arrow {
-  display: block;
-}
-
-.smc-header-container {
-  padding-left: 5px;
-}

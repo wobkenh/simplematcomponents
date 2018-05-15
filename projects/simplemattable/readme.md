@@ -137,6 +137,9 @@ this.testData = this.testData.slice(0);
 Note that .slice(0) is one of the fastest, if not the fastest way to clone arrays. 
 For more information, see [this StackOverflow question](https://stackoverflow.com/questions/3978492/javascript-fastest-way-to-duplicate-an-array-slice-vs-for-loop).
 
+If sorting is enabled, updating the columns will clear the current sorting selection.
+Changes in Data will not clear the sorting selection.
+
 ### TableColumn Options
 
 TableColumn has several optional parameters, allowing you to further customize the table. 
