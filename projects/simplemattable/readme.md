@@ -170,8 +170,13 @@ Since icon is a function, you can decide for every row which icon you want to us
 If any cell (excluding the header cell) is clicked, the function onClick will be executed.
 On hover, the background of clickable cells will turn into a half-transparent gray and the cursor will become a pointer.
 This can be used for example if you have an overview table and want to display details on click. 
-To make it easier for the user to undestand that a cell is clickable, it is recommended that you add an appropriate icon.
- 
+To make it easier for the user to understand that a cell is clickable, it is recommended that you add an appropriate icon.
+If the button property is set, onClick does not change the hover background color. Also, not the whole cell, but only the button will be clickable.
+- button (11th parameter or .withButton()): Can be either `ButtonType.BASIC` (mat-button), `ButtonType.RAISED` (mat-raised-button) or `ButtonType.ICON` (mat-icon-button).
+The button will use the text and icon (or only the icon in case of `ButtonType.ICON`) that would normally be displayed directly in the cell. 
+If specified, the onClick function will be executed on a click event.
+- buttonColor (12th parameter or .withButtonColor()): If the button type is set, buttonColor allows you to change the button color. Can be either `'primary'`, `'warn'` or `'accent'`.
+If you leave the button color empty, the standard white/transparent background (depending on button type) will be used. 
 
 
 ## Contributing
@@ -195,9 +200,9 @@ History (Version in parenthesis is required Angular Version):
 + 0.7 (6.0): Hidden columns and better listening mechanism for data change detection
 + 0.8 (6.0): Icon support, added the row data object as second parameter to all TableColumn function properties
 + 0.9 (6.0): Click listener support
++ 0.10 (6.0): Buttons
 
 ## Upcoming Features
-+ Support for Buttons in table cells
 + Edit-Mode: Clicking an edit button in the last column will turn all the fields of the row into form fields for editing. 
 Next to the edit button in each row, there will be an (optional) delete button. 
 Additionally, there will be an (optional) add-button in the table header.

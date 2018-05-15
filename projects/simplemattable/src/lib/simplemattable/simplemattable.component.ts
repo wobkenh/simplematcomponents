@@ -2,6 +2,7 @@ import {ChangeDetectorRef, Component, DoCheck, Input, OnChanges, SimpleChanges, 
 import {TableColumn} from '../model/table-column.model';
 import {MatPaginator, MatSort, MatTable, MatTableDataSource, SortDirection} from '@angular/material';
 import {Align} from '../model/align.model';
+import {ButtonType} from '../model/button-type.model';
 
 @Component({
   selector: 'smc-simplemattable',
@@ -22,6 +23,7 @@ export class SimplemattableComponent implements DoCheck, OnChanges {
   @ViewChild(MatPaginator) matPaginator: MatPaginator;
   @ViewChild(MatSort) matSort: MatSort;
   @ViewChild(MatTable) matTable: MatTable<any>;
+  buttonType = ButtonType;
 
   constructor() {
   }
@@ -42,8 +44,8 @@ export class SimplemattableComponent implements DoCheck, OnChanges {
 
   getAlign = (align: Align): string => align === Align.LEFT ? 'flex-start' : align === Align.CENTER ? 'center' : 'flex-end';
 
-  onClick(tcol: TableColumn<any, any>, property: any, element: any) {
-    if (tcol.onClick) {
+  onClick(tcol: TableColumn<any, any>, property: any, element: any, fromButton: boolean) {
+    if (tcol.onClick && (tcol.button && fromButton) || (!tcol.button && !fromButton)) {
       tcol.onClick(property, element);
     }
   }
