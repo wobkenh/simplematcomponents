@@ -47,6 +47,8 @@ export class SimplemattableComponent implements DoCheck, OnChanges {
     }
   }
 
+  isLeftAlign = (tcol: TableColumn<any, any>): boolean => tcol.align === Align.LEFT;
+
 
   /* -----------------------
       DIRTY CHECKING

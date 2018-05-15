@@ -198,8 +198,6 @@ History (Version in parenthesis is required Angular Version):
 + Edit-Mode: Clicking an edit button in the last column will turn all the fields of the row into form fields for editing. 
 Next to the edit button in each row, there will be an (optional) delete button. 
 Additionally, there will be an (optional) add-button in the table header.
-+ Right now, the sort icons in the table header are invisible if disabled, but are still registered in the dom with their full size. 
-If center Align is supplied, this makes the header move a little to the left, which is unintended. I will try to fix this in a future version.
 
 ## Authors
 

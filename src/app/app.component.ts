@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TableColumn} from '../../projects/simplemattable/src/lib/model/table-column.model';
 import {AlertType} from '../../projects/simplealert/src/simplealert/alert-type.model';
+import {Align} from '../../projects/simplemattable/src/lib/model/align.model';
 
 @Component({
   selector: 'smc-root',
@@ -37,7 +38,7 @@ export class AppComponent implements OnInit {
         .withIcon((desc, ele) => ele.id < 3 ? 'add' : 'delete'),
       new TableColumn<ComplexTestData, 'description'>('Description2', 'description').isVisible(false),
       new TableColumn<ComplexTestData, 'data'>('Key', 'data', (data) => data.key)
-        .withOnClick((data) => console.log(data)),
+        .withOnClick((data) => console.log(data)).withAlign(Align.CENTER),
       new TableColumn<ComplexTestData, 'data'>('Value', 'data', (data) => data.value),
       new TableColumn<ComplexTestData, 'data'>('Datum', 'data', (data) => this.getDateStr(data.date))
         .withSortTransform(data => data.date.toISOString())
