@@ -10,7 +10,7 @@
       <mat-header-cell *matHeaderCellDef [fxFlex]="getFxFlex(tcol)" mat-sort-header [disabled]="!tcol.sortable"
                        [ngClass]="{'no-sort': !(tcol.sortable && sorting), 'with-sort': tcol.sortable && sorting}"
                        [ngStyle]="{'justify-content': getAlign(tcol.align), 'display': 'flex'}">
-        <div [ngStyle.gt-xs]="{'padding-left': isCenterAlign(tcol) ? '18px' : '5px'}">
+        <div [ngStyle.gt-xs]="{'padding': sorting ? isCenterAlign(tcol) ? '0 0 0 18px' : '0 0 0 5px' : '0 5px'}">
           {{tcol.name}}
         </div>
       </mat-header-cell>
