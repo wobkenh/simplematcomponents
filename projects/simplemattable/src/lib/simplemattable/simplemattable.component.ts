@@ -41,6 +41,12 @@ export class SimplemattableComponent implements DoCheck, OnChanges {
 
   getAlign = (align: Align): string => align === Align.LEFT ? 'flex-start' : align === Align.CENTER ? 'center' : 'flex-end';
 
+  onClick(tcol: TableColumn<any, any>, property: any, element: any) {
+    if (tcol.onClick) {
+      tcol.onClick(property, element);
+    }
+  }
+
 
   /* -----------------------
       DIRTY CHECKING
@@ -74,8 +80,6 @@ export class SimplemattableComponent implements DoCheck, OnChanges {
 
   recreateDataSource() {
     if (this.columns && this.data) {
-      console.log(this.columns);
-      console.log(this.data);
       this.dataSource = new MatTableDataSource(this.data);
       this.dataSource.filterPredicate = (data: any, filter: string) =>
         this.columns.reduce((str, col) => str + this.getStringRepresentation(col, data).toLowerCase().trim(), '')

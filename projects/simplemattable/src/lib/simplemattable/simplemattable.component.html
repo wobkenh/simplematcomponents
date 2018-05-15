@@ -12,6 +12,8 @@
         {{tcol.name}}
       </mat-header-cell>
       <mat-cell *matCellDef="let element" [fxFlex]="getFxFlex(tcol)"
+                (click)="onClick(tcol, element[tcol.property], element)"
+                [ngClass]="{'on-click': tcol.onClick}"
                 [ngStyle]="{'justify-content': getAlign(tcol.align), 'display': 'flex'}">
         <mat-icon *ngIf="tcol.icon">{{tcol.icon(element[tcol.property], element)}}</mat-icon>
         {{getStringRepresentation(tcol, element)}}
