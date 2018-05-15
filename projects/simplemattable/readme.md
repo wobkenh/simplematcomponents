@@ -158,7 +158,7 @@ Sorting will use the following representation of a column:
   3. If the property is of type object and transform is available, it will apply the data to the supplied function
   4. If earlier checks failed, it will use the property value
 - visible (8th parameter or .isVisible()): Can be used to change the visibility of a column
-- icon (9th parameter or .withIcon()): Icon is a function that returns name of the icon that will be prepended to the text in the table cell. 
+- icon (9th parameter or .withIcon()): Icon is a function that returns the name of the icon that will be prepended to the text in the table cell. 
 Google Material Icons will be used, so you can [check out the icons here](https://material.io/tools/icons/). 
 If you want to only display the icon with no text, specify the transform property with a function that always returns an empty string. 
 Since icon is a function, you can decide for every row which icon you want to use, for example if you have a boolean property called 
