@@ -46,6 +46,11 @@ export class AppComponent implements OnInit {
     this.columns[1].visible = !this.columns[1].visible;
   }
 
+  addEntry() {
+    this.testData.push(new ComplexTestData(42, 'New Entry', new TestData('key', 'value', new Date())));
+    this.testData = this.testData.slice(0);
+  }
+
   getDateStr = (date: Date) => date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear();
 
   openInfo() {
