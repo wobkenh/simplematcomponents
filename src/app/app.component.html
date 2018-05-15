@@ -7,6 +7,7 @@
   <h2>SimpleMatTable</h2>
   <div style="padding: 10px">
     <button (click)="toggleVisibility()" mat-raised-button>Toggle 2nd column</button>
+    <button (click)="addEntry()" mat-raised-button>Add entry</button>
     <smc-simplemattable [data]="testData" [columns]="columns" [paginator]="true" [filter]="true"
                         [sorting]="true"></smc-simplemattable>
   </div>

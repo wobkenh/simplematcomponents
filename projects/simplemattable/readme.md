@@ -113,6 +113,31 @@ columns = [
 
 You can also use .withTransform instead of the 3rd constructor parameter (see next section "TableColumn Options").
 
+### Dynamic updates
+
+Due to the data binding, the data as well as the table column definitions can be updated dynamically.
+
+To update the table columns, simply change/add/remove the table columns in your table column array. 
+For example, if you want to toggle the visiblility of the first column:
+
+```
+this.columns[0].visible = !this.columns[0].visible;
+```
+
+Simplemattable will recognize any changes to the properties of any of the supplied columns or to the column array.
+
+Changing the data is a bit different. Performing the checks to recognize any changes on the fly would take up too much performance on large tables with complex models. 
+Therefore, the default Angular check is used, which compares the array references via ===. This means that you have to change the array reference. 
+If you have a table with the complex model described earlier, you could add a new entry using this:
+
+```
+this.testData.push(new ComplexTestData(42, 'New Entry', new TestData('key', 'value')));
+this.testData = this.testData.slice(0);
+```
+
+Note that .slice(0) is one of the fastest, if not the fastest way to clone arrays. 
+For more information, see [this StackOverflow question](https://stackoverflow.com/questions/3978492/javascript-fastest-way-to-duplicate-an-array-slice-vs-for-loop).
+
 ### TableColumn Options
 
 TableColumn has several optional parameters, allowing you to further customize the table:
