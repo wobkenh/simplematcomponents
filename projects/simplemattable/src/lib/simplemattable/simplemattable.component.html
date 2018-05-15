@@ -9,14 +9,18 @@
     <ng-container matColumnDef="{{i.toString() + '_' + tcol.property}}">
       <mat-header-cell *matHeaderCellDef [fxFlex]="getFxFlex(tcol)" mat-sort-header [disabled]="!tcol.sortable"
                        [ngStyle]="{'justify-content': getAlign(tcol.align), 'display': 'flex'}">
-        {{tcol.name}}
+        <div [ngStyle.gt-xs]="{'padding-left':'5px'}">
+          {{tcol.name}}
+        </div>
       </mat-header-cell>
       <mat-cell *matCellDef="let element" [fxFlex]="getFxFlex(tcol)"
                 (click)="onClick(tcol, element[tcol.property], element)"
                 [ngClass]="{'on-click': tcol.onClick}"
                 [ngStyle]="{'justify-content': getAlign(tcol.align), 'display': 'flex'}">
-        <mat-icon *ngIf="tcol.icon">{{tcol.icon(element[tcol.property], element)}}</mat-icon>
-        {{getStringRepresentation(tcol, element)}}
+        <div fxLayout="row" fxLayoutGap="5px" [ngStyle.gt-xs]="{'padding':'0 5px'}" style="align-items: center">
+          <mat-icon *ngIf="tcol.icon">{{tcol.icon(element[tcol.property], element)}}</mat-icon>
+          <span style="padding: 2px 0">{{getStringRepresentation(tcol, element)}}</span>
+        </div>
       </mat-cell>
     </ng-container>
   </ng-container>

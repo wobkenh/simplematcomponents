@@ -49,7 +49,8 @@ export class AppComponent implements OnInit {
   }
 
   addEntry() {
-    this.testData.push(new ComplexTestData(42, 'New Entry', new TestData('key', 'value', new Date())));
+    this.testData.push(new ComplexTestData(42, 'New Entry with a lot of text that is very long like really really long ' +
+      'i mean really really long i really mean it', new TestData('key', 'value', new Date())));
     this.testData = this.testData.slice(0);
   }
 
