@@ -167,7 +167,7 @@ Since icon is a function, you can decide for every row which icon you want to us
 If any cell (excluding the header cell) is clicked, the function onClick will be executed.
 On hover, the background of clickable cells will turn into a half-transparent gray and the cursor will become a pointer.
 This can be used for example if you have an overview table and want to display details on click. 
-To make it easier for the user to undestand that a cell is clickable, it is recommended that you add an appropriate icon (e.g. 'link', 'launch' or 'pageview').
+To make it easier for the user to undestand that a cell is clickable, it is recommended that you add an appropriate icon.
  
 
 
