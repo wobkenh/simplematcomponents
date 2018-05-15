@@ -1,6 +1,6 @@
-import {Component, DoCheck, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, DoCheck, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import {TableColumn} from '../model/table-column.model';
-import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
+import {MatPaginator, MatSort, MatTable, MatTableDataSource, SortDirection} from '@angular/material';
 import {Align} from '../model/align.model';
 
 @Component({
@@ -21,6 +21,7 @@ export class SimplemattableComponent implements DoCheck, OnChanges {
 
   @ViewChild(MatPaginator) matPaginator: MatPaginator;
   @ViewChild(MatSort) matSort: MatSort;
+  @ViewChild(MatTable) matTable: MatTable<any>;
 
   constructor() {
   }
@@ -41,25 +42,49 @@ export class SimplemattableComponent implements DoCheck, OnChanges {
 
   getAlign = (align: Align): string => align === Align.LEFT ? 'flex-start' : align === Align.CENTER ? 'center' : 'flex-end';
 
+  onClick(tcol: TableColumn<any, any>, property: any, element: any) {
+    if (tcol.onClick) {
+      tcol.onClick(property, element);
+    }
+  }
+
+  isCenterAlign = (tcol: TableColumn<any, any>): boolean => tcol.align === Align.CENTER;
+
 
   /* -----------------------
-      DIRTY CHECKING
+      DIRTY CHECKING AND DATASOURCE REBUILDING
      ----------------------- */
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.data) {
       this.recreateDataSource();
+      if (this.matSort.active) {
+        if (changes.columns) { // If columns are changed, resorting might cause bugs
+          this.turnOffSorting();
+        } else {
+          this.dataSource.data = this.dataSource.sortData(this.dataSource.data, this.matSort);
+        }
+      }
     }
   }
 
   ngDoCheck(): void {
     if (this.checkForDifferences()) {
+      this.turnOffSorting();
       this.recreateDataSource();
       this.oldColumns = this.columns.map(col => Object.assign({}, col)); // copy cols to lose references
     }
   }
 
-  checkForDifferences(): boolean {
+  private turnOffSorting() {
+    if (this.matSort.active) {
+      this.matSort.direction = '';
+      this.matSort.active = '';
+    }
+  }
+
+  // only checks for column differences
+  private checkForDifferences(): boolean {
     if (this.oldColumns.length !== this.columns.length) {
       return true;
     }
@@ -72,10 +97,8 @@ export class SimplemattableComponent implements DoCheck, OnChanges {
     });
   }
 
-  recreateDataSource() {
+  private recreateDataSource() {
     if (this.columns && this.data) {
-      console.log(this.columns);
-      console.log(this.data);
       this.dataSource = new MatTableDataSource(this.data);
       this.dataSource.filterPredicate = (data: any, filter: string) =>
         this.columns.reduce((str, col) => str + this.getStringRepresentation(col, data).toLowerCase().trim(), '')
@@ -85,6 +108,8 @@ export class SimplemattableComponent implements DoCheck, OnChanges {
         this.dataSource.paginator = this.matPaginator;
       }
       if (this.sorting) {
+        // Closure sind column change will also provoke a dataSource rebuild
+        const visibleCols = this.columns.filter(col => col.visible);
         this.dataSource.sort = this.matSort;
         this.dataSource.sortingDataAccessor = (data, sortHeaderId) => {
           /*  Order:
@@ -93,7 +118,10 @@ export class SimplemattableComponent implements DoCheck, OnChanges {
               3. Transform (if object)
               4. Property value
            */
-          const tcol = this.columns[sortHeaderId.split('_')[0]];
+          const tcol = visibleCols[sortHeaderId.split('_')[0]];
+          if (!tcol) { // May happen if sorting collides with new DataSource creation
+            return ''; // If that happens, multiple runs will be performed, so we will be ok with just returning empty string in this run
+          }
           if (tcol.sortTransform) {
             return tcol.sortTransform(data[tcol.property], data);
           }

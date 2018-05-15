@@ -10,7 +10,8 @@ export class TableColumn<T, P extends keyof T> {
               public sortable: boolean = true,
               public sortTransform?: (data: T[P], dataParent: T) => number | string,
               public visible: boolean = true,
-              public icon?: (data: T[P], dataParent: T) => string) {
+              public icon?: (data: T[P], dataParent: T) => string,
+              public onClick?: (data: T[P], dataParent: T) => void) {
   }
 
   public withTransform(transformFn: (data: T[P], dataParent: T) => string) {
@@ -45,6 +46,11 @@ export class TableColumn<T, P extends keyof T> {
 
   public withIcon(iconNameFn: (data: T[P], dataParent: T) => string) {
     this.icon = iconNameFn;
+    return this;
+  }
+
+  public withOnClick(onClickFn: (data: T[P], dataParent: T) => void) {
+    this.onClick = onClickFn;
     return this;
   }
 }

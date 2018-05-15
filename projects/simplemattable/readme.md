@@ -137,6 +137,9 @@ this.testData = this.testData.slice(0);
 Note that .slice(0) is one of the fastest, if not the fastest way to clone arrays. 
 For more information, see [this StackOverflow question](https://stackoverflow.com/questions/3978492/javascript-fastest-way-to-duplicate-an-array-slice-vs-for-loop).
 
+If sorting is enabled, updating the columns will clear the current sorting selection.
+Changes in Data will not clear the sorting selection.
+
 ### TableColumn Options
 
 TableColumn has several optional parameters, allowing you to further customize the table. 
@@ -163,6 +166,12 @@ Google Material Icons will be used, so you can [check out the icons here](https:
 If you want to only display the icon with no text, specify the transform property with a function that always returns an empty string. 
 Since icon is a function, you can decide for every row which icon you want to use, for example if you have a boolean property called 
 `checkedIn` on your model, you could do  `(checkedIn) => checkedIn ? 'check' : 'close'` for its column, which will either display a tick or a cross icon.
+- onClick (10th parameter or .withOnClick()): OnClick enables the click listener for the table column.
+If any cell (excluding the header cell) is clicked, the function onClick will be executed.
+On hover, the background of clickable cells will turn into a half-transparent gray and the cursor will become a pointer.
+This can be used for example if you have an overview table and want to display details on click. 
+To make it easier for the user to undestand that a cell is clickable, it is recommended that you add an appropriate icon.
+ 
 
 
 ## Contributing
@@ -185,14 +194,13 @@ History (Version in parenthesis is required Angular Version):
 + 0.6 (6.0): Sort Transform Function for custom sorting
 + 0.7 (6.0): Hidden columns and better listening mechanism for data change detection
 + 0.8 (6.0): Icon support, added the row data object as second parameter to all TableColumn function properties
++ 0.9 (6.0): Click listener support
 
 ## Upcoming Features
-+ Support for Links and Buttons in table cells
++ Support for Buttons in table cells
 + Edit-Mode: Clicking an edit button in the last column will turn all the fields of the row into form fields for editing. 
 Next to the edit button in each row, there will be an (optional) delete button. 
 Additionally, there will be an (optional) add-button in the table header.
-+ Right now, the sort icons in the table header are invisible if disabled, but are still registered in the dom with their full size. 
-If center Align is supplied, this makes the header move a little to the left, which is unintended. I will try to fix this in a future version.
 
 ## Authors
 
