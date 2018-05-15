@@ -61,20 +61,19 @@ In your component (e.g. AppComponent) you can then define your columns like this
 
 ```
 columns = [
-  new TableColumn<TestData, 'key'>('Key', 'key')
-    .withWidth(100).withTransform(data => data.substring(3)).withAlign(Align.CENTER),
+  new TableColumn<TestData, 'key'>('Key', 'key'),
   new TableColumn<TestData, 'value'>('Value', 'value')
 ];
 ```
 
 The TableColumn class requires two generics. The first is the class of your model, the second is the property this column describes. 
-The property-generic uses "keyof T", so your IDE will show an error at compile time if you enter a name that does not belong to a property of T.
+The property-generic uses "keyof T", so your IDE will show an error at compile time if you enter a name that does not belong to a property of your model.
 
 The Constructor of TableColumn requires you to specify the string that will be displayed in the table header and (again) the name of the property on the model. 
 You already specified the property name in the generics, but since information about generics is not available at runtime, you need to specify it here again. 
 Fortunately, the property in the constructor is also typesafe.
 
-If you are looking for more customization options for you columns, have a look at section "TableColumn Options" later in this chapter.
+If you are looking for more customization options (e.g. align, width, different display values) for your columns, have a look at section [TableColumn options](#tablecolumn-options).
 
 ### Table
 
@@ -111,7 +110,7 @@ columns = [
 ];
 ```
 
-You can also use .withTransform instead of the 3rd constructor parameter (see next section "TableColumn Options").
+You can also use .withTransform instead of the 3rd constructor parameter (see next section [TableColumn options](#tablecolumn-options)).
 
 ### Dynamic updates
 
@@ -140,19 +139,30 @@ For more information, see [this StackOverflow question](https://stackoverflow.co
 
 ### TableColumn Options
 
-TableColumn has several optional parameters, allowing you to further customize the table:
-- transform (3rd constructor parameter or .withTransform()): Transform is a function that takes the property of your model (e.g. the key of TestData) and returns a string representation. 
+TableColumn has several optional parameters, allowing you to further customize the table. 
+Some of these properties are functions. 
+These functions always take the property of your model (e.g. the key property of TestData) as first parameter and the model object itself (e.g the instance of TestData) as second parameter. 
+Often times, the first parameter will suffice, so you can leave out the second one. 
+Use the second one only if you need to reference another property of your model object in the function.
+
+- transform (3rd constructor parameter or .withTransform()): Transform is a function that returns a string representation that will be displayed for this cell. 
 This is helpful if e.g. your Model contains a Date but you do not want the standard JS string representation of date to show, but rather your preferred format. 
 - width (4th constructor parameter or .withWidth()): Here you can specify the width of the column in pixel. If you do not specify the width, the flex value 1 1 0px will be used.
 - align (5th constructor parameter or .withAlign()): Sets the text align within the column. Header and Cell content will both be aligned. Default is left align.
 - sortable (6th constructor parameter or .isSortable()): If sorting is enabled, you can disable sorting for certain columns by setting this property to false (default: true)
-- sortTransform (7th parameter or .withSortTransform()): If you need custom sorting, you can specify sortTransform, which is a function that takes the property of your model 
-and returns a number or string representation that is used to sort the table. Sorting will use the following representation of a column:
+- sortTransform (7th parameter or .withSortTransform()): If you need custom sorting, you can specify sortTransform, 
+which is a function that returns a number or string representation that is used to sort the table. 
+Sorting will use the following representation of a column:
   1. If sortTransform is available, it will apply the data to the supplied function
   2. If the property is of type Date, it will use .toISOString(). This will not work with nested objects. The date has to be a property of your model class.
   3. If the property is of type object and transform is available, it will apply the data to the supplied function
   4. If earlier checks failed, it will use the property value
 - visible (8th parameter or .isVisible()): Can be used to change the visibility of a column
+- icon (9th parameter or .withIcon()): Icon is a function that returns name of the icon that will be prepended to the text in the table cell. 
+Google Material Icons will be used, so you can [check out the icons here](https://material.io/tools/icons/). 
+If you want to only display the icon with no text, specify the transform property with a function that always returns an empty string. 
+Since icon is a function, you can decide for every row which icon you want to use, for example if you have a boolean property called 
+`checkedIn` on your model, you could do  `(checkedIn) => checkedIn ? 'check' : 'close'` for its column, which will either display a tick or a cross icon.
 
 
 ## Contributing
@@ -165,7 +175,7 @@ For my email address, see the [authors section](#authors).
 
 There will be new versions when new features are added or a new Angular version releases.
 
-History (Version in paranthesis is required Angular Version):
+History (Version in parenthesis is required Angular Version):
 + 0.0 (6.0): First Version
 + 0.1 (6.0): Alignment
 + 0.2 (6.0): Filtering using display values instead of object property values
@@ -174,9 +184,10 @@ History (Version in paranthesis is required Angular Version):
 + 0.5 (6.0): Allow for multiple columns to use the same property
 + 0.6 (6.0): Sort Transform Function for custom sorting
 + 0.7 (6.0): Hidden columns and better listening mechanism for data change detection
++ 0.8 (6.0): Icon support, added the row data object as second parameter to all TableColumn function properties
 
 ## Upcoming Features
-+ Support for Links, Buttons and Icons in table cells
++ Support for Links and Buttons in table cells
 + Edit-Mode: Clicking an edit button in the last column will turn all the fields of the row into form fields for editing. 
 Next to the edit button in each row, there will be an (optional) delete button. 
 Additionally, there will be an (optional) add-button in the table header.

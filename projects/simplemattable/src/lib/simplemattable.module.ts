@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { SimplemattableComponent } from './simplemattable/simplemattable.component';
-import {MatCommonModule, MatInputModule, MatPaginatorModule, MatSortModule, MatTableModule} from '@angular/material';
+import {MatCommonModule, MatIconModule, MatInputModule, MatPaginatorModule, MatSortModule, MatTableModule} from '@angular/material';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {CommonModule} from '@angular/common';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -13,6 +13,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     MatInputModule,
     MatTableModule,
     MatSortModule,
+    MatIconModule,
     BrowserAnimationsModule,
     MatPaginatorModule
   ],

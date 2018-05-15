@@ -13,6 +13,7 @@
       </mat-header-cell>
       <mat-cell *matCellDef="let element" [fxFlex]="getFxFlex(tcol)"
                 [ngStyle]="{'justify-content': getAlign(tcol.align), 'display': 'flex'}">
+        <mat-icon *ngIf="tcol.icon">{{tcol.icon(element[tcol.property], element)}}</mat-icon>
         {{getStringRepresentation(tcol, element)}}
       </mat-cell>
     </ng-container>
