@@ -235,7 +235,7 @@ History (Version in parenthesis is required Angular Version):
 + 0.9 (6.0): Click listener support
 + 0.10 (6.0): Buttons
 + 0.11 (6.0): Width rework + TableColumn constructor refactor
-+ 0.12 (6.0): Support for max/min lines, option to hide text on small screens
++ 0.12 (6.0): Support for max/min lines, option to hide text/columns on small screens
 
 ## Upcoming Features
 + Edit-Mode: Clicking an edit button in the last column will turn all the fields of the row into form fields for editing. 
