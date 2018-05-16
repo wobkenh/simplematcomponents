@@ -26,7 +26,9 @@
         <button *ngIf="tcol.button === buttonType.BASIC" mat-button [color]="tcol.buttonColor"
                 (click)="onClick(tcol, element[tcol.property], element, true)">
           <mat-icon *ngIf="tcol.icon">{{tcol.icon(element[tcol.property], element)}}</mat-icon>
-          <span style="padding: 2px 0">{{getStringRepresentation(tcol, element)}}</span>
+          <span style="padding: 2px 0" *ngIf="!(tcol.icon && !getStringRepresentation(tcol, element))">
+            {{getStringRepresentation(tcol, element)}}
+          </span>
         </button>
         <button *ngIf="tcol.button === buttonType.RAISED" mat-raised-button [color]="tcol.buttonColor"
                 (click)="onClick(tcol, element[tcol.property], element, true)">

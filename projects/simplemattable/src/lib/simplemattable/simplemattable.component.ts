@@ -45,7 +45,7 @@ export class SimplemattableComponent implements DoCheck, OnChanges {
   getAlign = (align: Align): string => align === Align.LEFT ? 'flex-start' : align === Align.CENTER ? 'center' : 'flex-end';
 
   onClick(tcol: TableColumn<any, any>, property: any, element: any, fromButton: boolean) {
-    if (tcol.onClick && (tcol.button && fromButton) || (!tcol.button && !fromButton)) {
+    if (tcol.onClick && ((tcol.button && fromButton) || (!tcol.button && !fromButton))) {
       tcol.onClick(property, element);
     }
   }
