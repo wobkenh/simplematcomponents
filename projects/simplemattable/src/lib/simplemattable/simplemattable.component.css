@@ -7,6 +7,10 @@
   cursor: pointer;
 }
 
+.on-click textarea {
+  cursor: pointer;
+}
+
 .on-click:active {
   background-color: rgba(150, 150, 150, 0.4);
 }
