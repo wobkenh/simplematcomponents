@@ -38,7 +38,8 @@ export class AppComponent implements OnInit {
     this.columns = [
       new TableColumn<ComplexTestData, 'id'>('', 'id')
         .withIcon((id) => id < 3 ? 'add' : 'delete')
-        .withButton(ButtonType.ICON)
+        .withButton(ButtonType.RAISED)
+        .isTextHiddenXs(true)
         .withButtonColor('primary'),
       new TableColumn<ComplexTestData, 'description'>('Description', 'description'),
       new TableColumn<ComplexTestData, 'description'>('Description2', 'description')
@@ -49,8 +50,10 @@ export class AppComponent implements OnInit {
         .withOnClick((data) => console.log(data)),
       new TableColumn<ComplexTestData, 'data'>('Key', 'data')
         .withTransform((data) => data.key)
+        .isHiddenSm(true)
         .withOnClick((data) => console.log(data)),
       new TableColumn<ComplexTestData, 'data'>('Value', 'data')
+        .isHiddenXs(true)
         .withTransform((data) => data.value),
       new TableColumn<ComplexTestData, 'data'>('Datum', 'data')
         .withTransform((data) => this.getDateStr(data.date))

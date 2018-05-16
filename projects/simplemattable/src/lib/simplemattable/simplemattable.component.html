@@ -8,6 +8,7 @@
   <ng-container *ngFor="let tcol of getDisplayedCols(this.columns); let i = index">
     <ng-container matColumnDef="{{i.toString() + '_' + tcol.property}}">
       <mat-header-cell *matHeaderCellDef [fxFlex]="getFxFlex(tcol)" mat-sort-header [disabled]="!tcol.sortable"
+                       [fxHide.xs]="tcol.hiddenXs || tcol.hiddenSm" [fxHide.sm]="tcol.hiddenSm"
                        [ngClass]="{'no-sort': !(tcol.sortable && sorting), 'with-sort': tcol.sortable && sorting}"
                        [ngStyle]="{'justify-content': getAlign(tcol.align), 'display': 'flex'}">
         <div [ngStyle.gt-xs]="{'padding': sorting ? isCenterAlign(tcol) ? '0 0 0 18px' : '0 0 0 5px' : '0 5px'}">
@@ -15,6 +16,7 @@
         </div>
       </mat-header-cell>
       <mat-cell *matCellDef="let element" [fxFlex]="getFxFlex(tcol)"
+                [fxHide.xs]="tcol.hiddenXs || tcol.hiddenSm" [fxHide.sm]="tcol.hiddenSm"
                 (click)="onClick(tcol, element[tcol.property], element, false)"
                 [ngClass]="{'on-click': (tcol.onClick && !tcol.button)}"
                 [ngStyle]="{'justify-content': getAlign(tcol.align), 'display': 'flex'}">
@@ -28,8 +30,11 @@
                     matInput matTextareaAutosize [matAutosizeMaxRows]="tcol.maxLines"
                     [matAutosizeMinRows]="tcol.minLines" [readonly]="true"
                     [ngStyle]="{'text-align': getTextAlign(tcol.align)}"
+                    [fxHide.xs]="tcol.textHiddenXs || tcol.textHiddenSm"
+                    [fxHide.sm]="tcol.textHiddenSm"
                     style="width: 100%; padding: 2px 0;">{{getStringRepresentation(tcol, element)}}</textarea>
-          <span style="padding: 2px 0"
+          <span style="padding: 2px 0" [fxHide.xs]="tcol.textHiddenXs || tcol.textHiddenSm"
+                [fxHide.sm]="tcol.textHiddenSm"
                 *ngIf="!tcol.maxLines && !(tcol.icon && !getStringRepresentation(tcol, element))">
             {{getStringRepresentation(tcol, element)}}
           </span>
@@ -38,14 +43,18 @@
         <button *ngIf="tcol.button === buttonType.BASIC" mat-button [color]="tcol.buttonColor"
                 (click)="onClick(tcol, element[tcol.property], element, true)">
           <mat-icon *ngIf="tcol.icon">{{tcol.icon(element[tcol.property], element)}}</mat-icon>
-          <span style="padding: 2px 0" *ngIf="!(tcol.icon && !getStringRepresentation(tcol, element))">
+          <span style="padding: 2px 0" *ngIf="!(tcol.icon && !getStringRepresentation(tcol, element))"
+                [fxHide.xs]="tcol.textHiddenXs || tcol.textHiddenSm" [fxHide.sm]="tcol.textHiddenSm">
             {{getStringRepresentation(tcol, element)}}
           </span>
         </button>
         <button *ngIf="tcol.button === buttonType.RAISED" mat-raised-button [color]="tcol.buttonColor"
                 (click)="onClick(tcol, element[tcol.property], element, true)">
           <mat-icon *ngIf="tcol.icon">{{tcol.icon(element[tcol.property], element)}}</mat-icon>
-          <span style="padding: 2px 0">{{getStringRepresentation(tcol, element)}}</span>
+          <span style="padding: 2px 0" *ngIf="!(tcol.icon && !getStringRepresentation(tcol, element))"
+                [fxHide.xs]="tcol.textHiddenXs || tcol.textHiddenSm" [fxHide.sm]="tcol.textHiddenSm">
+            {{getStringRepresentation(tcol, element)}}
+          </span>
         </button>
         <button *ngIf="tcol.button === buttonType.ICON" mat-icon-button [color]="tcol.buttonColor"
                 (click)="onClick(tcol, element[tcol.property], element, true)">
