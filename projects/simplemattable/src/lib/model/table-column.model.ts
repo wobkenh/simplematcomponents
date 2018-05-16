@@ -1,21 +1,23 @@
 import {Align} from './align.model';
 import {ButtonType} from './button-type.model';
 import {ThemePalette} from '@angular/material';
+import {Width} from './width.model';
 
 export class TableColumn<T, P extends keyof T> {
 
+  public transform: (data: T[P], dataParent: T) => string;
+  public width: string = '1 1 0px';
+  public align: Align = Align.LEFT;
+  public sortable: boolean = true;
+  public sortTransform: (data: T[P], dataParent: T) => number | string;
+  public visible: boolean = true;
+  public icon: (data: T[P], dataParent: T) => string;
+  public onClick: (data: T[P], dataParent: T) => void;
+  public button: ButtonType;
+  public buttonColor: ThemePalette;
+
   constructor(public name: string,
-              public property: P,
-              public transform?: (data: T[P], dataParent: T) => string,
-              public width?: number,
-              public align: Align = Align.LEFT,
-              public sortable: boolean = true,
-              public sortTransform?: (data: T[P], dataParent: T) => number | string,
-              public visible: boolean = true,
-              public icon?: (data: T[P], dataParent: T) => string,
-              public onClick?: (data: T[P], dataParent: T) => void,
-              public button?: ButtonType,
-              public buttonColor?: ThemePalette) {
+              public property: P) {
   }
 
   public withTransform(transformFn: (data: T[P], dataParent: T) => string) {
@@ -28,8 +30,14 @@ export class TableColumn<T, P extends keyof T> {
     return this;
   }
 
-  public withWidth(width: number) {
-    this.width = width;
+  public withWidth(width: (number | Width | string)) {
+    if (typeof width === 'string') {
+      this.width = width;
+    } else if (typeof width === 'number') {
+      this.width = '0 0 ' + width.toString() + 'px';
+    } else {
+      this.width = width ? width.getFlex() : '1 1 0px';
+    }
     return this;
   }
 

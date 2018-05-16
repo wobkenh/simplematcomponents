@@ -3,6 +3,7 @@ import {TableColumn} from '../../projects/simplemattable/src/lib/model/table-col
 import {AlertType} from '../../projects/simplealert/src/simplealert/alert-type.model';
 import {Align} from '../../projects/simplemattable/src/lib/model/align.model';
 import {ButtonType} from '../../projects/simplemattable/src/lib/model/button-type.model';
+import {Width} from '../../projects/simplemattable/src/lib/model/width.model';
 
 @Component({
   selector: 'smc-root',
@@ -36,14 +37,23 @@ export class AppComponent implements OnInit {
     ];
     this.columns = [
       new TableColumn<ComplexTestData, 'description'>('Description', 'description')
-        .withIcon((desc, ele) => ele.id < 3 ? 'add' : 'delete').withButton(ButtonType.ICON).withButtonColor('primary'),
-      new TableColumn<ComplexTestData, 'description'>('Description2', 'description').isVisible(false)
-        .withButton(ButtonType.RAISED).withButtonColor('warn').withOnClick((data) => console.log(data)),
-      new TableColumn<ComplexTestData, 'data'>('Key', 'data', (data) => data.key)
+        .withIcon((desc, ele) => ele.id < 3 ? 'add' : 'delete')
+        .withButton(ButtonType.ICON)
+        .withButtonColor('primary'),
+      new TableColumn<ComplexTestData, 'description'>('Description2', 'description')
+        .isVisible(false)
+        .withButton(ButtonType.RAISED)
+        .withButtonColor('warn')
         .withOnClick((data) => console.log(data)),
-      new TableColumn<ComplexTestData, 'data'>('Value', 'data', (data) => data.value),
-      new TableColumn<ComplexTestData, 'data'>('Datum', 'data', (data) => this.getDateStr(data.date))
-        .withSortTransform(data => data.date.toISOString()).withAlign(Align.RIGHT)
+      new TableColumn<ComplexTestData, 'data'>('Key', 'data')
+        .withTransform((data) => data.key)
+        .withOnClick((data) => console.log(data)),
+      new TableColumn<ComplexTestData, 'data'>('Value', 'data')
+        .withTransform((data) => data.value),
+      new TableColumn<ComplexTestData, 'data'>('Datum', 'data')
+        .withTransform((data) => this.getDateStr(data.date))
+        .withSortTransform(data => data.date.toISOString())
+        .withAlign(Align.RIGHT)
     ];
   }
 

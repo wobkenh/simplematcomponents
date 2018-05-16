@@ -105,12 +105,12 @@ and you want to display the description property as well as key and value of the
 ```
 columns = [
   new TableColumn<ComplexTestData, 'description'>('Description', 'description'),
-  new TableColumn<ComplexTestData, 'data'>('Key', 'data', (data) => data.key),
-  new TableColumn<ComplexTestData, 'data'>('Value', 'data', (data) => data.value)
+  new TableColumn<ComplexTestData, 'data'>('Key', 'data').withTransform((data) => data.key),
+  new TableColumn<ComplexTestData, 'data'>('Value', 'data').withTransform((data) => data.value)
 ];
 ```
 
-You can also use .withTransform instead of the 3rd constructor parameter (see next section [TableColumn options](#tablecolumn-options)).
+For more information about .withTransform and other optional column settings, see section [TableColumn options](#tablecolumn-options).
 
 ### Dynamic updates
 
@@ -148,34 +148,49 @@ These functions always take the property of your model (e.g. the key property of
 Often times, the first parameter will suffice, so you can leave out the second one. 
 Use the second one only if you need to reference another property of your model object in the function.
 
-- transform (3rd constructor parameter or .withTransform()): Transform is a function that returns a string representation that will be displayed for this cell. 
-This is helpful if e.g. your Model contains a Date but you do not want the standard JS string representation of date to show, but rather your preferred format. 
-- width (4th constructor parameter or .withWidth()): Here you can specify the width of the column in pixel. If you do not specify the width, the flex value 1 1 0px will be used.
-- align (5th constructor parameter or .withAlign()): Sets the text align within the column. Header and Cell content will both be aligned. Default is left align.
-- sortable (6th constructor parameter or .isSortable()): If sorting is enabled, you can disable sorting for certain columns by setting this property to false (default: true)
-- sortTransform (7th parameter or .withSortTransform()): If you need custom sorting, you can specify sortTransform, 
+All options are accessible either using a 'with'-function that allows you to chain the method calls or directly via the properties of the table column. 
+
+- transform (`.withTransform(transformFn: (data: T[P], dataParent: T) => string)`): Transform is a function that returns a string representation that will be displayed for this cell. 
+This is helpful if e.g. your model contains a Date but you do not want the standard JS string representation of date to show, but rather your preferred format. 
+- width (`.withWidth(width: (number | Width | string))`): The width of the column. The property itself is the string that will later be used by fxflex. If you do not specify the width, the flex value `1 1 0px` will be used. This function accepts either a number, a string or a Width object:
+  + number: flex string will be `0 0 <number>px`
+  + string: the string will be interpreted by fxFlex as is, so pass a valid fxFlex string, [for more information see here](https://github.com/angular/flex-layout/wiki/fxFlex-API).
+  + Width: Width allows you to enter the width in a typesafe way. 
+  You can use `Width.px(pixel: number)` to get a pixel based width or `Width.pct(percent: number)` for percent based width. 
+  Additionally, you can use the methods `.shrink()` and `.grow()` to turn on shrink or grow respectively, which are both turned off by default. 
+
+- align (`.withAlign(align: Align)`): Sets the text align within the column. Header and Cell content will both be aligned. Default is left align.
+
+- sortable (`.isSortable(sortable: boolean)`): If sorting is enabled, you can disable sorting for certain columns by setting this property to false (default: true)
+
+- sortTransform (`.withSortTransform(transformFn: (data: T[P], dataParent: T) => number | string)`): If you need custom sorting, you can specify sortTransform, 
 which is a function that returns a number or string representation that is used to sort the table. 
 Sorting will use the following representation of a column:
   1. If sortTransform is available, it will apply the data to the supplied function
   2. If the property is of type Date, it will use .toISOString(). This will not work with nested objects. The date has to be a property of your model class.
   3. If the property is of type object and transform is available, it will apply the data to the supplied function
   4. If earlier checks failed, it will use the property value
-- visible (8th parameter or .isVisible()): Can be used to change the visibility of a column
-- icon (9th parameter or .withIcon()): Icon is a function that returns the name of the icon that will be prepended to the text in the table cell. 
+  
+- visible (`.isVisible(visible: boolean)`): Can be used to change the visibility of a column
+
+- icon (`.withIcon(iconNameFn: (data: T[P], dataParent: T) => string)`): Icon is a function that returns the name of the icon that will be prepended to the text in the table cell. 
 Google Material Icons will be used, so you can [check out the icons here](https://material.io/tools/icons/). 
 If you want to only display the icon with no text, specify the transform property with a function that always returns an empty string. 
 Since icon is a function, you can decide for every row which icon you want to use, for example if you have a boolean property called 
 `checkedIn` on your model, you could do  `(checkedIn) => checkedIn ? 'check' : 'close'` for its column, which will either display a tick or a cross icon.
-- onClick (10th parameter or .withOnClick()): OnClick enables the click listener for the table column.
+
+- onClick (`.withOnClick(onClickFn: (data: T[P], dataParent: T) => void)`): OnClick enables the click listener for the table column.
 If any cell (excluding the header cell) is clicked, the function onClick will be executed.
 On hover, the background of clickable cells will turn into a half-transparent gray and the cursor will become a pointer.
 This can be used for example if you have an overview table and want to display details on click. 
 To make it easier for the user to understand that a cell is clickable, it is recommended that you add an appropriate icon.
-If the button property is set, onClick does not change the hover background color. Also, not the whole cell, but only the button will be clickable.
-- button (11th parameter or .withButton()): Can be either `ButtonType.BASIC` (mat-button), `ButtonType.RAISED` (mat-raised-button) or `ButtonType.ICON` (mat-icon-button).
+If the button property is set, onClick does not change the hover background color, but rather acts as a click listener for the button.
+
+- button (`.withButton(buttonType: ButtonType)`): Can be either `ButtonType.BASIC` (mat-button), `ButtonType.RAISED` (mat-raised-button) or `ButtonType.ICON` (mat-icon-button).
 The button will use the text and icon (or only the icon in case of `ButtonType.ICON`) that would normally be displayed directly in the cell. 
 If specified, the onClick function will be executed on a click event.
-- buttonColor (12th parameter or .withButtonColor()): If the button type is set, buttonColor allows you to change the button color. Can be either `'primary'`, `'warn'` or `'accent'`.
+
+- buttonColor (`.withButtonColor(buttonColor: ThemePalette)`): If the button type is set, buttonColor allows you to change the button color. Can be either `'primary'`, `'warn'` or `'accent'`.
 If you leave the button color empty, the standard white/transparent background (depending on button type) will be used. 
 
 
@@ -189,6 +204,8 @@ For my email address, see the [authors section](#authors).
 
 There will be new versions when new features are added or a new Angular version releases.
 
+Version 1.0 will release when the editing-mode-feature is fully functional.
+
 History (Version in parenthesis is required Angular Version):
 + 0.0 (6.0): First Version
 + 0.1 (6.0): Alignment
@@ -201,6 +218,7 @@ History (Version in parenthesis is required Angular Version):
 + 0.8 (6.0): Icon support, added the row data object as second parameter to all TableColumn function properties
 + 0.9 (6.0): Click listener support
 + 0.10 (6.0): Buttons
++ 0.11 (6.0): Width rework + TableColumn constructor refactor
 
 ## Upcoming Features
 + Edit-Mode: Clicking an edit button in the last column will turn all the fields of the row into form fields for editing. 

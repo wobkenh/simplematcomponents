@@ -36,7 +36,7 @@ export class SimplemattableComponent implements DoCheck, OnChanges {
     this.dataSource.filter = filterValue;
   }
 
-  getFxFlex = (tcol: TableColumn<any, any>): string => tcol.width ? '0 0 ' + tcol.width + 'px' : '1 1 0px';
+  getFxFlex = (tcol: TableColumn<any, any>): string => tcol.width ? tcol.width : '1 1 0px';
 
   getStringRepresentation(tcol: TableColumn<any, any>, element: any): string {
     return tcol.transform ? tcol.transform(element[tcol.property], element) : element[tcol.property].toString();
