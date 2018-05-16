@@ -202,7 +202,14 @@ If maxLines is specified, a textarea with the stated amount of maximum lines wil
 - minLines (`withMinLines(minLineLength: number)`): Minimum lines of text in a cell. Defaults to 1. 
 Works only if maxLines is also specified as maxLines activates the textarea feature.
 
+- responsive options: There are some predefined options for responsive design available. Of course, you can also dynamically change the columns by simply changing your column array.
+The inbuilt options are:
+    + columnHiddenXs (`isColumnHiddenXs(columnHiddenXs: boolean)`): Default is false. Use true if you want to hide the column on very small screens.
+    + columnHiddenSm (`isColumnHiddenSm(columnHiddenSm: boolean)`): Default is false. Use true if you want to hide the column on small screens.
+    + textHiddenXs (`isTextHiddenXs(textHiddenXs: boolean)`): Default is false. Use true if you want to hide the text of the cell/button on very small screens.
+    + textHiddenSm (`isTextHiddenSm(textHiddenSm: boolean)`): Default is false. Use true if you want to hide the text of the cell/button on small screens.
 
+    
 ## Contributing
 
 The Sourcecode is in a private repository for now. 
@@ -228,7 +235,7 @@ History (Version in parenthesis is required Angular Version):
 + 0.9 (6.0): Click listener support
 + 0.10 (6.0): Buttons
 + 0.11 (6.0): Width rework + TableColumn constructor refactor
-+ 0.12 (6.0): Support for max/min lines, 
++ 0.12 (6.0): Support for max/min lines, option to hide text/columns on small screens
 
 ## Upcoming Features
 + Edit-Mode: Clicking an edit button in the last column will turn all the fields of the row into form fields for editing. 
