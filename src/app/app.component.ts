@@ -36,14 +36,16 @@ export class AppComponent implements OnInit {
       new ComplexTestData(3, 'test3', new TestData('Key3', 'Value3', d3)),
     ];
     this.columns = [
-      new TableColumn<ComplexTestData, 'description'>('Description', 'description')
-        .withIcon((desc, ele) => ele.id < 3 ? 'add' : 'delete')
+      new TableColumn<ComplexTestData, 'id'>('', 'id')
+        .withIcon((id) => id < 3 ? 'add' : 'delete')
         .withButton(ButtonType.ICON)
         .withButtonColor('primary'),
+      new TableColumn<ComplexTestData, 'description'>('Description', 'description'),
       new TableColumn<ComplexTestData, 'description'>('Description2', 'description')
         .isVisible(false)
-        .withButton(ButtonType.RAISED)
-        .withButtonColor('warn')
+        .withAlign(Align.LEFT)
+        .withMinLines(3)
+        .withMaxLines(3)
         .withOnClick((data) => console.log(data)),
       new TableColumn<ComplexTestData, 'data'>('Key', 'data')
         .withTransform((data) => data.key)
@@ -58,7 +60,7 @@ export class AppComponent implements OnInit {
   }
 
   toggleVisibility() {
-    this.columns[1].visible = !this.columns[1].visible;
+    this.columns[2].visible = !this.columns[2].visible;
   }
 
   addEntry() {

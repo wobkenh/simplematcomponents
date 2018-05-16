@@ -15,6 +15,8 @@ export class TableColumn<T, P extends keyof T> {
   public onClick: (data: T[P], dataParent: T) => void;
   public button: ButtonType;
   public buttonColor: ThemePalette;
+  public maxLines: number;
+  public minLines: number = 1;
 
   constructor(public name: string,
               public property: P) {
@@ -73,6 +75,16 @@ export class TableColumn<T, P extends keyof T> {
 
   public withButtonColor(buttonColor: ThemePalette) {
     this.buttonColor = buttonColor;
+    return this;
+  }
+
+  public withMaxLines(maxLineLength: number) {
+    this.maxLines = maxLineLength;
+    return this;
+  }
+
+  public withMinLines(minLineLength: number) {
+    this.minLines = minLineLength;
     return this;
   }
 }

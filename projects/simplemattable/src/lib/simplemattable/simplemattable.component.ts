@@ -19,6 +19,8 @@ export class SimplemattableComponent implements DoCheck, OnChanges {
   @Input() filter: boolean = false;
   @Input() paginator: boolean = false;
   @Input() sorting: boolean = false;
+  @Input() paginatorPageSize: number = 10;
+  @Input() paginatorPageSizeOptions: number[] = [5, 10, 20];
 
   @ViewChild(MatPaginator) matPaginator: MatPaginator;
   @ViewChild(MatSort) matSort: MatSort;
@@ -28,21 +30,11 @@ export class SimplemattableComponent implements DoCheck, OnChanges {
   constructor() {
   }
 
-  getDisplayedCols = (cols: TableColumn<any, any>[]): TableColumn<any, any>[] => cols.filter(col => col.visible);
-
   applyFilter(filterValue: string) {
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
     this.dataSource.filter = filterValue;
   }
-
-  getFxFlex = (tcol: TableColumn<any, any>): string => tcol.width ? tcol.width : '1 1 0px';
-
-  getStringRepresentation(tcol: TableColumn<any, any>, element: any): string {
-    return tcol.transform ? tcol.transform(element[tcol.property], element) : element[tcol.property].toString();
-  }
-
-  getAlign = (align: Align): string => align === Align.LEFT ? 'flex-start' : align === Align.CENTER ? 'center' : 'flex-end';
 
   onClick(tcol: TableColumn<any, any>, property: any, element: any, fromButton: boolean) {
     if (tcol.onClick && ((tcol.button && fromButton) || (!tcol.button && !fromButton))) {
@@ -50,13 +42,22 @@ export class SimplemattableComponent implements DoCheck, OnChanges {
     }
   }
 
-  isCenterAlign = (tcol: TableColumn<any, any>): boolean => tcol.align === Align.CENTER;
+  getStringRepresentation(tcol: TableColumn<any, any>, element: any): string {
+    return tcol.transform ? tcol.transform(element[tcol.property], element) : element[tcol.property].toString();
+  }
 
+  // Small helper functions
+  getDisplayedCols = (cols: TableColumn<any, any>[]): TableColumn<any, any>[] => cols.filter(col => col.visible);
+  getFxFlex = (tcol: TableColumn<any, any>): string => tcol.width ? tcol.width : '1 1 0px';
+  getAlign = (align: Align): string => align === Align.LEFT ? 'flex-start' : align === Align.CENTER ? 'center' : 'flex-end';
+  getTextAlign = (align: Align): string => align === Align.LEFT ? 'start' : align === Align.CENTER ? 'center' : 'end';
+  isCenterAlign = (tcol: TableColumn<any, any>): boolean => tcol.align === Align.CENTER;
 
   /* -----------------------
       DIRTY CHECKING AND DATASOURCE REBUILDING
      ----------------------- */
 
+  // checks for data changes
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.data) {
       this.recreateDataSource();
@@ -70,6 +71,7 @@ export class SimplemattableComponent implements DoCheck, OnChanges {
     }
   }
 
+  // checks for column changes
   ngDoCheck(): void {
     if (this.checkForDifferences()) {
       this.turnOffSorting();
@@ -110,11 +112,11 @@ export class SimplemattableComponent implements DoCheck, OnChanges {
         this.dataSource.paginator = this.matPaginator;
       }
       if (this.sorting) {
-        // Closure sind column change will also provoke a dataSource rebuild
+        // Closure for visible cols possible since column change will always also provoke a dataSource rebuild
         const visibleCols = this.columns.filter(col => col.visible);
         this.dataSource.sort = this.matSort;
         this.dataSource.sortingDataAccessor = (data, sortHeaderId) => {
-          /*  Order:
+          /*  Sort string determination order:
               1. SortTransform
               2. Date --> ISO-String
               3. Transform (if object)
@@ -141,6 +143,4 @@ export class SimplemattableComponent implements DoCheck, OnChanges {
       this.displayedColumns = this.getDisplayedCols(this.columns).map((col, i) => i.toString() + '_' + col.property);
     }
   }
-
-
 }

@@ -18,11 +18,23 @@
                 (click)="onClick(tcol, element[tcol.property], element, false)"
                 [ngClass]="{'on-click': (tcol.onClick && !tcol.button)}"
                 [ngStyle]="{'justify-content': getAlign(tcol.align), 'display': 'flex'}">
+        <!-- Standardcell: Icon + (Textarea or Span) -->
         <div *ngIf="!tcol.button" fxLayout="row" fxLayoutGap="5px" [ngStyle.gt-xs]="{'padding':'0 5px'}"
              style="align-items: center">
           <mat-icon *ngIf="tcol.icon">{{tcol.icon(element[tcol.property], element)}}</mat-icon>
-          <span style="padding: 2px 0">{{getStringRepresentation(tcol, element)}}</span>
+          <!-- Warning: Do not introduce linebreaks into the textareas content as they will be displayed -->
+          <!-- Be careful when formatting -->
+          <textarea *ngIf="tcol.maxLines && !(tcol.icon && !getStringRepresentation(tcol, element))"
+                    matInput matTextareaAutosize [matAutosizeMaxRows]="tcol.maxLines"
+                    [matAutosizeMinRows]="tcol.minLines" [readonly]="true"
+                    [ngStyle]="{'text-align': getTextAlign(tcol.align)}"
+                    style="width: 100%; padding: 2px 0;">{{getStringRepresentation(tcol, element)}}</textarea>
+          <span style="padding: 2px 0"
+                *ngIf="!tcol.maxLines && !(tcol.icon && !getStringRepresentation(tcol, element))">
+            {{getStringRepresentation(tcol, element)}}
+          </span>
         </div>
+        <!-- Buttoncells -->
         <button *ngIf="tcol.button === buttonType.BASIC" mat-button [color]="tcol.buttonColor"
                 (click)="onClick(tcol, element[tcol.property], element, true)">
           <mat-icon *ngIf="tcol.icon">{{tcol.icon(element[tcol.property], element)}}</mat-icon>
@@ -47,7 +59,7 @@
 </mat-table>
 
 <mat-paginator *ngIf="paginator" #pg style="margin-top: 10px"
-               [pageSize]="10"
-               [pageSizeOptions]="[5, 10, 20]"
+               [pageSize]="paginatorPageSize"
+               [pageSizeOptions]="paginatorPageSizeOptions"
                [showFirstLastButtons]="true">
 </mat-paginator>

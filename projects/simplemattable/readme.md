@@ -88,6 +88,8 @@ where testData is an array of your model and columns are the TableColumns you de
 Additionally, you can turn on a paginator, a filter and sorting. These are the standard MatTable Features that are also well described at
 https://material.angular.io/components/table/overview.
 The paginator, filter and sorting are optional. If omitted, the flags will default to false.
+The paginater can further be customized by the optional input parameter `[paginatorPageSize]`, which takes a number and sets the initial entries per page count. 
+Also, via `[paginatorPageSizeOptions]`, which takes a number array, you can change the pagesize options that will be selectable in the paginator.  
 
 ### Complex Model
 
@@ -191,7 +193,14 @@ The button will use the text and icon (or only the icon in case of `ButtonType.I
 If specified, the onClick function will be executed on a click event.
 
 - buttonColor (`.withButtonColor(buttonColor: ThemePalette)`): If the button type is set, buttonColor allows you to change the button color. Can be either `'primary'`, `'warn'` or `'accent'`.
-If you leave the button color empty, the standard white/transparent background (depending on button type) will be used. 
+If you leave the button color empty, the standard white/transparent background (depending on button type) will be used.
+
+- maxLines (`withMaxLines(maxLineLength: number)`): Maximum lines of text in a cell. 
+If not specified, a span will be used that displays text without linebreaks and spans over as many lines as needed.
+If maxLines is specified, a textarea with the stated amount of maximum lines will be used. The textarea is able to display linebreaks appropriately. It is always readonly.
+
+- minLines (`withMinLines(minLineLength: number)`): Minimum lines of text in a cell. Defaults to 1. 
+Works only if maxLines is also specified as maxLines activates the textarea feature.
 
 
 ## Contributing
@@ -219,6 +228,7 @@ History (Version in parenthesis is required Angular Version):
 + 0.9 (6.0): Click listener support
 + 0.10 (6.0): Buttons
 + 0.11 (6.0): Width rework + TableColumn constructor refactor
++ 0.12 (6.0): Support for max/min lines, 
 
 ## Upcoming Features
 + Edit-Mode: Clicking an edit button in the last column will turn all the fields of the row into form fields for editing. 
