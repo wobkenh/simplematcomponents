@@ -46,7 +46,37 @@ export class SimplemattableComponent implements DoCheck, OnChanges {
     return tcol.transform ? tcol.transform(element[tcol.property], element) : element[tcol.property].toString();
   }
 
-  // Small helper functions
+  getCellCssClass(tcol: TableColumn<any, any>, element: any) {
+    const defaultClass = {'on-click': (tcol.onClick && !tcol.button)};
+    if (!tcol.ngClass) {
+      return defaultClass;
+    }
+    const ngClass = tcol.ngClass(element[tcol.property], element);
+    if (!ngClass) {
+      return defaultClass;
+    }
+    if (typeof ngClass === 'string') {
+      return Object.assign(defaultClass, this.arrayToObject(ngClass.split(' ')));
+    } else if (Array.isArray(ngClass)) {
+      return Object.assign(defaultClass, this.arrayToObject(ngClass));
+    } else {
+      return Object.assign(defaultClass, ngClass);
+    }
+  }
+
+  getCellCssStyle(tcol: TableColumn<any, any>, element: any) {
+    const defaultStyle = {'justify-content': this.getAlign(tcol.align), 'display': 'flex'};
+    return tcol.ngStyle ? Object.assign(defaultStyle, tcol.ngStyle(element[tcol.property], element)) : defaultStyle;
+  }
+
+
+  arrayToObject(arr: string[]): Object {
+    return arr.reduce((acc, entry) => {
+      acc[entry] = true;
+      return acc;
+    }, {});
+  }
+
   getDisplayedCols = (cols: TableColumn<any, any>[]): TableColumn<any, any>[] => cols.filter(col => col.visible);
   getFxFlex = (tcol: TableColumn<any, any>): string => tcol.width ? tcol.width : '1 1 0px';
   getAlign = (align: Align): string => align === Align.LEFT ? 'flex-start' : align === Align.CENTER ? 'center' : 'flex-end';

@@ -39,6 +39,7 @@ export class AppComponent implements OnInit {
       new TableColumn<ComplexTestData, 'id'>('', 'id')
         .withIcon((id) => id < 3 ? 'add' : 'delete')
         .withButton(ButtonType.RAISED)
+        .withNgStyle((id) => ({'background-color': id < 3 ? '#992222' : 'transparent'}))
         .isTextHiddenXs(true)
         .withButtonColor('primary'),
       new TableColumn<ComplexTestData, 'description'>('Description', 'description'),
@@ -50,10 +51,12 @@ export class AppComponent implements OnInit {
         .withOnClick((data) => console.log(data)),
       new TableColumn<ComplexTestData, 'data'>('Key', 'data')
         .withTransform((data) => data.key)
+        .withNgClass(() => 'red-bg-cell')
         .isHiddenSm(true)
         .withOnClick((data) => console.log(data)),
       new TableColumn<ComplexTestData, 'data'>('Value', 'data')
         .isHiddenXs(true)
+        .withNgStyle(() => ({'background': '#992222', 'color': '#fff'}))
         .withTransform((data) => data.value),
       new TableColumn<ComplexTestData, 'data'>('Datum', 'data')
         .withTransform((data) => this.getDateStr(data.date))

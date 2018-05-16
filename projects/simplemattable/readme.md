@@ -1,14 +1,18 @@
 # simplemattable
 
-SimpleMatTable is an abstraction of MatTable from the @angular/material dependency. It allows you to quickly and in a typesafe way define simple tables. 
-This is perfect if you just want to display some data in a table and do not need full control over the table HTML.
+SimpleMatTable is an abstraction of MatTable from the @angular/material dependency. 
+It allows you to quickly and in a typesafe way define tables. 
+This is perfect if you want to display data in a table and do not need full control over the table HTML.
 
 Instead of copy/pasting the HTML for each column, you can describe the columns in a declarative way via Typescript code.
+A lot of different options like align, buttons, icons and even custom css allow you to further customize your table.
 
 ### Prerequisites
 
-This Dependency is for use with Angular Material Design only. As of the first version, 
-it requires Angular Material 6.0 or above (see Version section for more information).
+Simplemattable is for use with Angular Material Design only. As of the first version, 
+it requires Angular Material 6.0 or above.
+
+For a detailed list of neccessary dependencies, see [section Dependencies](#dependencies) .
 
 ## Installing
 
@@ -85,8 +89,8 @@ After you defined your table columns, you can bind them to the html element usin
 
 where testData is an array of your model and columns are the TableColumns you defined earlier.
 
-Additionally, you can turn on a paginator, a filter and sorting. These are the standard MatTable Features that are also well described at
-https://material.angular.io/components/table/overview.
+Additionally, you can turn on a paginator, a filter and sorting. These are the standard MatTable Features that are also well described in
+[the Angular docs](https://material.angular.io/components/table/overview).
 The paginator, filter and sorting are optional. If omitted, the flags will default to false.
 The paginater can further be customized by the optional input parameter `[paginatorPageSize]`, which takes a number and sets the initial entries per page count. 
 Also, via `[paginatorPageSizeOptions]`, which takes a number array, you can change the pagesize options that will be selectable in the paginator.  
@@ -150,7 +154,7 @@ These functions always take the property of your model (e.g. the key property of
 Often times, the first parameter will suffice, so you can leave out the second one. 
 Use the second one only if you need to reference another property of your model object in the function.
 
-All options are accessible either using a 'with'-function that allows you to chain the method calls or directly via the properties of the table column. 
+All options are accessible using a 'is'- or 'with'-function that allows you to chain the method calls. Also, you can set the properties of the table column directly. 
 
 - transform (`.withTransform(transformFn: (data: T[P], dataParent: T) => string)`): Transform is a function that returns a string representation that will be displayed for this cell. 
 This is helpful if e.g. your model contains a Date but you do not want the standard JS string representation of date to show, but rather your preferred format. 
@@ -195,19 +199,34 @@ If specified, the onClick function will be executed on a click event.
 - buttonColor (`.withButtonColor(buttonColor: ThemePalette)`): If the button type is set, buttonColor allows you to change the button color. Can be either `'primary'`, `'warn'` or `'accent'`.
 If you leave the button color empty, the standard white/transparent background (depending on button type) will be used.
 
-- maxLines (`withMaxLines(maxLineLength: number)`): Maximum lines of text in a cell. 
-If not specified, a span will be used that displays text without linebreaks and spans over as many lines as needed.
+- maxLines (`.withMaxLines(maxLineLength: number)`): Maximum lines of text in a cell. 
+If not specified, a span will be used that ignores linebreaks in the text and spans over as many lines as needed.
 If maxLines is specified, a textarea with the stated amount of maximum lines will be used. The textarea is able to display linebreaks appropriately. It is always readonly.
 
-- minLines (`withMinLines(minLineLength: number)`): Minimum lines of text in a cell. Defaults to 1. 
+- minLines (`.withMinLines(minLineLength: number)`): Minimum lines of text in a cell. Defaults to 1. 
 Works only if maxLines is also specified as maxLines activates the textarea feature.
 
 - responsive options: There are some predefined options for responsive design available. Of course, you can also dynamically change the columns by simply changing your column array.
 The inbuilt options are:
-    + columnHiddenXs (`isColumnHiddenXs(columnHiddenXs: boolean)`): Default is false. Use true if you want to hide the column on very small screens.
-    + columnHiddenSm (`isColumnHiddenSm(columnHiddenSm: boolean)`): Default is false. Use true if you want to hide the column on small screens.
-    + textHiddenXs (`isTextHiddenXs(textHiddenXs: boolean)`): Default is false. Use true if you want to hide the text of the cell/button on very small screens.
-    + textHiddenSm (`isTextHiddenSm(textHiddenSm: boolean)`): Default is false. Use true if you want to hide the text of the cell/button on small screens.
+    + columnHiddenXs (`.isColumnHiddenXs(columnHiddenXs: boolean)`): Default is false. Use true if you want to hide the column on very small screens.
+    + columnHiddenSm (`.isColumnHiddenSm(columnHiddenSm: boolean)`): Default is false. Use true if you want to hide the column on very small and small screens.
+    + textHiddenXs (`.isTextHiddenXs(textHiddenXs: boolean)`): Default is false. Use true if you want to hide the text of the cell/button on very small screens.
+    + textHiddenSm (`.isTextHiddenSm(textHiddenSm: boolean)`): Default is false. Use true if you want to hide the text of the cell/button on very small and small screens.
+    
+- ngClass: (`.withNgClass(ngClassFn: (data: T[P], dataParent: T) => string | string[] | Object)`):
+If you want to apply a custom css class to the table cells of a column, you can add the ngClass function.
+It must return something that is parsable by the ngClass directive. For more information on ngClass [see the Angular docs](https://angular.io/api/common/NgClass).
+CSS classes of your component's css can not be applied due to Angulars component style isolation. Instead, define the css in your global stylesheet.
+On certain attributes, you will have to use the !important flag for the change to take effect. 
+This happens on attributes that are already set in Simplemattable's own css. 
+Currently, these attributes are `background-color` and `cursor`, which are set on clickable cells without buttons. 
+If you need to style the children in the table cell, you can select them using the standard css features.
+
+- ngStyle: (`.withNgStyle(ngStyleFn: (data: T[P], dataParent: T) => Object)`): 
+If you want to apply custom inline css to the table cells of a column, you can add the ngStyle function.
+It must return something that is parsable by the ngStyle directive. For more information on ngStyle [see the Angular docs](https://angular.io/api/common/NgStyle).
+You do not need to use !important on ngStyle. For example, you could change the background color depending on id like this even when the column is clickable: 
+`.withNgStyle((id) => ({'background-color': id < 3 ? '#992222' : 'transparent'}))` 
 
     
 ## Contributing
@@ -235,12 +254,25 @@ History (Version in parenthesis is required Angular Version):
 + 0.9 (6.0): Click listener support
 + 0.10 (6.0): Buttons
 + 0.11 (6.0): Width rework + TableColumn constructor refactor
-+ 0.12 (6.0): Support for max/min lines, option to hide text/columns on small screens
++ 0.12 (6.0): max/min lines, option to hide text/columns on small screens, ngClass and ngStyle
 
 ## Upcoming Features
 + Edit-Mode: Clicking an edit button in the last column will turn all the fields of the row into form fields for editing. 
 Next to the edit button in each row, there will be an (optional) delete button. 
 Additionally, there will be an (optional) add-button in the table header.
+
+## Dependencies
+
+Simplemattable only uses peer dependencies, so you need the following packages (with compatible versions) in your package.json:
+
+```
+"@angular/common": "^6.0.0",
+"@angular/core": "^6.0.0",
+"@angular/material": "^6.0.0",
+"@angular/cdk": "^6.0.0",
+"@angular/platform-browser": "^6.0.0",
+"@angular/flex-layout": "^6.0.0-beta.15"
+```  
 
 ## Authors
 

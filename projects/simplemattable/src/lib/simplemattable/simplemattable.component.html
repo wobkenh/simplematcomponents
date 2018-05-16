@@ -18,8 +18,8 @@
       <mat-cell *matCellDef="let element" [fxFlex]="getFxFlex(tcol)"
                 [fxHide.xs]="tcol.hiddenXs || tcol.hiddenSm" [fxHide.sm]="tcol.hiddenSm"
                 (click)="onClick(tcol, element[tcol.property], element, false)"
-                [ngClass]="{'on-click': (tcol.onClick && !tcol.button)}"
-                [ngStyle]="{'justify-content': getAlign(tcol.align), 'display': 'flex'}">
+                [ngClass]="getCellCssClass(tcol, element)"
+                [ngStyle]="getCellCssStyle(tcol, element)">
         <!-- Standardcell: Icon + (Textarea or Span) -->
         <div *ngIf="!tcol.button" fxLayout="row" fxLayoutGap="5px" [ngStyle.gt-xs]="{'padding':'0 5px'}"
              style="align-items: center">
