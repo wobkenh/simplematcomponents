@@ -15,13 +15,30 @@
         </div>
       </mat-header-cell>
       <mat-cell *matCellDef="let element" [fxFlex]="getFxFlex(tcol)"
-                (click)="onClick(tcol, element[tcol.property], element)"
-                [ngClass]="{'on-click': tcol.onClick}"
+                (click)="onClick(tcol, element[tcol.property], element, false)"
+                [ngClass]="{'on-click': (tcol.onClick && !tcol.button)}"
                 [ngStyle]="{'justify-content': getAlign(tcol.align), 'display': 'flex'}">
-        <div fxLayout="row" fxLayoutGap="5px" [ngStyle.gt-xs]="{'padding':'0 5px'}" style="align-items: center">
+        <div *ngIf="!tcol.button" fxLayout="row" fxLayoutGap="5px" [ngStyle.gt-xs]="{'padding':'0 5px'}"
+             style="align-items: center">
           <mat-icon *ngIf="tcol.icon">{{tcol.icon(element[tcol.property], element)}}</mat-icon>
           <span style="padding: 2px 0">{{getStringRepresentation(tcol, element)}}</span>
         </div>
+        <button *ngIf="tcol.button === buttonType.BASIC" mat-button [color]="tcol.buttonColor"
+                (click)="onClick(tcol, element[tcol.property], element, true)">
+          <mat-icon *ngIf="tcol.icon">{{tcol.icon(element[tcol.property], element)}}</mat-icon>
+          <span style="padding: 2px 0" *ngIf="!(tcol.icon && !getStringRepresentation(tcol, element))">
+            {{getStringRepresentation(tcol, element)}}
+          </span>
+        </button>
+        <button *ngIf="tcol.button === buttonType.RAISED" mat-raised-button [color]="tcol.buttonColor"
+                (click)="onClick(tcol, element[tcol.property], element, true)">
+          <mat-icon *ngIf="tcol.icon">{{tcol.icon(element[tcol.property], element)}}</mat-icon>
+          <span style="padding: 2px 0">{{getStringRepresentation(tcol, element)}}</span>
+        </button>
+        <button *ngIf="tcol.button === buttonType.ICON" mat-icon-button [color]="tcol.buttonColor"
+                (click)="onClick(tcol, element[tcol.property], element, true)">
+          <mat-icon *ngIf="tcol.icon">{{tcol.icon(element[tcol.property], element)}}</mat-icon>
+        </button>
       </mat-cell>
     </ng-container>
   </ng-container>

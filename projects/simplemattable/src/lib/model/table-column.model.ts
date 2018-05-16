@@ -1,4 +1,6 @@
 import {Align} from './align.model';
+import {ButtonType} from './button-type.model';
+import {ThemePalette} from '@angular/material';
 
 export class TableColumn<T, P extends keyof T> {
 
@@ -11,7 +13,9 @@ export class TableColumn<T, P extends keyof T> {
               public sortTransform?: (data: T[P], dataParent: T) => number | string,
               public visible: boolean = true,
               public icon?: (data: T[P], dataParent: T) => string,
-              public onClick?: (data: T[P], dataParent: T) => void) {
+              public onClick?: (data: T[P], dataParent: T) => void,
+              public button?: ButtonType,
+              public buttonColor?: ThemePalette) {
   }
 
   public withTransform(transformFn: (data: T[P], dataParent: T) => string) {
@@ -51,6 +55,16 @@ export class TableColumn<T, P extends keyof T> {
 
   public withOnClick(onClickFn: (data: T[P], dataParent: T) => void) {
     this.onClick = onClickFn;
+    return this;
+  }
+
+  public withButton(buttonType: ButtonType) {
+    this.button = buttonType;
+    return this;
+  }
+
+  public withButtonColor(buttonColor: ThemePalette) {
+    this.buttonColor = buttonColor;
     return this;
   }
 }
