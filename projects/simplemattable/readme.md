@@ -257,9 +257,7 @@ History (Version in parenthesis is required Angular Version):
 + 0.12 (6.0): max/min lines, option to hide text/columns on small screens, ngClass and ngStyle
 
 ## Upcoming Features
-+ Edit-Mode: Clicking an edit button in the last column will turn all the fields of the row into form fields for editing. 
-Next to the edit button in each row, there will be an (optional) delete button. 
-Additionally, there will be an (optional) add-button in the table header.
++ Option to add little loading bars / circles in edit-mode.
 
 ## Dependencies
 

@@ -35,34 +35,42 @@ export class AppComponent implements OnInit {
       new ComplexTestData(2, '', new TestData('Key2', 'Value2', d2)),
       new ComplexTestData(3, 'test3', new TestData('Key3', 'Value3', d3)),
     ];
-    this.columns = [
-      new TableColumn<ComplexTestData, 'id'>('', 'id')
-        .withIcon((id) => id < 3 ? 'add' : 'delete')
-        .withButton(ButtonType.RAISED)
-        .withButtonColor('primary')
-        .withNgStyle((id) => ({'background-color': id < 3 ? '#992222' : 'transparent'}))
-        .isTextHiddenXs(true),
-      new TableColumn<ComplexTestData, 'description'>('Description', 'description'),
-      new TableColumn<ComplexTestData, 'description'>('Description2', 'description')
-        .isVisible(false)
-        .withAlign(Align.LEFT)
-        .withMinLines(3)
-        .withMaxLines(3)
-        .withOnClick((data) => console.log(data)),
-      new TableColumn<ComplexTestData, 'data'>('Key', 'data')
-        .withTransform((data) => data.key)
-        .withNgClass(() => 'red-bg-cell')
-        .isHiddenSm(true)
-        .withOnClick((data) => console.log(data)),
-      new TableColumn<ComplexTestData, 'data'>('Value', 'data')
-        .isHiddenXs(true)
-        .withNgStyle(() => ({'background': '#992222', 'color': '#fff'}))
-        .withTransform((data) => data.value),
-      new TableColumn<ComplexTestData, 'data'>('Datum', 'data')
-        .withTransform((data) => this.getDateStr(data.date))
-        .withSortTransform(data => data.date.toISOString())
-        .withAlign(Align.RIGHT)
-    ];
+
+    const idCol = new TableColumn<ComplexTestData, 'id'>('', 'id')
+      .withIcon((id) => id < 3 ? 'add' : 'delete')
+      .withButton(ButtonType.RAISED)
+      .withButtonColor('primary')
+      .withNgStyle((id) => ({'background-color': id < 3 ? '#992222' : 'transparent'}))
+      .isTextHiddenXs(true);
+    const desCol = new TableColumn<ComplexTestData, 'description'>('Description', 'description');
+    const des2Col = new TableColumn<ComplexTestData, 'description'>('Description2', 'description')
+      .isVisible(false)
+      .withAlign(Align.LEFT)
+      .withMinLines(3)
+      .withMaxLines(3)
+      .withOnClick((data) => console.log(data));
+    const keyCol = new TableColumn<ComplexTestData, 'data'>('Key', 'data')
+      .withTransform((data) => data.key)
+      .isHiddenSm(true)
+      .withOnClick((data) => console.log(data));
+    keyCol.withFormField(keyCol.getTextFormField()
+      .withInit((data) => data.key)
+      .withApply((id, data) => {
+        data.key = id;
+        return data;
+      }));
+    const valCol = new TableColumn<ComplexTestData, 'data'>('Value', 'data')
+      .isHiddenXs(true)
+      .withNgClass(() => 'red-bg-cell')
+      .withTransform((data) => data.value);
+    const dateCol = new TableColumn<ComplexTestData, 'data'>('Datum', 'data')
+      .withTransform((data) => this.getDateStr(data.date))
+      .withSortTransform(data => data.date.toISOString())
+      .withAlign(Align.RIGHT);
+    dateCol.withFormField(keyCol.getDateFormField()
+      .withInit(data => data.date)
+      .withApply((val, data) => data.date = val));
+    this.columns = [idCol, desCol, des2Col, keyCol, valCol, dateCol];
   }
 
   toggleVisibility() {
@@ -83,6 +91,31 @@ export class AppComponent implements OnInit {
 
   openError() {
     this.isErrorOpen = true;
+  }
+
+  onDelete(element: ComplexTestData) {
+    const index = this.testData.indexOf(element);
+    if (index >= 0) {
+      this.testData.splice(index, 1);
+      this.testData = this.testData.slice(0);
+    }
+  }
+
+  onEdit(element: ComplexTestData) {
+    this.testData[this.testData.findIndex(ele => ele.id === element.id)] = element;
+    console.log(element);
+    this.testData = this.testData.slice(0);
+  }
+
+  onAdd(element: ComplexTestData) {
+    this.testData.push(element);
+    console.log('add');
+    console.log(element);
+    this.testData = this.testData.slice(0);
+  }
+
+  createFn(): ComplexTestData {
+    return new ComplexTestData(0, '', new TestData('', '', new Date()));
   }
 
 }
