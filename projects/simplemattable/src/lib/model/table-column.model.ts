@@ -21,6 +21,8 @@ export class TableColumn<T, P extends keyof T> {
   public textHiddenSm: boolean = false;
   public hiddenXs: boolean = false;
   public hiddenSm: boolean = false;
+  public ngClass: (data: T[P], dataParent: T) => string | string[] | Object;
+  public ngStyle: (data: T[P], dataParent: T) => Object;
 
   constructor(public name: string,
               public property: P) {
@@ -217,6 +219,30 @@ export class TableColumn<T, P extends keyof T> {
    */
   public withMinLines(minLines: number) {
     this.minLines = minLines;
+    return this;
+  }
+
+  /**
+   * Function that returns something that ngClass can parse. Can be used to apply css classes to the table cells of a column.
+   * See https://angular.io/api/common/NgClass for more information.
+   *
+   * @param ngClassFn
+   * @returns this
+   */
+  public withNgClass(ngClassFn: (data: T[P], dataParent: T) => string | string[] | Object) {
+    this.ngClass = ngClassFn;
+    return this;
+  }
+
+  /**
+   * Function that returns something that ngStyle can parse. Can be used to apply inline css to the table cells of a column.
+   * See https://angular.io/api/common/NgStyle for more information.
+   *
+   * @param ngStyleFn
+   * @returns this
+   */
+  public withNgStyle(ngStyleFn: (data: T[P], dataParent: T) => Object) {
+    this.ngStyle = ngStyleFn;
     return this;
   }
 }
