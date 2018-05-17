@@ -32,16 +32,16 @@ export class AppComponent implements OnInit {
     d3.setFullYear(2017);
     this.testData = [
       new ComplexTestData(1, 'test1', new TestData('Key1', 'Value1', d1)),
-      new ComplexTestData(2, 'test2', new TestData('Key2', 'Value2', d2)),
+      new ComplexTestData(2, '', new TestData('Key2', 'Value2', d2)),
       new ComplexTestData(3, 'test3', new TestData('Key3', 'Value3', d3)),
     ];
     this.columns = [
       new TableColumn<ComplexTestData, 'id'>('', 'id')
         .withIcon((id) => id < 3 ? 'add' : 'delete')
         .withButton(ButtonType.RAISED)
+        .withButtonColor('primary')
         .withNgStyle((id) => ({'background-color': id < 3 ? '#992222' : 'transparent'}))
-        .isTextHiddenXs(true)
-        .withButtonColor('primary'),
+        .isTextHiddenXs(true),
       new TableColumn<ComplexTestData, 'description'>('Description', 'description'),
       new TableColumn<ComplexTestData, 'description'>('Description2', 'description')
         .isVisible(false)

@@ -21,6 +21,9 @@ export class SimplemattableComponent implements DoCheck, OnChanges {
   @Input() sorting: boolean = false;
   @Input() paginatorPageSize: number = 10;
   @Input() paginatorPageSizeOptions: number[] = [5, 10, 20];
+  @Input() editable: boolean = false;
+  @Input() addable: boolean = false;
+  @Input() deletable: boolean = false;
 
   @ViewChild(MatPaginator) matPaginator: MatPaginator;
   @ViewChild(MatSort) matSort: MatSort;
@@ -36,17 +39,16 @@ export class SimplemattableComponent implements DoCheck, OnChanges {
     this.dataSource.filter = filterValue;
   }
 
-  onClick(tcol: TableColumn<any, any>, property: any, element: any, fromButton: boolean) {
-    if (tcol.onClick && ((tcol.button && fromButton) || (!tcol.button && !fromButton))) {
-      tcol.onClick(property, element);
+  onClick(tcol: TableColumn<any, any>, element: any, fromButton: boolean) {
+    if (fromButton ? this.isButtonClickable(tcol) : this.isCellClickable(tcol)) {
+      tcol.onClick(element[tcol.property], element);
     }
   }
 
-  getStringRepresentation(tcol: TableColumn<any, any>, element: any): string {
-    return tcol.transform ? tcol.transform(element[tcol.property], element) : element[tcol.property].toString();
-  }
+  private isButtonClickable = (tcol: TableColumn<any, any>) => tcol.onClick && tcol.button;
+  private isCellClickable = (tcol: TableColumn<any, any>) => tcol.onClick && !tcol.button;
 
-  getCellCssClass(tcol: TableColumn<any, any>, element: any) {
+  getCellCssClass(tcol: TableColumn<any, any>, element: any): Object {
     const defaultClass = {'on-click': (tcol.onClick && !tcol.button)};
     if (!tcol.ngClass) {
       return defaultClass;
@@ -64,11 +66,21 @@ export class SimplemattableComponent implements DoCheck, OnChanges {
     }
   }
 
-  getCellCssStyle(tcol: TableColumn<any, any>, element: any) {
+  getCellCssStyle(tcol: TableColumn<any, any>, element: any): Object {
     const defaultStyle = {'justify-content': this.getAlign(tcol.align), 'display': 'flex'};
     return tcol.ngStyle ? Object.assign(defaultStyle, tcol.ngStyle(element[tcol.property], element)) : defaultStyle;
   }
 
+  getStringRepresentation(tcol: TableColumn<any, any>, element: any): string {
+    return tcol.transform ? tcol.transform(element[tcol.property], element) : element[tcol.property].toString();
+  }
+
+  getIconName = (tcol: TableColumn<any, any>, element: any) => tcol.icon(element[tcol.property], element);
+  getDisplayedCols = (cols: TableColumn<any, any>[]): TableColumn<any, any>[] => cols.filter(col => col.visible);
+  getFxFlex = (tcol: TableColumn<any, any>): string => tcol.width ? tcol.width : '1 1 0px';
+  getAlign = (align: Align): string => align === Align.LEFT ? 'flex-start' : align === Align.CENTER ? 'center' : 'flex-end';
+  getTextAlign = (align: Align): string => align === Align.LEFT ? 'start' : align === Align.CENTER ? 'center' : 'end';
+  isCenterAlign = (tcol: TableColumn<any, any>): boolean => tcol.align === Align.CENTER;
 
   arrayToObject(arr: string[]): Object {
     return arr.reduce((acc, entry) => {
@@ -76,12 +88,6 @@ export class SimplemattableComponent implements DoCheck, OnChanges {
       return acc;
     }, {});
   }
-
-  getDisplayedCols = (cols: TableColumn<any, any>[]): TableColumn<any, any>[] => cols.filter(col => col.visible);
-  getFxFlex = (tcol: TableColumn<any, any>): string => tcol.width ? tcol.width : '1 1 0px';
-  getAlign = (align: Align): string => align === Align.LEFT ? 'flex-start' : align === Align.CENTER ? 'center' : 'flex-end';
-  getTextAlign = (align: Align): string => align === Align.LEFT ? 'start' : align === Align.CENTER ? 'center' : 'end';
-  isCenterAlign = (tcol: TableColumn<any, any>): boolean => tcol.align === Align.CENTER;
 
   /* -----------------------
       DIRTY CHECKING AND DATASOURCE REBUILDING
