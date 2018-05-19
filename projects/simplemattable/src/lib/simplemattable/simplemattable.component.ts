@@ -6,6 +6,7 @@ import {ButtonType} from '../model/button-type.model';
 import {AbstractControl, FormBuilder} from '@angular/forms';
 import {FormFieldType} from '../model/form-field-type.model';
 import {DataStatus} from '../model/data-status.model';
+import {FormError} from '../model/form-error.model';
 
 @Component({
   selector: 'smc-simplemattable',
@@ -119,16 +120,17 @@ export class SimplemattableComponent<T, P extends keyof T> implements OnInit, Do
    * @returns ngStyleObject
    */
   getCellCssStyle(tcol: TableColumn<T, P>, element: T): Object {
-    const defaultStyle = {'justify-content': this.getAlign(tcol.align), 'display': 'flex'};
-    return tcol.ngStyle ? Object.assign(defaultStyle, tcol.ngStyle(element[tcol.property], element)) : defaultStyle;
+    return tcol.ngStyle ? tcol.ngStyle(element[tcol.property], element) : {};
   }
 
+
   /**
-   * Returns the form control for a string. If not currently present, it will create a new FormControl.
+   * Returns the form control for a cell. If not currently present, it will create a new FormControl.
+   * The cell is identified by its rowIndex and colIndex.
    *
    * @param colIndex
    * @param rowIndex
-   * @param tcol tcol, used to set the initial value if creation of a new control is necessary
+   * @param tcol tcol, used to set the initial value + validators if creation of a new control is necessary
    * @param element Element, used to set the initial value if creation of a new control is necessary
    * @returns AbstractFormControl
    */
@@ -137,21 +139,44 @@ export class SimplemattableComponent<T, P extends keyof T> implements OnInit, Do
     if (this.formControls.has(id)) {
       return this.formControls.get(id);
     } else {
-      const control = this.fb.control(tcol.formField.init ? tcol.formField.init(element[tcol.property], element) : element[tcol.property]);
+      const initialValue = tcol.formField.init ? tcol.formField.init(element[tcol.property], element) : element[tcol.property];
+      const control = this.fb.control(initialValue, tcol.formField.validators);
       this.formControls.set(id, control);
       return control;
     }
   }
 
-
-  /*
-
-      Next up are some simpler methods.
-      Their name should suffice to understand their purpose,
-      so I do not feel the necessity to write any JSDoc for them.
-
+  /**
+   * Checks if all Form Fields of a row are valid.
+   *
+   * @param rowIndex
+   * @returns boolean true = all form field of this row are valid
    */
+  isFormValid(rowIndex: number): boolean {
+    return this.iteratorToArray(this.formControls.entries())
+      .filter((entry) => entry[0].startsWith(rowIndex.toString()))
+      .map(entry => entry[1])
+      .every(control => control.valid);
+  }
 
+  /**
+   * Returns all errors associated with the form control at table cell rowIndex:colIndex that are currently active.
+   *
+   * @param rowIndex
+   * @param colIndex
+   * @param tcol
+   * @param element
+   * @returns List of FormError objects that are currently active (their condition is met)
+   */
+  getCurrentErrors(rowIndex: number, colIndex: number, tcol: TableColumn<T, P>, element: T): FormError[] {
+    const formField = this.getFormControl(rowIndex, colIndex, tcol, element);
+    return tcol.formField.errors.filter(error => formField.hasError(error.key));
+  }
+
+  /**
+   * Add a new element to the table using the supplied create method.
+   * The new element will have the "added" status set to true.
+   */
   startAddElement() {
     const ele: T = this.create();
     this.data.unshift(ele);
@@ -164,6 +189,14 @@ export class SimplemattableComponent<T, P extends keyof T> implements OnInit, Do
     this.currentlyAdding = true;
   }
 
+  /**
+   * Saves an edited or newly added element.
+   * Emits either an add or an edit event.
+   * The emitted value will be a deep copy of the oldElement with the new values from the from fields applied to it.
+   *
+   * @param rowIndex
+   * @param oldElement the current model object without the modifications the user made in the form fields.
+   */
   saveElement(rowIndex, oldElement: T) {
     // The id of a FormControl is <rowIndex>_<columnIndex>
     // so we can check if the id starts with the index to find all controls of that row
@@ -179,26 +212,56 @@ export class SimplemattableComponent<T, P extends keyof T> implements OnInit, Do
       const val = control.control.value;
       element[tcol.property] = tcol.formField.apply ? tcol.formField.apply(val, element[tcol.property], element) : val;
     });
+    this.dataStatus.get(oldElement).loading = true;
     if (this.dataStatus.get(oldElement).added) {
-      this.currentlyAdding = false;
-      this.data.shift();
-      console.log(this.data);
       this.add.emit(element);
     } else {
       this.edit.emit(element);
     }
-
   }
 
+  /**
+   * Set the status of the element to edit
+   * @param element
+   */
   startEditElement(element: T) {
     const status = this.dataStatus.has(element) ? this.dataStatus.get(element) : new DataStatus();
     status.editing = true;
     this.dataStatus.set(element, status);
   }
 
+  /**
+   * Revert the status of the element. If the element was newly added, it will be removed from the table.
+   * @param element
+   */
   cancelEditElement(element: T) {
-    this.dataStatus.get(element).editing = false;
+    const status = this.dataStatus.get(element);
+    if (status.added) {
+      this.data.splice(this.data.indexOf(element), 1);
+      this.currentlyAdding = false;
+      this.recreateDataSource();
+      this.cleanUpAfterDataChange(false);
+    } else {
+      status.editing = false;
+    }
   }
+
+  /**
+   * Emit delete event for the element
+   * @param element
+   */
+  deleteElement(element: T) {
+    this.dataStatus.get(element).loading = true;
+    this.delete.emit(element);
+  }
+
+  /*
+
+      Next up are some simpler methods.
+      Their name should suffice to understand their purpose,
+      so I do not feel the necessity to write any JSDoc for them.
+
+   */
 
   getStringRepresentation(tcol: TableColumn<T, P>, element: T): string {
     return tcol.transform ? tcol.transform(element[tcol.property], element) : element[tcol.property].toString();
@@ -207,12 +270,16 @@ export class SimplemattableComponent<T, P extends keyof T> implements OnInit, Do
   private isButtonClickable = (tcol: TableColumn<T, P>) => tcol.onClick && tcol.button;
   private isCellClickable = (tcol: TableColumn<T, P>, element: T) => tcol.onClick && !tcol.button && !this.isEditing(element);
 
+  getFormFieldMaxLines = (formField) => formField.maxLines;
+  getFormFieldMinLines = (formField) => formField.minLines;
+  getFormFieldOptions = (formField) => formField.options;
+  isLoading = (element: T): boolean => this.dataStatus.get(element).loading;
   isEditing = (element: T): boolean => this.dataStatus.get(element).editing;
   isEditingColumn = (tcol: TableColumn<T, P>, element: T): boolean => tcol.formField && this.isEditing(element);
   getIconName = (tcol: TableColumn<T, P>, element: T) => tcol.icon(element[tcol.property], element);
   getDisplayedCols = (cols: TableColumn<T, P>[]): TableColumn<T, P>[] => cols.filter(col => col.visible);
   getFxFlex = (tcol: TableColumn<T, P>): string => tcol.width ? tcol.width : '1 1 0px';
-  getAlign = (align: Align): string => align === Align.LEFT ? 'flex-start' : align === Align.CENTER ? 'center' : 'flex-end';
+  getAlign = (align: Align): string => align === Align.LEFT ? 'start center' : align === Align.CENTER ? 'center center' : 'end center';
   getTextAlign = (align: Align): string => align === Align.LEFT ? 'start' : align === Align.CENTER ? 'center' : 'end';
   isCenterAlign = (tcol: TableColumn<T, P>): boolean => tcol.align === Align.CENTER;
 

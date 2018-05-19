@@ -5,7 +5,7 @@ import {
   MatCommonModule, MatDatepickerModule,
   MatIconModule,
   MatInputModule, MatNativeDateModule,
-  MatPaginatorModule,
+  MatPaginatorModule, MatProgressSpinnerModule, MatSelectModule,
   MatSortModule,
   MatTableModule
 } from '@angular/material';
@@ -25,8 +25,10 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     ReactiveFormsModule,
     MatInputModule,
     MatTableModule,
+    MatProgressSpinnerModule,
     MatSortModule,
     MatIconModule,
+    MatSelectModule,
     MatButtonModule,
     BrowserAnimationsModule,
     MatPaginatorModule

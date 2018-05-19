@@ -1,4 +1,4 @@
-import {AbstractFormField} from './form-field.model';
+import {AbstractFormField} from './abstract-form-field.model';
 import {FormFieldType} from './form-field-type.model';
 
 export class DateFormField<T, P extends keyof T> extends AbstractFormField<T, P, Date> {

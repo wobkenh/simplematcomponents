@@ -2,10 +2,12 @@ import {Align} from './align.model';
 import {ButtonType} from './button-type.model';
 import {ThemePalette} from '@angular/material';
 import {Width} from './width.model';
-import {AbstractFormField} from './form-field.model';
+import {AbstractFormField} from './abstract-form-field.model';
 import {NumberFormField} from './number-form-field.model';
 import {TextFormField} from './text-form-field.model';
 import {DateFormField} from './date-form-field.model';
+import {SelectFormField} from './select-form-field.model';
+import {LargeTextFormField} from './large-text-form-field.model';
 
 export class TableColumn<T, P extends keyof T> {
 
@@ -286,6 +288,25 @@ export class TableColumn<T, P extends keyof T> {
    */
   public getTextFormField() {
     return new TextFormField<T, P>();
+  }
+
+  /**
+   * Returns a new SelectFormField using the generic parameters of this column.
+   * The type parameter F will be the type of the form field's value.
+   *
+   * @returns SelectFormField
+   */
+  public getSelectFormField<F>() {
+    return new SelectFormField<T, P, F>();
+  }
+
+  /**
+   * Returns a new LargeTextFormField (textarea) using the generic parameters of this column.
+   *
+   * @returns SelectFormField
+   */
+  public getLargeTextFormField() {
+    return new LargeTextFormField<T, P>();
   }
 
 }
