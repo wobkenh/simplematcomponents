@@ -1,4 +1,4 @@
-import {Component, DoCheck, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, DoCheck, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {TableColumn} from '../model/table-column.model';
 import {MatPaginator, MatSort, MatTable, MatTableDataSource} from '@angular/material';
 import {Align} from '../model/align.model';
@@ -13,7 +13,7 @@ import {FormError} from '../model/form-error.model';
   templateUrl: './simplemattable.component.html',
   styleUrls: ['./simplemattable.component.css']
 })
-export class SimplemattableComponent<T, P extends keyof T> implements OnInit, DoCheck, OnChanges {
+export class SimplemattableComponent<T, P extends keyof T> implements OnInit, DoCheck, OnChanges, AfterViewInit {
 
   @Input() data: T[] = [];
   @Input() columns: TableColumn<T, P>[] = [];
@@ -455,6 +455,11 @@ export class SimplemattableComponent<T, P extends keyof T> implements OnInit, Do
         this.displayedColumns.push('actions');
       }
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.matPaginator;
+    this.dataSource.sort = this.matSort;
   }
 
 }
