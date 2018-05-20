@@ -4,6 +4,10 @@
   "description": "A simplified, declarative table-library using @angular/material's MatTable with form capabilities for adding/editing/deleting data",
   "author": "Henning Wobken",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wobkenh/simplematcomponents"
+  },
   "keywords": [
     "simplemattable",
     "SimpleMatTable",

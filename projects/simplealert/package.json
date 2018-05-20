@@ -3,7 +3,11 @@
   "license": "MIT",
   "description": "A simple info/error alert component for Angular 6+ using @angular/material",
   "author": "Henning Wobken",
-  "version": "0.0.4",
+  "version": "0.0.6",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wobkenh/simplematcomponents"
+  },
   "keywords": [
     "Angular",
     "Material Design",
