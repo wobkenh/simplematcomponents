@@ -8,9 +8,9 @@ Each component has it's own npm package. There are (currently) no ties or shared
 
 Currently, there are two projects:
 
-- [Simplemattable](https://www.npmjs.com/package/simplemattable): 
+- [Simplemattable](https://www.npmjs.com/package/simplemattable) [![npm version](https://badge.fury.io/js/simplemattable.svg)](https://badge.fury.io/js/simplemattable): 
 A simplified, declarative table-library using @angular/material's MatTable with form capabilities for adding/editing/deleting data
-- [Simpelalert](https://www.npmjs.com/package/simplealert): 
+- [Simpelalert](https://www.npmjs.com/package/simplealert) [![npm version](https://badge.fury.io/js/simplealert.svg)](https://badge.fury.io/js/simplealert): 
 simple Angular component for info or error alerts.
 
 
