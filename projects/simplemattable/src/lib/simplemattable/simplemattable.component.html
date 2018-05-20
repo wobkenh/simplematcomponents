@@ -29,7 +29,8 @@
          a ng-container with formControl input binding when the error message changes -->
         <!-- No other chance than to tolerate the duplicate code here. -->
         <ng-container *ngIf="!tcol.button && isEditingColumn(tcol, element)" [ngSwitch]="tcol.formField.formType">
-          <mat-form-field *ngSwitchCase="formFieldType.TEXT" style="width: 100%;padding: 0 5px">
+          <mat-form-field *ngSwitchCase="formFieldType.TEXT" style="width: 100%;padding: 0 5px"
+                          (keyup.enter)="onEnter(rowIndex, element)">
             <input matInput [formControl]="getFormControl(rowIndex, columnIndex, tcol, element)"
                    [placeholder]="tcol.formField.placeholder">
             <mat-error *ngFor="let error of getCurrentErrors(rowIndex, columnIndex, tcol, element);">
@@ -37,7 +38,8 @@
             </mat-error>
             <mat-hint>{{tcol.formField.hint}}</mat-hint>
           </mat-form-field>
-          <mat-form-field *ngSwitchCase="formFieldType.NUMBER" style="width: 100%;padding: 0 5px">
+          <mat-form-field *ngSwitchCase="formFieldType.NUMBER" style="width: 100%;padding: 0 5px"
+                          (keyup.enter)="onEnter(rowIndex, element)">
             <input matInput type="number" [formControl]="getFormControl(rowIndex, columnIndex, tcol, element)"
                    [placeholder]="tcol.formField.placeholder">
             <mat-error *ngFor="let error of getCurrentErrors(rowIndex, columnIndex, tcol, element);">
@@ -49,7 +51,7 @@
             <!-- For whatever reason, you cant wrap the date picker input in a ng-container -->
             <input matInput [formControl]="getFormControl(rowIndex, columnIndex, tcol, element)"
                    [ngStyle]="{'text-align': getTextAlign(tcol.align)}" [matDatepicker]="picker"
-                   [placeholder]="tcol.formField.placeholder">
+                   [placeholder]="tcol.formField.placeholder" (keyup.enter)="onEnter(rowIndex, element)">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
             <mat-error *ngFor="let error of getCurrentErrors(rowIndex, columnIndex, tcol, element);">

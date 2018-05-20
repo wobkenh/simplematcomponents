@@ -482,6 +482,7 @@ History (Version in parenthesis is required Angular Version):
 + 0.11 (6.0): Width rework + TableColumn constructor refactor
 + 0.12 (6.0): max/min lines, option to hide text/columns on small screens, ngClass and ngStyle
 + 1.0 (6.0): Edit-mode in all its glory: edit/add/delete with text/largetext/number/date/select inputs
++ 1.1 (6.0): Use enter to save on text/number input fields
 
 ## Upcoming Features
 + Currently, there are no more (major) features planned. If someone has some nice ideas, feel free 
