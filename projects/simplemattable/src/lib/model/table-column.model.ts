@@ -2,6 +2,12 @@ import {Align} from './align.model';
 import {ButtonType} from './button-type.model';
 import {ThemePalette} from '@angular/material';
 import {Width} from './width.model';
+import {AbstractFormField} from './abstract-form-field.model';
+import {NumberFormField} from './number-form-field.model';
+import {TextFormField} from './text-form-field.model';
+import {DateFormField} from './date-form-field.model';
+import {SelectFormField} from './select-form-field.model';
+import {LargeTextFormField} from './large-text-form-field.model';
 
 export class TableColumn<T, P extends keyof T> {
 
@@ -23,6 +29,7 @@ export class TableColumn<T, P extends keyof T> {
   public hiddenSm: boolean = false;
   public ngClass: (data: T[P], dataParent: T) => string | string[] | Object;
   public ngStyle: (data: T[P], dataParent: T) => Object;
+  public formField: AbstractFormField<T, P, any>;
 
   constructor(public name: string,
               public property: P) {
@@ -245,4 +252,61 @@ export class TableColumn<T, P extends keyof T> {
     this.ngStyle = ngStyleFn;
     return this;
   }
+
+  /**
+   * If editing is enabled, will place a form field in the cells of this column when editing.
+   *
+   * @returns textFormField
+   */
+  public withFormField(formField: AbstractFormField<T, P, any>) {
+    this.formField = formField;
+    return this;
+  }
+
+  /**
+   * Returns a new NumberFormField using the generic parameters of this column.
+   *
+   * @returns NumberFormField
+   */
+  public getNumberFormField() {
+    return new NumberFormField<T, P>();
+  }
+
+  /**
+   * Returns a new DateFormField using the generic parameters of this column.
+   *
+   * @returns DateFormField
+   */
+  public getDateFormField() {
+    return new DateFormField<T, P>();
+  }
+
+  /**
+   * Returns a new TextFormField using the generic parameters of this column.
+   *
+   * @returns TextFormField
+   */
+  public getTextFormField() {
+    return new TextFormField<T, P>();
+  }
+
+  /**
+   * Returns a new SelectFormField using the generic parameters of this column.
+   * The type parameter F will be the type of the form field's value.
+   *
+   * @returns SelectFormField
+   */
+  public getSelectFormField<F>() {
+    return new SelectFormField<T, P, F>();
+  }
+
+  /**
+   * Returns a new LargeTextFormField (textarea) using the generic parameters of this column.
+   *
+   * @returns SelectFormField
+   */
+  public getLargeTextFormField() {
+    return new LargeTextFormField<T, P>();
+  }
+
 }

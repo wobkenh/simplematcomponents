@@ -1,7 +1,7 @@
 {
   "name": "simplemattable",
-  "version": "0.12.4",
-  "description": "A simplified, declarative table-library using @angular/material's MatTable",
+  "version": "1.0.5",
+  "description": "A simplified, declarative table-library using @angular/material's MatTable with form capabilities for adding/editing/deleting data",
   "author": "Henning Wobken",
   "license": "MIT",
   "keywords": [
@@ -13,7 +13,8 @@
     "table",
     "simple",
     "typesafe",
-    "angular6"
+    "angular6",
+    "material"
   ],
   "peerDependencies": {
     "@angular/common": "^6.0.0",

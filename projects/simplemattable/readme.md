@@ -7,12 +7,44 @@ This is perfect if you want to display data in a table and do not need full cont
 Instead of copy/pasting the HTML for each column, you can describe the columns in a declarative way via Typescript code.
 A lot of different options like align, buttons, icons and even custom css allow you to further customize your table.
 
-### Prerequisites
+SimpleMatTable also allows you to enable adding, editing and deleting of elements in the table. 
+It supports different form fields like number inputs, text inputs and date inputs.
+
+Current test coverage (Statements/Branches/Functions/Lines): ~93%/~88%/~88%/~92%
+
+## Table of contents
+
+- [Prerequisites](#prerequisites)
+- [Preview](#preview)
+- [Installing](#installing)
+- [Usage](#usage)
+    + [Model](#model)
+    + [TableColumns](#tablecolumns)
+    + [Table](#table)
+    + [Complex model](#complex-model)
+    + [Dynamic updates](#dynamic-updates)
+    + [TableColumn options](#tablecolumn-options)
+    + [Edit-Mode (Add/Edit/Delete)](#edit-mode-add/edit/delete)
+- [Contributing](#contributing)
+- [Versioning](#versioning)
+- [Upcoming features](#upcoming-features)
+- [Dependencies](#dependencies)
+- [Authors](#authors)
+- [License](#license)
+
+## Prerequisites
 
 Simplemattable is for use with Angular Material Design only. As of the first version, 
-it requires Angular Material 6.0 or above.
+it requires Angular Material 6.0 or above. Also make sure to add @angular/flex-layout to your list of dependencies.
 
-For a detailed list of neccessary dependencies, see [section Dependencies](#dependencies) .
+For a detailed list of neccessary dependencies, see [section Dependencies](#dependencies).
+
+## Preview
+
+With sorting, pagination, filtering, adding, editing and deleting enabled, SimpleMatTable can look like this (using the default indigo material theme):
+
+![Info Alert](https://simplex24.de/simplemattable_example.png "SimpleMatTable example")
+
 
 ## Installing
 
@@ -93,7 +125,9 @@ Additionally, you can turn on a paginator, a filter and sorting. These are the s
 [the Angular docs](https://material.angular.io/components/table/overview).
 The paginator, filter and sorting are optional. If omitted, the flags will default to false.
 The paginater can further be customized by the optional input parameter `[paginatorPageSize]`, which takes a number and sets the initial entries per page count. 
-Also, via `[paginatorPageSizeOptions]`, which takes a number array, you can change the pagesize options that will be selectable in the paginator.  
+Also, via `[paginatorPageSizeOptions]`, which takes a number array, you can change the pagesize options that will be selectable in the paginator.
+
+If you want to enable adding/editing/deleting of elements in the table, have a look at [the section about edit-mode](#edit-mode-addeditdelete).
 
 ### Complex Model
 
@@ -126,7 +160,7 @@ To update the table columns, simply change/add/remove the table columns in your 
 For example, if you want to toggle the visiblility of the first column:
 
 ```
-this.columns[0].visible = !this.columns[0].visible;
+this.columns[0].isVisible(!this.columns[0].visible);
 ```
 
 Simplemattable will recognize any changes to the properties of any of the supplied columns or to the column array.
@@ -160,7 +194,7 @@ All options are accessible using a 'is'- or 'with'-function that allows you to c
 This is helpful if e.g. your model contains a Date but you do not want the standard JS string representation of date to show, but rather your preferred format. 
 - width (`.withWidth(width: (number | Width | string))`): The width of the column. The property itself is the string that will later be used by fxflex. If you do not specify the width, the flex value `1 1 0px` will be used. This function accepts either a number, a string or a Width object:
   + number: flex string will be `0 0 <number>px`
-  + string: the string will be interpreted by fxFlex as is, so pass a valid fxFlex string, [for more information see here](https://github.com/angular/flex-layout/wiki/fxFlex-API).
+  + string: the string will be interpreted by fxFlex as is, so pass a valid fxFlex string, [for more information see the fxFlex docs](https://github.com/angular/flex-layout/wiki/fxFlex-API).
   + Width: Width allows you to enter the width in a typesafe way. 
   You can use `Width.px(pixel: number)` to get a pixel based width or `Width.pct(percent: number)` for percent based width. 
   Additionally, you can use the methods `.shrink()` and `.grow()` to turn on shrink or grow respectively, which are both turned off by default. 
@@ -199,9 +233,10 @@ If specified, the onClick function will be executed on a click event.
 - buttonColor (`.withButtonColor(buttonColor: ThemePalette)`): If the button type is set, buttonColor allows you to change the button color. Can be either `'primary'`, `'warn'` or `'accent'`.
 If you leave the button color empty, the standard white/transparent background (depending on button type) will be used.
 
-- maxLines (`.withMaxLines(maxLineLength: number)`): Maximum lines of text in a cell. 
+- maxLines (`.withMaxLines(maxLineLength: number)`): Maximum lines of text in a cell. Note that this refers to the maximum number of lines in the cell. 
+If the text is longer, a scrollbar will appear, but the cell will not grow any larger.
 If not specified, a span will be used that ignores linebreaks in the text and spans over as many lines as needed.
-If maxLines is specified, a textarea with the stated amount of maximum lines will be used. The textarea is able to display linebreaks appropriately. It is always readonly.
+If maxLines is specified, a textarea with the stated amount of maximum lines will be used. The textarea is able to display linebreaks appropriately.
 
 - minLines (`.withMinLines(minLineLength: number)`): Minimum lines of text in a cell. Defaults to 1. 
 Works only if maxLines is also specified as maxLines activates the textarea feature.
@@ -226,20 +261,213 @@ If you need to style the children in the table cell, you can select them using t
 If you want to apply custom inline css to the table cells of a column, you can add the ngStyle function.
 It must return something that is parsable by the ngStyle directive. For more information on ngStyle [see the Angular docs](https://angular.io/api/common/NgStyle).
 You do not need to use !important on ngStyle. For example, you could change the background color depending on id like this even when the column is clickable: 
-`.withNgStyle((id) => ({'background-color': id < 3 ? '#992222' : 'transparent'}))` 
+`.withNgStyle((id) => ({'background-color': id < 3 ? '#992222' : 'transparent'}))`
+
+### Edit-mode (add/edit/delete)
+
+Edit-mode is a major feature of SimpleMatTable. 
+I will explain this feature using the ComplexTestData example from [the complex model section](#complex-model).
+
+#### Enabling form fields for a column
+
+By default, columns will be readonly. So even if you turn on edit/add, 
+the user won't be able to change the data of the column. 
+To add a form field to the column, use the `.withFormField(formField: AbstractFormField<T, P, any>)` function.
+The form field argument requires an AbstractFormField. This can be:
+
+- TextFormField: Input for normal text without linebreaks. Will result in an `<input>`.
+- NumberFormField: Input for numbers. Will result in an `<input type="number">`.
+- LargeTextFormField: Input for large texts with linebreaks. Will result in a `<textarea>`.
+- SelectFormField: Input for a list of options the user can chose from. Will result in a `<mat-select>`.
+- DateFormField: Input for dates. Will result in a `<input matDatepicker>`.
+
+The AbstractFormField requires some Type parameters. You already supplied those in your TableColumn object, so 
+to make things easier, the TableColumn has the following methods for creating FormFields:
+
+- `getTextFormField()`
+- `getNumberFormField()`
+- `getLargeTextFormField()`
+- `getSelectFormField<F>()` (more info on the type paremter later)
+- `getDateFormField()`
+
+this means you can add a form field for the description of our ComplexTestData like this:
+```
+const descCol = new TableColumn<ComplexTestData, 'description'>('Description', 'description');
+descCol.withFormField(valueCol.getTextFormField())
+```
+
+SimpleMatTable support hints, placeholders, validators and errors on form fields.
+Also, for complex models, you can supply additional init and apply functions 
+that transform the value of the object before it is inserted into the form field 
+or when it gets saved from the form field to the object instance.
+All those can be specified using the `.with` methods of the form field. 
+Placeholder and hints are implemented using [Angular Material form fields](https://material.angular.io/components/form-field/overview).
+Validators are implemented using [Angular reactive forms](https://angular.io/guide/reactive-forms). 
+
+Here a short overview of how to use the options:
+
+- placeholder (`withPlaceholder(placeholder: string)`): A string displayed on the form field to indicate what the user is supposed to enter.
+- hint (`withHint(hint: string)`): A string displayed on the form field to give the user a hint.
+- validators (`withValidators(validators: (ValidatorFn[] | ValidatorFn))`): One or several validator functions. 
+May be inbuilt functions like Validators.required or Validators.min or selfdefined functions.
+An element can not be saved until all validator functions pass.
+- errors (`withErrors(errors: FormError[])`): The error messages that can be displayed on the form fields. 
+`FormError` is an interface that has two strings: `key` and `msg`. 
+Key is the error name that any validator you specified might add to the errors of the form control (e.g: 'required' when using Validators.required). 
+Msg is the message that will be displayed if the given key is found in the errors of the form control.
+- init (`withInit(initFn: (data: T[P], dataParent: T) => F)`): If you specify this function, it will be executed
+when the form field is created (e.g. when the user hits the edit button on a row). 
+The function should transform the property of your model that this column describes into whatever the form field needs.
+Depending on the form field you chose, this could be for example string (text/large text input) or number (number input).
+This means that you could use e.g. a date form field even though the property on your model is not a date, as long as you use withInit  and withApply to transform the value.
+- apply (`withApply(applyFn: (value: F, data: T[P], dataParent: T) => void)`) : If you specify this function, it will be executed when the user saves a row.
+The funtion should transform the value from the form field (e.g. Date if you use a date input) 
+in a way that it can be set as the property of your model. 
+If omitted, the value is applied directly. 
+You should only omit this function if the property datatype equals the form field data type.
+
+An example demonstrating all of the above (I added the property `date: Date` to `TestData`):
+
+```
+const dateCol = new TableColumn<ComplexTestData, 'data'>('Date', 'data')
+  .withTransform((data) => this.getDateStr(data.date))
+  .withSortTransform(data => data.date.toISOString())
+dateCol.withFormField(dateCol.getDateFormField()
+  .withHint('Only past dates.')
+  .withPlaceholder('Date')
+  .withErrors([
+    {key: 'required', msg: 'Date is required!'},
+    {key: 'pastDate', msg: 'Date needs to be in the past!'}
+  ])
+  .withValidators([Validators.required, this.pastDateValidator])
+  .withInit(data => data.date)
+  .withApply((val, data) => {
+    data.date = val;
+    return data;
+  })
+);
+```
+
+with the pastDateValidator looking like this:
+
+```
+pastDateValidator = (control: AbstractControl) => control.value < new Date() ? null : {'pastDate': true};
+```
+
+Note that if `date` was a property of `ComplexTestData` and not `TestData`, 
+you could omit `.withInit` and `.withApply` because the property is a Date and the date form field requires a Date.
+
+As i already stated earlier, select inputs are a bit special. Let's look at an example (I added the number property `value` to `ComplexTestData`):
+
+```
+const valueCol = new TableColumn<ComplexTestData, 'value'>('Value', 'value');
+valueCol.withFormField(valueCol.getSelectFormField<number>()
+  .withOptions([
+    {display: '39', value: 39},
+    {display: '40', value: 40},
+    {display: '41', value: 41},
+    {display: 'the answer to life, the universe and everything', value: 42},
+  ]));
+```
+
+The select form field requires you to specify some options. The options must fulfill the interface SelectFormFieldOption.
+It has a display string value, which will be displayed in the mat-select and a value of type F. Type F is, as you can see in the example, 
+supplied when calling getSelectFormField. 
+If you need a mapping between the values in the options and the property of your model (e.g. when working with nested Objects), use `.withInit` and `.withApply`.
+
+#### Addition of Elements
+
+To enable the user to add new elements to the table, set the `addable` Input parameter to true. 
+Then, write a function that returns a new instance of your model class (signature: `() => T`) and bind the function to the input parameter `create`.
+The create function will be called to generate a new default object that will be added to the table.
+
+When the user saves a newly added element, an event will fire. 
+You can listen to this event by binding to the output parameter `add`. 
+The event data will be a deep copy of the added element. 
+When the event fires, the row with the new element goes into loading state and a small progress spinner appears in the last cell of the row.
+The data does not refresh until you refresh it manually, so you can first talk to your backend and save the data before confirming the new 
+element by adding it to your data array.
+
+Here a small example of how this could look like (using RxJS Observables):
+
+```
+onAdd(element: ComplexTestData) {
+  myDataService.insertComplexTestData(element).subscribe((complexData) => {
+    this.testData.push(complexData);
+    this.testData = this.testData.slice(0); // Shallow copy to trigger update
+  }, error => {
+    // Do sth about the error, e.g. Error above/below the table or an error dialog
+  });
+}
+```
+
+#### Editing of Elements
+
+To enable the user to edit elements in the table, set the `editable` Input parameter to true. 
+Make sure that you have all form fields of fields you want the user to edit and (if necessary) their init/apply methods up and running.
+
+When the user saves an edited element, an event will fire. 
+You can listen to this event by binding to the output parameter `edit`. 
+The event data will be a deep copy of the edited element. 
+When the event fires, the row with the edited element goes into loading state and a small progress spinner appears in the last cell of the row.
+The data does not refresh until you refresh it manually, so you can first talk to your backend and save the data before confirming the changes 
+by removing the old element and replacing it with the new element.
+
+Here a small example of how this could look like (using RxJS Observables):
+
+```
+onEdit(element: ComplexTestData) {
+  myDataService.updateComplexTestData(element).subscribe((complexData) => {
+    this.testData[this.testData.findIndex(ele => ele.id === complexData.id)] = complexData;
+    this.testData = this.testData.slice(0); // Shallow copy to trigger update
+  }, error => {
+   // Do sth about the error, e.g. Error above/below the table or an error dialog
+  });
+}
+```
+
+#### Deleting of Elements
+
+To enable the user to delete elements in the table, set the `deletable` Input parameter to true. 
+
+When the user deletes an element, an event will fire. 
+You can listen to this event by binding to the output parameter `delete`. 
+The event data will be the element to delete. 
+When the event fires, the row with the deleted element goes into loading state and a small progress spinner appears in the last cell of the row.
+The data does not refresh until you refresh it manually, so you can first talk to your backend and delete the element before 
+confirming the deletion by removing the element.
+
+Here a small example of how this could look like (using RxJS Observables):
+
+```
+onDelete(element: ComplexTestData) {
+  myDataService.updateComplexTestData(element).subscribe(() => {
+    const index = this.testData.indexOf(element);
+    if (index >= 0) {
+      this.testData.splice(index, 1);
+      this.testData = this.testData.slice(0);  // Shallow copy to trigger update
+    }
+  }, error => {
+   // Do sth about the error, e.g. Error above/below the table or an error dialog
+  });
+}
+```
 
     
 ## Contributing
 
 The Sourcecode is in a private repository for now. 
-If anyone is interested in contributing, email me and I will transfer this library to a public github or gitlab repository.
+If anyone is interested in contributing or seeing the source code, email me and I will transfer this library to a public github or gitlab repository.
 For my email address, see the [authors section](#authors).
+
+I plan on publishing SimpleMatTable on github in the future, even if noone has interest in contributing, 
+but I first want to write some more proper unit tests. Of course, if someone is interested in writing some nice unit tests, 
+be my guest and e-mail me that you are interested. :)
+
 
 ## Versioning
 
 There will be new versions when new features are added or a new Angular version releases.
-
-Version 1.0 will release when the editing-mode-feature is fully functional.
 
 History (Version in parenthesis is required Angular Version):
 + 0.0 (6.0): First Version
@@ -255,11 +483,14 @@ History (Version in parenthesis is required Angular Version):
 + 0.10 (6.0): Buttons
 + 0.11 (6.0): Width rework + TableColumn constructor refactor
 + 0.12 (6.0): max/min lines, option to hide text/columns on small screens, ngClass and ngStyle
++ 1.0 (6.0): Edit-mode in all its glory: edit/add/delete with text/largetext/number/date/select inputs
 
 ## Upcoming Features
-+ Edit-Mode: Clicking an edit button in the last column will turn all the fields of the row into form fields for editing. 
-Next to the edit button in each row, there will be an (optional) delete button. 
-Additionally, there will be an (optional) add-button in the table header.
++ Currently, there are no more (major) features planned. If someone has some nice ideas, feel free 
+to contribute ([see section Contributing](#contributing)).
++ This library will be updated on every major Angular version following Angular 6. 
+It is not planned to backport SimpleMatTable to any older Angular verison.
++ There might be bugfixes in the future or new unit tests to raise the test coverage.
 
 ## Dependencies
 
