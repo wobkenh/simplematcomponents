@@ -13,10 +13,10 @@ import {FormError} from '../model/form-error.model';
   templateUrl: './simplemattable.component.html',
   styleUrls: ['./simplemattable.component.css']
 })
-export class SimplemattableComponent<T, P extends keyof T> implements OnInit, DoCheck, OnChanges, AfterViewInit {
+export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, AfterViewInit {
 
   @Input() data: T[] = [];
-  @Input() columns: TableColumn<T, P>[] = [];
+  @Input() columns: TableColumn<T, any>[] = [];
   @Input() filter: boolean = false;
   @Input() paginator: boolean = false;
   @Input() sorting: boolean = false;
@@ -40,7 +40,7 @@ export class SimplemattableComponent<T, P extends keyof T> implements OnInit, Do
   dataSource: MatTableDataSource<T>;
   currentlyAdding: boolean = false;
   private dataStatus: Map<T, DataStatus> = new Map<T, DataStatus>(); // to know whether or not a row is being edited
-  private oldColumns: TableColumn<T, P>[] = []; // For dirty-checking
+  private oldColumns: TableColumn<T, any>[] = []; // For dirty-checking
   // There may only be one form control per cell
   // FormControls are identified by <rowIndex>_<colIndex>
   formControls: Map<string, AbstractControl> = new Map<string, AbstractControl>();
@@ -79,7 +79,7 @@ export class SimplemattableComponent<T, P extends keyof T> implements OnInit, Do
    * @param element Clicked element
    * @param fromButton true = button; false = cell
    */
-  onClick(tcol: TableColumn<T, P>, element: T, fromButton: boolean) {
+  onClick(tcol: TableColumn<T, any>, element: T, fromButton: boolean) {
     if (fromButton ? this.isButtonClickable(tcol) : this.isCellClickable(tcol, element)) {
       tcol.onClick(element[tcol.property], element);
     }
@@ -93,7 +93,7 @@ export class SimplemattableComponent<T, P extends keyof T> implements OnInit, Do
    * @param element the element
    * @returns ngClass Object
    */
-  getCellCssClass(tcol: TableColumn<T, P>, element: T): Object {
+  getCellCssClass(tcol: TableColumn<T, any>, element: T): Object {
     const defaultClass = {'on-click': (tcol.onClick && !tcol.button)};
     if (!tcol.ngClass) {
       return defaultClass;
@@ -119,7 +119,7 @@ export class SimplemattableComponent<T, P extends keyof T> implements OnInit, Do
    * @param element
    * @returns ngStyleObject
    */
-  getCellCssStyle(tcol: TableColumn<T, P>, element: T): Object {
+  getCellCssStyle(tcol: TableColumn<T, any>, element: T): Object {
     return tcol.ngStyle ? tcol.ngStyle(element[tcol.property], element) : {};
   }
 
@@ -134,7 +134,7 @@ export class SimplemattableComponent<T, P extends keyof T> implements OnInit, Do
    * @param element Element, used to set the initial value if creation of a new control is necessary
    * @returns AbstractFormControl
    */
-  getFormControl(rowIndex: number, colIndex: number, tcol: TableColumn<T, P>, element: T): AbstractControl {
+  getFormControl(rowIndex: number, colIndex: number, tcol: TableColumn<T, any>, element: T): AbstractControl {
     const id = rowIndex + '_' + colIndex;
     if (this.formControls.has(id)) {
       return this.formControls.get(id);
@@ -168,7 +168,7 @@ export class SimplemattableComponent<T, P extends keyof T> implements OnInit, Do
    * @param element
    * @returns List of FormError objects that are currently active (their condition is met)
    */
-  getCurrentErrors(rowIndex: number, colIndex: number, tcol: TableColumn<T, P>, element: T): FormError[] {
+  getCurrentErrors(rowIndex: number, colIndex: number, tcol: TableColumn<T, any>, element: T): FormError[] {
     const formField = this.getFormControl(rowIndex, colIndex, tcol, element);
     return tcol.formField.errors.filter(error => formField.hasError(error.key));
   }
@@ -208,7 +208,7 @@ export class SimplemattableComponent<T, P extends keyof T> implements OnInit, Do
     }
     const element = this.deepCopy(oldElement); // Deep copy old object to not override table values
     controls.forEach(control => {
-      const tcol: TableColumn<T, P> = this.getDisplayedCols(this.columns)[control.col];
+      const tcol: TableColumn<T, any> = this.getDisplayedCols(this.columns)[control.col];
       const val = control.control.value;
       element[tcol.property] = tcol.formField.apply ? tcol.formField.apply(val, element[tcol.property], element) : val;
     });
@@ -263,25 +263,25 @@ export class SimplemattableComponent<T, P extends keyof T> implements OnInit, Do
 
    */
 
-  getStringRepresentation(tcol: TableColumn<T, P>, element: T): string {
+  getStringRepresentation(tcol: TableColumn<T, any>, element: T): string {
     return tcol.transform ? tcol.transform(element[tcol.property], element) : element[tcol.property].toString();
   }
 
-  private isButtonClickable = (tcol: TableColumn<T, P>) => tcol.onClick && tcol.button;
-  private isCellClickable = (tcol: TableColumn<T, P>, element: T) => tcol.onClick && !tcol.button && !this.isEditing(element);
+  private isButtonClickable = (tcol: TableColumn<T, any>) => tcol.onClick && tcol.button;
+  private isCellClickable = (tcol: TableColumn<T, any>, element: T) => tcol.onClick && !tcol.button && !this.isEditing(element);
 
   getFormFieldMaxLines = (formField) => formField.maxLines;
   getFormFieldMinLines = (formField) => formField.minLines;
   getFormFieldOptions = (formField) => formField.options;
   isLoading = (element: T): boolean => this.dataStatus.get(element).loading;
   isEditing = (element: T): boolean => this.dataStatus.get(element).editing;
-  isEditingColumn = (tcol: TableColumn<T, P>, element: T): boolean => tcol.formField && this.isEditing(element);
-  getIconName = (tcol: TableColumn<T, P>, element: T) => tcol.icon(element[tcol.property], element);
-  getDisplayedCols = (cols: TableColumn<T, P>[]): TableColumn<T, P>[] => cols.filter(col => col.visible);
-  getFxFlex = (tcol: TableColumn<T, P>): string => tcol.width ? tcol.width : '1 1 0px';
+  isEditingColumn = (tcol: TableColumn<T, any>, element: T): boolean => tcol.formField && this.isEditing(element);
+  getIconName = (tcol: TableColumn<T, any>, element: T) => tcol.icon(element[tcol.property], element);
+  getDisplayedCols = (cols: TableColumn<T, any>[]): TableColumn<T, any>[] => cols.filter(col => col.visible);
+  getFxFlex = (tcol: TableColumn<T, any>): string => tcol.width ? tcol.width : '1 1 0px';
   getAlign = (align: Align): string => align === Align.LEFT ? 'start center' : align === Align.CENTER ? 'center center' : 'end center';
   getTextAlign = (align: Align): string => align === Align.LEFT ? 'start' : align === Align.CENTER ? 'center' : 'end';
-  isCenterAlign = (tcol: TableColumn<T, P>): boolean => tcol.align === Align.CENTER;
+  isCenterAlign = (tcol: TableColumn<T, any>): boolean => tcol.align === Align.CENTER;
 
   arrayToObject(arr: string[]): Object { // turn ['css-class-a', 'css-class-b'] into {'css-class-a': true, 'css-class-b': true}
     return arr.reduce((acc, entry) => {

@@ -103,7 +103,9 @@ Additionally, you can turn on a paginator, a filter and sorting. These are the s
 [the Angular docs](https://material.angular.io/components/table/overview).
 The paginator, filter and sorting are optional. If omitted, the flags will default to false.
 The paginater can further be customized by the optional input parameter `[paginatorPageSize]`, which takes a number and sets the initial entries per page count. 
-Also, via `[paginatorPageSizeOptions]`, which takes a number array, you can change the pagesize options that will be selectable in the paginator.  
+Also, via `[paginatorPageSizeOptions]`, which takes a number array, you can change the pagesize options that will be selectable in the paginator.
+
+If you want to enable adding/editing/deleting of elements in the table, have a look at [the section about edit-mode](#edit-mode-addeditdelete).
 
 ### Complex Model
 
@@ -212,7 +214,7 @@ If you leave the button color empty, the standard white/transparent background (
 - maxLines (`.withMaxLines(maxLineLength: number)`): Maximum lines of text in a cell. Note that this refers to the maximum number of lines in the cell. 
 If the text is longer, a scrollbar will appear, but the cell will not grow any larger.
 If not specified, a span will be used that ignores linebreaks in the text and spans over as many lines as needed.
-If maxLines is specified, a textarea with the stated amount of maximum lines will be used. The textarea is able to display linebreaks appropriately. It is always readonly.
+If maxLines is specified, a textarea with the stated amount of maximum lines will be used. The textarea is able to display linebreaks appropriately.
 
 - minLines (`.withMinLines(minLineLength: number)`): Minimum lines of text in a cell. Defaults to 1. 
 Works only if maxLines is also specified as maxLines activates the textarea feature.
@@ -287,7 +289,7 @@ Here a short overview of how to use the options:
 - validators (`withValidators(validators: (ValidatorFn[] | ValidatorFn))`): One or several validator functions. 
 May be inbuilt functions like Validators.required or Validators.min or selfdefined functions.
 An element can not be saved until all validator functions pass.
-- errors (`withErrors(errors: FormError[])`): The error messages that will be displayed on the form fields. 
+- errors (`withErrors(errors: FormError[])`): The error messages that can be displayed on the form fields. 
 `FormError` is an interface that has two strings: `key` and `msg`. 
 Key is the error name that any validator you specified might add to the errors of the form control (e.g: 'required' when using Validators.required). 
 Msg is the message that will be displayed if the given key is found in the errors of the form control.
@@ -379,7 +381,7 @@ onAdd(element: ComplexTestData) {
 
 #### Editing of Elements
 
-To enable the user to edit new elements to the table, set the `editable` Input parameter to true. 
+To enable the user to edit elements in the table, set the `editable` Input parameter to true. 
 Make sure that you have all form fields of fields you want the user to edit and (if necessary) their init/apply methods up and running.
 
 When the user saves an edited element, an event will fire. 
@@ -404,7 +406,7 @@ onEdit(element: ComplexTestData) {
 
 #### Deleting of Elements
 
-To enable the user to delete new elements to the table, set the `deletable` Input parameter to true. 
+To enable the user to delete elements in the table, set the `deletable` Input parameter to true. 
 
 When the user deletes an element, an event will fire. 
 You can listen to this event by binding to the output parameter `delete`. 
