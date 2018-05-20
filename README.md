@@ -36,7 +36,7 @@ You need to build simplemattable before you can use it in the demo.
 
 The results of `ng build` are stored under `dist/simplealert`.
 
-If you create any new classes that needs to be visible outside of simplemattable, dont forget to include them in the `projects/simplemattable/src/public_api.ts`.
+If you create any new classes that needs to be visible outside of simplealert, dont forget to include them in the `projects/simplealert/src/public_api.ts`.
 
 There are currently no unit tests for simplealert.
 
