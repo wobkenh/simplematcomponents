@@ -84,7 +84,7 @@
 
         <!-- Standardcell: Icon + (Textarea or Span) -->
         <div *ngIf="!tcol.button && !isEditingColumn(tcol, element)" fxLayout="row" fxLayoutGap="5px"
-             [ngStyle.gt-xs]="{'padding':'0 5px'}" style="align-items: center">
+             [ngStyle.gt-xs]="{'padding':'0 5px'}" style="align-items: center; width: 100%;">
           <mat-icon *ngIf="tcol.icon">{{getIconName(tcol, element)}}</mat-icon>
           <!-- Warning: Do not introduce linebreaks into the textareas content as they will be displayed -->
           <!-- Be careful when formatting -->
