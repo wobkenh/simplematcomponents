@@ -1,27 +1,70 @@
 # Simplematcomponents
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.0.
+Simplematcomponents is a set of Angular (6+) components that fit into or use Angular Material Design.
 
-## Development server
+Each component has it's own npm package. There are (currently) no ties or shared files between the components.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Projects
 
-## Code scaffolding
+Currently, there are two projects:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- [Simpelalert](https://www.npmjs.com/package/simplealert): 
+simple Angular component for info or error alerts.
+- [Simplemattable](https://www.npmjs.com/package/simplemattable): 
+A simplified, declarative table-library using @angular/material's MatTable with form capabilities for adding/editing/deleting data
 
-## Build
+You can contribute to both using this repository.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+## Demo
 
-## Running unit tests
+To see the components in action, spin up the demo application:
+- check out this repository
+- install the dependencies using `npm install` while being in the project root
+- build simplealert and simplemattable using `ng build simplealert` and `ng build simplemattable`.
+- start the demo application using `ng serve`.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Simplealert
 
-## Running end-to-end tests
+The sourcecode of simplealert can be found in `/projects/simplealert`.
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+For information on how to use simplealert, visit [the NPM package](https://www.npmjs.com/package/simplealert).
 
-## Further help
+If you want to build simplealert, use `ng build --prod simplealert`.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+The build should trigger a refresh of the demo application (if currently running).
+You need to build simplemattable before you can use it in the demo.
+
+The results of `ng build` are stored under `dist/simplealert`.
+
+If you create any new classes that needs to be visible outside of simplemattable, dont forget to include them in the `projects/simplemattable/src/public_api.ts`.
+
+There are currently no unit tests for simplealert.
+
+## Simplemattable
+
+The sourcecode of simplealert can be found in `/projects/simplemattable`.
+
+For information on how to use simplealert, visit [the NPM package](https://www.npmjs.com/package/simplemattable).
+
+If you want to build simplealert, use `ng build --prod simplemattable`.
+
+The build should trigger a refresh of the demo application (if currently running). 
+You need to build simplemattable before you can use it in the demo.
+
+The results of `ng build` are stored under `dist/simplemattable`.
+
+If you create any new classes that needs to be visible outside of simplemattable, dont forget to include them in the `projects/simplemattable/src/public_api.ts`.
+
+To run the unit tests, use `ng test simplemattable`. If you want to generate the code coverage report, use `ng test simplemattable --code-coverage --watch=false`.
+
+## Contributing
+
+Feel free to contribute to any of the components or even to create new components by opening up pull request.
+
+## Author
+
+Henning Wobken (henning.wobken@simplex24.de)
+
+## License
+
+The Simplematcomponents project and all it's components are licensed under the MIT license.
