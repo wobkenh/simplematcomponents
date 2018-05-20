@@ -197,7 +197,7 @@ This is helpful if e.g. your model contains a Date but you do not want the stand
   + string: the string will be interpreted by fxFlex as is, so pass a valid fxFlex string, [for more information see the fxFlex docs](https://github.com/angular/flex-layout/wiki/fxFlex-API).
   + Width: Width allows you to enter the width in a typesafe way. 
   You can use `Width.px(pixel: number)` to get a pixel based width or `Width.pct(percent: number)` for percent based width. 
-  Additionally, you can use the methods `.shrink()` and `.grow()` to turn on shrink or grow respectively, which are both turned off by default. 
+  Additionally, you can use the methods `.shrink(weight: number = 1)` and `.grow(weight: number = 1)` to turn on shrink or grow respectively, which are both turned off (value = 0) by default. 
 
 - align (`.withAlign(align: Align)`): Sets the text align within the column. Header and Cell content will both be aligned. Default is left align.
 
