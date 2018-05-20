@@ -181,7 +181,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     const ele: T = this.create();
     this.data.unshift(ele);
     this.recreateDataSource();
-    this.cleanUpAfterDataChange(false);
+    this.cleanUpAfterDataChange();
     const status = new DataStatus();
     status.added = true;
     status.editing = true;
@@ -240,7 +240,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
       this.data.splice(this.data.indexOf(element), 1);
       this.currentlyAdding = false;
       this.recreateDataSource();
-      this.cleanUpAfterDataChange(false);
+      this.cleanUpAfterDataChange();
     } else {
       status.editing = false;
     }
@@ -336,7 +336,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     if (changes.data) {
       this.clearAddedEntry();
       this.recreateDataSource();
-      this.cleanUpAfterDataChange(!!changes.columns);
+      this.cleanUpAfterDataChange();
     }
   }
 
@@ -353,16 +353,12 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     }
   }
 
-  private cleanUpAfterDataChange(columnChanges: boolean) {
+  private cleanUpAfterDataChange() {
     this.dataStatus.clear();
     this.data.forEach(data => this.dataStatus.set(data, new DataStatus()));
     this.formControls.clear();
     if (this.matSort.active) {
-      if (columnChanges) { // If columns are changed, resorting might cause bugs
-        this.turnOffSorting();
-      } else {
-        this.dataSource.data = this.dataSource.sortData(this.dataSource.data, this.matSort);
-      }
+      this.dataSource.data = this.dataSource.sortData(this.dataSource.data, this.matSort);
     }
     this.currentlyAdding = false;
   }
@@ -370,15 +366,11 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   // checks for column changes
   ngDoCheck(): void {
     if (this.checkForDifferences()) {
-      this.prepareForColChange();
+      this.clearAddedEntry();
+      this.turnOffSorting(); // If columns are changed, resorting might cause bugs
       this.recreateDataSource();
       this.cleanUpAfterColChange();
     }
-  }
-
-  private prepareForColChange() {
-    this.clearAddedEntry();
-    this.turnOffSorting();
   }
 
   private cleanUpAfterColChange() {

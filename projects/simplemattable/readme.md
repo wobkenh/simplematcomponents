@@ -10,6 +10,28 @@ A lot of different options like align, buttons, icons and even custom css allow 
 SimpleMatTable also allows you to enable adding, editing and deleting of elements in the table. 
 It supports different form fields like number inputs, text inputs and date inputs.
 
+Current test coverage (Statements/Branches/Functions/Lines): ~93%/~88%/~88%/~92%
+
+## Table of contents
+
+- [Prerequisites](#prerequisites)
+- [Preview](#preview)
+- [Installing](#installing)
+- [Usage](#usage)
+    + [Model](#model)
+    + [TableColumns](#tablecolumns)
+    + [Table](#table)
+    + [Complex model](#complex-model)
+    + [Dynamic updates](#dynamic-updates)
+    + [TableColumn options](#tablecolumn-options)
+    + [Edit-Mode (Add/Edit/Delete)](#edit-mode-add/edit/delete)
+- [Contributing](#contributing)
+- [Versioning](#versioning)
+- [Upcoming features](#upcoming-features)
+- [Dependencies](#dependencies)
+- [Authors](#authors)
+- [License](#license)
+
 ## Prerequisites
 
 Simplemattable is for use with Angular Material Design only. As of the first version, 
@@ -138,7 +160,7 @@ To update the table columns, simply change/add/remove the table columns in your 
 For example, if you want to toggle the visiblility of the first column:
 
 ```
-this.columns[0].visible = !this.columns[0].visible;
+this.columns[0].isVisible(!this.columns[0].visible);
 ```
 
 Simplemattable will recognize any changes to the properties of any of the supplied columns or to the column array.
@@ -172,7 +194,7 @@ All options are accessible using a 'is'- or 'with'-function that allows you to c
 This is helpful if e.g. your model contains a Date but you do not want the standard JS string representation of date to show, but rather your preferred format. 
 - width (`.withWidth(width: (number | Width | string))`): The width of the column. The property itself is the string that will later be used by fxflex. If you do not specify the width, the flex value `1 1 0px` will be used. This function accepts either a number, a string or a Width object:
   + number: flex string will be `0 0 <number>px`
-  + string: the string will be interpreted by fxFlex as is, so pass a valid fxFlex string, [for more information see here](https://github.com/angular/flex-layout/wiki/fxFlex-API).
+  + string: the string will be interpreted by fxFlex as is, so pass a valid fxFlex string, [for more information see the fxFlex docs](https://github.com/angular/flex-layout/wiki/fxFlex-API).
   + Width: Width allows you to enter the width in a typesafe way. 
   You can use `Width.px(pixel: number)` to get a pixel based width or `Width.pct(percent: number)` for percent based width. 
   Additionally, you can use the methods `.shrink()` and `.grow()` to turn on shrink or grow respectively, which are both turned off by default. 
