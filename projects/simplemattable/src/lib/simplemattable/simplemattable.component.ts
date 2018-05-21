@@ -246,12 +246,6 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     }
   }
 
-  onEnter(rowIndex: number, element: T) {
-    if(this.isFormValid(rowIndex)) {
-      this.saveElement(rowIndex, element);
-    }
-  }
-
   /**
    * Emit delete event for the element
    * @param element

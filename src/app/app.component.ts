@@ -126,9 +126,11 @@ export class AppComponent implements OnInit {
   openError() {
     this.isErrorOpen = true;
   }
+
   openWarn() {
     this.isWarnOpen = true;
   }
+
   openSuccess() {
     this.isSuccessOpen = true;
   }
