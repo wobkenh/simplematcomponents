@@ -12,7 +12,7 @@ import {AbstractControl, Validators} from '@angular/forms';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  testData: ComplexTestData[] = [];
+  testData: ComplexTestData[];
   columns: TableColumn<any, any>[] = [];
   isInfoOpen = true;
   isErrorOpen = true;
@@ -34,11 +34,11 @@ export class AppComponent implements OnInit {
     d3.setDate(4);
     d3.setMonth(3);
     d3.setFullYear(2017);
-    this.testData = [
-      new ComplexTestData(1, 40, 'test1', new TestData('Key1', 'Value1', d1)),
-      new ComplexTestData(2, 41, '', new TestData('Key2', 'Value2', d2)),
-      new ComplexTestData(3, 39, 'test3', new TestData('Key3', 'Value3', d3)),
-    ];
+    // this.testData = [
+    //   new ComplexTestData(1, 40, 'test1', new TestData('Key1', 'Value1', d1)),
+    //   new ComplexTestData(2, 41, '', new TestData('Key2', 'Value2', d2)),
+    //   new ComplexTestData(3, 39, 'test3', new TestData('Key3', 'Value3', d3)),
+    // ];
 
     const idCol = new TableColumn<ComplexTestData, 'id'>('ID with button', 'id')
       .withIcon((id) => id < 3 ? 'add' : 'delete')

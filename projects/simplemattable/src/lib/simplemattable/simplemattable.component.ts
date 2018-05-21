@@ -355,9 +355,11 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   private cleanUpAfterDataChange() {
     this.dataStatus.clear();
-    this.data.forEach(data => this.dataStatus.set(data, new DataStatus()));
+    if (this.data) {
+      this.data.forEach(data => this.dataStatus.set(data, new DataStatus()));
+    }
     this.formControls.clear();
-    if (this.matSort.active) {
+    if (this.matSort && this.matSort.active) {
       this.dataSource.data = this.dataSource.sortData(this.dataSource.data, this.matSort);
     }
     this.currentlyAdding = false;
@@ -450,8 +452,12 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   }
 
   ngAfterViewInit(): void {
-    this.dataSource.paginator = this.matPaginator;
-    this.dataSource.sort = this.matSort;
+    if (this.paginator && this.dataSource) {
+      this.dataSource.paginator = this.matPaginator;
+    }
+    if (this.sorting && this.dataSource) {
+      this.dataSource.sort = this.matSort;
+    }
   }
 
 }
