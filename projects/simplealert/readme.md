@@ -49,27 +49,19 @@ export class AppModule {
 
 ## Usage
 
-To use Simplealert in your component, you need to define at least two variables in your component:
-
+To use Simplealert in your component, describe your info alert in the corresponding html file:
+                                      
 ```
-export class AppComponent implements OnInit {
-  alertType = AlertType;
-  isOpen = true;
-  ...
-}
+<smc-simplealert [(isOpen)]="isOpen" [type]="'info'">This is an info alert!</smc-simplealert>
 ```
 
-The AlertType needs to be imported this way since you cant access Enums directly in your html.
-The isOpen flag will be used to bind to the state of the alert.
+You can either use the type AlertTypeString, which is one of the following strings: `'info'`, `'error'`, `'warn'` or `'danger'`
+or you can use the AlertType enum. If you use the enum, define the enum in your component like this:
+`alertType = AlertType;` so you can access it in your html. 
 
-After this is done, you can describe your info alert in the corresponding html file:
-
-```
-<smc-simplealert [(isOpen)]="isOpen" [type]="alertType.INFO">This is an info alert!</smc-simplealert>
-```
-
-If you want to open or close the alert, simply change the value of isOpen. The alert can be closed by the user. 
-If this happens, the state will be synced back to isOpen using two-way-databinding.
+You can either bind the is open input/output to a boolean variable in your component or only bind to the input variable isOpen of smc-simplealert and set it to true. 
+If you chose to do the latter, the alert will be open initially. The user can click it away, but can't reopen it. 
+If the user should be able to open the alert back up, you need to two way bind to isOpen and set it to true on user interaction, e.g. with the click on an info button.
 
 ## Contributing
 
@@ -77,7 +69,7 @@ The Sourcecode is in a public github repository. You may contribute by opening p
 if you have any nice ideas for improvements, new features, bugfixes, unittests, ...
 
 If there are any problems or if you have any questions, feel free to contact me.
-You can find my email address in the [authors section](#authors).
+You can find my email address in the [authors section](#authors). You can also open up an issue on github.
 
 ## Versioning
 
@@ -85,9 +77,23 @@ There will be new versions when new features are added or a new Angular version 
 
 History (Version in paranthesis is required Angular Version):
 + 0.0 (6.0): First Version
++ 1.0 (6.0): Danger + Success alert, AlertTypeString
 
 ## Upcoming Features
-+ Danger Alert
++ None, but feel free to contribute if you have any ideas :)
+
+## Dependencies
+
+Simplealert only uses peer dependencies, so you need the following packages (with compatible versions) in your package.json:
+
+```
+"@angular/common": "^6.0.0",
+"@angular/core": "^6.0.0",
+"@angular/material": "^6.0.0",
+"@angular/cdk": "^6.0.0",
+"@angular/platform-browser": "^6.0.0",
+"@angular/flex-layout": "^6.0.0-beta.15"
+```  
 
 ## Authors
 

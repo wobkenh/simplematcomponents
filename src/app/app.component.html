@@ -22,6 +22,14 @@
     <button (click)="openError()" mat-raised-button>open error</button>
     <smc-simplealert [(isOpen)]="isErrorOpen" [type]="alertType.ERROR">This is an error alert!</smc-simplealert>
   </div>
+  <div style="padding: 10px">
+    <button (click)="openWarn()" mat-raised-button>open warn</button>
+    <smc-simplealert [(isOpen)]="isWarnOpen" [type]="'warn'">This is a warn alert!</smc-simplealert>
+  </div>
+  <div style="padding: 10px">
+    <button (click)="openSuccess()" mat-raised-button>open success</button>
+    <smc-simplealert [(isOpen)]="isSuccessOpen" [type]="'success'">This is a success alert!</smc-simplealert>
+  </div>
   <hr>
   <div>More coming soon TM</div>
 </div>

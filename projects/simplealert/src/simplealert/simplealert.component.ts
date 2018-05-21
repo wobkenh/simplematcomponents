@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {AlertType} from './alert-type.model';
+import {AlertType, AlertTypeString} from './alert-type.model';
 
 @Component({
   selector: 'smc-simplealert',
@@ -11,7 +11,7 @@ import {AlertType} from './alert-type.model';
       state('true', style({display: 'block', opacity: 1, height: '*'})),
       state('false', style({display: 'none', opacity: 0, height: 0})),
       transition('false => true', [
-        animate('700ms ease-out')
+        animate('700ms ease')
       ]),
       transition('true => false', [
         animate('700ms ease-in'),
@@ -22,8 +22,7 @@ import {AlertType} from './alert-type.model';
 export class SimplealertComponent implements OnInit {
 
   isOpenState = false;
-  @Input() type: AlertType;
-
+  @Input() type: (AlertType | AlertTypeString);
   @Output() isOpenChange = new EventEmitter();
 
   constructor() {
@@ -40,6 +39,23 @@ export class SimplealertComponent implements OnInit {
   set isOpen(isOpen: boolean) {
     this.isOpenState = isOpen;
     this.isOpenChange.emit(this.isOpenState);
+  }
+
+  getAlertType(): AlertTypeString {
+    if (typeof this.type === 'string') {
+      return this.type;
+    } else {
+      switch (this.type) {
+        case AlertType.ERROR:
+          return 'error';
+        case AlertType.INFO:
+          return 'info';
+        case AlertType.SUCCESS:
+          return 'success';
+        case AlertType.WARN:
+          return 'warn';
+      }
+    }
   }
 
 }

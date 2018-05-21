@@ -16,6 +16,8 @@ export class AppComponent implements OnInit {
   columns: TableColumn<any, any>[] = [];
   isInfoOpen = true;
   isErrorOpen = true;
+  isWarnOpen = true;
+  isSuccessOpen = true;
   alertType = AlertType;
   id = 42;
 
@@ -42,7 +44,7 @@ export class AppComponent implements OnInit {
       .withIcon((id) => id < 3 ? 'add' : 'delete')
       .withButton(ButtonType.RAISED)
       .withButtonColor('primary')
-      // .withNgStyle((id) => ({'background-color': id < 3 ? '#992222' : 'transparent'}))
+      .withWidth(Width.px(125))
       .isTextHiddenXs(true);
     const desCol = new TableColumn<ComplexTestData, 'description'>('Description', 'description');
     const valueCol = new TableColumn<ComplexTestData, 'value'>('Number with select', 'value');
@@ -69,12 +71,15 @@ export class AppComponent implements OnInit {
       .withTransform((data) => data.key)
       .isHiddenSm(true)
       .withOnClick((data) => console.log(data));
-    // keyCol.withFormField(keyCol.getTextFormField()
-    //   .withInit((data) => data.key)
-    //   .withApply((id, data) => data.key = id));
+    keyCol.withFormField(keyCol.getTextFormField()
+      .withInit((data) => data.key)
+      .withApply((id, data) => {
+        data.key = id;
+        return data;
+      }));
     const valCol = new TableColumn<ComplexTestData, 'data'>('Value with icon', 'data')
       .isHiddenXs(true)
-      // .withNgClass(() => 'red-bg-cell')
+      .withNgClass(() => 'red-bg-cell')
       .withIcon(() => 'menu')
       .withTransform((data) => data.value);
     const dateCol = new TableColumn<ComplexTestData, 'data'>('Date right align', 'data')
@@ -95,8 +100,7 @@ export class AppComponent implements OnInit {
         return data;
       })
     );
-    // this.columns = [idCol, desCol, des2Col, valueCol, keyCol, valCol, dateCol];
-    this.columns = [idCol, valueCol, keyCol, valCol, dateCol];
+    this.columns = [idCol, desCol, des2Col, valueCol, keyCol, valCol, dateCol];
   }
 
   pastDateValidator = (control: AbstractControl) => control.value < new Date() ? null : {'pastDate': true};
@@ -121,6 +125,12 @@ export class AppComponent implements OnInit {
 
   openError() {
     this.isErrorOpen = true;
+  }
+  openWarn() {
+    this.isWarnOpen = true;
+  }
+  openSuccess() {
+    this.isSuccessOpen = true;
   }
 
   onDelete(element: ComplexTestData) {

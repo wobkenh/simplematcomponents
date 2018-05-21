@@ -1,9 +1,9 @@
 {
   "name": "simplealert",
   "license": "MIT",
-  "description": "A simple info/error alert component for Angular 6+ using @angular/material",
+  "description": "A simple info/error/warn/success alert component for Angular 6+ using @angular/material",
   "author": "Henning Wobken",
-  "version": "0.0.6",
+  "version": "1.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/wobkenh/simplematcomponents"

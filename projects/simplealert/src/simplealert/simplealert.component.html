@@ -1,9 +1,14 @@
 <div style="padding: 15px 15px 5px 15px;" [@info-slide-in]="isOpenState">
-  <div class="mat-elevation-z1" [ngClass]="{ 'info-box': type === 1, 'error-box': type === 2 }"
+  <div class="mat-elevation-z1"
+       [ngClass]="getAlertType() + '-box'"
        style="overflow: hidden" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="25px">
     <div fxFlex="0 0 auto">
-      <mat-icon *ngIf="type === 1">info</mat-icon>
-      <mat-icon *ngIf="type === 2">error</mat-icon>
+      <ng-container [ngSwitch]="getAlertType()">
+        <mat-icon *ngSwitchCase="'info'">info</mat-icon>
+        <mat-icon *ngSwitchCase="'error'">error</mat-icon>
+        <mat-icon *ngSwitchCase="'warn'">warning</mat-icon>
+        <mat-icon *ngSwitchCase="'success'">done</mat-icon>
+      </ng-container>
     </div>
     <div fxFlex="1 1 auto">
       <ng-content></ng-content>

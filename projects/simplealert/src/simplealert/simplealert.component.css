@@ -11,3 +11,17 @@
   border: 1px solid #ebccd1;
   padding: 10px;
 }
+
+.warn-box {
+  color: #8a6d3b;
+  background-color: #fcf8e3;
+  border: 1px solid #faf2cc;
+  padding: 10px;
+}
+
+.success-box {
+  color: #3c763d;
+  background-color: #dff0d8;
+  border: 1px solid #d0e9c6;
+  padding: 10px;
+}
