@@ -488,7 +488,7 @@ History (Version in parenthesis is required Angular Version):
 + Currently, there are no more (major) features planned. If someone has some nice ideas, feel free 
 to contribute ([see section Contributing](#contributing)).
 + This library will be updated on every major Angular version following Angular 6. 
-It is not planned to backport SimpleMatTable to any older Angular verison.
+It is not planned to backport SimpleMatTable to any older Angular version.
 + There might be bugfixes in the future or new unit tests to raise the test coverage.
 
 ## Dependencies

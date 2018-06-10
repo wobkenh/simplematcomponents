@@ -1,6 +1,6 @@
 # simplealert
 
-SimpleAlert is a simple Angular component for info or error alerts, inspired by bootstrap alerts. 
+SimpleAlert is a simple Angular component for info, error, danger and success alerts, inspired by bootstrap alerts. 
 It can be dynamically opened/closed with opening/closing animations and can contain any content via ng-content.
 
 ### Prerequisites
@@ -12,6 +12,8 @@ it requires Angular Material 6.0 or above (see version section for more informat
 
 ![Info Alert](https://simplex24.de/info.png "Info Alert")
 ![Error Alert](https://simplex24.de/error.png "Error Alert")
+
+Danger and success alerts are also available.
 
 ## Installing
 
@@ -78,6 +80,7 @@ There will be new versions when new features are added or a new Angular version 
 History (Version in paranthesis is required Angular Version):
 + 0.0 (6.0): First Version
 + 1.0 (6.0): Danger + Success alert, AlertTypeString
++ 1.1 (6.0): Improved responsiveness on very small screens (xs)
 
 ## Upcoming Features
 + None, but feel free to contribute if you have any ideas :)
