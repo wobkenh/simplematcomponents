@@ -18,7 +18,7 @@ export class AbstractFormField<T, P extends keyof T, F> {
    * @param validators
    * @returns this
    */
-  withValidators(validators: (ValidatorFn[] | ValidatorFn)) {
+  withValidators(validators: (ValidatorFn[] | ValidatorFn)): this {
     if (Array.isArray(validators)) {
       this.validators = validators;
     } else {
@@ -35,7 +35,7 @@ export class AbstractFormField<T, P extends keyof T, F> {
    * @param initFn
    * @returns this
    */
-  withInit(initFn: (data: T[P], dataParent: T) => F) {
+  withInit(initFn: (data: T[P], dataParent: T) => F): this {
     this.init = initFn;
     return this;
   }
@@ -48,7 +48,7 @@ export class AbstractFormField<T, P extends keyof T, F> {
    * @param applyFn
    * @returns this
    */
-  withApply(applyFn: (value: F, data: T[P], dataParent: T) => T[P]) {
+  withApply(applyFn: (value: F, data: T[P], dataParent: T) => T[P]): this {
     this.apply = applyFn;
     return this;
   }
@@ -60,7 +60,7 @@ export class AbstractFormField<T, P extends keyof T, F> {
    * @param errors FormError
    * @returns this
    */
-  withErrors(errors: FormError[]) {
+  withErrors(errors: FormError[]): this {
     this.errors = errors;
     return this;
   }
@@ -70,7 +70,7 @@ export class AbstractFormField<T, P extends keyof T, F> {
    * @param placeholder
    * @returns this
    */
-  withPlaceholder(placeholder: string) {
+  withPlaceholder(placeholder: string): this {
     this.placeholder = placeholder;
     return this;
   }
@@ -80,7 +80,7 @@ export class AbstractFormField<T, P extends keyof T, F> {
    * @param hint
    * @returns this
    */
-  withHint(hint: string) {
+  withHint(hint: string): this {
     this.hint = hint;
     return this;
   }

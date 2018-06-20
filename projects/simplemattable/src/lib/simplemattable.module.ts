@@ -1,17 +1,20 @@
-import { NgModule } from '@angular/core';
-import { SimplemattableComponent } from './simplemattable/simplemattable.component';
+import {NgModule} from '@angular/core';
+import {SimplemattableComponent} from './simplemattable/simplemattable.component';
 import {
   MatButtonModule,
-  MatCommonModule, MatDatepickerModule,
+  MatCommonModule,
+  MatDatepickerModule,
   MatIconModule,
-  MatInputModule, MatNativeDateModule,
-  MatPaginatorModule, MatProgressSpinnerModule, MatSelectModule,
+  MatInputModule,
+  MatNativeDateModule,
+  MatPaginatorModule,
+  MatProgressSpinnerModule,
+  MatSelectModule,
   MatSortModule,
   MatTableModule
 } from '@angular/material';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {CommonModule} from '@angular/common';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
@@ -30,7 +33,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     MatIconModule,
     MatSelectModule,
     MatButtonModule,
-    BrowserAnimationsModule,
     MatPaginatorModule
   ],
   declarations: [SimplemattableComponent],

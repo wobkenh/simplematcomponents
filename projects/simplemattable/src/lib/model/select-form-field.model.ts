@@ -16,7 +16,7 @@ export class SelectFormField<T, P extends keyof T, F> extends AbstractFormField<
    * @param options SelectFormFieldOption[]
    * @returns this
    */
-  withOptions(options: SelectFormFieldOption<F>[]) {
+  withOptions(options: SelectFormFieldOption<F>[]): this {
     this.options = options;
     return this;
   }

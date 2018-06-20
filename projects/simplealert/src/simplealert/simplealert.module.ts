@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {SimplealertComponent} from './simplealert.component';
 import {CommonModule} from '@angular/common';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatButtonModule, MatCommonModule, MatIconModule} from '@angular/material';
 import {FlexLayoutModule} from '@angular/flex-layout';
 
@@ -12,7 +11,6 @@ import {FlexLayoutModule} from '@angular/flex-layout';
     MatCommonModule,
     MatIconModule,
     MatButtonModule,
-    BrowserAnimationsModule,
   ],
   declarations: [SimplealertComponent],
   exports: [SimplealertComponent]

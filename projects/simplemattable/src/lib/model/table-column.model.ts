@@ -268,7 +268,7 @@ export class TableColumn<T, P extends keyof T> {
    *
    * @returns NumberFormField
    */
-  public getNumberFormField() {
+  public getNumberFormField(): NumberFormField<T, P> {
     return new NumberFormField<T, P>();
   }
 
@@ -277,7 +277,7 @@ export class TableColumn<T, P extends keyof T> {
    *
    * @returns DateFormField
    */
-  public getDateFormField() {
+  public getDateFormField(): DateFormField<T, P> {
     return new DateFormField<T, P>();
   }
 
@@ -286,7 +286,7 @@ export class TableColumn<T, P extends keyof T> {
    *
    * @returns TextFormField
    */
-  public getTextFormField() {
+  public getTextFormField(): TextFormField<T, P> {
     return new TextFormField<T, P>();
   }
 
@@ -296,7 +296,7 @@ export class TableColumn<T, P extends keyof T> {
    *
    * @returns SelectFormField
    */
-  public getSelectFormField<F>() {
+  public getSelectFormField<F>(): SelectFormField<T, P, F> {
     return new SelectFormField<T, P, F>();
   }
 
@@ -305,7 +305,7 @@ export class TableColumn<T, P extends keyof T> {
    *
    * @returns SelectFormField
    */
-  public getLargeTextFormField() {
+  public getLargeTextFormField(): LargeTextFormField<T, P> {
     return new LargeTextFormField<T, P>();
   }
 

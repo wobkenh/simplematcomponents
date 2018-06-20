@@ -4,6 +4,7 @@ import {SimplemattableModule} from 'simplemattable';
 import {AppComponent} from './app.component';
 import {SimplealertModule} from '../../projects/simplealert/src/simplealert/simplealert.module';
 import {MatButtonModule, MatCommonModule} from '@angular/material';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -11,6 +12,7 @@ import {MatButtonModule, MatCommonModule} from '@angular/material';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     MatCommonModule,
     MatButtonModule,
     SimplealertModule,

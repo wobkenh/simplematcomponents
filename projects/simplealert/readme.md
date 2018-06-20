@@ -40,6 +40,7 @@ import {SimplealertModule} from '../../projects/simplealert/src/simplealert/simp
   imports: [
     BrowserModule,
     SimplealertModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
