@@ -72,6 +72,7 @@ export class AppComponent implements OnInit {
       .isHiddenSm(true)
       .withOnClick((data) => console.log(data));
     keyCol.withFormField(keyCol.getTextFormField()
+      .withFocus(true)
       .withInit((data) => data.key)
       .withApply((id, data) => {
         data.key = id;

@@ -25,6 +25,11 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   @Input() editable: boolean = false;
   @Input() addable: boolean = false;
   @Input() deletable: boolean = false;
+  @Input() editIcon: string;
+  @Input() addIcon: string;
+  @Input() deleteIcon: string;
+  @Input() saveIcon: string;
+  @Input() cancelIcon: string;
   @Input() create: () => T;
 
   @Output() delete: EventEmitter<T> = new EventEmitter<T>();
@@ -187,6 +192,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     status.editing = true;
     this.dataStatus.set(ele, status);
     this.currentlyAdding = true;
+    this.focusInput();
   }
 
   /**
@@ -228,6 +234,16 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     const status = this.dataStatus.has(element) ? this.dataStatus.get(element) : new DataStatus();
     status.editing = true;
     this.dataStatus.set(element, status);
+    this.focusInput();
+  }
+
+  private focusInput() {
+    setTimeout(() => {
+      const focusedElement = document.getElementById('smt-focus-input');
+      if (focusedElement) {
+        focusedElement.focus();
+      }
+    }, 150);
   }
 
   /**

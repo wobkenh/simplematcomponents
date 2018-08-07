@@ -10,6 +10,7 @@
     <button (click)="addEntry()" mat-raised-button>Add entry</button>
     <smc-simplemattable [data]="testData" [columns]="columns" [paginator]="true" [filter]="true" (edit)="onEdit($event)"
                         [sorting]="true" [editable]="true" [addable]="true" [deletable]="true" (add)="onAdd($event)"
+                        addIcon="account_box" [deleteIcon]="'check_box_outline_blank'"
                         [create]="createFn" (delete)="onDelete($event)"></smc-simplemattable>
   </div>
   <hr>

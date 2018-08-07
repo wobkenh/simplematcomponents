@@ -32,7 +32,7 @@
           <mat-form-field *ngSwitchCase="formFieldType.TEXT" style="width: 100%;padding: 0 5px"
                           (keyup.enter)="saveElement(rowIndex, element)">
             <input matInput [formControl]="getFormControl(rowIndex, columnIndex, tcol, element)"
-                   [placeholder]="tcol.formField.placeholder">
+                   [placeholder]="tcol.formField.placeholder" [id]="tcol.formField.focus ? 'smt-focus-input' : ''">
             <mat-error *ngFor="let error of getCurrentErrors(rowIndex, columnIndex, tcol, element);">
               {{error.msg}}
             </mat-error>
@@ -41,7 +41,7 @@
           <mat-form-field *ngSwitchCase="formFieldType.NUMBER" style="width: 100%;padding: 0 5px"
                           (keyup.enter)="saveElement(rowIndex, element)">
             <input matInput type="number" [formControl]="getFormControl(rowIndex, columnIndex, tcol, element)"
-                   [placeholder]="tcol.formField.placeholder">
+                   [placeholder]="tcol.formField.placeholder" [id]="tcol.formField.focus ? 'smt-focus-input' : ''">
             <mat-error *ngFor="let error of getCurrentErrors(rowIndex, columnIndex, tcol, element);">
               {{error.msg}}
             </mat-error>
@@ -50,6 +50,7 @@
           <mat-form-field *ngSwitchCase="formFieldType.DATE" style="width: 98%;">
             <!-- For whatever reason, you cant wrap the date picker input in a ng-container -->
             <input matInput [formControl]="getFormControl(rowIndex, columnIndex, tcol, element)"
+                   [id]="tcol.formField.focus ? 'smt-focus-input' : ''"
                    [ngStyle]="{'text-align': getTextAlign(tcol.align)}" [matDatepicker]="picker"
                    [placeholder]="tcol.formField.placeholder" (keyup.enter)="saveElement(rowIndex, element)">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -61,7 +62,7 @@
           </mat-form-field>
           <mat-form-field *ngSwitchCase="formFieldType.SELECT" style="width: 100%;padding: 0 5px">
             <mat-select [formControl]="getFormControl(rowIndex, columnIndex, tcol, element)"
-                        [placeholder]="tcol.formField.placeholder">
+                        [placeholder]="tcol.formField.placeholder" [id]="tcol.formField.focus ? 'smt-focus-input' : ''">
               <mat-option *ngFor="let option of getFormFieldOptions(tcol.formField);" [value]="option.value">
                 {{option.display}}
               </mat-option>
@@ -73,7 +74,7 @@
           </mat-form-field>
           <mat-form-field *ngSwitchCase="formFieldType.LARGE_TEXT" style="width: 100%;padding: 0 5px">
             <textarea matInput [formControl]="getFormControl(rowIndex, columnIndex, tcol, element)"
-                      style="width: 100%; padding: 2px 0;"
+                      style="width: 100%; padding: 2px 0;" [id]="tcol.formField.focus ? 'smt-focus-input' : ''"
                       matTextareaAutosize [matAutosizeMaxRows]="getFormFieldMaxLines(tcol.formField)"
                       [matAutosizeMinRows]="getFormFieldMinLines(tcol.formField)"
                       [placeholder]="tcol.formField.placeholder"></textarea>
@@ -133,7 +134,7 @@
   <ng-container *ngIf="editable || deletable || addable" matColumnDef="actions">
     <mat-header-cell *matHeaderCellDef fxFlex="0 0 104px" style="display: flex;justify-content: flex-end;">
       <button mat-icon-button *ngIf="addable" color="primary" (click)="startAddElement()" [disabled]="currentlyAdding">
-        <mat-icon>add_box</mat-icon>
+        <mat-icon>{{addIcon ? addIcon : "add_box"}}</mat-icon>
       </button>
     </mat-header-cell>
     <mat-cell *matCellDef="let element; let rowIndex = index;" fxFlex="0 0 104px"
@@ -141,19 +142,19 @@
       <ng-container *ngIf="!isLoading(element)">
         <button *ngIf="editable && !isEditing(element)" mat-icon-button color="primary"
                 (click)="startEditElement(element)">
-          <mat-icon>edit</mat-icon>
+          <mat-icon>{{editIcon ? editIcon : "edit"}}</mat-icon>
         </button>
         <button *ngIf="deletable" mat-icon-button color="primary"
                 (click)="deleteElement(element)">
-          <mat-icon>delete</mat-icon>
+          <mat-icon>{{deleteIcon ? deleteIcon : "delete"}}</mat-icon>
         </button>
         <ng-container *ngIf="(editable || addable) && isEditing(element)">
           <button mat-icon-button color="primary" (click)="saveElement(rowIndex, element)"
                   [disabled]="!isFormValid(rowIndex)">
-            <mat-icon>save</mat-icon>
+            <mat-icon>{{saveIcon ? saveIcon : "save"}}</mat-icon>
           </button>
           <button mat-icon-button color="primary" (click)="cancelEditElement(element)">
-            <mat-icon>cancel</mat-icon>
+            <mat-icon>{{cancelIcon ? cancelIcon : "cancel"}}</mat-icon>
           </button>
         </ng-container>
       </ng-container>

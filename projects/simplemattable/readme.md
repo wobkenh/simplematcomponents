@@ -325,6 +325,7 @@ The funtion should transform the value from the form field (e.g. Date if you use
 in a way that it can be set as the property of your model. 
 If omitted, the value is applied directly. 
 You should only omit this function if the property datatype equals the form field data type.
+- focus (`withFocus(focus: boolean)`): Default is false. If set to true, the input of this form field will be focused when the user clicks add or edit.
 
 An example demonstrating all of the above (I added the property `date: Date` to `TestData`):
 
@@ -333,6 +334,7 @@ const dateCol = new TableColumn<ComplexTestData, 'data'>('Date', 'data')
   .withTransform((data) => this.getDateStr(data.date))
   .withSortTransform(data => data.date.toISOString())
 dateCol.withFormField(dateCol.getDateFormField()
+  .withFocus(true)
   .withHint('Only past dates.')
   .withPlaceholder('Date')
   .withErrors([
@@ -453,6 +455,13 @@ onDelete(element: ComplexTestData) {
 }
 ```
 
+#### Icons
+
+The icons for add, save, delete, edit and cancel are all configurable. 
+You can change them by specifying the respective simplemattable input paramters 
+`addIcon`, `saveIcon`, `deleteIcon`, `editIcon` and `cancelIcon`. 
+You need to specify them as a valid Material Icon string. [You can check out all supported icons here.](https://material.io/tools/icons/)
+
     
 ## Contributing
 
@@ -463,26 +472,28 @@ If there are any problems or if you have any questions, feel free to contact me.
 You can find my email address in the [authors section](#authors).
 
 
-## Versioning
+## Change History
 
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
-+ 0.0 (6.0): First Version
-+ 0.1 (6.0): Alignment
-+ 0.2 (6.0): Filtering using display values instead of object property values
-+ 0.3 (6.0): Sorting
-+ 0.4 (6.0): Removed outer div, now using V6.0 of Angular fxFlex (@angular/flex-layout)
-+ 0.5 (6.0): Allow for multiple columns to use the same property
-+ 0.6 (6.0): Sort Transform Function for custom sorting
-+ 0.7 (6.0): Hidden columns and better listening mechanism for data change detection
-+ 0.8 (6.0): Icon support, added the row data object as second parameter to all TableColumn function properties
-+ 0.9 (6.0): Click listener support
-+ 0.10 (6.0): Buttons
-+ 0.11 (6.0): Width rework + TableColumn constructor refactor
-+ 0.12 (6.0): max/min lines, option to hide text/columns on small screens, ngClass and ngStyle
-+ 1.0 (6.0): Edit-mode in all its glory: edit/add/delete with text/largetext/number/date/select inputs
++ 1.2 (6.0): Customizable icons and initial focus for input fields
 + 1.1 (6.0): Use enter to save on text/number input fields
++ 1.0 (6.0): Edit-mode in all its glory: edit/add/delete with text/largetext/number/date/select inputs
++ 0.12 (6.0): max/min lines, option to hide text/columns on small screens, ngClass and ngStyle
++ 0.11 (6.0): Width rework + TableColumn constructor refactor
++ 0.10 (6.0): Buttons
++ 0.9 (6.0): Click listener support
++ 0.8 (6.0): Icon support, added the row data object as second parameter to all TableColumn function properties
++ 0.7 (6.0): Hidden columns and better listening mechanism for data change detection
++ 0.6 (6.0): Sort Transform Function for custom sorting
++ 0.5 (6.0): Allow for multiple columns to use the same property
++ 0.4 (6.0): Removed outer div, now using V6.0 of Angular fxFlex (@angular/flex-layout)
++ 0.3 (6.0): Sorting
++ 0.2 (6.0): Filtering using display values instead of object property values
++ 0.1 (6.0): Alignment
++ 0.0 (6.0): First Version
+
 
 ## Upcoming Features
 + Currently, there are no more (major) features planned. If someone has some nice ideas, feel free 

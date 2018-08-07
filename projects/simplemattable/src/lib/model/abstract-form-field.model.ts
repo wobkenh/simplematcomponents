@@ -9,6 +9,7 @@ export class AbstractFormField<T, P extends keyof T, F> {
   apply: (value: F, data: T[P], dataParent: T) => T[P];
   errors: FormError[] = [];
   placeholder: string = '';
+  focus: boolean = false;
   hint: string = '';
 
   /**
@@ -82,6 +83,16 @@ export class AbstractFormField<T, P extends keyof T, F> {
    */
   withHint(hint: string): this {
     this.hint = hint;
+    return this;
+  }
+
+  /**
+   * true = input will be focused when the user selects add or edit. Default is false.
+   * @param focus
+   * @returns this
+   */
+  withFocus(focus: boolean): this {
+    this.focus = focus;
     return this;
   }
 
