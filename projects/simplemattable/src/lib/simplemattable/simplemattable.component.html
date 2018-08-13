@@ -31,7 +31,7 @@
         <ng-container *ngIf="!tcol.button && isEditingColumn(tcol, element)" [ngSwitch]="tcol.formField.formType">
           <mat-form-field *ngSwitchCase="formFieldType.TEXT" style="width: 100%;padding: 0 5px"
                           (keyup.enter)="saveElement(rowIndex, element)">
-            <input matInput [formControl]="getFormControl(rowIndex, columnIndex, tcol, element)"
+            <input matInput [formControl]="getFormControl(rowIndex, columnIndex, tcol, element)" type="text"
                    [placeholder]="tcol.formField.placeholder" [id]="tcol.formField.focus ? 'smt-focus-input' : ''">
             <mat-error *ngFor="let error of getCurrentErrors(rowIndex, columnIndex, tcol, element);">
               {{error.msg}}
