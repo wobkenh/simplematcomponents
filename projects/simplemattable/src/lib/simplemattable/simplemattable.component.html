@@ -4,7 +4,7 @@
     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
   </mat-form-field>
 </div>
-<div fxFlex="1 1 auto" [ngStyle]="{'overflow': sticky ? 'auto' : 'visible'}">
+<div fxFlex [ngStyle]="{'overflow': sticky ? 'auto' : 'visible'}">
   <mat-table #table [dataSource]="dataSource" matSort [matSortDisabled]="!sorting">
     <ng-container *ngFor="let tcol of getDisplayedCols(this.columns); let columnIndex = index">
       <ng-container matColumnDef="{{columnIndex.toString() + '_' + tcol.property.toString()}}">
