@@ -5,12 +5,28 @@
   </h1>
   <hr>
   <h2>SimpleMatTable</h2>
-  <div style="padding: 10px">
+  <div style="padding: 10px; height: 500px; display: flex; flex-direction: column">
+    <button style="flex: 0 0 auto" (click)="toggleVisibility()" mat-raised-button>Toggle 3rd column</button>
+    <button style="flex: 0 0 auto" (click)="addEntry()" mat-raised-button>Add entry</button>
+    <smc-simplemattable [data]="testData" [columns]="columns" [paginator]="true" [filter]="true" (edit)="onEdit($event)"
+                        [sorting]="true" [editable]="true" [addable]="true" [deletable]="true" (add)="onAdd($event)"
+                        addIcon="account_box" [deleteIcon]="'check_box_outline_blank'" [sticky]="true"
+                        fxFlex="1 1 0" [create]="createFn" (delete)="onDelete($event)"></smc-simplemattable>
+  </div>
+  <div style="padding: 10px; height: 500px;">
     <button (click)="toggleVisibility()" mat-raised-button>Toggle 3rd column</button>
     <button (click)="addEntry()" mat-raised-button>Add entry</button>
     <smc-simplemattable [data]="testData" [columns]="columns" [paginator]="true" [filter]="true" (edit)="onEdit($event)"
                         [sorting]="true" [editable]="true" [addable]="true" [deletable]="true" (add)="onAdd($event)"
-                        addIcon="account_box" [deleteIcon]="'check_box_outline_blank'"
+                        addIcon="account_box" [deleteIcon]="'check_box_outline_blank'" [sticky]="true" style="height: 100%;"
+                        [create]="createFn" (delete)="onDelete($event)"></smc-simplemattable>
+  </div>
+  <div style="padding: 10px;">
+    <button (click)="toggleVisibility()" mat-raised-button>Toggle 3rd column</button>
+    <button (click)="addEntry()" mat-raised-button>Add entry</button>
+    <smc-simplemattable [data]="testData" [columns]="columns" [paginator]="true" [filter]="true" (edit)="onEdit($event)"
+                        [sorting]="true" [editable]="true" [addable]="true" [deletable]="true" (add)="onAdd($event)"
+                        addIcon="account_box" [deleteIcon]="'check_box_outline_blank'" [sticky]="false"
                         [create]="createFn" (delete)="onDelete($event)"></smc-simplemattable>
   </div>
   <hr>

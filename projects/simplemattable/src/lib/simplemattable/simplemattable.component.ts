@@ -31,6 +31,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   @Input() saveIcon: string;
   @Input() cancelIcon: string;
   @Input() create: () => T;
+  @Input() sticky: boolean = false;
 
   @Output() delete: EventEmitter<T> = new EventEmitter<T>();
   @Output() edit: EventEmitter<T> = new EventEmitter<T>();

@@ -24,9 +24,9 @@ Current test coverage (Statements/Branches/Functions/Lines): ~93%/~88%/~88%/~92%
     + [Complex model](#complex-model)
     + [Dynamic updates](#dynamic-updates)
     + [TableColumn options](#tablecolumn-options)
-    + [Edit-Mode (Add/Edit/Delete)](#edit-mode-add/edit/delete)
+    + [Edit-Mode](#edit-mode)
 - [Contributing](#contributing)
-- [Versioning](#versioning)
+- [Change History](#change-history)
 - [Upcoming features](#upcoming-features)
 - [Dependencies](#dependencies)
 - [Authors](#authors)
@@ -263,9 +263,9 @@ It must return something that is parsable by the ngStyle directive. For more inf
 You do not need to use !important on ngStyle. For example, you could change the background color depending on id like this even when the column is clickable: 
 `.withNgStyle((id) => ({'background-color': id < 3 ? '#992222' : 'transparent'}))`
 
-### Edit-mode (add/edit/delete)
+### Edit-mode
 
-Edit-mode is a major feature of SimpleMatTable. 
+Edit-mode is a major feature of SimpleMatTable. It allows you to enable the add/edit/delete functionality.
 I will explain this feature using the ComplexTestData example from [the complex model section](#complex-model).
 
 #### Enabling form fields for a column
@@ -477,6 +477,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 1.3 (6.1): Sticky header option, Angular Version updated to 6.1 (6.4 @angular/material)
 + 1.2 (6.0): Customizable icons and initial focus for input fields
 + 1.1 (6.0): Use enter to save on text/number input fields
 + 1.0 (6.0): Edit-mode in all its glory: edit/add/delete with text/largetext/number/date/select inputs
@@ -500,20 +501,22 @@ History (Version in parenthesis is required Angular Version):
 to contribute ([see section Contributing](#contributing)).
 + This library will be updated on every major Angular version following Angular 6. 
 It is not planned to backport SimpleMatTable to any older Angular version.
-+ There might be bugfixes in the future or new unit tests to raise the test coverage.
++ There might be bugfixes or error handling improvements in the future or new unit tests to raise the test coverage.
 
 ## Dependencies
 
-Simplemattable only uses peer dependencies, so you need the following packages (with compatible versions) in your package.json:
+Simplemattable only uses peer dependencies, so for the newest version of simplemattable you need the following packages (with compatible versions) in your package.json:
 
 ```
-"@angular/common": "^6.0.0",
-"@angular/core": "^6.0.0",
-"@angular/material": "^6.0.0",
-"@angular/cdk": "^6.0.0",
-"@angular/platform-browser": "^6.0.0",
-"@angular/flex-layout": "^6.0.0-beta.15"
+"@angular/common": "^6.1.8",
+"@angular/core": "^6.1.8",
+"@angular/material": "^6.4.7",
+"@angular/cdk": "^6.4.7",
+"@angular/platform-browser": "^6.1.8",
+"@angular/flex-layout": "^6.0.0-beta.18"
 ```  
+
+For use with Angular >= 6.0 and < 6.1.8, use Version 1.2 of simplemattable.
 
 ## Authors
 

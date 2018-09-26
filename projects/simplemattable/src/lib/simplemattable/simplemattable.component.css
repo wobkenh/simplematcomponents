@@ -18,3 +18,8 @@
 .no-sort ::ng-deep .mat-sort-header-arrow {
   display: none;
 }
+
+:host {
+  display: flex;
+  flex-direction: column;
+}

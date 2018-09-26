@@ -38,6 +38,17 @@ export class AppComponent implements OnInit {
       new ComplexTestData(1, 40, 'test1', new TestData('Key1', 'Value1', d1)),
       new ComplexTestData(2, 41, '', new TestData('Key2', 'Value2', d2)),
       new ComplexTestData(3, 39, 'test3', new TestData('Key3', 'Value3', d3)),
+      new ComplexTestData(4, 39, 'test3', new TestData('Key3', 'Value3', d3)),
+      new ComplexTestData(5, 39, 'test3', new TestData('Key3', 'Value3', d3)),
+      new ComplexTestData(6, 39, 'test3', new TestData('Key3', 'Value3', d3)),
+      new ComplexTestData(7, 39, 'test3', new TestData('Key3', 'Value3', d3)),
+      new ComplexTestData(1, 40, 'test1', new TestData('Key1', 'Value1', d1)),
+      new ComplexTestData(2, 41, '', new TestData('Key2', 'Value2', d2)),
+      new ComplexTestData(3, 39, 'test3', new TestData('Key3', 'Value3', d3)),
+      new ComplexTestData(4, 39, 'test3', new TestData('Key3', 'Value3', d3)),
+      new ComplexTestData(5, 39, 'test3', new TestData('Key3', 'Value3', d3)),
+      new ComplexTestData(6, 39, 'test3', new TestData('Key3', 'Value3', d3)),
+      new ComplexTestData(7, 39, 'test3', new TestData('Key3', 'Value3', d3))
     ];
 
     const idCol = new TableColumn<ComplexTestData, 'id'>('ID with button', 'id')

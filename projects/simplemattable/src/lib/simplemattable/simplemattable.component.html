@@ -1,173 +1,180 @@
-<div *ngIf="filter">
+<!--<div fxLayout="column" fxFlex="1 1 auto">-->
+<div *ngIf="filter" fxFlex="0 0 auto">
   <mat-form-field style="width: 100%;">
     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
   </mat-form-field>
 </div>
+<div fxFlex="1 1 auto" [ngStyle]="{'overflow': sticky ? 'auto' : 'visible'}">
+  <mat-table #table [dataSource]="dataSource" matSort [matSortDisabled]="!sorting">
+    <ng-container *ngFor="let tcol of getDisplayedCols(this.columns); let columnIndex = index">
+      <ng-container matColumnDef="{{columnIndex.toString() + '_' + tcol.property.toString()}}">
+        <mat-header-cell *matHeaderCellDef [fxFlex]="getFxFlex(tcol)" mat-sort-header [disabled]="!tcol.sortable"
+                         [fxHide.xs]="tcol.hiddenXs || tcol.hiddenSm" [fxHide.sm]="tcol.hiddenSm"
+                         fxLayout="row" [fxLayoutAlign]="getAlign(tcol.align)"
+                         [ngClass]="{'no-sort': !(tcol.sortable && sorting), 'with-sort': tcol.sortable && sorting}">
+          <div [ngStyle.gt-xs]="{'padding': sorting ? isCenterAlign(tcol) ? '0 0 0 18px' : '0 0 0 5px' : '0 5px'}">
+            {{tcol.name}}
+          </div>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element; let rowIndex = index;" [fxFlex]="getFxFlex(tcol)"
+                  [fxHide.xs]="tcol.hiddenXs || tcol.hiddenSm" [fxHide.sm]="tcol.hiddenSm"
+                  (click)="onClick(tcol, element, false)"
+                  fxLayout="row" [fxLayoutAlign]="getAlign(tcol.align)"
+                  [ngClass]="getCellCssClass(tcol, element)"
+                  [ngStyle]="getCellCssStyle(tcol, element)">
 
-<mat-table #table [dataSource]="dataSource" matSort [matSortDisabled]="!sorting">
-  <ng-container *ngFor="let tcol of getDisplayedCols(this.columns); let columnIndex = index">
-    <ng-container matColumnDef="{{columnIndex.toString() + '_' + tcol.property.toString()}}">
-      <mat-header-cell *matHeaderCellDef [fxFlex]="getFxFlex(tcol)" mat-sort-header [disabled]="!tcol.sortable"
-                       [fxHide.xs]="tcol.hiddenXs || tcol.hiddenSm" [fxHide.sm]="tcol.hiddenSm"
-                       fxLayout="row" [fxLayoutAlign]="getAlign(tcol.align)"
-                       [ngClass]="{'no-sort': !(tcol.sortable && sorting), 'with-sort': tcol.sortable && sorting}">
-        <div [ngStyle.gt-xs]="{'padding': sorting ? isCenterAlign(tcol) ? '0 0 0 18px' : '0 0 0 5px' : '0 5px'}">
-          {{tcol.name}}
-        </div>
-      </mat-header-cell>
-      <mat-cell *matCellDef="let element; let rowIndex = index;" [fxFlex]="getFxFlex(tcol)"
-                [fxHide.xs]="tcol.hiddenXs || tcol.hiddenSm" [fxHide.sm]="tcol.hiddenSm"
-                (click)="onClick(tcol, element, false)"
-                fxLayout="row" [fxLayoutAlign]="getAlign(tcol.align)"
-                [ngClass]="getCellCssClass(tcol, element)"
-                [ngStyle]="getCellCssStyle(tcol, element)">
-
-        <!-- FormFields -->
-        <!-- You cannot wrap mat-error or input + mat-error into ng-container -->
-        <!-- for errors: angular material only looks at direct childs of mat-form-field -->
-        <!-- For input + mat-error: ExpressionChangedAfterItHasBeenCheckedError will be thrown if wrapped in
-         a ng-container with formControl input binding when the error message changes -->
-        <!-- No other chance than to tolerate the duplicate code here. -->
-        <ng-container *ngIf="!tcol.button && isEditingColumn(tcol, element)" [ngSwitch]="tcol.formField.formType">
-          <mat-form-field *ngSwitchCase="formFieldType.TEXT" style="width: 100%;padding: 0 5px"
-                          (keyup.enter)="saveElement(rowIndex, element)">
-            <input matInput [formControl]="getFormControl(rowIndex, columnIndex, tcol, element)" type="text"
-                   [placeholder]="tcol.formField.placeholder" [id]="tcol.formField.focus ? 'smt-focus-input' : ''">
-            <mat-error *ngFor="let error of getCurrentErrors(rowIndex, columnIndex, tcol, element);">
-              {{error.msg}}
-            </mat-error>
-            <mat-hint>{{tcol.formField.hint}}</mat-hint>
-          </mat-form-field>
-          <mat-form-field *ngSwitchCase="formFieldType.NUMBER" style="width: 100%;padding: 0 5px"
-                          (keyup.enter)="saveElement(rowIndex, element)">
-            <input matInput type="number" [formControl]="getFormControl(rowIndex, columnIndex, tcol, element)"
-                   [placeholder]="tcol.formField.placeholder" [id]="tcol.formField.focus ? 'smt-focus-input' : ''">
-            <mat-error *ngFor="let error of getCurrentErrors(rowIndex, columnIndex, tcol, element);">
-              {{error.msg}}
-            </mat-error>
-            <mat-hint>{{tcol.formField.hint}}</mat-hint>
-          </mat-form-field>
-          <mat-form-field *ngSwitchCase="formFieldType.DATE" style="width: 98%;">
-            <!-- For whatever reason, you cant wrap the date picker input in a ng-container -->
-            <input matInput [formControl]="getFormControl(rowIndex, columnIndex, tcol, element)"
-                   [id]="tcol.formField.focus ? 'smt-focus-input' : ''"
-                   [ngStyle]="{'text-align': getTextAlign(tcol.align)}" [matDatepicker]="picker"
-                   [placeholder]="tcol.formField.placeholder" (keyup.enter)="saveElement(rowIndex, element)">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-            <mat-error *ngFor="let error of getCurrentErrors(rowIndex, columnIndex, tcol, element);">
-              {{error.msg}}
-            </mat-error>
-            <mat-hint>{{tcol.formField.hint}}</mat-hint>
-          </mat-form-field>
-          <mat-form-field *ngSwitchCase="formFieldType.SELECT" style="width: 100%;padding: 0 5px">
-            <mat-select [formControl]="getFormControl(rowIndex, columnIndex, tcol, element)"
-                        [placeholder]="tcol.formField.placeholder" [id]="tcol.formField.focus ? 'smt-focus-input' : ''">
-              <mat-option *ngFor="let option of getFormFieldOptions(tcol.formField);" [value]="option.value">
-                {{option.display}}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngFor="let error of getCurrentErrors(rowIndex, columnIndex, tcol, element);">
-              {{error.msg}}
-            </mat-error>
-            <mat-hint>{{tcol.formField.hint}}</mat-hint>
-          </mat-form-field>
-          <mat-form-field *ngSwitchCase="formFieldType.LARGE_TEXT" style="width: 100%;padding: 0 5px">
+          <!-- FormFields -->
+          <!-- You cannot wrap mat-error or input + mat-error into ng-container -->
+          <!-- for errors: angular material only looks at direct childs of mat-form-field -->
+          <!-- For input + mat-error: ExpressionChangedAfterItHasBeenCheckedError will be thrown if wrapped in
+           a ng-container with formControl input binding when the error message changes -->
+          <!-- No other chance than to tolerate the duplicate code here. -->
+          <ng-container *ngIf="!tcol.button && isEditingColumn(tcol, element)" [ngSwitch]="tcol.formField.formType">
+            <mat-form-field *ngSwitchCase="formFieldType.TEXT" style="width: 100%;padding: 0 5px"
+                            (keyup.enter)="saveElement(rowIndex, element)">
+              <input matInput [formControl]="getFormControl(rowIndex, columnIndex, tcol, element)" type="text"
+                     [placeholder]="tcol.formField.placeholder" [id]="tcol.formField.focus ? 'smt-focus-input' : ''">
+              <mat-error *ngFor="let error of getCurrentErrors(rowIndex, columnIndex, tcol, element);">
+                {{error.msg}}
+              </mat-error>
+              <mat-hint>{{tcol.formField.hint}}</mat-hint>
+            </mat-form-field>
+            <mat-form-field *ngSwitchCase="formFieldType.NUMBER" style="width: 100%;padding: 0 5px"
+                            (keyup.enter)="saveElement(rowIndex, element)">
+              <input matInput type="number" [formControl]="getFormControl(rowIndex, columnIndex, tcol, element)"
+                     [placeholder]="tcol.formField.placeholder" [id]="tcol.formField.focus ? 'smt-focus-input' : ''">
+              <mat-error *ngFor="let error of getCurrentErrors(rowIndex, columnIndex, tcol, element);">
+                {{error.msg}}
+              </mat-error>
+              <mat-hint>{{tcol.formField.hint}}</mat-hint>
+            </mat-form-field>
+            <mat-form-field *ngSwitchCase="formFieldType.DATE" style="width: 98%;">
+              <!-- For whatever reason, you cant wrap the date picker input in a ng-container -->
+              <input matInput [formControl]="getFormControl(rowIndex, columnIndex, tcol, element)"
+                     [id]="tcol.formField.focus ? 'smt-focus-input' : ''"
+                     [ngStyle]="{'text-align': getTextAlign(tcol.align)}" [matDatepicker]="picker"
+                     [placeholder]="tcol.formField.placeholder" (keyup.enter)="saveElement(rowIndex, element)">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error *ngFor="let error of getCurrentErrors(rowIndex, columnIndex, tcol, element);">
+                {{error.msg}}
+              </mat-error>
+              <mat-hint>{{tcol.formField.hint}}</mat-hint>
+            </mat-form-field>
+            <mat-form-field *ngSwitchCase="formFieldType.SELECT" style="width: 100%;padding: 0 5px">
+              <mat-select [formControl]="getFormControl(rowIndex, columnIndex, tcol, element)"
+                          [placeholder]="tcol.formField.placeholder"
+                          [id]="tcol.formField.focus ? 'smt-focus-input' : ''">
+                <mat-option *ngFor="let option of getFormFieldOptions(tcol.formField);" [value]="option.value">
+                  {{option.display}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngFor="let error of getCurrentErrors(rowIndex, columnIndex, tcol, element);">
+                {{error.msg}}
+              </mat-error>
+              <mat-hint>{{tcol.formField.hint}}</mat-hint>
+            </mat-form-field>
+            <mat-form-field *ngSwitchCase="formFieldType.LARGE_TEXT" style="width: 100%;padding: 0 5px">
             <textarea matInput [formControl]="getFormControl(rowIndex, columnIndex, tcol, element)"
                       style="width: 100%; padding: 2px 0;" [id]="tcol.formField.focus ? 'smt-focus-input' : ''"
                       matTextareaAutosize [matAutosizeMaxRows]="getFormFieldMaxLines(tcol.formField)"
                       [matAutosizeMinRows]="getFormFieldMinLines(tcol.formField)"
                       [placeholder]="tcol.formField.placeholder"></textarea>
-            <mat-error *ngFor="let error of getCurrentErrors(rowIndex, columnIndex, tcol, element);">
-              {{error.msg}}
-            </mat-error>
-            <mat-hint>{{tcol.formField.hint}}</mat-hint>
-          </mat-form-field>
+              <mat-error *ngFor="let error of getCurrentErrors(rowIndex, columnIndex, tcol, element);">
+                {{error.msg}}
+              </mat-error>
+              <mat-hint>{{tcol.formField.hint}}</mat-hint>
+            </mat-form-field>
+          </ng-container>
+
+          <!-- Standardcell: Icon + (Textarea or Span) -->
+          <div *ngIf="!tcol.button && !isEditingColumn(tcol, element)" fxLayout="row" fxLayoutGap="5px"
+               [fxLayoutAlign]="getAlign(tcol.align)" [ngStyle.gt-xs]="{'padding':'0 5px'}" style="width: 100%;">
+            <mat-icon *ngIf="tcol.icon">{{getIconName(tcol, element)}}</mat-icon>
+            <!-- Warning: Do not introduce linebreaks into the textareas content as they will be displayed -->
+            <!-- Be careful when formatting -->
+            <textarea *ngIf="tcol.maxLines && getStringRepresentation(tcol, element)"
+                      matInput matTextareaAutosize [matAutosizeMaxRows]="tcol.maxLines"
+                      [matAutosizeMinRows]="tcol.minLines" [readonly]="true"
+                      [ngStyle]="{'text-align': getTextAlign(tcol.align)}"
+                      [fxHide.xs]="tcol.textHiddenXs || tcol.textHiddenSm"
+                      [fxHide.sm]="tcol.textHiddenSm"
+                      style="width: 100%; padding: 2px 0;">{{getStringRepresentation(tcol, element)}}</textarea>
+            <span style="padding: 2px 0" [fxHide.xs]="tcol.textHiddenXs || tcol.textHiddenSm"
+                  [fxHide.sm]="tcol.textHiddenSm"
+                  *ngIf="!tcol.maxLines && getStringRepresentation(tcol, element)">
+            {{getStringRepresentation(tcol, element)}}
+          </span>
+          </div>
+
+          <!-- Buttoncells -->
+          <button *ngIf="tcol.button === buttonType.BASIC" mat-button [color]="tcol.buttonColor"
+                  (click)="onClick(tcol, element, true)">
+            <mat-icon *ngIf="tcol.icon">{{getIconName(tcol, element)}}</mat-icon>
+            <span style="padding: 2px 0" *ngIf="getStringRepresentation(tcol, element)"
+                  [fxHide.xs]="tcol.textHiddenXs || tcol.textHiddenSm" [fxHide.sm]="tcol.textHiddenSm">
+            {{getStringRepresentation(tcol, element)}}
+          </span>
+          </button>
+          <button *ngIf="tcol.button === buttonType.RAISED" mat-raised-button [color]="tcol.buttonColor"
+                  (click)="onClick(tcol, element, true)">
+            <mat-icon *ngIf="tcol.icon">{{getIconName(tcol, element)}}</mat-icon>
+            <span style="padding: 2px 0" *ngIf="getStringRepresentation(tcol, element)"
+                  [fxHide.xs]="tcol.textHiddenXs || tcol.textHiddenSm" [fxHide.sm]="tcol.textHiddenSm">
+            {{getStringRepresentation(tcol, element)}}
+          </span>
+          </button>
+          <button *ngIf="tcol.button === buttonType.ICON" mat-icon-button [color]="tcol.buttonColor"
+                  (click)="onClick(tcol, element, true)">
+            <mat-icon *ngIf="tcol.icon">{{getIconName(tcol, element)}}</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+    </ng-container>
+
+    <!-- edit/add/delete buttons -->
+    <ng-container *ngIf="editable || deletable || addable" matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef fxFlex="0 0 104px" style="display: flex;justify-content: flex-end;">
+        <button mat-icon-button *ngIf="addable" color="primary" (click)="startAddElement()"
+                [disabled]="currentlyAdding">
+          <mat-icon>{{addIcon ? addIcon : "add_box"}}</mat-icon>
+        </button>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element; let rowIndex = index;" fxFlex="0 0 104px"
+                style="display: flex;justify-content: flex-end;">
+        <ng-container *ngIf="!isLoading(element)">
+          <button *ngIf="editable && !isEditing(element)" mat-icon-button color="primary"
+                  (click)="startEditElement(element)">
+            <mat-icon>{{editIcon ? editIcon : "edit"}}</mat-icon>
+          </button>
+          <button *ngIf="deletable" mat-icon-button color="primary"
+                  (click)="deleteElement(element)">
+            <mat-icon>{{deleteIcon ? deleteIcon : "delete"}}</mat-icon>
+          </button>
+          <ng-container *ngIf="(editable || addable) && isEditing(element)">
+            <button mat-icon-button color="primary" (click)="saveElement(rowIndex, element)"
+                    [disabled]="!isFormValid(rowIndex)">
+              <mat-icon>{{saveIcon ? saveIcon : "save"}}</mat-icon>
+            </button>
+            <button mat-icon-button color="primary" (click)="cancelEditElement(element)">
+              <mat-icon>{{cancelIcon ? cancelIcon : "cancel"}}</mat-icon>
+            </button>
+          </ng-container>
         </ng-container>
-
-        <!-- Standardcell: Icon + (Textarea or Span) -->
-        <div *ngIf="!tcol.button && !isEditingColumn(tcol, element)" fxLayout="row" fxLayoutGap="5px"
-             [fxLayoutAlign]="getAlign(tcol.align)" [ngStyle.gt-xs]="{'padding':'0 5px'}" style="width: 100%;">
-          <mat-icon *ngIf="tcol.icon">{{getIconName(tcol, element)}}</mat-icon>
-          <!-- Warning: Do not introduce linebreaks into the textareas content as they will be displayed -->
-          <!-- Be careful when formatting -->
-          <textarea *ngIf="tcol.maxLines && getStringRepresentation(tcol, element)"
-                    matInput matTextareaAutosize [matAutosizeMaxRows]="tcol.maxLines"
-                    [matAutosizeMinRows]="tcol.minLines" [readonly]="true"
-                    [ngStyle]="{'text-align': getTextAlign(tcol.align)}"
-                    [fxHide.xs]="tcol.textHiddenXs || tcol.textHiddenSm"
-                    [fxHide.sm]="tcol.textHiddenSm"
-                    style="width: 100%; padding: 2px 0;">{{getStringRepresentation(tcol, element)}}</textarea>
-          <span style="padding: 2px 0" [fxHide.xs]="tcol.textHiddenXs || tcol.textHiddenSm"
-                [fxHide.sm]="tcol.textHiddenSm"
-                *ngIf="!tcol.maxLines && getStringRepresentation(tcol, element)">
-            {{getStringRepresentation(tcol, element)}}
-          </span>
-        </div>
-
-        <!-- Buttoncells -->
-        <button *ngIf="tcol.button === buttonType.BASIC" mat-button [color]="tcol.buttonColor"
-                (click)="onClick(tcol, element, true)">
-          <mat-icon *ngIf="tcol.icon">{{getIconName(tcol, element)}}</mat-icon>
-          <span style="padding: 2px 0" *ngIf="getStringRepresentation(tcol, element)"
-                [fxHide.xs]="tcol.textHiddenXs || tcol.textHiddenSm" [fxHide.sm]="tcol.textHiddenSm">
-            {{getStringRepresentation(tcol, element)}}
-          </span>
-        </button>
-        <button *ngIf="tcol.button === buttonType.RAISED" mat-raised-button [color]="tcol.buttonColor"
-                (click)="onClick(tcol, element, true)">
-          <mat-icon *ngIf="tcol.icon">{{getIconName(tcol, element)}}</mat-icon>
-          <span style="padding: 2px 0" *ngIf="getStringRepresentation(tcol, element)"
-                [fxHide.xs]="tcol.textHiddenXs || tcol.textHiddenSm" [fxHide.sm]="tcol.textHiddenSm">
-            {{getStringRepresentation(tcol, element)}}
-          </span>
-        </button>
-        <button *ngIf="tcol.button === buttonType.ICON" mat-icon-button [color]="tcol.buttonColor"
-                (click)="onClick(tcol, element, true)">
-          <mat-icon *ngIf="tcol.icon">{{getIconName(tcol, element)}}</mat-icon>
-        </button>
+        <mat-spinner *ngIf="isLoading(element)" [diameter]="40"></mat-spinner>
       </mat-cell>
     </ng-container>
-  </ng-container>
 
-  <!-- edit/add/delete buttons -->
-  <ng-container *ngIf="editable || deletable || addable" matColumnDef="actions">
-    <mat-header-cell *matHeaderCellDef fxFlex="0 0 104px" style="display: flex;justify-content: flex-end;">
-      <button mat-icon-button *ngIf="addable" color="primary" (click)="startAddElement()" [disabled]="currentlyAdding">
-        <mat-icon>{{addIcon ? addIcon : "add_box"}}</mat-icon>
-      </button>
-    </mat-header-cell>
-    <mat-cell *matCellDef="let element; let rowIndex = index;" fxFlex="0 0 104px"
-              style="display: flex;justify-content: flex-end;">
-      <ng-container *ngIf="!isLoading(element)">
-        <button *ngIf="editable && !isEditing(element)" mat-icon-button color="primary"
-                (click)="startEditElement(element)">
-          <mat-icon>{{editIcon ? editIcon : "edit"}}</mat-icon>
-        </button>
-        <button *ngIf="deletable" mat-icon-button color="primary"
-                (click)="deleteElement(element)">
-          <mat-icon>{{deleteIcon ? deleteIcon : "delete"}}</mat-icon>
-        </button>
-        <ng-container *ngIf="(editable || addable) && isEditing(element)">
-          <button mat-icon-button color="primary" (click)="saveElement(rowIndex, element)"
-                  [disabled]="!isFormValid(rowIndex)">
-            <mat-icon>{{saveIcon ? saveIcon : "save"}}</mat-icon>
-          </button>
-          <button mat-icon-button color="primary" (click)="cancelEditElement(element)">
-            <mat-icon>{{cancelIcon ? cancelIcon : "cancel"}}</mat-icon>
-          </button>
-        </ng-container>
-      </ng-container>
-      <mat-spinner *ngIf="isLoading(element)" [diameter]="40"></mat-spinner>
-    </mat-cell>
-  </ng-container>
+    <!--<mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>-->
+    <!--<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>-->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </mat-table>
+</div>
 
-  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-</mat-table>
-
-<mat-paginator *ngIf="paginator" #pg style="margin-top: 10px"
+<mat-paginator *ngIf="paginator" #pg style="margin-top: 10px" fxFlex="0 0 auto"
                [pageSize]="paginatorPageSize"
                [pageSizeOptions]="paginatorPageSizeOptions"
                [showFirstLastButtons]="true">
 </mat-paginator>
+<!--</div>-->
