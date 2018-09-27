@@ -127,6 +127,8 @@ The paginator, filter and sorting are optional. If omitted, the flags will defau
 The paginater can further be customized by the optional input parameter `[paginatorPageSize]`, which takes a number and sets the initial entries per page count. 
 Also, via `[paginatorPageSizeOptions]`, which takes a number array, you can change the pagesize options that will be selectable in the paginator.
 
+You can make the header of the table sticky using the `[sticky]` flag. The sticky header is turned off by default.  
+
 If you want to enable adding/editing/deleting of elements in the table, have a look at [the section about edit-mode](#edit-mode-addeditdelete).
 
 ### Complex Model

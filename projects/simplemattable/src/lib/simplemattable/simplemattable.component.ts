@@ -217,6 +217,11 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     controls.forEach(control => {
       const tcol: TableColumn<T, any> = this.getDisplayedCols(this.columns)[control.col];
       const val = control.control.value;
+      if (element[tcol.property] instanceof Object && !(element[tcol.property] instanceof Date) && !tcol.formField.apply) {
+        throw Error('Could not map value "' + val + '" to property "' + tcol.property + '". ' +
+          'Please consider adding the onInit and onApply functions to the FormField of the "' + tcol.name + '"-column. ' +
+          'For more information on this, see the simplemattable docs on npm or github.');
+      }
       element[tcol.property] = tcol.formField.apply ? tcol.formField.apply(val, element[tcol.property], element) : val;
     });
     this.dataStatus.get(oldElement).loading = true;

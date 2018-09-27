@@ -71,6 +71,15 @@ export class AppComponent implements OnInit {
         {key: 'required', msg: 'Value is required!'},
         {key: 'min', msg: 'Value should be at least 25!'}
       ]));
+    const testErrorCol = new TableColumn<ComplexTestData, 'data'>('Profile', 'data')
+      .withTransform(data => data.value);
+    testErrorCol.withFormField(testErrorCol.getSelectFormField<string>()
+      .withOptions([
+        {display: 'Valideur', value: 'Valideur'},
+        {display: 'Pilote', value: 'Pilote'},
+        {display: 'Admin', value: 'Admin'},
+        {display: 'Operateur', value: 'Operateur'},
+      ]).withPlaceholder('Profil'));
     const des2Col = new TableColumn<ComplexTestData, 'description'>('Description2', 'description')
       .isVisible(false)
       .withAlign(Align.LEFT)
@@ -112,7 +121,7 @@ export class AppComponent implements OnInit {
         return data;
       })
     );
-    this.columns = [idCol, desCol, des2Col, valueCol, keyCol, valCol, dateCol];
+    this.columns = [idCol, testErrorCol, desCol, des2Col, valueCol, keyCol, valCol, dateCol];
   }
 
   pastDateValidator = (control: AbstractControl) => control.value < new Date() ? null : {'pastDate': true};
