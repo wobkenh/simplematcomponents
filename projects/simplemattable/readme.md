@@ -479,6 +479,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 1.4 (7.0): Updated to Angular 7
 + 1.3 (6.1): Sticky header option, Angular Version updated to 6.1 (6.4 @angular/material)
 + 1.2 (6.0): Customizable icons and initial focus for input fields
 + 1.1 (6.0): Use enter to save on text/number input fields
@@ -510,15 +511,16 @@ It is not planned to backport SimpleMatTable to any older Angular version.
 Simplemattable only uses peer dependencies, so for the newest version of simplemattable you need the following packages (with compatible versions) in your package.json:
 
 ```
-"@angular/common": "^6.1.8",
-"@angular/core": "^6.1.8",
-"@angular/material": "^6.4.7",
-"@angular/cdk": "^6.4.7",
-"@angular/platform-browser": "^6.1.8",
-"@angular/flex-layout": "^6.0.0-beta.18"
+"@angular/common": "^7.0.0",
+"@angular/core": "^7.0.0",
+"@angular/material": "^7.0.0",
+"@angular/cdk": "^7.0.0",
+"@angular/platform-browser": "^7.0.0",
+"@angular/flex-layout": "^7.0.0-beta.19"
 ```  
 
-For use with Angular >= 6.0 and < 6.1.8, use Version 1.2 of simplemattable.
++ For use with Angular >= 6.0 and < 6.1.8, use Version 1.2 of simplemattable.
++ For use with Angular >= 6.1.8 and < 7.0, use Version 1.3 of simplemattable.
 
 ## Authors
 
