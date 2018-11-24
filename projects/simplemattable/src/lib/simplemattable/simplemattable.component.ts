@@ -50,6 +50,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   // There may only be one form control per cell
   // FormControls are identified by <rowIndex>_<colIndex>
   formControls: Map<string, AbstractControl> = new Map<string, AbstractControl>();
+  colFilterFormControls = new Map<TableColumn<T, any>, AbstractControl>();
 
   buttonType = ButtonType;
   formFieldType = FormFieldType;
@@ -75,6 +76,21 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
     this.dataSource.filter = filterValue;
+    if (this.dataSource.filter.length === 0 && this.hasColumnFilter()) {
+      this.dataSource.filter = '  ';
+    }
+  }
+
+  applyColFilter() {
+    const len = this.dataSource.filter.length - 1;
+    if (this.dataSource.filter.charAt(len) !== ' ') {
+      this.dataSource.filter = (this.dataSource.filter + ' ');
+    } else {
+      this.dataSource.filter = this.dataSource.filter.substring(0, len);
+    }
+    if (this.dataSource.filter === '') {
+      this.dataSource.filter = '  ';
+    }
   }
 
   /**
@@ -150,6 +166,10 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
       this.formControls.set(id, control);
       return control;
     }
+  }
+
+  getColFilterFormControl(tableColumn: TableColumn<T, any>): AbstractControl {
+    return this.colFilterFormControls.get(tableColumn);
   }
 
   /**
@@ -304,6 +324,8 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   getAlign = (align: Align): string => align === Align.LEFT ? 'start center' : align === Align.CENTER ? 'center center' : 'end center';
   getTextAlign = (align: Align): string => align === Align.LEFT ? 'start' : align === Align.CENTER ? 'center' : 'end';
   isCenterAlign = (tcol: TableColumn<T, any>): boolean => tcol.align === Align.CENTER;
+  hasColumnFilter = (): boolean => this.getDisplayedCols(this.columns).some(tcol => tcol.colFilter);
+  getTableHeaderStyle = (): Object => this.hasColumnFilter() ? {height: '66px'} : {};
 
   arrayToObject(arr: string[]): Object { // turn ['css-class-a', 'css-class-b'] into {'css-class-a': true, 'css-class-b': true}
     return arr.reduce((acc, entry) => {
@@ -394,7 +416,17 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
       this.turnOffSorting(); // If columns are changed, resorting might cause bugs
       this.recreateDataSource();
       this.cleanUpAfterColChange();
+      this.recreateColFilters();
     }
+  }
+
+  private recreateColFilters() {
+    this.colFilterFormControls.clear();
+    this.getDisplayedCols(this.columns)
+      .filter(tcol => tcol.colFilter)
+      .forEach(tcol => {
+        this.colFilterFormControls.set(tcol, this.fb.control(''));
+      });
   }
 
   private cleanUpAfterColChange() {
@@ -430,9 +462,27 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   private recreateDataSource() {
     if (this.columns && this.data) {
       this.dataSource = new MatTableDataSource(this.data);
-      this.dataSource.filterPredicate = (data: T, filter: string) =>
-        this.columns.reduce((str, col) => str + this.getStringRepresentation(col, data).toLowerCase().trim(), '')
+      this.dataSource.filterPredicate = (data: T, filter: string) => {
+        const allFilter = this.columns.reduce((str, col) => str + this.getStringRepresentation(col, data).toLowerCase().trim(), '')
           .indexOf(filter.toLowerCase().trim()) >= 0;
+        if (!this.hasColumnFilter() || !allFilter) {
+          return allFilter;
+        }
+
+        // Iterate over colFilterMap to apply filters
+        const mapEntries = this.colFilterFormControls.entries();
+        let entry = mapEntries.next();
+        while (!entry.done) {
+          const tcol = entry.value[0];
+          const control = entry.value[1];
+          if (this.getStringRepresentation(tcol, data).toLowerCase().trim().indexOf(control.value.toString().toLowerCase().trim()) === -1) {
+            return false;
+          }
+          entry = mapEntries.next();
+        }
+        return true;
+      };
+
 
       if (this.paginator) {
         this.dataSource.paginator = this.matPaginator;

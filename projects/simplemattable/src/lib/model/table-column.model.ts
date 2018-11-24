@@ -30,6 +30,7 @@ export class TableColumn<T, P extends keyof T> {
   public ngClass: (data: T[P], dataParent: T) => string | string[] | Object;
   public ngStyle: (data: T[P], dataParent: T) => Object;
   public formField: AbstractFormField<T, P, any>;
+  public colFilter: boolean = false;
 
   constructor(public name: string,
               public property: P) {
@@ -250,6 +251,14 @@ export class TableColumn<T, P extends keyof T> {
    */
   public withNgStyle(ngStyleFn: (data: T[P], dataParent: T) => Object) {
     this.ngStyle = ngStyleFn;
+    return this;
+  }
+
+  /**
+   * Will enable Column-Specific string search.
+   */
+  public withColFilter() {
+    this.colFilter = true;
     return this;
   }
 

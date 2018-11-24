@@ -12,10 +12,21 @@
                          [fxHide.xs]="tcol.hiddenXs || tcol.hiddenSm" [fxHide.sm]="tcol.hiddenSm"
                          fxLayout="row" [fxLayoutAlign]="getAlign(tcol.align)"
                          [ngClass]="{'no-sort': !(tcol.sortable && sorting), 'with-sort': tcol.sortable && sorting}">
-          <div [ngStyle.gt-xs]="{'padding': sorting ? isCenterAlign(tcol) ? '0 0 0 18px' : '0 0 0 5px' : '0 5px'}">
+          <div [ngStyle.gt-xs]="{'padding': sorting ? isCenterAlign(tcol) ? '0 0 0 18px' : '0 0 0 5px' : '0 5px'}"
+               *ngIf="!tcol.colFilter">
             {{tcol.name}}
           </div>
+          <div fxLayout="column" *ngIf="tcol.colFilter">
+            <div [ngStyle.gt-xs]="{'padding': sorting ? isCenterAlign(tcol) ? '0 0 0 18px' : '0 0 0 5px' : '0 5px'}">
+              {{tcol.name}}
+            </div>
+            <mat-form-field style="width: 100%;">
+              <input matInput placeholder="Filter" [formControl]="getColFilterFormControl(tcol)"
+                     (keyup)="applyColFilter()" (click)="$event.stopPropagation()">
+            </mat-form-field>
+          </div>
         </mat-header-cell>
+
         <mat-cell *matCellDef="let element; let rowIndex = index;" [fxFlex]="getFxFlex(tcol)"
                   [fxHide.xs]="tcol.hiddenXs || tcol.hiddenSm" [fxHide.sm]="tcol.hiddenSm"
                   (click)="onClick(tcol, element, false)"
@@ -165,9 +176,7 @@
       </mat-cell>
     </ng-container>
 
-    <!--<mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>-->
-    <!--<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>-->
-    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" [ngStyle]="getTableHeaderStyle()"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </mat-table>
 </div>
@@ -177,4 +186,3 @@
                [pageSizeOptions]="paginatorPageSizeOptions"
                [showFirstLastButtons]="true">
 </mat-paginator>
-<!--</div>-->

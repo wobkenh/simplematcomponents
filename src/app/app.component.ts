@@ -57,8 +57,10 @@ export class AppComponent implements OnInit {
       .withButtonColor('primary')
       .withWidth(Width.px(125))
       .isTextHiddenXs(true);
-    const desCol = new TableColumn<ComplexTestData, 'description'>('Description', 'description');
-    const valueCol = new TableColumn<ComplexTestData, 'value'>('Number with select', 'value');
+    const desCol = new TableColumn<ComplexTestData, 'description'>('Description', 'description')
+      .withColFilter();
+    const valueCol = new TableColumn<ComplexTestData, 'value'>('Number with select', 'value')
+      .withColFilter();
     valueCol.withFormField(valueCol.getSelectFormField<number>()
       .withOptions([
         {display: '39', value: 39},
@@ -102,6 +104,7 @@ export class AppComponent implements OnInit {
       .isHiddenXs(true)
       .withNgClass(() => 'red-bg-cell')
       .withIcon(() => 'menu')
+      .withColFilter()
       .withTransform((data) => data.value);
     const dateCol = new TableColumn<ComplexTestData, 'data'>('Date right align', 'data')
       .withTransform((data) => this.getDateStr(data.date))

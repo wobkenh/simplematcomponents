@@ -8,7 +8,7 @@
   <div style="padding: 10px; height: 500px; display: flex; flex-direction: column">
     <button style="flex: 0 0 auto" (click)="toggleVisibility()" mat-raised-button>Toggle 3rd column</button>
     <button style="flex: 0 0 auto" (click)="addEntry()" mat-raised-button>Add entry</button>
-    <smc-simplemattable [data]="testData" [columns]="columns" [paginator]="true" [filter]="true" (edit)="onEdit($event)"
+    <smc-simplemattable [data]="testData" [columns]="columns" [paginator]="true" [filter]="false" (edit)="onEdit($event)"
                         [sorting]="true" [editable]="true" [addable]="true" [deletable]="true" (add)="onAdd($event)"
                         addIcon="account_box" [deleteIcon]="'check_box_outline_blank'" [sticky]="true"
                         style="flex: 1 1 auto" [create]="createFn" (delete)="onDelete($event)"></smc-simplemattable>

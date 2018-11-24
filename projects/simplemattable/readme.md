@@ -265,6 +265,12 @@ It must return something that is parsable by the ngStyle directive. For more inf
 You do not need to use !important on ngStyle. For example, you could change the background color depending on id like this even when the column is clickable: 
 `.withNgStyle((id) => ({'background-color': id < 3 ? '#992222' : 'transparent'}))`
 
+- colFilter: (`.withColFilter()`): When activated, displays a column filter input below the header cell of the column. 
+The column filter works just like the filter feature of the table, but only filters rows using the values of the column.
+INFO: When using colFilter combined with sorting, pressing space while being in the column filter input will 
+trigger the sorting direction to change. If you have any idea of how to fix this, 
+feel free to give me a hint or to submit a pull request.
+
 ### Edit-mode
 
 Edit-mode is a major feature of SimpleMatTable. It allows you to enable the add/edit/delete functionality.
@@ -479,6 +485,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 1.5 (7.0): Filter for Columns
 + 1.4 (7.0): Updated to Angular 7
 + 1.3 (6.1): Sticky header option, Angular Version updated to 6.1 (6.4 @angular/material)
 + 1.2 (6.0): Customizable icons and initial focus for input fields
