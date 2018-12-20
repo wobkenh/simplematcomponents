@@ -14,6 +14,7 @@ import {AbstractControl, Validators} from '@angular/forms';
 export class AppComponent implements OnInit {
   testData: ComplexTestData[];
   columns: TableColumn<any, any>[] = [];
+  columns2: TableColumn<any, any>[] = [];
   isInfoOpen = true;
   isErrorOpen = true;
   isWarnOpen = true;
@@ -58,7 +59,8 @@ export class AppComponent implements OnInit {
       .withWidth(Width.px(125))
       .isTextHiddenXs(true);
     const desCol = new TableColumn<ComplexTestData, 'description'>('Description', 'description')
-      .withColFilter();
+      .withColFilter()
+      .isHiddenSm(true);
     const valueCol = new TableColumn<ComplexTestData, 'value'>('Number with select', 'value')
       .withColFilter();
     valueCol.withFormField(valueCol.getSelectFormField<number>()
@@ -125,6 +127,7 @@ export class AppComponent implements OnInit {
       })
     );
     this.columns = [idCol, testErrorCol, desCol, des2Col, valueCol, keyCol, valCol, dateCol];
+    this.columns2 = [idCol, desCol, des2Col, valueCol, keyCol, valCol, dateCol];
   }
 
   pastDateValidator = (control: AbstractControl) => control.value < new Date() ? null : {'pastDate': true};
@@ -132,6 +135,10 @@ export class AppComponent implements OnInit {
 
   toggleVisibility() {
     this.columns[2].visible = !this.columns[2].visible;
+  }
+
+  toggleVisibility2() {
+    this.columns2[2].visible = !this.columns2[2].visible;
   }
 
   addEntry() {

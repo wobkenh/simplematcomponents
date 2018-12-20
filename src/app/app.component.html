@@ -14,9 +14,9 @@
                         style="flex: 1 1 auto" [create]="createFn" (delete)="onDelete($event)"></smc-simplemattable>
   </div>
   <div style="padding: 10px;">
-    <button (click)="toggleVisibility()" mat-raised-button>Toggle 3rd column</button>
+    <button (click)="toggleVisibility2()" mat-raised-button>Toggle 3rd column</button>
     <button (click)="addEntry()" mat-raised-button>Add entry</button>
-    <smc-simplemattable [data]="testData" [columns]="columns" [paginator]="true" [filter]="true" (edit)="onEdit($event)"
+    <smc-simplemattable [data]="testData" [columns]="columns2" [paginator]="true" [filter]="true" (edit)="onEdit($event)"
                         [sorting]="true" [editable]="true" [addable]="true" [deletable]="true" (add)="onAdd($event)"
                         addIcon="account_box" [deleteIcon]="'check_box_outline_blank'" [sticky]="false"
                         [create]="createFn" (delete)="onDelete($event)"></smc-simplemattable>
