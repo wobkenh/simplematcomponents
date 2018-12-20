@@ -8,28 +8,27 @@
   <mat-table #table [dataSource]="dataSource" matSort [matSortDisabled]="!sorting">
     <ng-container *ngFor="let tcol of getDisplayedCols(this.columns); let columnIndex = index">
       <ng-container matColumnDef="{{columnIndex.toString() + '_' + tcol.property.toString()}}">
-        <mat-header-cell *matHeaderCellDef [fxFlex]="getFxFlex(tcol)">
+        <mat-header-cell *matHeaderCellDef [fxFlex]="getFxFlex(tcol)" [fxHide.xs]="tcol.hiddenXs || tcol.hiddenSm"
+                         [fxHide.sm]="tcol.hiddenSm">
           <div [ngStyle.gt-xs]="{'padding': sorting ? isCenterAlign(tcol) ? '0 0 0 18px' : '0 0 0 5px' : '0 5px'}"
                *ngIf="!tcol.colFilter">
             <span mat-sort-header [disabled]="!tcol.sortable"
-              [fxHide.xs]="tcol.hiddenXs || tcol.hiddenSm" [fxHide.sm]="tcol.hiddenSm"
-              fxLayout="row" [fxLayoutAlign]="getAlign(tcol.align)"
-              [ngClass]="{'no-sort': !(tcol.sortable && sorting), 'with-sort': tcol.sortable && sorting}">
+                  fxLayout="row" [fxLayoutAlign]="getAlign(tcol.align)"
+                  [ngClass]="{'no-sort': !(tcol.sortable && sorting), 'with-sort': tcol.sortable && sorting}">
                 {{tcol.name}}
               </span>
           </div>
           <div fxLayout="column" *ngIf="tcol.colFilter">
             <div [ngStyle.gt-xs]="{'padding': sorting ? isCenterAlign(tcol) ? '0 0 0 18px' : '0 0 0 5px' : '0 5px'}">
               <span mat-sort-header [disabled]="!tcol.sortable"
-                [fxHide.xs]="tcol.hiddenXs || tcol.hiddenSm" [fxHide.sm]="tcol.hiddenSm"
-                fxLayout="row" [fxLayoutAlign]="getAlign(tcol.align)"
-                [ngClass]="{'no-sort': !(tcol.sortable && sorting), 'with-sort': tcol.sortable && sorting}">
+                    fxLayout="row" [fxLayoutAlign]="getAlign(tcol.align)"
+                    [ngClass]="{'no-sort': !(tcol.sortable && sorting), 'with-sort': tcol.sortable && sorting}">
                   {{tcol.name}}
               </span>
             </div>
             <mat-form-field style="width: 100%;">
               <input matInput placeholder="Filter" [formControl]="getColFilterFormControl(tcol)"
-                     (keyup)="applyColFilter($event)" (click)="$event.stopPropagation()">
+                     (keyup)="applyColFilter()" (click)="$event.stopPropagation()">
             </mat-form-field>
           </div>
         </mat-header-cell>

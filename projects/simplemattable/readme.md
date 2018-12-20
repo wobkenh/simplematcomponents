@@ -35,7 +35,7 @@ Current test coverage (Statements/Branches/Functions/Lines): ~93%/~88%/~88%/~92%
 ## Prerequisites
 
 Simplemattable is for use with Angular Material Design only. As of the first version, 
-it requires Angular Material 6.0 or above. Also make sure to add @angular/flex-layout to your list of dependencies.
+it requires Angular Material 6.0. Later Versions require Angular Material 7.0 or above. Also make sure to add @angular/flex-layout to your list of dependencies.
 
 For a detailed list of neccessary dependencies, see [section Dependencies](#dependencies).
 
@@ -267,9 +267,6 @@ You do not need to use !important on ngStyle. For example, you could change the 
 
 - colFilter: (`.withColFilter()`): When activated, displays a column filter input below the header cell of the column. 
 The column filter works just like the filter feature of the table, but only filters rows using the values of the column.
-INFO: When using colFilter combined with sorting, pressing space while being in the column filter input will 
-trigger the sorting direction to change. If you have any idea of how to fix this, 
-feel free to give me a hint or to submit a pull request.
 
 ### Edit-mode
 
