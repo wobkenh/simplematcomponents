@@ -306,11 +306,13 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    */
 
   getStringRepresentation(tcol: TableColumn<T, any>, element: T): string {
-     if (element[tcol.property]) {
-         return tcol.transform ? tcol.transform(element[tcol.property], element) : element[tcol.property].toString();
-     } else {
-         return '';
-     }
+    if (tcol.transform) {
+      return tcol.transform(element[tcol.property], element);
+    } else if (element[tcol.property] === null || element[tcol.property] === undefined) {
+      return '';
+    } else {
+      return element[tcol.property].toString();
+    }
   }
 
   private isButtonClickable = (tcol: TableColumn<T, any>) => tcol.onClick && tcol.button;
