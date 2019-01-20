@@ -4,8 +4,11 @@ import {SimplemattableComponent} from './simplemattable.component';
 import {Component, ViewChild} from '@angular/core';
 import {TableColumn} from '../model/table-column.model';
 import {
-  MatButtonModule, MatCommonModule, MatDatepickerModule,
-  MatIconModule, MatInputModule,
+  MatButtonModule,
+  MatCommonModule,
+  MatDatepickerModule,
+  MatIconModule,
+  MatInputModule,
   MatNativeDateModule,
   MatPaginatorModule,
   MatProgressSpinnerModule,
@@ -13,13 +16,12 @@ import {
   MatSortModule,
   MatTableModule
 } from '@angular/material';
-import {AbstractControl, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {CommonModule} from '@angular/common';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {Align} from '../model/align.model';
 import {ButtonType} from '../model/button-type.model';
-import {FormError} from '../model/form-error.model';
 import {LargeTextFormField} from '../model/large-text-form-field.model';
 import {SelectFormField} from '../model/select-form-field.model';
 import {Width} from '../model/width.model';
@@ -295,8 +297,16 @@ describe('TestcompComponent', () => {
     const tcol = hostComponent.tcolUnused;
     const data = new ComplexTestData(42, new TestData('4', 2, new Date()));
     expect(smt.getStringRepresentation(tcol, data)).toBe('42');
+    data.id = 0; // Check that there is no falsy bug
+    expect(smt.getStringRepresentation(tcol, data)).toBe('0');
+    data.id = 42;
     tcol.withTransform(id => (id * 2).toString());
     expect(smt.getStringRepresentation(tcol, data)).toBe('84');
+    delete data.id;
+    tcol.withTransform(null);
+    expect(smt.getStringRepresentation(tcol, data)).toBe('');
+    tcol.withTransform(id => !id ? 'test' : 'no test');
+    expect(smt.getStringRepresentation(tcol, data)).toBe('test');
   });
   it('is clickable functions', () => {
     const tcol = hostComponent.tcolPlain;
@@ -579,7 +589,7 @@ describe('TestcompComponent', () => {
       smt = hostComponent.simplemattable;
       testHostFixture.detectChanges();
     };
-    expect(fn()).toThrowError();
+    expect(fn).toThrowError();
   });
 
   @Component({
