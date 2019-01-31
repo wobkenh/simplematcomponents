@@ -380,9 +380,12 @@ describe('TestcompComponent', () => {
   });
   it('fxflex and align', () => {
     const tcol = hostComponent.tcolPlain;
-    expect(smt.getHeaderAlign(Align.LEFT)).toBe('start end');
-    expect(smt.getHeaderAlign(Align.CENTER)).toBe('center end');
-    expect(smt.getHeaderAlign(Align.RIGHT)).toBe('end end');
+    expect(smt.getHeaderFilterAlign(Align.LEFT)).toBe('start end');
+    expect(smt.getHeaderFilterAlign(Align.CENTER)).toBe('center end');
+    expect(smt.getHeaderFilterAlign(Align.RIGHT)).toBe('end end');
+    expect(smt.getHeaderNoFilterAlign(Align.LEFT)).toBe('start center');
+    expect(smt.getHeaderNoFilterAlign(Align.CENTER)).toBe('center center');
+    expect(smt.getHeaderNoFilterAlign(Align.RIGHT)).toBe('end center');
     expect(smt.getCellAlign(Align.LEFT)).toBe('start center');
     expect(smt.getCellAlign(Align.CENTER)).toBe('center center');
     expect(smt.getCellAlign(Align.RIGHT)).toBe('end center');
@@ -406,6 +409,12 @@ describe('TestcompComponent', () => {
     expect(smt.isCenterAlign(tcol)).toBe(false);
     tcol.withAlign(Align.RIGHT);
     expect(smt.isCenterAlign(tcol)).toBe(false);
+    tcol.withAlign(Align.CENTER);
+    expect(smt.isLeftAlign(tcol)).toBe(false);
+    tcol.withAlign(Align.LEFT);
+    expect(smt.isLeftAlign(tcol)).toBe(true);
+    tcol.withAlign(Align.RIGHT);
+    expect(smt.isLeftAlign(tcol)).toBe(false);
   });
   it('array to object, iterator to array, deep copy', () => {
     // array to object
