@@ -380,9 +380,12 @@ describe('TestcompComponent', () => {
   });
   it('fxflex and align', () => {
     const tcol = hostComponent.tcolPlain;
-    expect(smt.getAlign(Align.LEFT)).toBe('start center');
-    expect(smt.getAlign(Align.CENTER)).toBe('center center');
-    expect(smt.getAlign(Align.RIGHT)).toBe('end center');
+    expect(smt.getHeaderAlign(Align.LEFT)).toBe('start end');
+    expect(smt.getHeaderAlign(Align.CENTER)).toBe('center end');
+    expect(smt.getHeaderAlign(Align.RIGHT)).toBe('end end');
+    expect(smt.getCellAlign(Align.LEFT)).toBe('start center');
+    expect(smt.getCellAlign(Align.CENTER)).toBe('center center');
+    expect(smt.getCellAlign(Align.RIGHT)).toBe('end center');
     expect(smt.getTextAlign(Align.LEFT)).toBe('start');
     expect(smt.getTextAlign(Align.CENTER)).toBe('center');
     expect(smt.getTextAlign(Align.RIGHT)).toBe('end');
