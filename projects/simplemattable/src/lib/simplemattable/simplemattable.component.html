@@ -9,11 +9,11 @@
     <ng-container *ngFor="let tcol of getDisplayedCols(this.columns); let columnIndex = index">
       <ng-container matColumnDef="{{columnIndex.toString() + '_' + tcol.property.toString()}}">
         <mat-header-cell *matHeaderCellDef [fxFlex]="getFxFlex(tcol)" [fxHide.xs]="tcol.hiddenXs || tcol.hiddenSm"
+                         fxLayout="row" [fxLayoutAlign]="getHeaderAlign(tcol.align)"
                          [fxHide.sm]="tcol.hiddenSm">
           <div [ngStyle.gt-xs]="{'padding': sorting ? isCenterAlign(tcol) ? '0 0 0 18px' : '0 0 0 5px' : '0 5px'}"
                *ngIf="!tcol.colFilter">
             <span mat-sort-header [disabled]="!tcol.sortable"
-                  fxLayout="row" [fxLayoutAlign]="getAlign(tcol.align)"
                   [ngClass]="{'no-sort': !(tcol.sortable && sorting), 'with-sort': tcol.sortable && sorting}">
                 {{tcol.name}}
               </span>
@@ -21,12 +21,11 @@
           <div fxLayout="column" *ngIf="tcol.colFilter">
             <div [ngStyle.gt-xs]="{'padding': sorting ? isCenterAlign(tcol) ? '0 0 0 18px' : '0 0 0 5px' : '0 5px'}">
               <span mat-sort-header [disabled]="!tcol.sortable"
-                    fxLayout="row" [fxLayoutAlign]="getAlign(tcol.align)"
                     [ngClass]="{'no-sort': !(tcol.sortable && sorting), 'with-sort': tcol.sortable && sorting}">
                   {{tcol.name}}
               </span>
             </div>
-            <mat-form-field style="width: 100%;">
+            <mat-form-field style="width: 100%;" [ngStyle]="{'left': sorting ? isCenterAlign(tcol) ? '18px' : '5px' : '5px'}">
               <input matInput placeholder="Filter" [formControl]="getColFilterFormControl(tcol)"
                      (keyup)="applyColFilter()" (click)="$event.stopPropagation()">
             </mat-form-field>
@@ -36,7 +35,7 @@
         <mat-cell *matCellDef="let element; let rowIndex = index;" [fxFlex]="getFxFlex(tcol)"
                   [fxHide.xs]="tcol.hiddenXs || tcol.hiddenSm" [fxHide.sm]="tcol.hiddenSm"
                   (click)="onClick(tcol, element, false)"
-                  fxLayout="row" [fxLayoutAlign]="getAlign(tcol.align)"
+                  fxLayout="row" [fxLayoutAlign]="getCellAlign(tcol.align)"
                   [ngClass]="getCellCssClass(tcol, element)"
                   [ngStyle]="getCellCssStyle(tcol, element)">
 
@@ -106,7 +105,7 @@
 
           <!-- Standardcell: Icon + (Textarea or Span) -->
           <div *ngIf="!tcol.button && !isEditingColumn(tcol, element)" fxLayout="row" fxLayoutGap="5px"
-               [fxLayoutAlign]="getAlign(tcol.align)" [ngStyle.gt-xs]="{'padding':'0 5px'}" style="width: 100%;">
+               [fxLayoutAlign]="getCellAlign(tcol.align)" [ngStyle.gt-xs]="{'padding':'0 5px'}" style="width: 100%;">
             <mat-icon *ngIf="tcol.icon">{{getIconName(tcol, element)}}</mat-icon>
             <!-- Warning: Do not introduce linebreaks into the textareas content as they will be displayed -->
             <!-- Be careful when formatting -->
