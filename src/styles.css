@@ -5,3 +5,7 @@
   background: #992222!important;
   color: white;
 }
+
+smc-simplemattable .mat-form-field-infix {
+  width: 100%!important;
+}

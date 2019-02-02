@@ -14,7 +14,7 @@
           <div fxLayout="column" *ngIf="!tcol.colFilter">
             <div [ngStyle.gt-xs]="{'padding': sorting ? isCenterAlign(tcol) ? '0 0 0 18px' : '0 0 0 5px' : '0 5px'}">
               <span mat-sort-header [disabled]="!tcol.sortable" fxLayout="row" [fxLayoutAlign]="getTextAlign(tcol.align)"
-                  [ngClass]="{'no-sort': !(tcol.sortable && sorting), 'with-sort': tcol.sortable && sorting}">
+                    [ngClass]="{'no-sort': !(tcol.sortable && sorting), 'with-sort': tcol.sortable && sorting}">
                 {{tcol.name}}
               </span>
             </div>
@@ -26,11 +26,12 @@
                   {{tcol.name}}
               </span>
             </div>
-            <mat-form-field style="width: 100%;" [ngStyle]="{'left': sorting ? isCenterAlign(tcol) ? '18px' : isLeftAlign(tcol) ? '5px' : '0px' : isLeftAlign(tcol) ? '5px' : '0px'
-                                                            ,'text-align': getTextAlign(tcol.align)}">
-              <input matInput placeholder="Filter" [formControl]="getColFilterFormControl(tcol)"
-                     (keyup)="applyColFilter()" (click)="$event.stopPropagation()">
-            </mat-form-field>
+            <div style="padding: 0 5px">
+              <mat-form-field [ngStyle]="{'text-align': getTextAlign(tcol.align)}">
+                <input matInput placeholder="Filter" [formControl]="getColFilterFormControl(tcol)"
+                       (keyup)="applyColFilter()" (click)="$event.stopPropagation()">
+              </mat-form-field>
+            </div>
           </div>
         </mat-header-cell>
 
