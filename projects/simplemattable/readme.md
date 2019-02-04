@@ -266,12 +266,23 @@ You do not need to use !important on ngStyle. For example, you could change the 
 `.withNgStyle((id) => ({'background-color': id < 3 ? '#992222' : 'transparent'}))`
 
 - colFilter: (`.withColFilter()`): When activated, displays a column filter input below the header cell of the column. 
-The column filter works just like the filter feature of the table, but only filters rows using the values of the column.
+The column filter works just like the filter feature of the table, but only filters rows using the values of the column. If you have problems with the width of the filter input, 
+have a look at the info in the Edit-mode chapter below.
 
 ### Edit-mode
 
 Edit-mode is a major feature of SimpleMatTable. It allows you to enable the add/edit/delete functionality.
 I will explain this feature using the ComplexTestData example from [the complex model section](#complex-model).
+
+INFO: If you have problems with form fields staying at 180px,
+try overriding the width property of the css class `.mat-form-field-infix` in your global style. This means putting the following code into your global style.css:
+```
+smc-simplemattable .mat-form-field-infix {
+  width: 100%!important;
+}
+``` 
+`.mat-form-field-infix` is a css class provided and used by Angular Material Design and not by simplemattable, 
+so it is your choice whether or not to touch it. 
 
 #### Enabling form fields for a column
 
@@ -482,6 +493,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 1.6 (7.0): Multiline header cells
 + 1.5 (7.0): Filter for Columns
 + 1.4 (7.0): Updated to Angular 7
 + 1.3 (6.1): Sticky header option, Angular Version updated to 6.1 (6.4 @angular/material)

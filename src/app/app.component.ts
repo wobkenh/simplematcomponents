@@ -36,20 +36,20 @@ export class AppComponent implements OnInit {
     d3.setMonth(3);
     d3.setFullYear(2017);
     this.testData = [
-      new ComplexTestData(1, 40, 'test1', new TestData('Key1', 'Value1', d1)),
-      new ComplexTestData(2, 41, '', new TestData('Key2', 'Value2', d2)),
-      new ComplexTestData(3, 39, 'test3', new TestData('Key3', 'Value3', d3)),
-      new ComplexTestData(4, 39, 'test3', new TestData('Key3', 'Value3', d3)),
-      new ComplexTestData(5, 39, 'test3', new TestData('Key3', 'Value3', d3)),
-      new ComplexTestData(6, 39, 'test3', new TestData('Key3', 'Value3', d3)),
-      new ComplexTestData(7, 39, 'test3', new TestData('Key3', 'Value3', d3)),
-      new ComplexTestData(1, 40, 'test1', new TestData('Key1', 'Value1', d1)),
-      new ComplexTestData(2, 41, '', new TestData('Key2', 'Value2', d2)),
-      new ComplexTestData(3, 39, 'test3', new TestData('Key3', 'Value3', d3)),
-      new ComplexTestData(4, 39, 'test3', new TestData('Key3', 'Value3', d3)),
-      new ComplexTestData(5, 39, 'test3', new TestData('Key3', 'Value3', d3)),
-      new ComplexTestData(6, 39, 'test3', new TestData('Key3', 'Value3', d3)),
-      new ComplexTestData(7, 39, 'test3', new TestData('Key3', 'Value3', d3))
+      new ComplexTestData(1, 40, 'test1', new TestData('Key1', 'Value1', d1), 'test1'),
+      new ComplexTestData(2, 41, '', new TestData('Key2', 'Value2', d2), ''),
+      new ComplexTestData(3, 39, 'test3', new TestData('Key3', 'Value3', d3), 'test3'),
+      new ComplexTestData(4, 39, 'test3', new TestData('Key3', 'Value3', d3), 'test3'),
+      new ComplexTestData(5, 39, 'test3', new TestData('Key3', 'Value3', d3), 'test3'),
+      new ComplexTestData(6, 39, 'test3', new TestData('Key3', 'Value3', d3), 'test3'),
+      new ComplexTestData(7, 39, 'test3', new TestData('Key3', 'Value3', d3), 'test3'),
+      new ComplexTestData(1, 40, 'test1', new TestData('Key1', 'Value1', d1), 'test1'),
+      new ComplexTestData(2, 41, '', new TestData('Key2', 'Value2', d2), ''),
+      new ComplexTestData(3, 39, 'test3', new TestData('Key3', 'Value3', d3), 'test3'),
+      new ComplexTestData(4, 39, 'test3', new TestData('Key3', 'Value3', d3), 'test3'),
+      new ComplexTestData(5, 39, 'test3', new TestData('Key3', 'Value3', d3), 'test3'),
+      new ComplexTestData(6, 39, 'test3', new TestData('Key3', 'Value3', d3), 'test3'),
+      new ComplexTestData(7, 39, 'test3', new TestData('Key3', 'Value3', d3), 'test3')
     ];
 
     const idCol = new TableColumn<ComplexTestData, 'id'>('ID with button', 'id')
@@ -62,7 +62,8 @@ export class AppComponent implements OnInit {
       .withColFilter()
       .isHiddenSm(true);
     const valueCol = new TableColumn<ComplexTestData, 'value'>('Number with select', 'value')
-      .withColFilter();
+      .withColFilter()
+      .withAlign(Align.CENTER);
     valueCol.withFormField(valueCol.getSelectFormField<number>()
       .withOptions([
         {display: '39', value: 39},
@@ -76,7 +77,8 @@ export class AppComponent implements OnInit {
         {key: 'min', msg: 'Value should be at least 25!'}
       ]));
     const testErrorCol = new TableColumn<ComplexTestData, 'data'>('Profile', 'data')
-      .withTransform(data => data.value);
+      .withTransform(data => data.value)
+      .withAlign(Align.CENTER);
     testErrorCol.withFormField(testErrorCol.getSelectFormField<string>()
       .withOptions([
         {display: 'Valideur', value: 'Valideur'},
@@ -101,7 +103,8 @@ export class AppComponent implements OnInit {
       .withApply((id, data) => {
         data.key = id;
         return data;
-      }));
+      }))
+      .withAlign(Align.RIGHT);
     const valCol = new TableColumn<ComplexTestData, 'data'>('Value with icon', 'data')
       .isHiddenXs(true)
       .withNgClass(() => 'red-bg-cell')
@@ -111,7 +114,8 @@ export class AppComponent implements OnInit {
     const dateCol = new TableColumn<ComplexTestData, 'data'>('Date right align', 'data')
       .withTransform((data) => this.getDateStr(data.date))
       .withSortTransform(data => data.date.toISOString())
-      .withAlign(Align.RIGHT);
+      .withAlign(Align.RIGHT)
+      .withColFilter();
     dateCol.withFormField(dateCol.getDateFormField()
       .withHint('Only past dates.')
       .withPlaceholder('Date')
@@ -126,8 +130,10 @@ export class AppComponent implements OnInit {
         return data;
       })
     );
-    this.columns = [idCol, testErrorCol, desCol, des2Col, valueCol, keyCol, valCol, dateCol];
-    this.columns2 = [idCol, desCol, des2Col, valueCol, keyCol, valCol, dateCol];
+    const multilineCol = new TableColumn<ComplexTestData, 'notes'>('This header will take multiple lines to display the header', 'notes')
+      .withColFilter();
+    this.columns = [idCol, testErrorCol, desCol, des2Col, valueCol, keyCol, valCol, dateCol, multilineCol];
+    this.columns2 = [idCol, desCol, des2Col, valueCol, keyCol, valCol, dateCol, multilineCol];
   }
 
   pastDateValidator = (control: AbstractControl) => control.value < new Date() ? null : {'pastDate': true};
@@ -143,7 +149,7 @@ export class AppComponent implements OnInit {
 
   addEntry() {
     this.testData.push(new ComplexTestData(42, 420, 'New Entry with a lot of text that is very long like really really long ' +
-      'i mean really really long i really mean it', new TestData('key', 'value', new Date())));
+      'i mean really really long i really mean it', new TestData('key', 'value', new Date()), 'New Entry with a lot of text that is very long like really really long i mean really really long i really mean it'));
     this.testData = this.testData.slice(0);
   }
 
@@ -196,7 +202,7 @@ export class AppComponent implements OnInit {
   }
 
   createFn(): ComplexTestData {
-    return new ComplexTestData(0, 42, '', new TestData('', '', new Date()));
+    return new ComplexTestData(0, 42, '', new TestData('', '', new Date()), '');
   }
 
 }
@@ -207,6 +213,6 @@ class TestData {
 }
 
 class ComplexTestData {
-  constructor(public id: number, public value: number, public description: string, public data: TestData) {
+  constructor(public id: number, public value: number, public description: string, public data: TestData, public notes: string) {
   }
 }
