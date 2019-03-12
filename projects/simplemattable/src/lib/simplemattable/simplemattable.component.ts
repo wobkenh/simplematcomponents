@@ -116,7 +116,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    * @returns ngClass Object
    */
   getCellCssClass(tcol: TableColumn<T, any>, element: T): Object {
-    const defaultClass = {'on-click': (tcol.onClick && !tcol.button)};
+    const defaultClass = {'filler-div': true, 'on-click': (tcol.onClick && !tcol.button)};
     if (!tcol.ngClass) {
       return defaultClass;
     }
@@ -143,6 +143,14 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    */
   getCellCssStyle(tcol: TableColumn<T, any>, element: T): Object {
     return tcol.ngStyle ? tcol.ngStyle(element[tcol.property], element) : {};
+  }
+
+  getTableCellStyle(tcol: TableColumn<T, any>): Object {
+    if (tcol.width) {
+      return {'width': tcol.width.toString()};
+    } else {
+      return {};
+    }
   }
 
 
@@ -327,8 +335,8 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   getIconName = (tcol: TableColumn<T, any>, element: T) => tcol.icon(element[tcol.property], element);
   getDisplayedCols = (cols: TableColumn<T, any>[]): TableColumn<T, any>[] => cols.filter(col => col.visible);
   getFxFlex = (tcol: TableColumn<T, any>): string => tcol.width ? tcol.width : '1 1 0px';
-  getHeaderFilterAlign = (align: Align): string => align === Align.LEFT ? 'start end' : align === Align.CENTER ? 'center end' : 'end end'; 
-  getHeaderNoFilterAlign = (align: Align): string => align === Align.LEFT ? 'start center' : align === Align.CENTER ? 'center center' : 'end center'; 
+  getHeaderFilterAlign = (align: Align): string => align === Align.LEFT ? 'start end' : align === Align.CENTER ? 'center end' : 'end end';
+  getHeaderNoFilterAlign = (align: Align): string => align === Align.LEFT ? 'start center' : align === Align.CENTER ? 'center center' : 'end center';
   getCellAlign = (align: Align): string => align === Align.LEFT ? 'start center' : align === Align.CENTER ? 'center center' : 'end center';
   getTextAlign = (align: Align): string => align === Align.LEFT ? 'start' : align === Align.CENTER ? 'center' : 'end';
   isCenterAlign = (tcol: TableColumn<T, any>): boolean => tcol.align === Align.CENTER;

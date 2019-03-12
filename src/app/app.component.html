@@ -4,6 +4,12 @@
     Welcome to SimpleMatComponents Demo!
   </h1>
   <hr>
+  <h2>VERY simple table</h2>
+  <div style="padding: 10px; height: 500px; display: flex; flex-direction: column">
+    <smc-simplemattable [data]="simpleData" [columns]="simpleColumns"></smc-simplemattable>
+  </div>
+
+  <hr>
   <h2>SimpleMatTable</h2>
   <div style="padding: 10px; height: 500px; display: flex; flex-direction: column">
     <button style="flex: 0 0 auto" (click)="toggleVisibility()" mat-raised-button>Toggle 3rd column</button>

@@ -23,3 +23,23 @@
   display: flex;
   flex-direction: column;
 }
+
+.filler-div {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+td:first-of-type .filler-div {
+  padding-left: 24px;
+}
+
+td {
+  position: relative!important;
+}
+
+th {
+  position: relative!important;
+}

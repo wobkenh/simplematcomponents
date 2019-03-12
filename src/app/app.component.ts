@@ -13,6 +13,26 @@ import {AbstractControl, Validators} from '@angular/forms';
 })
 export class AppComponent implements OnInit {
   testData: ComplexTestData[];
+  simpleColumns = [
+    new TableColumn<ComplexTestData, 'id'>('id', 'id').withWidth('150px'),
+    new TableColumn<ComplexTestData, 'description'>('description', 'description')
+    ];
+  simpleData: ComplexTestData[] = [
+    {
+      id: 15,
+      data: null,
+      description: 'hi',
+      notes: null,
+      value: null
+    },
+    {
+      id: 16,
+      data: null,
+      description: 'hi x2',
+      notes: null,
+      value: null
+    }
+  ];
   columns: TableColumn<any, any>[] = [];
   columns2: TableColumn<any, any>[] = [];
   isInfoOpen = true;
@@ -60,10 +80,20 @@ export class AppComponent implements OnInit {
       .isTextHiddenXs(true);
     const desCol = new TableColumn<ComplexTestData, 'description'>('Description', 'description')
       .withColFilter()
+      .withTransform(() => '')
+      .withNgStyle(() => {
+        return {
+          'background': 'url(http://www.sourcecertain.com/img/Example.png)',
+          'background-size': 'contain',
+          'background-repeat': 'no-repeat',
+          'height': '150px'
+        };
+      })
       .isHiddenSm(true);
     const valueCol = new TableColumn<ComplexTestData, 'value'>('Number with select', 'value')
       .withColFilter()
       .withAlign(Align.CENTER);
+
     valueCol.withFormField(valueCol.getSelectFormField<number>()
       .withOptions([
         {display: '39', value: 39},

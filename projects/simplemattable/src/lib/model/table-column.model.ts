@@ -12,7 +12,7 @@ import {LargeTextFormField} from './large-text-form-field.model';
 export class TableColumn<T, P extends keyof T> {
 
   public transform: (data: T[P], dataParent: T) => string;
-  public width: string = '1 1 0px';
+  public width: string;
   public align: Align = Align.LEFT;
   public sortable: boolean = true;
   public sortTransform: (data: T[P], dataParent: T) => number | string;
@@ -71,13 +71,14 @@ export class TableColumn<T, P extends keyof T> {
    * @returns this
    */
   public withWidth(width: (number | Width | string)) {
-    if (typeof width === 'string') {
-      this.width = width;
-    } else if (typeof width === 'number') {
-      this.width = '0 0 ' + width.toString() + 'px';
-    } else {
-      this.width = width ? width.getFlex() : '1 1 0px';
-    }
+    // if (typeof width === 'string') {
+    //   this.width = width;
+    // } else if (typeof width === 'number') {
+    //   this.width = '0 0 ' + width.toString() + 'px';
+    // } else {
+    //   this.width = width ? width.getFlex() : '1 1 0px';
+    // }
+    this.width = width.toString();
     return this;
   }
 

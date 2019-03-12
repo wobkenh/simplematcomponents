@@ -16,7 +16,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     MatCommonModule,
     MatButtonModule,
     SimplealertModule,
-    SimplemattableModule
+    SimplemattableModule,
+    // MatTableModule
   ],
   providers: [],
   bootstrap: [AppComponent]
