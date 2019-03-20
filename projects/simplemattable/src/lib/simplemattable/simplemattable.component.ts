@@ -434,7 +434,9 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     this.getDisplayedCols(this.columns)
       .filter(tcol => tcol.colFilter)
       .forEach(tcol => {
-        this.colFilterFormControls.set(tcol, this.fb.control(''));
+        const formControl = this.fb.control('');
+        tcol.setColFilterFormControl(formControl);
+        this.colFilterFormControls.set(tcol, formControl);
       });
   }
 

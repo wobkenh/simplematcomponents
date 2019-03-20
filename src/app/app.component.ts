@@ -21,6 +21,7 @@ export class AppComponent implements OnInit {
   isSuccessOpen = true;
   alertType = AlertType;
   id = 42;
+  desCol: TableColumn<any, any>;
 
   ngOnInit(): void {
     const d1 = new Date();
@@ -61,6 +62,7 @@ export class AppComponent implements OnInit {
     const desCol = new TableColumn<ComplexTestData, 'description'>('Description', 'description')
       .withColFilter()
       .isHiddenSm(true);
+    this.desCol = desCol;
     const valueCol = new TableColumn<ComplexTestData, 'value'>('Number with select', 'value')
       .withColFilter()
       .withAlign(Align.CENTER);
