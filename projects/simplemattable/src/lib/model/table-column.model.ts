@@ -8,11 +8,13 @@ import {TextFormField} from './text-form-field.model';
 import {DateFormField} from './date-form-field.model';
 import {SelectFormField} from './select-form-field.model';
 import {LargeTextFormField} from './large-text-form-field.model';
+import {Height} from './height.model';
 
 export class TableColumn<T, P extends keyof T> {
 
   public transform: (data: T[P], dataParent: T) => string;
   public width: string;
+  public heightFn: (data: T[P], dataParent: T) => Height;
   public align: Align = Align.LEFT;
   public sortable: boolean = true;
   public sortTransform: (data: T[P], dataParent: T) => number | string;
@@ -71,14 +73,19 @@ export class TableColumn<T, P extends keyof T> {
    * @returns this
    */
   public withWidth(width: (number | Width | string)) {
-    // if (typeof width === 'string') {
-    //   this.width = width;
-    // } else if (typeof width === 'number') {
-    //   this.width = '0 0 ' + width.toString() + 'px';
-    // } else {
-    //   this.width = width ? width.getFlex() : '1 1 0px';
-    // }
     this.width = width.toString();
+    return this;
+  }
+
+  /**
+   * Function which calculates the height of a table cell.
+   * The decision can be based on the Data of the Cell or Row.
+   * The function has to return a Height object to set a pixel or percent height.
+   * To not set a height, return null.
+   * @param heightFn
+   */
+  public withHeightFn(heightFn: (data: T[P], dataParent: T) => Height) {
+    this.heightFn = heightFn;
     return this;
   }
 

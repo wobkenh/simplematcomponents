@@ -25,21 +25,29 @@
 }
 
 .filler-div {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-}
-
-td:first-of-type .filler-div {
-  padding-left: 24px;
+  height: 100%;
 }
 
 td {
-  position: relative!important;
+  position: relative !important;
+  /*
+    Problem: divs wont fill out their table cells unless the td has a height
+      This makes no sense because the 1px height is ignored anyway
+      but whatever, it works :)
+      See https://stackoverflow.com/questions/3215553/make-a-div-fill-an-entire-table-cell
+   */
+  height: 1px;
 }
 
-th {
-  position: relative!important;
+.sticky-th th {
+
 }
+
+.non-sticky-th th {
+  /*
+    If you do not override the z-index for non-sticky headers,
+    the bottom border of the header cells might not show in some constellations
+  */
+  z-index: inherit !important;
+}
+

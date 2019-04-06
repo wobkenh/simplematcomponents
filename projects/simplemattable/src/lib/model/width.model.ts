@@ -32,4 +32,8 @@ export class Width {
       (this.percent ? this.percent.toString() + '%' : this.pixel.toString() + 'px');
   }
 
+  toString(): string {
+    return this.percent ? this.percent + '%' : this.pixel + 'px';
+  }
+
 }

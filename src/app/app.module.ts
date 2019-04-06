@@ -1,10 +1,10 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {SimplemattableModule} from 'simplemattable';
 import {AppComponent} from './app.component';
 import {SimplealertModule} from '../../projects/simplealert/src/simplealert/simplealert.module';
-import {MatButtonModule, MatCommonModule} from '@angular/material';
+import {MatButtonModule, MatCardModule, MatCommonModule, MatSidenavModule, MatTabsModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {SimplemattableModule} from '../../projects/simplemattable/src/lib/simplemattable.module';
 
 @NgModule({
   declarations: [
@@ -17,6 +17,10 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     MatButtonModule,
     SimplealertModule,
     SimplemattableModule,
+    SimplemattableModule,
+    MatTabsModule,
+    MatSidenavModule,
+    MatCardModule,
     // MatTableModule
   ],
   providers: [],

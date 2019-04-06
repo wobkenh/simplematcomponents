@@ -5,18 +5,14 @@
   </mat-form-field>
 </div>
 <div fxFlex [ngStyle]="{'overflow': sticky ? 'auto' : 'visible'}">
-  <table mat-table #table [dataSource]="dataSource" matSort [matSortDisabled]="!sorting">
-    <ng-container *ngFor="let tcol of getDisplayedCols(this.columns); let columnIndex = index">
+  <table mat-table #table [dataSource]="dataSource" matSort [matSortDisabled]="!sorting" style="width: 100%"
+         [ngClass]="getTableClass()">
+    <ng-container *ngFor="let tcol of getDisplayedCols(columns); let columnIndex = index">
       <ng-container matColumnDef="{{columnIndex.toString() + '_' + tcol.property.toString()}}">
-        <th mat-header-cell *matHeaderCellDef [ngStyle]="getTableCellStyle(tcol)">
-          <!--[fxFlex]="getFxFlex(tcol)" -->
-          <div
-            [fxHide.xs]="tcol.hiddenXs || tcol.hiddenSm"
-            fxLayout="row"
-            [fxLayoutAlign]="tcol.colFilter ? getHeaderFilterAlign(tcol.align) : getHeaderNoFilterAlign(tcol.align)"
-            [fxHide.sm]="tcol.hiddenSm">
-
-
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="getTableCellStyle(tcol)"
+            [fxHide.xs]="tcol.hiddenXs || tcol.hiddenSm" [fxHide.sm]="tcol.hiddenSm">
+          <div fxLayout="row"
+               [fxLayoutAlign]="tcol.colFilter ? getHeaderFilterAlign(tcol.align) : getHeaderNoFilterAlign(tcol.align)">
             <div fxLayout="column" *ngIf="!tcol.colFilter">
               <div [ngStyle.gt-xs]="{'padding': sorting ? isCenterAlign(tcol) ? '0 0 0 18px' : '0 0 0 5px' : '0 5px'}">
               <span mat-sort-header [disabled]="!tcol.sortable" fxLayout="row"
@@ -166,8 +162,8 @@
 
     <!-- edit/add/delete buttons -->
     <ng-container *ngIf="editable || deletable || addable" matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef style="width: 104px">
-        <div class="filler-div" style="display: flex;justify-content: flex-end">
+      <th mat-header-cell *matHeaderCellDef style="width: 104px;">
+        <div class="filler-div" style="display: flex;justify-content: flex-end;align-items: center">
           <button mat-icon-button *ngIf="addable" color="primary" (click)="startAddElement()"
                   [disabled]="currentlyAdding">
             <mat-icon>{{addIcon ? addIcon : "add_box"}}</mat-icon>
@@ -200,7 +196,7 @@
       </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" [ngStyle]="getTableHeaderStyle()"></tr>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: sticky" [ngStyle]="getTableHeaderStyle()"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 </div>

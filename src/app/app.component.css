@@ -1,0 +1,26 @@
+.code {
+  text-align: left;
+  padding: 15px;
+}
+
+.code p {
+  font-style: italic;
+  color: rgba(0, 0, 0, 0.67);
+}
+
+.code pre {
+  background-color: white;
+  padding: 15px;
+  border-radius: 15px;
+}
+
+.display {
+  display: flex;
+  place-content: center;
+}
+
+.display > div {
+  max-width: 100%;
+  width: 1000px;
+  padding: 20px 0;
+}

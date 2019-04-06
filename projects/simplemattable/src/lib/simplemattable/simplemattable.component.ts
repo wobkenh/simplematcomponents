@@ -142,10 +142,17 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    * @returns ngStyleObject
    */
   getCellCssStyle(tcol: TableColumn<T, any>, element: T): Object {
-    return tcol.ngStyle ? tcol.ngStyle(element[tcol.property], element) : {};
+    const baseValue = tcol.ngStyle ? tcol.ngStyle(element[tcol.property], element) : {};
+    if (tcol.heightFn) {
+      const height = tcol.heightFn(element[tcol.property], element);
+      if (height) {
+        baseValue['height'] = height;
+      }
+    }
+    return baseValue;
   }
 
-  getTableCellStyle(tcol: TableColumn<T, any>): Object {
+  getTableCellStyle(tcol: TableColumn<T, any>): { [p: string]: string } {
     if (tcol.width) {
       return {'width': tcol.width.toString()};
     } else {
@@ -343,6 +350,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   isLeftAlign = (tcol: TableColumn<T, any>): boolean => tcol.align === Align.LEFT;
   hasColumnFilter = (): boolean => this.getDisplayedCols(this.columns).some(tcol => tcol.colFilter);
   getTableHeaderStyle = (): Object => this.hasColumnFilter() ? {height: '100%'} : {};
+  getTableClass = (): string => this.sticky ? 'sticky-th' : 'non-sticky-th';
 
   arrayToObject(arr: string[]): Object { // turn ['css-class-a', 'css-class-b'] into {'css-class-a': true, 'css-class-b': true}
     return arr.reduce((acc, entry) => {
@@ -548,5 +556,4 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
       this.dataSource.sort = this.matSort;
     }
   }
-
 }
