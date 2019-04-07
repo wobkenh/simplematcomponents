@@ -24,3 +24,32 @@
   width: 1000px;
   padding: 20px 0;
 }
+
+.sidemenu {
+  display: flex;
+  justify-content: center;
+  text-align: left;
+  padding-right: 40px;
+}
+
+.sidemenu a {
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.67);
+  cursor: pointer;
+}
+
+.sidemenu li {
+  padding: 1px 0;
+}
+
+.sidemenu a:hover {
+  color: rgba(0, 0, 155, 0.67);
+  font-style: italic;
+  font-weight: bold;
+}
+
+.sidemenu-subtitle {
+  font-weight: bold;
+  padding: 10px;
+  color: rgba(0, 0, 0, 0.67);
+}

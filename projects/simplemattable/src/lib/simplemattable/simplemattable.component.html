@@ -163,7 +163,7 @@
     <!-- edit/add/delete buttons -->
     <ng-container *ngIf="editable || deletable || addable" matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef style="width: 104px;">
-        <div class="filler-div" style="display: flex;justify-content: flex-end;align-items: center">
+        <div class="filler-div" style="align-items: center; display: flex; justify-content: flex-end;">
           <button mat-icon-button *ngIf="addable" color="primary" (click)="startAddElement()"
                   [disabled]="currentlyAdding">
             <mat-icon>{{addIcon ? addIcon : "add_box"}}</mat-icon>
@@ -171,7 +171,7 @@
         </div>
       </th>
       <td mat-cell *matCellDef="let element; let rowIndex = index;">
-        <div style="display: flex;justify-content: flex-end" class="filler-div">
+        <div style="display: flex;justify-content: flex-end; align-items: center" class="filler-div">
           <ng-container *ngIf="!isLoading(element)">
             <button *ngIf="editable && !isEditing(element)" mat-icon-button color="primary"
                     (click)="startEditElement(element)">

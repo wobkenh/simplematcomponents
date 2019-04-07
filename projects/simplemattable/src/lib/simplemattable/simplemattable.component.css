@@ -28,14 +28,18 @@
   height: 100%;
 }
 
+
 td {
-  position: relative !important;
+  height: 100%;
+}
+
+.chrome td {
   /*
-    Problem: divs wont fill out their table cells unless the td has a height
-      This makes no sense because the 1px height is ignored anyway
-      but whatever, it works :)
-      See https://stackoverflow.com/questions/3215553/make-a-div-fill-an-entire-table-cell
-   */
+  Problem: On Chrome, divs wont fill out their table cells unless the td has a height
+    This makes no sense because the 1px height is ignored anyway
+    but whatever, it works :)
+    See https://stackoverflow.com/questions/3215553/make-a-div-fill-an-entire-table-cell
+ */
   height: 1px;
 }
 

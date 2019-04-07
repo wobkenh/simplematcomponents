@@ -1,9 +1,10 @@
 <mat-sidenav-container class="example-container">
-  <mat-sidenav mode="side" opened [fixedInViewport]="true">
+  <mat-sidenav mode="side" opened [fixedInViewport]="true"
+               style="background-color: rgba(0,0,0,.03); padding-left: 20px;">
     <div class="mat-body">
       <h3>SimpleMatComponents</h3>
-      <h4 style="margin-bottom: 0">SimpleMatTable</h4>
-      <div style="display: flex;justify-content: center; text-align: left; padding-right: 20px">
+      <span class="sidemenu-subtitle">SimpleMatTable</span>
+      <div class="sidemenu">
         <ol>
           <li><a href="#simple">Simple</a></li>
           <li><a href="#transform">Transform</a></li>
@@ -20,7 +21,7 @@
           <li><a href="#complete">Complete</a></li>
         </ol>
       </div>
-      <h4 style="margin-bottom: 0">SimpleAlert</h4>
+      <span class="sidemenu-subtitle">SimpleAlert</span>
     </div>
   </mat-sidenav>
   <mat-sidenav-content>

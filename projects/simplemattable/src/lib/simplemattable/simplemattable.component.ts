@@ -54,12 +54,15 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   buttonType = ButtonType;
   formFieldType = FormFieldType;
+  isChrome = false;
 
 
   constructor(private fb: FormBuilder) {
   }
 
   ngOnInit(): void {
+    const win: any = window;
+    this.isChrome = !!win.chrome && !!win.chrome.webstore;
     if (this.addable && !this.create) {
       throw Error('Seems like you enabled adding of elements (adding was set to true), but you did not supply a create function.' +
         ' Please specify a create function that will be used to create new Elements of your' +
@@ -148,6 +151,8 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
       if (height) {
         baseValue['height'] = height;
       }
+    } else {
+      baseValue['minHeight'] = '48px';
     }
     return baseValue;
   }
@@ -350,7 +355,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   isLeftAlign = (tcol: TableColumn<T, any>): boolean => tcol.align === Align.LEFT;
   hasColumnFilter = (): boolean => this.getDisplayedCols(this.columns).some(tcol => tcol.colFilter);
   getTableHeaderStyle = (): Object => this.hasColumnFilter() ? {height: '100%'} : {};
-  getTableClass = (): string => this.sticky ? 'sticky-th' : 'non-sticky-th';
+  getTableClass = (): string => (this.sticky ? 'sticky-th' : 'non-sticky-th') + this.isChrome ? ' chrome' : '';
 
   arrayToObject(arr: string[]): Object { // turn ['css-class-a', 'css-class-b'] into {'css-class-a': true, 'css-class-b': true}
     return arr.reduce((acc, entry) => {
