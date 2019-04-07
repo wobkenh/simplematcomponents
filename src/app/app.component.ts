@@ -380,7 +380,12 @@ export class AppComponent implements OnInit {
         {display: 'Dog', value: 'Dog'},
         {display: 'Natalie Dormer', value: 'Natalie Dormer'},
         {display: 'A Muffin', value: 'A Hotdog'},
-      ]).withPlaceholder('Sexiest Thing alive'));
+      ]).withPlaceholder('Sexiest Thing alive')
+      .withInit(data => data.value)
+      .withApply((value, data) => {
+        data.value = value;
+        return data;
+      }));
     const completeDes2Col = new TableColumn<ComplexTestData, 'description'>('Description2', 'description')
       .isVisible(false)
       .withAlign(Align.LEFT)
@@ -453,30 +458,30 @@ export class AppComponent implements OnInit {
 
   onDelete(element: ComplexTestData) {
     setTimeout(() => {
-      const index = this.testData.indexOf(element);
+      const index = this.dataComplete.indexOf(element);
       if (index >= 0) {
-        this.testData.splice(index, 1);
-        this.testData = this.testData.slice(0);
+        this.dataComplete.splice(index, 1);
+        this.dataComplete = this.dataComplete.slice(0);
       }
     }, 2000);
   }
 
   onEdit(element: ComplexTestData) {
     setTimeout(() => {
-      this.testData[this.testData.findIndex(ele => ele.id === element.id)] = element;
+      this.dataComplete[this.dataComplete.findIndex(ele => ele.id === element.id)] = element;
       console.log('edit');
       console.log(element);
-      this.testData = this.testData.slice(0);
+      this.dataComplete = this.dataComplete.slice(0);
     }, 2000);
   }
 
   onAdd(element: ComplexTestData) {
     setTimeout(() => {
       element.id = this.id++;
-      this.testData.push(element);
+      this.dataComplete.push(element);
       console.log('add');
       console.log(element);
-      this.testData = this.testData.slice(0);
+      this.dataComplete = this.dataComplete.slice(0);
     }, 2000);
   }
 

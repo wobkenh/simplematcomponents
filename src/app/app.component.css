@@ -27,7 +27,6 @@
 
 .sidemenu {
   display: flex;
-  justify-content: center;
   text-align: left;
   padding-right: 40px;
 }

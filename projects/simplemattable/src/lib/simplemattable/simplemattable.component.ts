@@ -62,7 +62,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   ngOnInit(): void {
     const win: any = window;
-    this.isChrome = !!win.chrome && !!win.chrome.webstore;
+    this.isChrome = !!win.chrome;
     if (this.addable && !this.create) {
       throw Error('Seems like you enabled adding of elements (adding was set to true), but you did not supply a create function.' +
         ' Please specify a create function that will be used to create new Elements of your' +
@@ -146,6 +146,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    */
   getCellCssStyle(tcol: TableColumn<T, any>, element: T): Object {
     const baseValue = tcol.ngStyle ? tcol.ngStyle(element[tcol.property], element) : {};
+    baseValue['textAlign'] = this.getTextAlign(tcol.align);
     if (tcol.heightFn) {
       const height = tcol.heightFn(element[tcol.property], element);
       if (height) {
@@ -351,11 +352,33 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   getHeaderNoFilterAlign = (align: Align): string => align === Align.LEFT ? 'start center' : align === Align.CENTER ? 'center center' : 'end center';
   getCellAlign = (align: Align): string => align === Align.LEFT ? 'start center' : align === Align.CENTER ? 'center center' : 'end center';
   getTextAlign = (align: Align): string => align === Align.LEFT ? 'start' : align === Align.CENTER ? 'center' : 'end';
+  getTextAlignClass = (align: Align): string => align === Align.LEFT ? 'left-align-th' : align === Align.CENTER ? 'center-align-th' : 'right-align-th';
   isCenterAlign = (tcol: TableColumn<T, any>): boolean => tcol.align === Align.CENTER;
   isLeftAlign = (tcol: TableColumn<T, any>): boolean => tcol.align === Align.LEFT;
   hasColumnFilter = (): boolean => this.getDisplayedCols(this.columns).some(tcol => tcol.colFilter);
   getTableHeaderStyle = (): Object => this.hasColumnFilter() ? {height: '100%'} : {};
-  getTableClass = (): string => (this.sticky ? 'sticky-th' : 'non-sticky-th') + this.isChrome ? ' chrome' : '';
+  getTableClass = (): string => (this.sticky ? 'sticky-th' : 'non-sticky-th') + (this.isChrome ? ' chrome' : '');
+
+  getHeaderCellClasses(tcol: TableColumn<T, any>): string[] {
+    const classes = [];
+    if (!(tcol.sortable && this.sorting)) {
+      classes.push('no-sort');
+    } else {
+      classes.push('with-sort');
+    }
+    classes.push(this.getTextAlignClass(tcol.align));
+    return classes;
+  }
+
+//     ({
+//     'no-sort': !(tcol.sortable && sorting),
+//     'with-sort': tcol.sortable && sorting,
+//     getTextAlignClass(tcol.align).toString();
+// :
+//   'true';
+// }
+//
+// )}
 
   arrayToObject(arr: string[]): Object { // turn ['css-class-a', 'css-class-b'] into {'css-class-a': true, 'css-class-b': true}
     return arr.reduce((acc, entry) => {
@@ -394,7 +417,6 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   }
 
   /* -----------------------
-
       DIRTY CHECKING AND DATASOURCE REBUILDING
       It works like this:
       - Check for Changes in Data (ngOnChanges) or Columns (ngDoCheck)
@@ -402,10 +424,9 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
           which includes reassigning the paginator and the sorting function
       - Datachanges and columnchanges each require some extra work (cleanup)
           e.g. to reset the row status
-
      ----------------------- */
 
-  // checks for data changes
+// checks for data changes
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.data) {
       this.clearAddedEntry();
@@ -439,7 +460,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     this.currentlyAdding = false;
   }
 
-  // checks for column changes
+// checks for column changes
   ngDoCheck(): void {
     if (this.checkForDifferences()) {
       this.clearAddedEntry();
@@ -475,7 +496,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     }
   }
 
-  // only checks for column differences
+// only checks for column differences
   private checkForDifferences(): boolean {
     if (this.oldColumns.length !== this.columns.length) {
       return true;

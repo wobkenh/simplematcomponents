@@ -15,19 +15,22 @@
                [fxLayoutAlign]="tcol.colFilter ? getHeaderFilterAlign(tcol.align) : getHeaderNoFilterAlign(tcol.align)">
             <div fxLayout="column" *ngIf="!tcol.colFilter">
               <div [ngStyle.gt-xs]="{'padding': sorting ? isCenterAlign(tcol) ? '0 0 0 18px' : '0 0 0 5px' : '0 5px'}">
-              <span mat-sort-header [disabled]="!tcol.sortable" fxLayout="row"
-                    [fxLayoutAlign]="getTextAlign(tcol.align)"
-                    [ngClass]="{'no-sort': !(tcol.sortable && sorting), 'with-sort': tcol.sortable && sorting}">
+              <span mat-sort-header [disabled]="!tcol.sortable"
+                    [ngStyle]="{'textAlign': getTextAlign(tcol.align) + '!important'}"
+                    [ngClass]="getHeaderCellClasses(tcol)">
+<!--                fxLayout="row" [fxLayoutAlign]="getTextAlign(tcol.align)"-->
+                <!--                [ngClass]="{'no-sort': !(tcol.sortable && sorting), 'with-sort': tcol.sortable && sorting}"-->
                 {{tcol.name}}
               </span>
               </div>
             </div>
             <div fxLayout="column" *ngIf="tcol.colFilter">
               <div [ngStyle.gt-xs]="{'padding': sorting ? isCenterAlign(tcol) ? '0 0 0 18px' : '0 0 0 5px' : '0 5px'}">
-              <span mat-sort-header [disabled]="!tcol.sortable" fxLayout="row"
-                    [fxLayoutAlign]="getTextAlign(tcol.align)"
-                    [ngClass]="{'no-sort': !(tcol.sortable && sorting), 'with-sort': tcol.sortable && sorting}">
-                  {{tcol.name}}
+              <span mat-sort-header [disabled]="!tcol.sortable"
+                    [ngClass]="getHeaderCellClasses(tcol)">
+<!--                fxLayout="row" [fxLayoutAlign]="getTextAlign(tcol.align)"-->
+                <!--                [ngClass]="{'no-sort': !(tcol.sortable && sorting), 'with-sort': tcol.sortable && sorting, getTextAlignClass(tcol.align).toString(): 'true'}"-->
+                {{tcol.name}}
               </span>
               </div>
               <div style="padding: 0 5px">

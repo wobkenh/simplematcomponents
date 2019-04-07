@@ -55,3 +55,26 @@ td {
   z-index: inherit !important;
 }
 
+/*
+  When material inserts a button into the header cell, the button has text align center.
+  We might want to override that value.
+*/
+.left-align-th {
+  text-align: left !important;
+}
+
+.left-align-th button {
+  text-align: left !important;
+}
+
+.left-align-th .mat-sort-header-button {
+  text-align: left !important;
+}
+
+.center-align-th {
+  text-align: center !important;
+}
+
+.right-align-th {
+  text-align: right !important;
+}

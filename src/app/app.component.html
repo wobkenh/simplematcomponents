@@ -22,6 +22,14 @@
         </ol>
       </div>
       <span class="sidemenu-subtitle">SimpleAlert</span>
+      <div class="sidemenu">
+        <ol>
+          <li><a href="#infoAlert">Info Alert</a></li>
+          <li><a href="#errorAlert">Error Alert</a></li>
+          <li><a href="#warnAlert">Warn Alert</a></li>
+          <li><a href="#successAlert">Success Alert</a></li>
+        </ol>
+      </div>
     </div>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -33,6 +41,25 @@
 
       <hr>
       <h2>SimpleMatTable</h2>
+      <div style="display: flex; justify-content: center">
+        <div style="max-width: 1000px">
+          <p>SimpleMatTable is an abstraction of MatTable from the @angular/material dependency. It allows you to
+            quickly
+            and in a typesafe way define tables. This is perfect if you want to display data in a table and do not need
+            full
+            control over the table HTML.
+            <br>
+            <br>
+            Instead of copy/pasting the HTML for each column, you can describe the columns in a declarative way via
+            Typescript code. A lot of different options like align, buttons, icons and even custom css allow you to
+            further
+            customize your table.</p>
+          <p>In this demo, you will see some of the key features of simplemattable and how to use them. For a more
+            thorough guide, head over to <a
+              href="https://github.com/wobkenh/simplematcomponents/tree/master/projects/simplemattable">Github</a> or <a
+              href="https://www.npmjs.com/package/simplemattable">NPM</a>.</p>
+        </div>
+      </div>
       <hr>
 
       <div class="display">
@@ -810,8 +837,12 @@ this.columnsComplete = [completeIdCol, completeTestErrorCol, completeDesCol, com
                 <p>HTML</p>
                 <hr>
                 <pre>
-&lt;smc-simplemattable [data]=&quot;dataScrollable&quot; [columns]=&quot;columnsScrollable&quot;
-                    [sticky]=&quot;true&quot; style=&quot;height: 300px&quot;&gt;&lt;/smc-simplemattable&gt;
+&lt;smc-simplemattable [data]=&quot;dataComplete&quot; [columns]=&quot;columnsComplete&quot; [paginator]=&quot;true&quot; [filter]=&quot;true&quot;
+                    (edit)=&quot;onEdit($event)&quot; [paginatorPageSize]=&quot;3&quot;
+                    [sorting]=&quot;true&quot; [editable]=&quot;true&quot; [addable]=&quot;true&quot; [deletable]=&quot;true&quot;
+                    (add)=&quot;onAdd($event)&quot;
+                    addIcon=&quot;account_box&quot; [deleteIcon]=&quot;'check_box_outline_blank'&quot; [sticky]=&quot;false&quot;
+                    [create]=&quot;createFn&quot; (delete)=&quot;onDelete($event)&quot;&gt;&lt;/smc-simplemattable&gt;
       </pre>
               </div>
             </mat-tab>
@@ -819,44 +850,142 @@ this.columnsComplete = [completeIdCol, completeTestErrorCol, completeDesCol, com
         </div>
       </div>
 
-      <!--  <div style="padding: 10px; height: 500px; display: flex; flex-direction: column">-->
-      <!--    <button style="flex: 0 0 auto" (click)="toggleVisibility()" mat-raised-button>Toggle 3rd column</button>-->
-      <!--    <button style="flex: 0 0 auto; margin-bottom: 10px" (click)="addEntry()" mat-raised-button>Add entry</button>-->
-      <!--    <smc-simplemattable [data]="testData" [columns]="columns" [paginator]="true" [filter]="false"-->
-      <!--                        (edit)="onEdit($event)"-->
-      <!--                        [sorting]="true" [editable]="true" [addable]="true" [deletable]="true" (add)="onAdd($event)"-->
-      <!--                        addIcon="account_box" [deleteIcon]="'check_box_outline_blank'" [sticky]="true"-->
-      <!--                        style="flex: 1 1 auto" [create]="createFn" (delete)="onDelete($event)"></smc-simplemattable>-->
-      <!--  </div>-->
-      <!--  <div style="padding: 10px;">-->
-      <!--    <button (click)="toggleVisibility2()" mat-raised-button>Toggle 3rd column</button>-->
-      <!--    <button (click)="addEntry()" mat-raised-button>Add entry</button>-->
-      <!--    <smc-simplemattable [data]="testData" [columns]="columns2" [paginator]="true" [filter]="true"-->
-      <!--                        (edit)="onEdit($event)"-->
-      <!--                        [sorting]="true" [editable]="true" [addable]="true" [deletable]="true" (add)="onAdd($event)"-->
-      <!--                        addIcon="account_box" [deleteIcon]="'check_box_outline_blank'" [sticky]="false"-->
-      <!--                        [create]="createFn" (delete)="onDelete($event)"></smc-simplemattable>-->
-      <!--  </div>-->
-      <hr>
+
+      <hr style="margin-top: 100px">
+
+
       <h2>SimpleAlert</h2>
-      <div style="padding: 10px">
-        <button (click)="openInfo()" mat-raised-button>open info</button>
-        <smc-simplealert [(isOpen)]="isInfoOpen" [type]="alertType.INFO">This is an info alert!</smc-simplealert>
-      </div>
-      <div style="padding: 10px">
-        <button (click)="openError()" mat-raised-button>open error</button>
-        <smc-simplealert [(isOpen)]="isErrorOpen" [type]="alertType.ERROR">This is an error alert!</smc-simplealert>
-      </div>
-      <div style="padding: 10px">
-        <button (click)="openWarn()" mat-raised-button>open warn</button>
-        <smc-simplealert [(isOpen)]="isWarnOpen" [type]="'warn'">This is a warn alert!</smc-simplealert>
-      </div>
-      <div style="padding: 10px">
-        <button (click)="openSuccess()" mat-raised-button>open success</button>
-        <smc-simplealert [(isOpen)]="isSuccessOpen" [type]="'success'">This is a success alert!</smc-simplealert>
+      <div style="display: flex; justify-content: center">
+        <div style="max-width: 1000px">
+          <p>SimpleAlert is a simple Angular component for info, error, danger and success alerts, inspired by bootstrap
+            alerts. It can be dynamically opened/closed with opening/closing animations and can contain any content via
+            ng-content.</p>
+        </div>
       </div>
       <hr>
-      <div>More coming soon TM</div>
+
+      <div class="display">
+        <div>
+          <h2 id="infoAlert" style="margin-top: 50px;">1. Info Alert</h2>
+          <mat-tab-group>
+            <mat-tab label="Display">
+              <button (click)="openInfo()" mat-raised-button>open info</button>
+              <smc-simplealert [(isOpen)]="isInfoOpen" [type]="alertType.INFO">This is an info alert!</smc-simplealert>
+            </mat-tab>
+            <mat-tab label="Code">
+              <div class="code">
+                <p>Typescript</p>
+                <hr>
+                <pre>
+alertType = AlertType;
+isInfoOpen = true;
+openInfo() {{"{"}}&#x2063;
+  this.isInfoOpen = true;
+}</pre>
+                <p>HTML</p>
+                <hr>
+                <pre>
+&lt;button (click)=&quot;openInfo()&quot; mat-raised-button&gt;open info&lt;/button&gt;
+&lt;smc-simplealert [(isOpen)]=&quot;isInfoOpen&quot; [type]=&quot;alertType.INFO&quot;&gt;This is an info alert!&lt;/smc-simplealert&gt;</pre>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+
+
+      <div class="display">
+        <div>
+          <h2 id="errorAlert" style="margin-top: 50px;">2. Error Alert</h2>
+          <mat-tab-group>
+            <mat-tab label="Display">
+              <button (click)="openError()" mat-raised-button>open error</button>
+              <smc-simplealert [(isOpen)]="isErrorOpen" [type]="alertType.ERROR">This is an error alert!
+              </smc-simplealert>
+            </mat-tab>
+            <mat-tab label="Code">
+              <div class="code">
+                <p>Typescript</p>
+                <hr>
+                <pre>
+alertType = AlertType;
+isErrorOpen = true;
+openError() {{"{"}}&#x2063;
+  this.isErrorOpen = true;
+}</pre>
+                <p>HTML</p>
+                <hr>
+                <pre>
+&lt;button (click)=&quot;openInfo()&quot; mat-raised-button&gt;open error&lt;/button&gt;
+&lt;smc-simplealert [(isOpen)]=&quot;isErrorOpen&quot; [type]=&quot;alertType.ERROR&quot;&gt;This is an error alert!&lt;/smc-simplealert&gt;</pre>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+
+
+      <div class="display">
+        <div>
+          <h2 id="warnAlert" style="margin-top: 50px;">3. Warn Alert</h2>
+          <mat-tab-group>
+            <mat-tab label="Display">
+              <button (click)="openError()" mat-raised-button>open warn</button>
+              <smc-simplealert [(isOpen)]="isWarnOpen" [type]="alertType.WARN">This is a warn alert!</smc-simplealert>
+            </mat-tab>
+            <mat-tab label="Code">
+              <div class="code">
+                <p>Typescript</p>
+                <hr>
+                <pre>
+alertType = AlertType;
+openWarn() {{"{"}}&#x2063;
+  this.isWarnOpen = true;
+}</pre>
+                <p>HTML</p>
+                <hr>
+                <pre>
+&lt;button (click)=&quot;openWarn()&quot; mat-raised-button&gt;open warn&lt;/button&gt;
+&lt;smc-simplealert [(isOpen)]=&quot;isWarnOpen&quot; [type]=&quot;alertType.WARN&quot;&gt;This is a warn alert!&lt;/smc-simplealert&gt;</pre>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+
+      <div class="display">
+        <div>
+          <h2 id="successAlert" style="margin-top: 50px;">4. Success Alert</h2>
+          <mat-tab-group>
+            <mat-tab label="Display">
+              <button (click)="openError()" mat-raised-button>open success</button>
+              <smc-simplealert [(isOpen)]="isWarnOpen" [type]="alertType.SUCCESS">This is a success alert!
+              </smc-simplealert>
+            </mat-tab>
+            <mat-tab label="Code">
+              <div class="code">
+                <p>Typescript</p>
+                <hr>
+                <pre>
+alertType = AlertType;
+openSuccess() {{"{"}}&#x2063;
+  this.isSuccessOpen = true;
+}</pre>
+                <p>HTML</p>
+                <hr>
+                <pre>
+&lt;button (click)=&quot;openSuccess()&quot; mat-raised-button&gt;open success&lt;/button&gt;
+&lt;smc-simplealert [(isOpen)]=&quot;isSuccessOpen&quot; [type]=&quot;alertType.WARN&quot;&gt;This is a success alert!&lt;/smc-simplealert&gt;</pre>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+
+      <div style="margin-top: 50px; padding-bottom: 25px">
+        <hr>
+        More coming soon TM
+      </div>
     </div>
 
 
