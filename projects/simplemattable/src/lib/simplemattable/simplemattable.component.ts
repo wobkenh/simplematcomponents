@@ -84,6 +84,10 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     }
   }
 
+  /**
+   * Changes the data source filter so a new search is triggered.
+   * Does not influence the search results.
+   */
   applyColFilter() {
     const len = this.dataSource.filter.length - 1;
     if (this.dataSource.filter.charAt(len) !== ' ') {
@@ -150,7 +154,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     if (tcol.heightFn) {
       const height = tcol.heightFn(element[tcol.property], element);
       if (height) {
-        baseValue['height'] = height;
+        baseValue['height'] = height.toString();
       }
     } else {
       baseValue['minHeight'] = '48px';
@@ -347,7 +351,6 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   isEditingColumn = (tcol: TableColumn<T, any>, element: T): boolean => tcol.formField && this.isEditing(element);
   getIconName = (tcol: TableColumn<T, any>, element: T) => tcol.icon(element[tcol.property], element);
   getDisplayedCols = (cols: TableColumn<T, any>[]): TableColumn<T, any>[] => cols.filter(col => col.visible);
-  getFxFlex = (tcol: TableColumn<T, any>): string => tcol.width ? tcol.width : '1 1 0px';
   getHeaderFilterAlign = (align: Align): string => align === Align.LEFT ? 'start end' : align === Align.CENTER ? 'center end' : 'end end';
   getHeaderNoFilterAlign = (align: Align): string => align === Align.LEFT ? 'start center' : align === Align.CENTER ? 'center center' : 'end center';
   getCellAlign = (align: Align): string => align === Align.LEFT ? 'start center' : align === Align.CENTER ? 'center center' : 'end center';
