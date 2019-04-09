@@ -12,6 +12,16 @@ It supports different form fields like number inputs, text inputs and date input
 
 Current test coverage (Statements/Branches/Functions/Lines): ~92%/~83%/~89%/~91%
 
+## Attention
+
+To all users of simplemattable 1.X: Due to seemingly unsolvable issues concerning the row height when using material components (e.g. `<mat-table>`),
+we now switched to using the material directives (e.g. `<table mat-table>`), which is also recommended by the Angular Material team. 
+This gives us full control over the table css and eliminates the problems we had before with component isolation.
+
+So what changed for you? Column widths might now be different since they will be calculated arroding to the standard html table functionality.
+If you used the width property on columns, you can no longer enter a flex string or specify shrink/grow.
+Instead, you can now only supply widths that can be parsed by the width css property.   
+
 ## Table of contents
 
 - [Prerequisites](#prerequisites)
