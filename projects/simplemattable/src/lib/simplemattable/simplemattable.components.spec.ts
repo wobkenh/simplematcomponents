@@ -158,10 +158,12 @@ describe('TestcompComponent', () => {
   });
   it('get form control', () => {
     const tcol = hostComponent.tcolUnused
-      .withFormField(hostComponent.tcolUnused.getNumberFormField());
+      .withFormField(hostComponent.tcolUnused.getNumberFormField().withPlaceholder('placeholder').withHint('hint'));
     // new Form Control
     const fc = smt.getFormControl(0, 0, hostComponent.tcolUnused, hostComponent.data[0]);
     expect(fc).toBeTruthy();
+    expect(tcol.formField.placeholder).toEqual('placeholder');
+    expect(tcol.formField.hint).toEqual('hint');
     // Reload Form Control
     expect(smt.getFormControl(0, 0, hostComponent.tcolUnused, hostComponent.data[0])).toBe(fc);
     // New Form Control with init
@@ -212,6 +214,9 @@ describe('TestcompComponent', () => {
     expect(smt.dataSource.filter.startsWith('Natalie Dormer')).toBeTruthy();
     smt.applyColFilter();
     expect(smt.dataSource.filter).toBe('Natalie Dormer');
+    smt.dataSource.filter = '';
+    smt.applyColFilter();
+    expect(smt.dataSource.filter).toBe(' ');
   });
   it('get form errors', () => {
     const validators = [Validators.required, Validators.min(5)];
@@ -490,12 +495,18 @@ describe('TestcompComponent', () => {
     // should no longer be editing
     expect(smt.isEditing(existingData)).toBe(false);
   });
-  it('apply col filter', () => {
+  it('get table cell style', () => {
     const tcol = hostComponent.tcolUnused;
     tcol.withWidth(Width.px(50));
     expect(smt.getTableCellStyle(tcol)).toEqual({'width': '50px'});
     tcol.withWidth(Width.pct(50));
     expect(smt.getTableCellStyle(tcol)).toEqual({'width': '50%'});
+  });
+  it('get table header style col filter', () => {
+    expect(smt.getTableHeaderStyle()).toEqual({});
+    hostComponent.tcolPlain
+      .withColFilter();
+    expect(smt.getTableHeaderStyle()).toEqual({'height': '100%'});
   });
 
 

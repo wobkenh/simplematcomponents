@@ -10,7 +10,7 @@ A lot of different options like align, buttons, icons and even custom css allow 
 SimpleMatTable also allows you to enable adding, editing and deleting of elements in the table. 
 It supports different form fields like number inputs, text inputs and date inputs.
 
-Current test coverage (Statements/Branches/Functions/Lines): ~92%/~83%/~89%/~91%
+Current test coverage (Statements/Branches/Functions/Lines): ~93%/~85%/~91%/~92%
 
 ## Attention
 

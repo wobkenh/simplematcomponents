@@ -355,33 +355,11 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   getHeaderNoFilterAlign = (align: Align): string => align === Align.LEFT ? 'start center' : align === Align.CENTER ? 'center center' : 'end center';
   getCellAlign = (align: Align): string => align === Align.LEFT ? 'start center' : align === Align.CENTER ? 'center center' : 'end center';
   getTextAlign = (align: Align): string => align === Align.LEFT ? 'start' : align === Align.CENTER ? 'center' : 'end';
-  getTextAlignClass = (align: Align): string => align === Align.LEFT ? 'left-align-th' : align === Align.CENTER ? 'center-align-th' : 'right-align-th';
   isCenterAlign = (tcol: TableColumn<T, any>): boolean => tcol.align === Align.CENTER;
   isLeftAlign = (tcol: TableColumn<T, any>): boolean => tcol.align === Align.LEFT;
   hasColumnFilter = (): boolean => this.getDisplayedCols(this.columns).some(tcol => tcol.colFilter);
   getTableHeaderStyle = (): Object => this.hasColumnFilter() ? {height: '100%'} : {};
   getTableClass = (): string => (this.sticky ? 'sticky-th' : 'non-sticky-th') + (this.isChrome ? ' chrome' : '');
-
-  getHeaderCellClasses(tcol: TableColumn<T, any>): string[] {
-    const classes = [];
-    if (!(tcol.sortable && this.sorting)) {
-      classes.push('no-sort');
-    } else {
-      classes.push('with-sort');
-    }
-    classes.push(this.getTextAlignClass(tcol.align));
-    return classes;
-  }
-
-//     ({
-//     'no-sort': !(tcol.sortable && sorting),
-//     'with-sort': tcol.sortable && sorting,
-//     getTextAlignClass(tcol.align).toString();
-// :
-//   'true';
-// }
-//
-// )}
 
   arrayToObject(arr: string[]): Object { // turn ['css-class-a', 'css-class-b'] into {'css-class-a': true, 'css-class-b': true}
     return arr.reduce((acc, entry) => {

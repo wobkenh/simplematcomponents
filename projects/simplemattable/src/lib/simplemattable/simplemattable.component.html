@@ -5,21 +5,18 @@
   </mat-form-field>
 </div>
 <div fxFlex [ngStyle]="{'overflow': sticky ? 'auto' : 'visible'}">
-  <table mat-table #table [dataSource]="dataSource" matSort [matSortDisabled]="!sorting" style="width: 100%"
+  <table mat-table [dataSource]="dataSource" matSort [matSortDisabled]="!sorting" style="width: 100%"
          [ngClass]="getTableClass()">
     <ng-container *ngFor="let tcol of getDisplayedCols(columns); let columnIndex = index">
       <ng-container matColumnDef="{{columnIndex.toString() + '_' + tcol.property.toString()}}">
         <th mat-header-cell *matHeaderCellDef [ngStyle]="getTableCellStyle(tcol)"
             [fxHide.xs]="tcol.hiddenXs || tcol.hiddenSm" [fxHide.sm]="tcol.hiddenSm">
-          <div fxLayout="row"
+          <div fxLayout="row" style="height: 100%"
                [fxLayoutAlign]="tcol.colFilter ? getHeaderFilterAlign(tcol.align) : getHeaderNoFilterAlign(tcol.align)">
             <div fxLayout="column" *ngIf="!tcol.colFilter">
               <div [ngStyle.gt-xs]="{'padding': sorting ? isCenterAlign(tcol) ? '0 0 0 18px' : '0 0 0 5px' : '0 5px'}">
               <span mat-sort-header [disabled]="!tcol.sortable"
-                    [ngStyle]="{'textAlign': getTextAlign(tcol.align) + '!important'}"
-                    [ngClass]="getHeaderCellClasses(tcol)">
-<!--                fxLayout="row" [fxLayoutAlign]="getTextAlign(tcol.align)"-->
-                <!--                [ngClass]="{'no-sort': !(tcol.sortable && sorting), 'with-sort': tcol.sortable && sorting}"-->
+                    [ngClass]="{'no-sort': !(tcol.sortable && sorting), 'with-sort': tcol.sortable && sorting}">
                 {{tcol.name}}
               </span>
               </div>
@@ -27,9 +24,7 @@
             <div fxLayout="column" *ngIf="tcol.colFilter">
               <div [ngStyle.gt-xs]="{'padding': sorting ? isCenterAlign(tcol) ? '0 0 0 18px' : '0 0 0 5px' : '0 5px'}">
               <span mat-sort-header [disabled]="!tcol.sortable"
-                    [ngClass]="getHeaderCellClasses(tcol)">
-<!--                fxLayout="row" [fxLayoutAlign]="getTextAlign(tcol.align)"-->
-                <!--                [ngClass]="{'no-sort': !(tcol.sortable && sorting), 'with-sort': tcol.sortable && sorting, getTextAlignClass(tcol.align).toString(): 'true'}"-->
+                    [ngClass]="{'no-sort': !(tcol.sortable && sorting), 'with-sort': tcol.sortable && sorting}">
                 {{tcol.name}}
               </span>
               </div>
