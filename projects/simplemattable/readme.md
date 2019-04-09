@@ -281,8 +281,9 @@ You do not need to use !important on ngStyle. For example, you could change the 
 Note that the styles will be applied to a `<div>` that fills the `<td>` element completely and not to the `<td>` itself.
 
 - colFilter: (`.withColFilter()`): When activated, displays a column filter input below the header cell of the column. 
-The column filter works just like the filter feature of the table, but only filters rows using the values of the column. If you have problems with the width of the filter input, 
-have a look at the info in the Edit-mode chapter below.
+The column filter works just like the filter feature of the table, but only filters rows using the values of the column. 
+To set the text of a column filter programmatically, call the method `setColFilterText(text: string)` on the table column.
+If you have problems with the width of the filter input, have a look at the info in the Edit-mode chapter below.
 
 ### Edit-mode
 
