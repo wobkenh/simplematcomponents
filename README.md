@@ -18,7 +18,9 @@ You can contribute to both using this repository.
 
 ## Demo
 
-To see the components in action, spin up the demo application:
+To see the components in action, visit the [demo application site](https://simplex24.de/smc-demo/).
+ 
+Alternatively, you can alway install the demo application locally:
 - check out this repository
 - install the dependencies using `npm install` while being in the project root
 - build simplealert and simplemattable using `ng build simplealert` and `ng build simplemattable`.
