@@ -9,6 +9,7 @@ import {DateFormField} from './date-form-field.model';
 import {SelectFormField} from './select-form-field.model';
 import {LargeTextFormField} from './large-text-form-field.model';
 import {Height} from './height.model';
+import {AbstractControl} from '@angular/forms';
 
 export class TableColumn<T, P extends keyof T> {
 
@@ -33,6 +34,7 @@ export class TableColumn<T, P extends keyof T> {
   public ngStyle: (data: T[P], dataParent: T) => Object;
   public formField: AbstractFormField<T, P, any>;
   public colFilter: boolean = false;
+  private colFilterFormControl: AbstractControl;
 
   constructor(public name: string,
               public property: P) {
@@ -324,6 +326,25 @@ export class TableColumn<T, P extends keyof T> {
    */
   public getLargeTextFormField(): LargeTextFormField<T, P> {
     return new LargeTextFormField<T, P>();
+  }
+
+  /**
+   * If {@link #withColFilter} is active, set the value of the col filter
+   */
+  public setColFilterText(text: string) {
+    if (this.colFilter && this.colFilterFormControl) {
+      this.colFilterFormControl.patchValue(text);
+    }
+  }
+
+  /**
+   * For internal use only.
+   * Allows you to specify a form control for the column filter.
+   *
+   * @param formControl
+   */
+  public setColFilterFormControl(formControl: AbstractControl) {
+    this.colFilterFormControl = formControl;
   }
 
 }

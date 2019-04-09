@@ -285,6 +285,9 @@ The column filter works just like the filter feature of the table, but only filt
 To set the text of a column filter programmatically, call the method `setColFilterText(text: string)` on the table column.
 If you have problems with the width of the filter input, have a look at the info in the Edit-mode chapter below.
 
+- colFilterText `setColFilterText(text: string)`: Allows you to programmatically set the text of the col filter. 
+ColFilter (see above) needs to be active.
+
 ### Edit-mode
 
 Edit-mode is a major feature of SimpleMatTable. It allows you to enable the add/edit/delete functionality.
