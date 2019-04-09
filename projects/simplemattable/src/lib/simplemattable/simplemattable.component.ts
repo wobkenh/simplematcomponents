@@ -492,10 +492,11 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
       }
       this.dataSource = new MatTableDataSource(tmpData);
       this.dataSource.filterPredicate = (data: T, filter: string) => {
-        const allFilter = this.columns.reduce((str, col) => str + this.getStringRepresentation(col, data).toLowerCase().trim(), '')
-          .indexOf(filter.toLowerCase().trim()) >= 0;
-        if (!this.hasColumnFilter() || !allFilter) {
-          return allFilter;
+        const filterWords = filter.toLowerCase().trim().split(' ');
+        const allString = this.columns.reduce((str, col) => str + this.getStringRepresentation(col, data).toLowerCase().trim(), '');
+        const allFilterOk = filterWords.every(word => allString.indexOf(word) > -1);
+        if (!this.hasColumnFilter() || !allFilterOk) {
+          return allFilterOk;
         }
 
         // Iterate over colFilterMap to apply filters

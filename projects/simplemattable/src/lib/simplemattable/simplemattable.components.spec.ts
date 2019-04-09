@@ -72,6 +72,38 @@ describe('TestcompComponent', () => {
     smt.applyFilter(' funny TEsT   ');
     expect(smt.dataSource.filter).toBe('funny test');
   });
+  it('should filter correctly', () => {
+    const data = new ComplexTestData(1, new TestData('test', 2, new Date()));
+    smt.columns = [
+      new TableColumn<ComplexTestData, 'id'>('ID', 'id'),
+      new TableColumn<ComplexTestData, 'testData'>('Key', 'testData')
+        .withTransform(t => t.key),
+    ];
+    expect(smt.dataSource.filterPredicate(data, 'test')).toBe(true);
+    expect(smt.dataSource.filterPredicate(data, '1 test')).toBe(true);
+    expect(smt.dataSource.filterPredicate(data, 'Natalie Dormer')).toBe(false);
+  });
+  it('should col filter correctly', () => {
+    const data = new ComplexTestData(1, new TestData('test', 2, new Date()));
+    smt.columns = [
+      new TableColumn<ComplexTestData, 'id'>('ID', 'id')
+        .withColFilter(),
+      new TableColumn<ComplexTestData, 'testData'>('Key', 'testData')
+        .withTransform(t => t.key)
+        .withColFilter(),
+    ];
+    smt.data = [data];
+    smt.ngDoCheck();
+    smt.getColFilterFormControl(smt.columns[1]).patchValue('Test');
+    expect(smt.dataSource.filterPredicate(data, '')).toBe(true);
+    smt.getColFilterFormControl(smt.columns[1]).patchValue('e');
+    expect(smt.dataSource.filterPredicate(data, '')).toBe(true);
+    smt.getColFilterFormControl(smt.columns[1]).patchValue('Test2');
+    expect(smt.dataSource.filterPredicate(data, '')).toBe(false);
+    smt.getColFilterFormControl(smt.columns[0]).patchValue('1');
+    smt.getColFilterFormControl(smt.columns[1]).patchValue('test');
+    expect(smt.dataSource.filterPredicate(data, '')).toBe(true);
+  });
   it('should call onClick button clickable', () => {
     const tcolButtonClickable = hostComponent.tcolUnused
       .withOnClick(() => {
