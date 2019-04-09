@@ -19,7 +19,8 @@
     "angular",
     "angular6",
     "angular7",
-    "material"
+    "material",
+    "form"
   ],
   "peerDependencies": {
     "@angular/common": "^7.0.0",

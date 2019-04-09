@@ -8,7 +8,7 @@
         <ol>
           <li><a href="#simple">Simple</a></li>
           <li><a href="#transform">Transform</a></li>
-          <li><a href="#width">Width</a></li>
+          <li><a href="#width">Width and Height</a></li>
           <li><a href="#align">Align</a></li>
           <li><a href="#sortable">Sortable</a></li>
           <li><a href="#visibility">Visibility/Responsive</a></li>
@@ -147,12 +147,12 @@ this.columnsTransform = [
       <!-- Width -->
       <div class="display">
         <div>
-          <h2 id="width" style="margin-top: 50px;">3. Width</h2>
-          <span>Use the width-object to set the width of a column.</span>
+          <h2 id="width" style="margin-top: 50px;">3. Width and Height</h2>
+          <span>Use the width-object to set the width of a column and the height-function to set the height of a cell.</span>
           <br>
           <span>You can use percent or pixel based values.</span>
           <br>
-          <span>The standard table layout calculations will be used to determine the width of each column.</span>
+          <span>The standard table layout calculations will be used to determine the width of each column and the height of each cell.</span>
           <mat-tab-group>
             <mat-tab label="Display">
               <smc-simplemattable [data]="dataWidth" [columns]="columnsWidth"></smc-simplemattable>
@@ -172,7 +172,8 @@ this.dataWidth = [
                 <pre>
 this.columnsWidth = [
   new TableColumn&lt;ComplexTestData, 'id'&gt;('My ID', 'id')
-    .withWidth(Width.px(100)),
+    .withWidth(Width.px(100))
+    .withHeightFn((id) => id === 1 ? Height.px(100) : null),
   new TableColumn&lt;ComplexTestData, 'value'&gt;('My Value', 'value')
     .withWidth(Width.pct(50)),
   new TableColumn&lt;ComplexTestData, 'description'&gt;('My Description', 'description')

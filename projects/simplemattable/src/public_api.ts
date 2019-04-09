@@ -17,3 +17,4 @@ export * from './lib/model/select-form-field.model';
 export * from './lib/model/select-form-field-option.model';
 export * from './lib/model/text-form-field.model';
 export * from './lib/model/width.model';
+export * from './lib/model/height.model';

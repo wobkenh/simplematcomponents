@@ -120,7 +120,7 @@ export class AppComponent implements OnInit {
     ];
 
     /*
-      Width Table
+      Width/Height Table
     */
     this.dataWidth = [
       new ComplexTestData(1, 40, 'test1', null, 'test2'),
@@ -128,7 +128,8 @@ export class AppComponent implements OnInit {
     ];
     this.columnsWidth = [
       new TableColumn<ComplexTestData, 'id'>('My ID', 'id')
-        .withWidth(Width.px(100)),
+        .withWidth(Width.px(100))
+        .withHeightFn((id) => id === 1 ? Height.px(100) : null),
       new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
         .withWidth(Width.pct(50)),
       new TableColumn<ComplexTestData, 'description'>('My Description', 'description')

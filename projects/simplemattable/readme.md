@@ -8,19 +8,19 @@ Instead of copy/pasting the HTML for each column, you can describe the columns i
 A lot of different options like align, buttons, icons and even custom css allow you to further customize your table.
 
 SimpleMatTable also allows you to enable adding, editing and deleting of elements in the table. 
-It supports different form fields like number inputs, text inputs and date inputs.
+It supports different form fields like number, text, date and select inputs.
 
 Current test coverage (Statements/Branches/Functions/Lines): ~94%/~87%/~93%/~94%
 
 ## Attention
 
-To all users of simplemattable 1.X: Due to seemingly unsolvable issues concerning the row height when using material components (e.g. `<mat-table>`),
-we now switched to using the material directives (e.g. `<table mat-table>`), which is also recommended by the Angular Material team. 
-This gives us full control over the table css and eliminates the problems we had before with component isolation.
+To all users of simplemattable 1.X: Due to issues concerning the row height when using material components (e.g. `<mat-table>`),
+simplemattable was now (Version 2.X) changed to use the material directives (e.g. `<table mat-table>`). 
+This solution allows for full control over the table css and eliminates the problems regarding component isolation.
 
-So what changed for you? Column widths might now be different since they will be calculated arroding to the standard html table functionality.
+So what changed for you? Column widths might now be different since they will be calculated according to the standard html table functionality.
 If you used the width property on columns, you can no longer enter a flex string or specify shrink/grow.
-Instead, you can now only supply widths that can be parsed by the width css property.   
+Instead, you can now only supply widths that can be parsed by the width css property (preferably via the width-object).   
 
 ## Table of contents
 
@@ -271,12 +271,14 @@ On certain attributes, you will have to use the !important flag for the change t
 This happens on attributes that are already set in Simplemattable's own css. 
 Currently, these attributes are `background-color` and `cursor`, which are set on clickable cells without buttons. 
 If you need to style the children in the table cell, you can select them using the standard css features.
+Note that the classes will be applied to a `<div>` that fills the `<td>` element completely and not to the `<td>` itself.
 
 - ngStyle: (`.withNgStyle(ngStyleFn: (data: T[P], dataParent: T) => Object)`): 
 If you want to apply custom inline css to the table cells of a column, you can add the ngStyle function.
 It must return something that is parsable by the ngStyle directive. For more information on ngStyle [see the Angular docs](https://angular.io/api/common/NgStyle).
 You do not need to use !important on ngStyle. For example, you could change the background color depending on id like this even when the column is clickable: 
-`.withNgStyle((id) => ({'background-color': id < 3 ? '#992222' : 'transparent'}))`
+`.withNgStyle((id) => ({'background-color': id < 3 ? '#992222' : 'transparent'}))`.
+Note that the styles will be applied to a `<div>` that fills the `<td>` element completely and not to the `<td>` itself.
 
 - colFilter: (`.withColFilter()`): When activated, displays a column filter input below the header cell of the column. 
 The column filter works just like the filter feature of the table, but only filters rows using the values of the column. If you have problems with the width of the filter input, 
@@ -506,6 +508,8 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 2.0 (7.0): Switched from mat-table components to mat-table directives, thus switching to table layout; 
+fixed some smaller bugs regarding adding of items, filtering and focus
 + 1.6 (7.0): Multiline header cells
 + 1.5 (7.0): Filter for Columns
 + 1.4 (7.0): Updated to Angular 7
