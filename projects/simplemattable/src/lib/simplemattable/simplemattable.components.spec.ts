@@ -24,6 +24,7 @@ import {Align} from '../model/align.model';
 import {ButtonType} from '../model/button-type.model';
 import {LargeTextFormField} from '../model/large-text-form-field.model';
 import {SelectFormField} from '../model/select-form-field.model';
+import {Height} from '../model/height.model';
 import {Width} from '../model/width.model';
 
 describe('TestcompComponent', () => {
@@ -71,6 +72,38 @@ describe('TestcompComponent', () => {
     smt.applyFilter(' funny TEsT   ');
     expect(smt.dataSource.filter).toBe('funny test');
   });
+  it('should filter correctly', () => {
+    const data = new ComplexTestData(1, new TestData('test', 2, new Date()));
+    smt.columns = [
+      new TableColumn<ComplexTestData, 'id'>('ID', 'id'),
+      new TableColumn<ComplexTestData, 'testData'>('Key', 'testData')
+        .withTransform(t => t.key),
+    ];
+    expect(smt.dataSource.filterPredicate(data, 'test')).toBe(true);
+    expect(smt.dataSource.filterPredicate(data, '1 test')).toBe(true);
+    expect(smt.dataSource.filterPredicate(data, 'Natalie Dormer')).toBe(false);
+  });
+  it('should col filter correctly', () => {
+    const data = new ComplexTestData(1, new TestData('test', 2, new Date()));
+    smt.columns = [
+      new TableColumn<ComplexTestData, 'id'>('ID', 'id')
+        .withColFilter(),
+      new TableColumn<ComplexTestData, 'testData'>('Key', 'testData')
+        .withTransform(t => t.key)
+        .withColFilter(),
+    ];
+    smt.data = [data];
+    smt.ngDoCheck();
+    smt.getColFilterFormControl(smt.columns[1]).patchValue('Test');
+    expect(smt.dataSource.filterPredicate(data, '')).toBe(true);
+    smt.getColFilterFormControl(smt.columns[1]).patchValue('e');
+    expect(smt.dataSource.filterPredicate(data, '')).toBe(true);
+    smt.getColFilterFormControl(smt.columns[1]).patchValue('Test2');
+    expect(smt.dataSource.filterPredicate(data, '')).toBe(false);
+    smt.getColFilterFormControl(smt.columns[0]).patchValue('1');
+    smt.getColFilterFormControl(smt.columns[1]).patchValue('test');
+    expect(smt.dataSource.filterPredicate(data, '')).toBe(true);
+  });
   it('should call onClick button clickable', () => {
     const tcolButtonClickable = hostComponent.tcolUnused
       .withOnClick(() => {
@@ -92,7 +125,7 @@ describe('TestcompComponent', () => {
     smt.onClick(tcolNoButtonClickable, data, true);
     expect(tcolNoButtonClickable.onClick).toHaveBeenCalledTimes(0);
     // Should not be clickable if currently editing:
-    smt.startEditElement(data);
+    smt.startEditElement(data, 1);
     smt.onClick(tcolNoButtonClickable, data, false);
     expect(tcolNoButtonClickable.onClick).toHaveBeenCalledTimes(0);
     smt.cancelEditElement(data);
@@ -104,7 +137,7 @@ describe('TestcompComponent', () => {
     const tcol = hostComponent.tcolPlain;
     const data = hostComponent.data[0];
     const res = smt.getCellCssClass(tcol, data);
-    expect(res).toEqual({'on-click': undefined});
+    expect(res).toEqual({'filler-div': true, 'on-click': undefined});
   });
   it('ngClass clickable', () => {
     const tcol = hostComponent.tcolUnused
@@ -112,7 +145,7 @@ describe('TestcompComponent', () => {
       });
     const data = hostComponent.data[0];
     const res = smt.getCellCssClass(tcol, data);
-    expect(res).toEqual({'on-click': true});
+    expect(res).toEqual({'filler-div': true, 'on-click': true});
   });
   it('ngClass button and two classes', () => {
     const tcol = hostComponent.tcolUnused
@@ -122,13 +155,13 @@ describe('TestcompComponent', () => {
       .withButton(ButtonType.BASIC);
     // no matter how you return it, should always result in the same ngClass
     const data = hostComponent.data[0];
-    expect(smt.getCellCssClass(tcol, data)).toEqual({'on-click': false, 'testclass1': true, 'testclass2': true});
+    expect(smt.getCellCssClass(tcol, data)).toEqual({'filler-div': true, 'on-click': false, 'testclass1': true, 'testclass2': true});
 
     tcol.withNgClass(() => ['testclass1', 'testclass2']);
-    expect(smt.getCellCssClass(tcol, data)).toEqual({'on-click': false, 'testclass1': true, 'testclass2': true});
+    expect(smt.getCellCssClass(tcol, data)).toEqual({'filler-div': true, 'on-click': false, 'testclass1': true, 'testclass2': true});
 
     tcol.withNgClass(() => ({'testclass1': true, 'testclass2': true}));
-    expect(smt.getCellCssClass(tcol, data)).toEqual({'on-click': false, 'testclass1': true, 'testclass2': true});
+    expect(smt.getCellCssClass(tcol, data)).toEqual({'filler-div': true, 'on-click': false, 'testclass1': true, 'testclass2': true});
   });
   it('ngClass default style if ngClass returns falsy value', () => {
     const tcol = hostComponent.tcolUnused
@@ -137,22 +170,32 @@ describe('TestcompComponent', () => {
       })
       .withButton(ButtonType.BASIC);
     // ngClassFn gives back nothing --> should return default style
-    expect(smt.getCellCssClass(tcol, hostComponent.data[0])).toEqual({'on-click': false});
+    expect(smt.getCellCssClass(tcol, hostComponent.data[0])).toEqual({'filler-div': true, 'on-click': false});
   });
   it('ngStyle', () => {
     const tcol = hostComponent.tcolUnused;
     const data = hostComponent.data[0];
-    expect(smt.getCellCssStyle(tcol, data)).toEqual({});
-    const style = {'color': '#FFFFFF', 'border': '1px solid black'};
+    expect(smt.getCellCssStyle(tcol, data)).toEqual({'textAlign': 'start', 'minHeight': '48px'});
+    const style = {'textAlign': 'start', 'color': '#FFFFFF', 'border': '1px solid black', 'minHeight': '48px'};
     tcol.withNgStyle(() => style);
     expect(smt.getCellCssStyle(tcol, data)).toEqual(style);
   });
+  it('ngStyle with height', () => {
+    const tcol = hostComponent.tcolUnused;
+    tcol.withHeightFn(() => Height.px(30));
+    const data = hostComponent.data[0];
+    expect(smt.getCellCssStyle(tcol, data)).toEqual({'textAlign': 'start', 'height': '30px'});
+    tcol.withHeightFn(() => Height.pct(30));
+    expect(smt.getCellCssStyle(tcol, data)).toEqual({'textAlign': 'start', 'height': '30%'});
+  });
   it('get form control', () => {
     const tcol = hostComponent.tcolUnused
-      .withFormField(hostComponent.tcolUnused.getNumberFormField());
+      .withFormField(hostComponent.tcolUnused.getNumberFormField().withPlaceholder('placeholder').withHint('hint'));
     // new Form Control
     const fc = smt.getFormControl(0, 0, hostComponent.tcolUnused, hostComponent.data[0]);
     expect(fc).toBeTruthy();
+    expect(tcol.formField.placeholder).toEqual('placeholder');
+    expect(tcol.formField.hint).toEqual('hint');
     // Reload Form Control
     expect(smt.getFormControl(0, 0, hostComponent.tcolUnused, hostComponent.data[0])).toBe(fc);
     // New Form Control with init
@@ -169,6 +212,13 @@ describe('TestcompComponent', () => {
     expect(res.valid).toBe(false);
     res.patchValue(100);
     expect(res.valid).toBe(true);
+
+    tcol.withMaxLines(25)
+      .withMinLines(5)
+      .withFormField(tcol.getLargeTextFormField().withInit(() => 'hi').withApply(null));
+    const fcText = smt.getFormControl(84, 0, hostComponent.tcolUnused, hostComponent.data[0]);
+    expect(fcText).toBeTruthy();
+    expect(fcText.value).toEqual('hi');
   });
   it('is form valid', () => {
     const validators = [Validators.required, Validators.min(5)];
@@ -188,6 +238,17 @@ describe('TestcompComponent', () => {
     expect(smt.isFormValid(0)).toBe(true);
     fc2.patchValue(0);
     expect(smt.isFormValid(0)).toBe(false);
+  });
+  it('apply col filter', () => {
+    smt.dataSource.filter = 'Natalie Dormer';
+    smt.applyColFilter();
+    expect(smt.dataSource.filter).not.toBe('Natalie Dormer');
+    expect(smt.dataSource.filter.startsWith('Natalie Dormer')).toBeTruthy();
+    smt.applyColFilter();
+    expect(smt.dataSource.filter).toBe('Natalie Dormer');
+    smt.dataSource.filter = '';
+    smt.applyColFilter();
+    expect(smt.dataSource.filter).toBe(' ');
   });
   it('get form errors', () => {
     const validators = [Validators.required, Validators.min(5)];
@@ -210,10 +271,10 @@ describe('TestcompComponent', () => {
   it('start add element', () => {
     const data = new ComplexTestData(4242, new TestData('test', 1, new Date()));
     smt.create = () => data;
-    expect(smt.currentlyAdding).toBe(false);
+    expect(smt.addedItem).toBeFalsy();
     smt.startAddElement();
-    expect(smt.currentlyAdding).toBe(true);
-    expect(smt.data.indexOf(data)).toBeGreaterThanOrEqual(0);
+    expect(smt.addedItem).toBeTruthy();
+    expect(smt.data.indexOf(data)).toEqual(-1);
     const status = smt['dataStatus'].get(data);
     expect(status.editing).toBe(true);
     expect(status.added).toBe(true);
@@ -221,7 +282,7 @@ describe('TestcompComponent', () => {
   it('start edit element', () => {
     const data = new ComplexTestData(4242, new TestData('test', 1, new Date()));
     expect(smt['dataStatus'].has(data)).toBe(false);
-    smt.startEditElement(data);
+    smt.startEditElement(data, 1);
     expect(smt['dataStatus'].get(data).editing).toBe(true);
   });
   it('save element', () => {
@@ -238,7 +299,7 @@ describe('TestcompComponent', () => {
     hostComponent.data.push(data);
     hostComponent.data = hostComponent.data.slice(0);
     testHostFixture.detectChanges();
-    smt.startEditElement(data);
+    smt.startEditElement(data, 1);
     testHostFixture.detectChanges();
     spyOn(smt.add, 'emit');
     spyOn(smt.edit, 'emit');
@@ -268,14 +329,14 @@ describe('TestcompComponent', () => {
   it('cancel edit element', () => {
     const data = new ComplexTestData(42, new TestData('shrt', 42, new Date()));
     const newData = new ComplexTestData(420, new TestData('the answer to life, the universe and everything', 42, new Date()));
-    smt.startEditElement(data);
+    smt.startEditElement(data, 1);
     expect(smt['dataStatus'].get(data).editing).toBe(true);
     smt.cancelEditElement(data);
     expect(smt['dataStatus'].get(data).editing).toBe(false);
     smt.create = () => newData;
     smt.startAddElement();
     smt.cancelEditElement(newData);
-    expect(smt.currentlyAdding).toBe(false);
+    expect(smt.addedItem).toBeFalsy();
     expect(smt.data.indexOf(newData)).toBe(-1);
   });
   it('delete element', () => {
@@ -321,7 +382,7 @@ describe('TestcompComponent', () => {
     expect(smt['isButtonClickable'](tcol)).toBeTruthy();
     expect(smt['isCellClickable'](tcol, data)).toBeFalsy();
     tcol.withButton(null);
-    smt.startEditElement(data);
+    smt.startEditElement(data, 1);
     expect(smt['isButtonClickable'](tcol)).toBeFalsy();
     expect(smt['isCellClickable'](tcol, data)).toBeFalsy();
   });
@@ -355,7 +416,7 @@ describe('TestcompComponent', () => {
     expect(smt.isEditing(data)).toBeFalsy();
     expect(smt.isEditingColumn(tcolFormField, data)).toBeFalsy();
     expect(smt.isEditingColumn(tcolPlain, data)).toBeFalsy();
-    smt.startEditElement(data);
+    smt.startEditElement(data, 1);
     expect(smt.isLoading(data)).toBeFalsy();
     expect(smt.isEditing(data)).toBeTruthy();
     expect(smt.isEditingColumn(tcolFormField, data)).toBeTruthy();
@@ -392,17 +453,6 @@ describe('TestcompComponent', () => {
     expect(smt.getTextAlign(Align.LEFT)).toBe('start');
     expect(smt.getTextAlign(Align.CENTER)).toBe('center');
     expect(smt.getTextAlign(Align.RIGHT)).toBe('end');
-    expect(smt.getFxFlex(tcol)).toBe('1 1 0px');
-    tcol.withWidth('');
-    expect(smt.getFxFlex(tcol)).toBe('1 1 0px');
-    tcol.withWidth(25);
-    expect(smt.getFxFlex(tcol)).toBe('0 0 25px');
-    tcol.withWidth('0 0 auto');
-    expect(smt.getFxFlex(tcol)).toBe('0 0 auto');
-    tcol.withWidth(Width.px(42).shrink());
-    expect(smt.getFxFlex(tcol)).toBe('0 1 42px');
-    tcol.withWidth(Width.pct(42).grow());
-    expect(smt.getFxFlex(tcol)).toBe('1 0 42%');
     tcol.withAlign(Align.CENTER);
     expect(smt.isCenterAlign(tcol)).toBe(true);
     tcol.withAlign(Align.LEFT);
@@ -444,12 +494,13 @@ describe('TestcompComponent', () => {
     smt.matSort.active = '0_id';
     smt.matSort.direction = 'asc';
     smt.startAddElement();
-    expect(smt.data.length).toBe(dataLength + 1);
+    expect(smt.data.length).toBe(dataLength);
+    expect(smt.addedItem).toBeTruthy();
     hostComponent.data = hostComponent.data.slice(0);
     testHostFixture.detectChanges();
     // should clear added entry after data has been updated:
     expect(smt.data.length).toBe(dataLength);
-    expect(smt.currentlyAdding).toBe(false);
+    expect(smt.addedItem).toBeFalsy();
     // should not clear sorting selection on data change
     expect(smt.matSort.direction).toBe('asc');
   });
@@ -462,14 +513,15 @@ describe('TestcompComponent', () => {
     const dataLength = smt.data.length;
     smt.matSort.active = '0_id';
     smt.matSort.direction = 'asc';
-    smt.startEditElement(existingData);
+    smt.startEditElement(existingData, 1);
     smt.startAddElement();
-    expect(smt.data.length).toBe(dataLength + 1);
+    expect(smt.data.length).toBe(dataLength);
+    expect(smt.addedItem).toBeTruthy();
     hostComponent.columns[0].isVisible(false);
     testHostFixture.detectChanges();
     // should clear added entry after cols have been updated:
     expect(smt.data.length).toBe(dataLength);
-    expect(smt.currentlyAdding).toBe(false);
+    expect(smt.addedItem).toBeFalsy();
     // column 0 should be invisible now
     expect(smt.getDisplayedCols(smt.columns).length).toBe(hostComponent.columns.length - 1);
     // should clear sorting selection on col change
@@ -477,8 +529,18 @@ describe('TestcompComponent', () => {
     // should no longer be editing
     expect(smt.isEditing(existingData)).toBe(false);
   });
-  it('dirty checking / dynamic updating: columns', () => {
-
+  it('get table cell style', () => {
+    const tcol = hostComponent.tcolUnused;
+    tcol.withWidth(Width.px(50));
+    expect(smt.getTableCellStyle(tcol)).toEqual({'width': '50px'});
+    tcol.withWidth(Width.pct(50));
+    expect(smt.getTableCellStyle(tcol)).toEqual({'width': '50%'});
+  });
+  it('get table header style col filter', () => {
+    expect(smt.getTableHeaderStyle()).toEqual({});
+    hostComponent.tcolPlain
+      .withColFilter();
+    expect(smt.getTableHeaderStyle()).toEqual({'height': '100%'});
   });
 
 

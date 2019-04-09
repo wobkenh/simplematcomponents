@@ -23,3 +23,38 @@
   display: flex;
   flex-direction: column;
 }
+
+.filler-div {
+  height: 100%;
+}
+
+
+td {
+  height: 100%;
+}
+
+.chrome td {
+  /*
+  Problem: On Chrome, divs wont fill out their table cells unless the td has a height
+    This makes no sense because the 1px height is ignored anyway
+    but whatever, it works :)
+    See https://stackoverflow.com/questions/3215553/make-a-div-fill-an-entire-table-cell
+ */
+  height: 1px;
+}
+
+.chrome th {
+  height: 1px;
+}
+
+.sticky-th th {
+
+}
+
+.non-sticky-th th {
+  /*
+    If you do not override the z-index for non-sticky headers,
+    the bottom border of the header cells might not show in some constellations
+  */
+  z-index: inherit !important;
+}

@@ -10,10 +10,7 @@ it requires Angular Material 6.0 or above (see version section for more informat
 
 ## Preview
 
-![Info Alert](https://simplex24.de/info.png "Info Alert")
-![Error Alert](https://simplex24.de/error.png "Error Alert")
-
-Danger and success alerts are also available.
+[Demo](https://simplex24.de/smc-demo#infoAlert "Demo")
 
 ## Installing
 

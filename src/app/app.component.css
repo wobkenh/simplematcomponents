@@ -1,0 +1,54 @@
+.code {
+  text-align: left;
+  padding: 15px;
+}
+
+.code p {
+  font-style: italic;
+  color: rgba(0, 0, 0, 0.67);
+}
+
+.code pre {
+  background-color: white;
+  padding: 15px;
+  border-radius: 15px;
+}
+
+.display {
+  display: flex;
+  place-content: center;
+}
+
+.display > div {
+  max-width: 100%;
+  width: 1000px;
+  padding: 20px 0;
+}
+
+.sidemenu {
+  display: flex;
+  text-align: left;
+  padding-right: 40px;
+}
+
+.sidemenu a {
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.67);
+  cursor: pointer;
+}
+
+.sidemenu li {
+  padding: 1px 0;
+}
+
+.sidemenu a:hover {
+  color: rgba(0, 0, 155, 0.67);
+  font-style: italic;
+  font-weight: bold;
+}
+
+.sidemenu-subtitle {
+  font-weight: bold;
+  padding: 10px;
+  color: rgba(0, 0, 0, 0.67);
+}

@@ -44,9 +44,9 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   displayedColumns = [];
   dataSource: MatTableDataSource<T>;
-  currentlyAdding: boolean = false;
   private dataStatus: Map<T, DataStatus> = new Map<T, DataStatus>(); // to know whether or not a row is being edited
   private oldColumns: TableColumn<T, any>[] = []; // For dirty-checking
+  addedItem: T = null;
   // There may only be one form control per cell
   // FormControls are identified by <rowIndex>_<colIndex>
   formControls: Map<string, AbstractControl> = new Map<string, AbstractControl>();
@@ -54,12 +54,15 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   buttonType = ButtonType;
   formFieldType = FormFieldType;
+  isChrome = false;
 
 
   constructor(private fb: FormBuilder) {
   }
 
   ngOnInit(): void {
+    const win: any = window;
+    this.isChrome = !!win.chrome;
     if (this.addable && !this.create) {
       throw Error('Seems like you enabled adding of elements (adding was set to true), but you did not supply a create function.' +
         ' Please specify a create function that will be used to create new Elements of your' +
@@ -81,6 +84,10 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     }
   }
 
+  /**
+   * Changes the data source filter so a new search is triggered.
+   * Does not influence the search results.
+   */
   applyColFilter() {
     const len = this.dataSource.filter.length - 1;
     if (this.dataSource.filter.charAt(len) !== ' ') {
@@ -116,7 +123,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    * @returns ngClass Object
    */
   getCellCssClass(tcol: TableColumn<T, any>, element: T): Object {
-    const defaultClass = {'on-click': (tcol.onClick && !tcol.button)};
+    const defaultClass = {'filler-div': true, 'on-click': (tcol.onClick && !tcol.button)};
     if (!tcol.ngClass) {
       return defaultClass;
     }
@@ -142,7 +149,25 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    * @returns ngStyleObject
    */
   getCellCssStyle(tcol: TableColumn<T, any>, element: T): Object {
-    return tcol.ngStyle ? tcol.ngStyle(element[tcol.property], element) : {};
+    const baseValue = tcol.ngStyle ? tcol.ngStyle(element[tcol.property], element) : {};
+    baseValue['textAlign'] = this.getTextAlign(tcol.align);
+    if (tcol.heightFn) {
+      const height = tcol.heightFn(element[tcol.property], element);
+      if (height) {
+        baseValue['height'] = height.toString();
+      }
+    } else {
+      baseValue['minHeight'] = '48px';
+    }
+    return baseValue;
+  }
+
+  getTableCellStyle(tcol: TableColumn<T, any>): { [p: string]: string } {
+    if (tcol.width) {
+      return {'width': tcol.width.toString()};
+    } else {
+      return {};
+    }
   }
 
 
@@ -205,15 +230,15 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    */
   startAddElement() {
     const ele: T = this.create();
-    this.data.unshift(ele);
+    this.addedItem = ele;
     this.recreateDataSource();
     this.cleanUpAfterDataChange();
     const status = new DataStatus();
     status.added = true;
     status.editing = true;
     this.dataStatus.set(ele, status);
-    this.currentlyAdding = true;
-    this.focusInput();
+    // added item will be the first row, so row index = 0
+    this.focusInput(0);
   }
 
   /**
@@ -255,17 +280,18 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   /**
    * Set the status of the element to edit
    * @param element
+   * @param rowIndex for focus purposes
    */
-  startEditElement(element: T) {
+  startEditElement(element: T, rowIndex: number) {
     const status = this.dataStatus.has(element) ? this.dataStatus.get(element) : new DataStatus();
     status.editing = true;
     this.dataStatus.set(element, status);
-    this.focusInput();
+    this.focusInput(rowIndex);
   }
 
-  private focusInput() {
+  private focusInput(rowIndex: number) {
     setTimeout(() => {
-      const focusedElement = document.getElementById('smt-focus-input');
+      const focusedElement = document.getElementById(rowIndex + '-smt-focus-input');
       if (focusedElement) {
         focusedElement.focus();
       }
@@ -279,8 +305,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   cancelEditElement(element: T) {
     const status = this.dataStatus.get(element);
     if (status.added) {
-      this.data.splice(this.data.indexOf(element), 1);
-      this.currentlyAdding = false;
+      this.clearAddedEntry();
       this.recreateDataSource();
       this.cleanUpAfterDataChange();
     } else {
@@ -326,15 +351,15 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   isEditingColumn = (tcol: TableColumn<T, any>, element: T): boolean => tcol.formField && this.isEditing(element);
   getIconName = (tcol: TableColumn<T, any>, element: T) => tcol.icon(element[tcol.property], element);
   getDisplayedCols = (cols: TableColumn<T, any>[]): TableColumn<T, any>[] => cols.filter(col => col.visible);
-  getFxFlex = (tcol: TableColumn<T, any>): string => tcol.width ? tcol.width : '1 1 0px';
-  getHeaderFilterAlign = (align: Align): string => align === Align.LEFT ? 'start end' : align === Align.CENTER ? 'center end' : 'end end'; 
-  getHeaderNoFilterAlign = (align: Align): string => align === Align.LEFT ? 'start center' : align === Align.CENTER ? 'center center' : 'end center'; 
+  getHeaderFilterAlign = (align: Align): string => align === Align.LEFT ? 'start end' : align === Align.CENTER ? 'center end' : 'end end';
+  getHeaderNoFilterAlign = (align: Align): string => align === Align.LEFT ? 'start center' : align === Align.CENTER ? 'center center' : 'end center';
   getCellAlign = (align: Align): string => align === Align.LEFT ? 'start center' : align === Align.CENTER ? 'center center' : 'end center';
   getTextAlign = (align: Align): string => align === Align.LEFT ? 'start' : align === Align.CENTER ? 'center' : 'end';
   isCenterAlign = (tcol: TableColumn<T, any>): boolean => tcol.align === Align.CENTER;
   isLeftAlign = (tcol: TableColumn<T, any>): boolean => tcol.align === Align.LEFT;
   hasColumnFilter = (): boolean => this.getDisplayedCols(this.columns).some(tcol => tcol.colFilter);
   getTableHeaderStyle = (): Object => this.hasColumnFilter() ? {height: '100%'} : {};
+  getTableClass = (): string => (this.sticky ? 'sticky-th' : 'non-sticky-th') + (this.isChrome ? ' chrome' : '');
 
   arrayToObject(arr: string[]): Object { // turn ['css-class-a', 'css-class-b'] into {'css-class-a': true, 'css-class-b': true}
     return arr.reduce((acc, entry) => {
@@ -373,7 +398,6 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   }
 
   /* -----------------------
-
       DIRTY CHECKING AND DATASOURCE REBUILDING
       It works like this:
       - Check for Changes in Data (ngOnChanges) or Columns (ngDoCheck)
@@ -381,7 +405,6 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
           which includes reassigning the paginator and the sorting function
       - Datachanges and columnchanges each require some extra work (cleanup)
           e.g. to reset the row status
-
      ----------------------- */
 
   // checks for data changes
@@ -394,15 +417,9 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   }
 
   private clearAddedEntry() {
-    let toDelete: T;
-    this.dataStatus.forEach((value: DataStatus, key: T) => {
-      if (value.added) {
-        toDelete = key;
-        this.data.splice(this.data.indexOf(key), 1);
-      }
-    });
-    if (toDelete) {
-      this.dataStatus.delete(toDelete);
+    if (this.addedItem) {
+      this.dataStatus.delete(this.addedItem);
+      this.addedItem = null;
     }
   }
 
@@ -415,7 +432,6 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     if (this.matSort && this.matSort.active) {
       this.dataSource.data = this.dataSource.sortData(this.dataSource.data, this.matSort);
     }
-    this.currentlyAdding = false;
   }
 
   // checks for column changes
@@ -446,7 +462,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     });
     this.formControls.clear();
     this.oldColumns = this.columns.map(col => Object.assign({}, col)); // copy cols to lose references
-    this.currentlyAdding = false;
+    this.clearAddedEntry();
   }
 
   private turnOffSorting() {
@@ -472,12 +488,17 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   private recreateDataSource() {
     if (this.columns && this.data) {
-      this.dataSource = new MatTableDataSource(this.data);
+      const tmpData = this.data.slice();
+      if (this.addedItem) {
+        tmpData.unshift(this.addedItem);
+      }
+      this.dataSource = new MatTableDataSource(tmpData);
       this.dataSource.filterPredicate = (data: T, filter: string) => {
-        const allFilter = this.columns.reduce((str, col) => str + this.getStringRepresentation(col, data).toLowerCase().trim(), '')
-          .indexOf(filter.toLowerCase().trim()) >= 0;
-        if (!this.hasColumnFilter() || !allFilter) {
-          return allFilter;
+        const filterWords = filter.toLowerCase().trim().split(' ');
+        const allString = this.columns.reduce((str, col) => str + this.getStringRepresentation(col, data).toLowerCase().trim(), '');
+        const allFilterOk = filterWords.every(word => allString.indexOf(word) > -1);
+        if (!this.hasColumnFilter() || !allFilterOk) {
+          return allFilterOk;
         }
 
         // Iterate over colFilterMap to apply filters

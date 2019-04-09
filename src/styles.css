@@ -2,10 +2,14 @@
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 
 .red-bg-cell {
-  background: #992222!important;
+  background: #992222 !important;
   color: white;
 }
 
 smc-simplemattable .mat-form-field-infix {
-  width: 100%!important;
+  width: 100% !important;
+}
+
+body {
+  margin: 0;
 }

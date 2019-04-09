@@ -8,9 +8,19 @@ Instead of copy/pasting the HTML for each column, you can describe the columns i
 A lot of different options like align, buttons, icons and even custom css allow you to further customize your table.
 
 SimpleMatTable also allows you to enable adding, editing and deleting of elements in the table. 
-It supports different form fields like number inputs, text inputs and date inputs.
+It supports different form fields like number, text, date and select inputs.
 
-Current test coverage (Statements/Branches/Functions/Lines): ~93%/~88%/~88%/~92%
+Current test coverage (Statements/Branches/Functions/Lines): ~94%/~85%/~92%/~94%
+
+## Attention
+
+To all users of simplemattable 1.X: Due to issues concerning the row height when using material components (e.g. `<mat-table>`),
+simplemattable was now (Version 2.X) changed to use the material directives (e.g. `<table mat-table>`). 
+This solution allows for full control over the table css and eliminates the problems regarding component isolation.
+
+So what changed for you? Column widths might now be different since they will be calculated according to the standard html table functionality.
+If you used the width property on columns, you can no longer enter a flex string or specify shrink/grow.
+Instead, you can now only supply widths that can be parsed by the width css property (preferably via the width-object).   
 
 ## Table of contents
 
@@ -41,9 +51,7 @@ For a detailed list of neccessary dependencies, see [section Dependencies](#depe
 
 ## Preview
 
-With sorting, pagination, filtering, adding, editing and deleting enabled, SimpleMatTable can look like this (using the default indigo material theme):
-
-![Info Alert](https://simplex24.de/simplemattable_example.png "SimpleMatTable example")
+[Demo](https://simplex24.de/smc-demo "Demo")
 
 
 ## Installing
@@ -194,12 +202,17 @@ All options are accessible using a 'is'- or 'with'-function that allows you to c
 
 - transform (`.withTransform(transformFn: (data: T[P], dataParent: T) => string)`): Transform is a function that returns a string representation that will be displayed for this cell. 
 This is helpful if e.g. your model contains a Date but you do not want the standard JS string representation of date to show, but rather your preferred format. 
-- width (`.withWidth(width: (number | Width | string))`): The width of the column. The property itself is the string that will later be used by fxflex. If you do not specify the width, the flex value `1 1 0px` will be used. This function accepts either a number, a string or a Width object:
-  + number: flex string will be `0 0 <number>px`
-  + string: the string will be interpreted by fxFlex as is, so pass a valid fxFlex string, [for more information see the fxFlex docs](https://github.com/angular/flex-layout/wiki/fxFlex-API).
-  + Width: Width allows you to enter the width in a typesafe way. 
+- width (`.withWidth(width: (number | Width | string))`): The width of the column. Can bei either string, number or Width:
+  + Width (recommended): Width allows you to enter the width in a typesafe way. 
   You can use `Width.px(pixel: number)` to get a pixel based width or `Width.pct(percent: number)` for percent based width. 
-  Additionally, you can use the methods `.shrink(weight: number = 1)` and `.grow(weight: number = 1)` to turn on shrink or grow respectively, which are both turned off (value = 0) by default. 
+  + string: Valid width-string that is accepted by the width css-property.
+  + number: Number of pixels.
+
+  The width of the columns will be calculated like in any other html table. Attention: This differs from Version 1.X of simplemattable where flex-layout was used instead.
+  
+- height (`.withHeight(heightFn: (data: T[P], dataParent: T) => Height)`): By default, the height of a row will be calculated by the table cell contents in regular html table fashion. 
+If you want to change the height (e.g. you want to display an image via css background property and the cell content is not large enough), supply the height function to calculate the height for each row.
+The height function returns a Height object, which works just like the width object (see width option above).    
 
 - align (`.withAlign(align: Align)`): Sets the text align within the column. Header and Cell content will both be aligned. Default is left align.
 
@@ -258,16 +271,19 @@ On certain attributes, you will have to use the !important flag for the change t
 This happens on attributes that are already set in Simplemattable's own css. 
 Currently, these attributes are `background-color` and `cursor`, which are set on clickable cells without buttons. 
 If you need to style the children in the table cell, you can select them using the standard css features.
+Note that the classes will be applied to a `<div>` that fills the `<td>` element completely and not to the `<td>` itself.
 
 - ngStyle: (`.withNgStyle(ngStyleFn: (data: T[P], dataParent: T) => Object)`): 
 If you want to apply custom inline css to the table cells of a column, you can add the ngStyle function.
 It must return something that is parsable by the ngStyle directive. For more information on ngStyle [see the Angular docs](https://angular.io/api/common/NgStyle).
 You do not need to use !important on ngStyle. For example, you could change the background color depending on id like this even when the column is clickable: 
-`.withNgStyle((id) => ({'background-color': id < 3 ? '#992222' : 'transparent'}))`
+`.withNgStyle((id) => ({'background-color': id < 3 ? '#992222' : 'transparent'}))`.
+Note that the styles will be applied to a `<div>` that fills the `<td>` element completely and not to the `<td>` itself.
 
 - colFilter: (`.withColFilter()`): When activated, displays a column filter input below the header cell of the column. 
-The column filter works just like the filter feature of the table, but only filters rows using the values of the column. If you have problems with the width of the filter input, 
-have a look at the info in the Edit-mode chapter below.
+The column filter works just like the filter feature of the table, but only filters rows using the values of the column. 
+To set the text of a column filter programmatically, call the method `setColFilterText(text: string)` on the table column.
+If you have problems with the width of the filter input, have a look at the info in the Edit-mode chapter below.
 
 - colFilterText `setColFilterText(text: string)`: Allows you to programmatically set the text of the col filter. 
 ColFilter (see above) needs to be active.
@@ -496,6 +512,8 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 2.0 (7.0): Switched from mat-table components to mat-table directives, thus switching to table layout; 
+fixed some smaller bugs regarding adding of items, filtering and focus
 + 1.6 (7.0): Multiline header cells
 + 1.5 (7.0): Filter for Columns
 + 1.4 (7.0): Updated to Angular 7
