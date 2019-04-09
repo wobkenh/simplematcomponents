@@ -13,9 +13,6 @@ import {Height} from '../../projects/simplemattable/src/lib/model/height.model';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  testData: ComplexTestData[];
-  columns: TableColumn<any, any>[] = [];
-  columns2: TableColumn<any, any>[] = [];
   isInfoOpen = true;
   isErrorOpen = true;
   isWarnOpen = true;
@@ -277,6 +274,7 @@ export class AppComponent implements OnInit {
     const formDataValCol = new TableColumn<ComplexTestData, 'data'>('Nested Value', 'data')
       .withTransform(data => data.value);
     formDataValCol.withFormField(formDataValCol.getTextFormField()
+      .withFocus(true)
       .withInit(data => data.value)
       .withApply((val, data) => {
         data.value = val;
@@ -513,6 +511,11 @@ export class AppComponent implements OnInit {
       this.dataForm = this.dataForm.slice(0);
     }, 2000);
   }
+
+  logDataForm() {
+    console.log(this.dataForm);
+  }
+
 
 }
 

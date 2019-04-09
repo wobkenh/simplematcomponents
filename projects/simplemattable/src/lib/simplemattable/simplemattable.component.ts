@@ -44,9 +44,9 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   displayedColumns = [];
   dataSource: MatTableDataSource<T>;
-  currentlyAdding: boolean = false;
   private dataStatus: Map<T, DataStatus> = new Map<T, DataStatus>(); // to know whether or not a row is being edited
   private oldColumns: TableColumn<T, any>[] = []; // For dirty-checking
+  addedItem: T = null;
   // There may only be one form control per cell
   // FormControls are identified by <rowIndex>_<colIndex>
   formControls: Map<string, AbstractControl> = new Map<string, AbstractControl>();
@@ -230,15 +230,15 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    */
   startAddElement() {
     const ele: T = this.create();
-    this.data.unshift(ele);
+    this.addedItem = ele;
     this.recreateDataSource();
     this.cleanUpAfterDataChange();
     const status = new DataStatus();
     status.added = true;
     status.editing = true;
     this.dataStatus.set(ele, status);
-    this.currentlyAdding = true;
-    this.focusInput();
+    // added item will be the first row, so row index = 0
+    this.focusInput(0);
   }
 
   /**
@@ -280,17 +280,18 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   /**
    * Set the status of the element to edit
    * @param element
+   * @param rowIndex for focus purposes
    */
-  startEditElement(element: T) {
+  startEditElement(element: T, rowIndex: number) {
     const status = this.dataStatus.has(element) ? this.dataStatus.get(element) : new DataStatus();
     status.editing = true;
     this.dataStatus.set(element, status);
-    this.focusInput();
+    this.focusInput(rowIndex);
   }
 
-  private focusInput() {
+  private focusInput(rowIndex: number) {
     setTimeout(() => {
-      const focusedElement = document.getElementById('smt-focus-input');
+      const focusedElement = document.getElementById(rowIndex + '-smt-focus-input');
       if (focusedElement) {
         focusedElement.focus();
       }
@@ -304,8 +305,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   cancelEditElement(element: T) {
     const status = this.dataStatus.get(element);
     if (status.added) {
-      this.data.splice(this.data.indexOf(element), 1);
-      this.currentlyAdding = false;
+      this.clearAddedEntry();
       this.recreateDataSource();
       this.cleanUpAfterDataChange();
     } else {
@@ -407,7 +407,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
           e.g. to reset the row status
      ----------------------- */
 
-// checks for data changes
+  // checks for data changes
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.data) {
       this.clearAddedEntry();
@@ -417,15 +417,9 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   }
 
   private clearAddedEntry() {
-    let toDelete: T;
-    this.dataStatus.forEach((value: DataStatus, key: T) => {
-      if (value.added) {
-        toDelete = key;
-        this.data.splice(this.data.indexOf(key), 1);
-      }
-    });
-    if (toDelete) {
-      this.dataStatus.delete(toDelete);
+    if (this.addedItem) {
+      this.dataStatus.delete(this.addedItem);
+      this.addedItem = null;
     }
   }
 
@@ -438,10 +432,9 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     if (this.matSort && this.matSort.active) {
       this.dataSource.data = this.dataSource.sortData(this.dataSource.data, this.matSort);
     }
-    this.currentlyAdding = false;
   }
 
-// checks for column changes
+  // checks for column changes
   ngDoCheck(): void {
     if (this.checkForDifferences()) {
       this.clearAddedEntry();
@@ -467,7 +460,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     });
     this.formControls.clear();
     this.oldColumns = this.columns.map(col => Object.assign({}, col)); // copy cols to lose references
-    this.currentlyAdding = false;
+    this.clearAddedEntry();
   }
 
   private turnOffSorting() {
@@ -477,7 +470,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     }
   }
 
-// only checks for column differences
+  // only checks for column differences
   private checkForDifferences(): boolean {
     if (this.oldColumns.length !== this.columns.length) {
       return true;
@@ -493,7 +486,11 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   private recreateDataSource() {
     if (this.columns && this.data) {
-      this.dataSource = new MatTableDataSource(this.data);
+      const tmpData = this.data.slice();
+      if (this.addedItem) {
+        tmpData.unshift(this.addedItem);
+      }
+      this.dataSource = new MatTableDataSource(tmpData);
       this.dataSource.filterPredicate = (data: T, filter: string) => {
         const allFilter = this.columns.reduce((str, col) => str + this.getStringRepresentation(col, data).toLowerCase().trim(), '')
           .indexOf(filter.toLowerCase().trim()) >= 0;
@@ -563,4 +560,5 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
       this.dataSource.sort = this.matSort;
     }
   }
+
 }

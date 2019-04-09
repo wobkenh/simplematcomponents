@@ -93,7 +93,7 @@ describe('TestcompComponent', () => {
     smt.onClick(tcolNoButtonClickable, data, true);
     expect(tcolNoButtonClickable.onClick).toHaveBeenCalledTimes(0);
     // Should not be clickable if currently editing:
-    smt.startEditElement(data);
+    smt.startEditElement(data, 1);
     smt.onClick(tcolNoButtonClickable, data, false);
     expect(tcolNoButtonClickable.onClick).toHaveBeenCalledTimes(0);
     smt.cancelEditElement(data);
@@ -239,10 +239,10 @@ describe('TestcompComponent', () => {
   it('start add element', () => {
     const data = new ComplexTestData(4242, new TestData('test', 1, new Date()));
     smt.create = () => data;
-    expect(smt.currentlyAdding).toBe(false);
+    expect(smt.addedItem).toBeFalsy();
     smt.startAddElement();
-    expect(smt.currentlyAdding).toBe(true);
-    expect(smt.data.indexOf(data)).toBeGreaterThanOrEqual(0);
+    expect(smt.addedItem).toBeTruthy();
+    expect(smt.data.indexOf(data)).toEqual(-1);
     const status = smt['dataStatus'].get(data);
     expect(status.editing).toBe(true);
     expect(status.added).toBe(true);
@@ -250,7 +250,7 @@ describe('TestcompComponent', () => {
   it('start edit element', () => {
     const data = new ComplexTestData(4242, new TestData('test', 1, new Date()));
     expect(smt['dataStatus'].has(data)).toBe(false);
-    smt.startEditElement(data);
+    smt.startEditElement(data, 1);
     expect(smt['dataStatus'].get(data).editing).toBe(true);
   });
   it('save element', () => {
@@ -267,7 +267,7 @@ describe('TestcompComponent', () => {
     hostComponent.data.push(data);
     hostComponent.data = hostComponent.data.slice(0);
     testHostFixture.detectChanges();
-    smt.startEditElement(data);
+    smt.startEditElement(data, 1);
     testHostFixture.detectChanges();
     spyOn(smt.add, 'emit');
     spyOn(smt.edit, 'emit');
@@ -297,14 +297,14 @@ describe('TestcompComponent', () => {
   it('cancel edit element', () => {
     const data = new ComplexTestData(42, new TestData('shrt', 42, new Date()));
     const newData = new ComplexTestData(420, new TestData('the answer to life, the universe and everything', 42, new Date()));
-    smt.startEditElement(data);
+    smt.startEditElement(data, 1);
     expect(smt['dataStatus'].get(data).editing).toBe(true);
     smt.cancelEditElement(data);
     expect(smt['dataStatus'].get(data).editing).toBe(false);
     smt.create = () => newData;
     smt.startAddElement();
     smt.cancelEditElement(newData);
-    expect(smt.currentlyAdding).toBe(false);
+    expect(smt.addedItem).toBeFalsy();
     expect(smt.data.indexOf(newData)).toBe(-1);
   });
   it('delete element', () => {
@@ -350,7 +350,7 @@ describe('TestcompComponent', () => {
     expect(smt['isButtonClickable'](tcol)).toBeTruthy();
     expect(smt['isCellClickable'](tcol, data)).toBeFalsy();
     tcol.withButton(null);
-    smt.startEditElement(data);
+    smt.startEditElement(data, 1);
     expect(smt['isButtonClickable'](tcol)).toBeFalsy();
     expect(smt['isCellClickable'](tcol, data)).toBeFalsy();
   });
@@ -384,7 +384,7 @@ describe('TestcompComponent', () => {
     expect(smt.isEditing(data)).toBeFalsy();
     expect(smt.isEditingColumn(tcolFormField, data)).toBeFalsy();
     expect(smt.isEditingColumn(tcolPlain, data)).toBeFalsy();
-    smt.startEditElement(data);
+    smt.startEditElement(data, 1);
     expect(smt.isLoading(data)).toBeFalsy();
     expect(smt.isEditing(data)).toBeTruthy();
     expect(smt.isEditingColumn(tcolFormField, data)).toBeTruthy();
@@ -462,12 +462,13 @@ describe('TestcompComponent', () => {
     smt.matSort.active = '0_id';
     smt.matSort.direction = 'asc';
     smt.startAddElement();
-    expect(smt.data.length).toBe(dataLength + 1);
+    expect(smt.data.length).toBe(dataLength);
+    expect(smt.addedItem).toBeTruthy();
     hostComponent.data = hostComponent.data.slice(0);
     testHostFixture.detectChanges();
     // should clear added entry after data has been updated:
     expect(smt.data.length).toBe(dataLength);
-    expect(smt.currentlyAdding).toBe(false);
+    expect(smt.addedItem).toBeFalsy();
     // should not clear sorting selection on data change
     expect(smt.matSort.direction).toBe('asc');
   });
@@ -480,14 +481,15 @@ describe('TestcompComponent', () => {
     const dataLength = smt.data.length;
     smt.matSort.active = '0_id';
     smt.matSort.direction = 'asc';
-    smt.startEditElement(existingData);
+    smt.startEditElement(existingData, 1);
     smt.startAddElement();
-    expect(smt.data.length).toBe(dataLength + 1);
+    expect(smt.data.length).toBe(dataLength);
+    expect(smt.addedItem).toBeTruthy();
     hostComponent.columns[0].isVisible(false);
     testHostFixture.detectChanges();
     // should clear added entry after cols have been updated:
     expect(smt.data.length).toBe(dataLength);
-    expect(smt.currentlyAdding).toBe(false);
+    expect(smt.addedItem).toBeFalsy();
     // column 0 should be invisible now
     expect(smt.getDisplayedCols(smt.columns).length).toBe(hostComponent.columns.length - 1);
     // should clear sorting selection on col change

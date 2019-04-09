@@ -58,7 +58,8 @@
               <mat-form-field *ngSwitchCase="formFieldType.TEXT" style="width: 100%;padding: 0 5px"
                               (keyup.enter)="saveElement(rowIndex, element)">
                 <input matInput [formControl]="getFormControl(rowIndex, columnIndex, tcol, element)" type="text"
-                       [placeholder]="tcol.formField.placeholder" [id]="tcol.formField.focus ? 'smt-focus-input' : ''">
+                       [placeholder]="tcol.formField.placeholder"
+                       [id]="tcol.formField.focus ? rowIndex + '-smt-focus-input' : ''">
                 <mat-error *ngFor="let error of getCurrentErrors(rowIndex, columnIndex, tcol, element);">
                   {{error.msg}}
                 </mat-error>
@@ -67,7 +68,8 @@
               <mat-form-field *ngSwitchCase="formFieldType.NUMBER" style="width: 100%;padding: 0 5px"
                               (keyup.enter)="saveElement(rowIndex, element)">
                 <input matInput type="number" [formControl]="getFormControl(rowIndex, columnIndex, tcol, element)"
-                       [placeholder]="tcol.formField.placeholder" [id]="tcol.formField.focus ? 'smt-focus-input' : ''">
+                       [placeholder]="tcol.formField.placeholder"
+                       [id]="tcol.formField.focus ? rowIndex + '-smt-focus-input' : ''">
                 <mat-error *ngFor="let error of getCurrentErrors(rowIndex, columnIndex, tcol, element);">
                   {{error.msg}}
                 </mat-error>
@@ -76,7 +78,7 @@
               <mat-form-field *ngSwitchCase="formFieldType.DATE" style="width: 98%;">
                 <!-- For whatever reason, you cant wrap the date picker input in a ng-container -->
                 <input matInput [formControl]="getFormControl(rowIndex, columnIndex, tcol, element)"
-                       [id]="tcol.formField.focus ? 'smt-focus-input' : ''"
+                       [id]="tcol.formField.focus ? rowIndex + '-smt-focus-input' : ''"
                        [ngStyle]="{'text-align': getTextAlign(tcol.align)}" [matDatepicker]="picker"
                        [placeholder]="tcol.formField.placeholder" (keyup.enter)="saveElement(rowIndex, element)">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -89,7 +91,7 @@
               <mat-form-field *ngSwitchCase="formFieldType.SELECT" style="width: 100%;padding: 0 5px">
                 <mat-select [formControl]="getFormControl(rowIndex, columnIndex, tcol, element)"
                             [placeholder]="tcol.formField.placeholder"
-                            [id]="tcol.formField.focus ? 'smt-focus-input' : ''">
+                            [id]="tcol.formField.focus ? rowIndex + '-smt-focus-input' : ''">
                   <mat-option *ngFor="let option of getFormFieldOptions(tcol.formField);" [value]="option.value">
                     {{option.display}}
                   </mat-option>
@@ -101,7 +103,8 @@
               </mat-form-field>
               <mat-form-field *ngSwitchCase="formFieldType.LARGE_TEXT" style="width: 100%;padding: 0 5px">
             <textarea matInput [formControl]="getFormControl(rowIndex, columnIndex, tcol, element)"
-                      style="width: 100%; padding: 2px 0;" [id]="tcol.formField.focus ? 'smt-focus-input' : ''"
+                      style="width: 100%; padding: 2px 0;"
+                      [id]="tcol.formField.focus ? rowIndex + '-smt-focus-input' : ''"
                       matTextareaAutosize [matAutosizeMaxRows]="getFormFieldMaxLines(tcol.formField)"
                       [matAutosizeMinRows]="getFormFieldMinLines(tcol.formField)"
                       [placeholder]="tcol.formField.placeholder"></textarea>
@@ -163,7 +166,7 @@
       <th mat-header-cell *matHeaderCellDef style="width: 104px;">
         <div class="filler-div" style="align-items: center; display: flex; justify-content: flex-end;">
           <button mat-icon-button *ngIf="addable" color="primary" (click)="startAddElement()"
-                  [disabled]="currentlyAdding">
+                  [disabled]="!!addedItem">
             <mat-icon>{{addIcon ? addIcon : "add_box"}}</mat-icon>
           </button>
         </div>
@@ -172,10 +175,10 @@
         <div style="display: flex;justify-content: flex-end; align-items: center" class="filler-div">
           <ng-container *ngIf="!isLoading(element)">
             <button *ngIf="editable && !isEditing(element)" mat-icon-button color="primary"
-                    (click)="startEditElement(element)">
+                    (click)="startEditElement(element, rowIndex)">
               <mat-icon>{{editIcon ? editIcon : "edit"}}</mat-icon>
             </button>
-            <button *ngIf="deletable" mat-icon-button color="primary"
+            <button *ngIf="deletable && element !== addedItem" mat-icon-button color="primary"
                     (click)="deleteElement(element)">
               <mat-icon>{{deleteIcon ? deleteIcon : "delete"}}</mat-icon>
             </button>

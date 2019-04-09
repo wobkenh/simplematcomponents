@@ -564,6 +564,7 @@ this.columnsFilter = [
           <span>The timeout in this example was used to demonstrate the loading circle.</span>
           <mat-tab-group>
             <mat-tab label="Display">
+              <button mat-raised-button (click)="logDataForm()">Log Data to console</button>
               <smc-simplemattable [data]="dataForm" [columns]="columnsForm" [editable]="true" [deletable]="true"
                                   [addable]="true" (add)="formAdd($event)" (delete)="formDelete($event)"
                                   (edit)="formEdit($event)" [create]="createFn"></smc-simplemattable>
