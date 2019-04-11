@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {SimplemattableComponent} from './simplemattable/simplemattable.component';
 import {
-  MatButtonModule,
+  MatButtonModule, MatCheckboxModule,
   MatCommonModule,
   MatDatepickerModule,
   MatIconModule,
@@ -33,7 +33,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     MatIconModule,
     MatSelectModule,
     MatButtonModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatCheckboxModule
   ],
   declarations: [SimplemattableComponent],
   exports: [SimplemattableComponent]

@@ -324,6 +324,7 @@ to make things easier, the TableColumn has the following methods for creating Fo
 - `getLargeTextFormField()`
 - `getSelectFormField<F>()` (more info on the type paremter later)
 - `getDateFormField()`
+- `getCheckboxFormField()`
 
 this means you can add a form field for the description of our ComplexTestData like this:
 ```
@@ -361,6 +362,8 @@ in a way that it can be set as the property of your model.
 If omitted, the value is applied directly. 
 You should only omit this function if the property datatype equals the form field data type.
 - focus (`withFocus(focus: boolean)`): Default is false. If set to true, the input of this form field will be focused when the user clicks add or edit.
+
+Note that placeholders, hints, validators and errors will not work on checkbox form fields.
 
 An example demonstrating all of the above (I added the property `date: Date` to `TestData`):
 
@@ -512,6 +515,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 2.1 (7.0): Checkbox form field
 + 2.0 (7.0): Switched from mat-table components to mat-table directives, thus switching to table layout; 
 fixed some smaller bugs regarding adding of items, filtering and focus
 + 1.6 (7.0): Multiline header cells

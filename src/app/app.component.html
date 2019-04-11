@@ -762,6 +762,10 @@ const completeDesCol = new TableColumn&lt;ComplexTestData, 'description'&gt;('De
     };
   })
   .isHiddenSm(true);
+completeDesCol.withFormField(completeDesCol
+  .getCheckboxFormField()
+  .withInit((des) => des !== 'false')
+  .withApply((bool) => bool ? 'very true' : 'false'));
 const completeValueCol = new TableColumn&lt;ComplexTestData, 'value'&gt;('Number with select', 'value')
   .withColFilter()
   .withAlign(Align.CENTER);

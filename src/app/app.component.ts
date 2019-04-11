@@ -354,6 +354,10 @@ export class AppComponent implements OnInit {
         };
       })
       .isHiddenSm(true);
+    completeDesCol.withFormField(completeDesCol
+      .getCheckboxFormField()
+      .withInit((des) => des !== 'false')
+      .withApply((bool) => bool ? 'very true' : 'false'));
     const completeValueCol = new TableColumn<ComplexTestData, 'value'>('Number with select', 'value')
       .withColFilter()
       .withAlign(Align.CENTER);

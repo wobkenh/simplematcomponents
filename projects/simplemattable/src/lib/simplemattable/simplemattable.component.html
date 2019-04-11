@@ -75,6 +75,9 @@
                 </mat-error>
                 <mat-hint>{{tcol.formField.hint}}</mat-hint>
               </mat-form-field>
+              <mat-checkbox *ngSwitchCase="formFieldType.CHECKBOX" (keyup.enter)="saveElement(rowIndex, element)"
+                            [formControl]="getFormControl(rowIndex, columnIndex, tcol, element)" style="padding: 0 5px"
+              ></mat-checkbox>
               <mat-form-field *ngSwitchCase="formFieldType.DATE" style="width: 98%;">
                 <!-- For whatever reason, you cant wrap the date picker input in a ng-container -->
                 <input matInput [formControl]="getFormControl(rowIndex, columnIndex, tcol, element)"

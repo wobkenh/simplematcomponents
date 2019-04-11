@@ -10,6 +10,7 @@ import {SelectFormField} from './select-form-field.model';
 import {LargeTextFormField} from './large-text-form-field.model';
 import {Height} from './height.model';
 import {AbstractControl} from '@angular/forms';
+import {CheckboxFormField} from './checkbox-form-field.model';
 
 export class TableColumn<T, P extends keyof T> {
 
@@ -326,6 +327,16 @@ export class TableColumn<T, P extends keyof T> {
    */
   public getLargeTextFormField(): LargeTextFormField<T, P> {
     return new LargeTextFormField<T, P>();
+  }
+
+  /**
+   * Returns a new CheckboxFormField (checkbox) using the generic parameters of this column.
+   * Note that hints/placeholders/errors do not work on chechbox form fields.
+   *
+   * @returns CheckboxFormField
+   */
+  public getCheckboxFormField(): CheckboxFormField<T, P> {
+    return new CheckboxFormField<T, P>();
   }
 
   /**

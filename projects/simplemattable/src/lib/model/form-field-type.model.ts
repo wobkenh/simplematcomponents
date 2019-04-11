@@ -3,5 +3,6 @@ export enum FormFieldType {
   NUMBER,
   DATE,
   SELECT,
-  LARGE_TEXT
+  LARGE_TEXT,
+  CHECKBOX
 }
