@@ -315,6 +315,7 @@ The form field argument requires an AbstractFormField. This can be:
 - LargeTextFormField: Input for large texts with linebreaks. Will result in a `<textarea>`.
 - SelectFormField: Input for a list of options the user can chose from. Will result in a `<mat-select>`.
 - DateFormField: Input for dates. Will result in a `<input matDatepicker>`.
+- CheckboxFormField: Input for boolean. Will result in a `<mat-checkbox>`.
 
 The AbstractFormField requires some Type parameters. You already supplied those in your TableColumn object, so 
 to make things easier, the TableColumn has the following methods for creating FormFields:
