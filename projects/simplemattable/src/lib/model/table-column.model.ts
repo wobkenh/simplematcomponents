@@ -9,7 +9,6 @@ import {DateFormField} from './date-form-field.model';
 import {SelectFormField} from './select-form-field.model';
 import {LargeTextFormField} from './large-text-form-field.model';
 import {Height} from './height.model';
-import {AbstractControl} from '@angular/forms';
 import {CheckboxFormField} from './checkbox-form-field.model';
 
 export class TableColumn<T, P extends keyof T> {
@@ -35,7 +34,10 @@ export class TableColumn<T, P extends keyof T> {
   public ngStyle: (data: T[P], dataParent: T) => Object;
   public formField: AbstractFormField<T, P, any>;
   public colFilter: boolean = false;
-  private colFilterFormControl: AbstractControl;
+  private colFilterText: ColFilterTextHolder = {
+    applied: true,
+    text: ''
+  };
 
   constructor(public name: string,
               public property: P) {
@@ -343,19 +345,27 @@ export class TableColumn<T, P extends keyof T> {
    * If {@link #withColFilter} is active, set the value of the col filter
    */
   public setColFilterText(text: string) {
-    if (this.colFilter && this.colFilterFormControl) {
-      this.colFilterFormControl.patchValue(text);
+    if (!this.colFilter) {
+      return;
     }
+    this.colFilterText = {
+      text: text,
+      applied: false
+    };
   }
 
   /**
-   * For internal use only.
-   * Allows you to specify a form control for the column filter.
-   *
-   * @param formControl
+   * Returns the current col filter text.
+   * @return ColFilterTextHolder object with information about text and
+   *      if the text has been applied to the col filter
    */
-  public setColFilterFormControl(formControl: AbstractControl) {
-    this.colFilterFormControl = formControl;
+  public getColFilterText(): ColFilterTextHolder {
+    return this.colFilterText;
   }
 
+}
+
+interface ColFilterTextHolder {
+  text: string;
+  applied: boolean;
 }

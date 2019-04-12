@@ -446,14 +446,24 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   }
 
   private recreateColFilters() {
+    console.log('Recreating col filters');
     this.colFilterFormControls.clear();
+    let reapplyFilter = false;
     this.getDisplayedCols(this.columns)
       .filter(tcol => tcol.colFilter)
       .forEach(tcol => {
         const formControl = this.fb.control('');
-        tcol.setColFilterFormControl(formControl);
         this.colFilterFormControls.set(tcol, formControl);
+        const colFilterText = tcol.getColFilterText();
+        if (!colFilterText.applied) {
+          formControl.patchValue(colFilterText.text);
+          colFilterText.applied = true;
+          reapplyFilter = true;
+        }
       });
+    if (reapplyFilter) {
+      this.applyColFilter();
+    }
   }
 
   private cleanUpAfterColChange() {

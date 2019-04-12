@@ -5,6 +5,7 @@ import {Component, ViewChild} from '@angular/core';
 import {TableColumn} from '../model/table-column.model';
 import {
   MatButtonModule,
+  MatCheckboxModule,
   MatCommonModule,
   MatDatepickerModule,
   MatIconModule,
@@ -44,6 +45,7 @@ describe('TestcompComponent', () => {
         ReactiveFormsModule,
         MatInputModule,
         MatTableModule,
+        MatCheckboxModule,
         MatProgressSpinnerModule,
         MatSortModule,
         MatIconModule,
@@ -249,6 +251,16 @@ describe('TestcompComponent', () => {
     smt.dataSource.filter = '';
     smt.applyColFilter();
     expect(smt.dataSource.filter).toBe(' ');
+  });
+  it('set col filter on tcol', () => {
+    const tcol = hostComponent.tcolPlain.withColFilter();
+    smt.ngDoCheck();
+    expect(smt.colFilterFormControls.get(tcol).value).toBe('');
+    tcol.setColFilterText('1');
+    expect(smt.dataSource.filter).toBe('');
+    smt.ngDoCheck();
+    expect(smt.colFilterFormControls.get(tcol).value).toBe('1');
+    expect(smt.dataSource.filter).toBe(' '); // str has changed ==> successfully reapplied filter
   });
   it('get form errors', () => {
     const validators = [Validators.required, Validators.min(5)];
@@ -580,6 +592,7 @@ describe('TestcompComponent', () => {
         ReactiveFormsModule,
         MatInputModule,
         MatTableModule,
+        MatCheckboxModule,
         MatProgressSpinnerModule,
         MatSortModule,
         MatIconModule,
@@ -647,6 +660,7 @@ describe('TestcompComponent', () => {
           ReactiveFormsModule,
           MatInputModule,
           MatTableModule,
+          MatCheckboxModule,
           MatProgressSpinnerModule,
           MatSortModule,
           MatIconModule,

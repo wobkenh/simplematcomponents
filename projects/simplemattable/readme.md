@@ -10,7 +10,7 @@ A lot of different options like align, buttons, icons and even custom css allow 
 SimpleMatTable also allows you to enable adding, editing and deleting of elements in the table. 
 It supports different form fields like number, text, date and select inputs.
 
-Current test coverage (Statements/Branches/Functions/Lines): ~94%/~85%/~92%/~94%
+Current test coverage (Statements/Branches/Functions/Lines): ~94%/~86%/~92%/~93%
 
 ## Attention
 
@@ -516,6 +516,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 2.2 (7.0): Refactored setting of column filter text
 + 2.1 (7.0): Checkbox form field
 + 2.0 (7.0): Switched from mat-table components to mat-table directives, thus switching to table layout; 
 fixed some smaller bugs regarding adding of items, filtering and focus
