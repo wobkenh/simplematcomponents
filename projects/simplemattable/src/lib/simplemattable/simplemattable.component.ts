@@ -446,7 +446,6 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   }
 
   private recreateColFilters() {
-    console.log('Recreating col filters');
     this.colFilterFormControls.clear();
     let reapplyFilter = false;
     this.getDisplayedCols(this.columns)
