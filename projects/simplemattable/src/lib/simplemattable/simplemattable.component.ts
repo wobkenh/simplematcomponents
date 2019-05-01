@@ -1,12 +1,13 @@
 import {AfterViewInit, Component, DoCheck, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {TableColumn} from '../model/table-column.model';
-import {MatPaginator, MatSort, MatTable, MatTableDataSource} from '@angular/material';
+import {MatPaginator, MatSort, MatTable, MatTableDataSource, PageEvent} from '@angular/material';
 import {Align} from '../model/align.model';
 import {ButtonType} from '../model/button-type.model';
 import {AbstractControl, FormBuilder} from '@angular/forms';
 import {FormFieldType} from '../model/form-field-type.model';
 import {DataStatus} from '../model/data-status.model';
 import {FormError} from '../model/form-error.model';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'smc-simplemattable',
@@ -20,6 +21,10 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   @Input() filter: boolean = false;
   @Input() paginator: boolean = false;
   @Input() sorting: boolean = false;
+  @Input() backendPagination: boolean = false;
+  @Input() loading: boolean = false;
+  @Input() getPage: (offset: number, limit: number) => Observable<T[]>;
+  @Input() paginatorLength: number = 0;
   @Input() paginatorPageSize: number = 10;
   @Input() paginatorPageSizeOptions: number[] = [5, 10, 20];
   @Input() editable: boolean = false;
@@ -36,6 +41,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   @Output() delete: EventEmitter<T> = new EventEmitter<T>();
   @Output() edit: EventEmitter<T> = new EventEmitter<T>();
   @Output() add: EventEmitter<T> = new EventEmitter<T>();
+  @Output() page: EventEmitter<PageEvent> = new EventEmitter();
 
 
   @ViewChild(MatPaginator) matPaginator: MatPaginator;
@@ -322,6 +328,18 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     this.delete.emit(element);
   }
 
+  onPageEvent(pageEvent: PageEvent) {
+    this.page.emit(pageEvent);
+    if (this.getPage) {
+      this.loading = true;
+      this.getPage(pageEvent.pageIndex, pageEvent.pageSize).subscribe(pageData => {
+        this.data = pageData;
+        this.onDataChanges();
+        this.loading = false;
+      });
+    }
+  }
+
   /*
 
       Next up are some simpler methods.
@@ -360,6 +378,14 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   hasColumnFilter = (): boolean => this.getDisplayedCols(this.columns).some(tcol => tcol.colFilter);
   getTableHeaderStyle = (): Object => this.hasColumnFilter() ? {height: '100%'} : {};
   getTableClass = (): string => (this.sticky ? 'sticky-th' : 'non-sticky-th') + (this.isChrome ? ' chrome' : '');
+
+  getOuterContainerStyle() {
+    return {
+      'overflow': this.sticky ? 'auto' : 'visible',
+      'position': 'relative',
+      'flex': this.loading ? '1 0 200px' : '1 1 1e-09px' // Outer containing is holding the progress spinner while loading
+    };
+  }
 
   arrayToObject(arr: string[]): Object { // turn ['css-class-a', 'css-class-b'] into {'css-class-a': true, 'css-class-b': true}
     return arr.reduce((acc, entry) => {
@@ -410,10 +436,14 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   // checks for data changes
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.data) {
-      this.clearAddedEntry();
-      this.recreateDataSource();
-      this.cleanUpAfterDataChange();
+      this.onDataChanges();
     }
+  }
+
+  private onDataChanges(): void {
+    this.clearAddedEntry();
+    this.recreateDataSource();
+    this.cleanUpAfterDataChange();
   }
 
   private clearAddedEntry() {
@@ -525,7 +555,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
       };
 
 
-      if (this.paginator) {
+      if (this.paginator && !this.backendPagination) {
         this.dataSource.paginator = this.matPaginator;
       }
       if (this.sorting) {
@@ -565,12 +595,25 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   }
 
   ngAfterViewInit(): void {
-    if (this.paginator && this.dataSource) {
+    if (this.paginator && this.dataSource && !this.backendPagination) {
       this.dataSource.paginator = this.matPaginator;
     }
     if (this.sorting && this.dataSource) {
       this.dataSource.sort = this.matSort;
     }
+    // setTimeout to avoid ExpressionChangedAfterItHasBeenCheckedError
+    // we cant place this in the ngOnInit method because the view is not yet initialized
+    // and so the layout will be buggy (e.g. neglecting specified height) if we start loading immediately
+    setTimeout(() => {
+      if (this.paginator && this.backendPagination) {
+        this.onPageEvent({
+          pageSize: this.paginatorPageSize,
+          pageIndex: 0,
+          length: 0,
+          previousPageIndex: 0
+        });
+      }
+    });
   }
 
 }

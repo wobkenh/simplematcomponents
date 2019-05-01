@@ -19,6 +19,7 @@
           <li><a href="#form">Form Features</a></li>
           <li><a href="#scrollable">Scrollable</a></li>
           <li><a href="#complete">Complete</a></li>
+          <li><a href="#pagination">Pagination</a></li>
         </ol>
       </div>
       <span class="sidemenu-subtitle">SimpleAlert</span>
@@ -849,6 +850,65 @@ this.columnsComplete = [completeIdCol, completeTestErrorCol, completeDesCol, com
                     (add)=&quot;onAdd($event)&quot;
                     addIcon=&quot;account_box&quot; [deleteIcon]=&quot;'check_box_outline_blank'&quot; [sticky]=&quot;false&quot;
                     [create]=&quot;createFn&quot; (delete)=&quot;onDelete($event)&quot;&gt;&lt;/smc-simplemattable&gt;
+      </pre>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+
+      <div class="display">
+        <div>
+          <h2 id="pagination">14. Pagination</h2>
+          <span>Turn on backend pagination to only fetch the data you really need</span>
+          <span>Note that normally, you would fetch the paginatorLength from a backend server.</span>
+          <mat-tab-group>
+            <mat-tab label="Display">
+              <smc-simplemattable [data]="dataPagination" [columns]="columnsPagination" [paginator]="true"
+                                  [backendPagination]="true" [paginatorLength]="101"
+                                  [getPage]="getPage"></smc-simplemattable>
+            </mat-tab>
+            <mat-tab label="Code">
+              <div class="code">
+                <p>Typescript - Data</p>
+                <hr>
+                <pre>
+this.dataSimple = []; // Initial state
+      </pre>
+                <p>Typescript - Columns</p>
+                <hr>
+                <pre>
+this.columnsSimple = [
+  new TableColumn&lt;ComplexTestData, 'id'&gt;('My ID', 'id'),
+  new TableColumn&lt;ComplexTestData, 'value'&gt;('My Value', 'value')
+];
+      </pre>
+                <p>Typescript - getPage function</p>
+                <hr>
+                <pre>
+getPage(offset: number, limit: number): Observable&lt;ComplexTestData[]&gt; {{"{"}}&#x2063;
+  console.log(&#39;Fetching page index &#39; + offset + &#39; with page size&#39; + limit);
+  const observable = new Subject&lt;ComplexTestData[]&gt;();
+  setTimeout(() =&gt; {{"{"}}&#x2063;
+    // simulate backend request
+    const data: ComplexTestData[] = [];
+    if (offset === 10) {{"{"}}&#x2063;
+      limit = 1; // Simulate last page with only 1 entry
+    }
+    for (let i = 0; i &lt; limit; i++) {{"{"}}&#x2063;
+      data.push(new ComplexTestData(i + offset * limit, i + offset * limit, &#39;&#39;, null, &#39;&#39;));
+    }
+    observable.next(data);
+  }, 2000);
+  return observable;
+}
+      </pre>
+                <p>HTML</p>
+                <hr>
+                <pre>
+&lt;smc-simplemattable [data]=&quot;dataPagination&quot; [columns]=&quot;columnsPagination&quot; [paginator]=&quot;true&quot;
+                    [backendPagination]=&quot;true&quot; [paginatorLength]=&quot;101&quot;
+                    [getPage]=&quot;getPage&quot;&gt;&lt;/smc-simplemattable&gt;
       </pre>
               </div>
             </mat-tab>
