@@ -6,6 +6,7 @@ import {ButtonType} from '../../projects/simplemattable/src/lib/model/button-typ
 import {Width} from '../../projects/simplemattable/src/lib/model/width.model';
 import {AbstractControl, Validators} from '@angular/forms';
 import {Height} from '../../projects/simplemattable/src/lib/model/height.model';
+import {Observable, Subject} from 'rxjs';
 
 @Component({
   selector: 'smc-root',
@@ -75,6 +76,10 @@ export class AppComponent implements OnInit {
   // Complete
   dataComplete: ComplexTestData[] = [];
   columnsComplete: TableColumn<any, any>[] = [];
+
+  // Pagination
+  dataPagination: ComplexTestData[] = [];
+  columnsPagination: TableColumn<any, any>[] = [];
 
   ngOnInit(): void {
     const d1 = new Date();
@@ -436,7 +441,18 @@ export class AppComponent implements OnInit {
     const completeMultilineCol = new TableColumn<ComplexTestData, 'notes'>('This header will take multiple lines to display the header', 'notes')
       .withColFilter();
     this.columnsComplete = [completeIdCol, completeTestErrorCol, completeDesCol, completeDes2Col, completeValueCol, completeKeyCol, completeValCol, completeDateCol, completeMultilineCol];
+
+
+    /*
+      Paginator Table
+   */
+    this.dataPagination = [];
+    this.columnsPagination = [
+      new TableColumn<ComplexTestData, 'id'>('My ID', 'id'),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+    ];
   }
+
 
   pastDateValidator = (control: AbstractControl) => control.value < new Date() ? null : {'pastDate': true};
 
@@ -522,6 +538,22 @@ export class AppComponent implements OnInit {
   }
 
 
+  getPage(offset: number, limit: number): Observable<ComplexTestData[]> {
+    console.log('Fetching page index ' + offset + ' with page size' + limit);
+    const observable = new Subject<ComplexTestData[]>();
+    setTimeout(() => {
+      // simulate backend request
+      const data: ComplexTestData[] = [];
+      if (offset === 10) {
+        limit = 1; // Simulate last page with only 1 entry
+      }
+      for (let i = 0; i < limit; i++) {
+        data.push(new ComplexTestData(i + offset * limit, i + offset * limit, '', null, ''));
+      }
+      observable.next(data);
+    }, 2000);
+    return observable;
+  }
 }
 
 class TestData {
