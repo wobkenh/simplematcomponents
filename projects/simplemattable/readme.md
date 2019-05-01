@@ -141,7 +141,7 @@ For more information on the paginator feature, have a look at the [paginator sec
 
 You can make the header of the table sticky using the `[sticky]` flag. The sticky header is turned off by default.  
 
-If you want to enable adding/editing/deleting of elements in the table, have a look at [the section about edit-mode](#edit-mode-addeditdelete).
+If you want to enable adding/editing/deleting of elements in the table, have a look at [the section about edit-mode](#edit-mode).
 
 ### Complex Model
 
