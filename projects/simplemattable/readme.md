@@ -37,6 +37,7 @@ Instead, you can now only supply widths that can be parsed by the width css prop
     + [Edit-Mode](#edit-mode)
     + [Pagination](#pagination)
     + [Progress spinner](#progress-spinner)
+    + [Custom Filter](#custom-filter)
 - [Contributing](#contributing)
 - [Change History](#change-history)
 - [Upcoming features](#upcoming-features)
