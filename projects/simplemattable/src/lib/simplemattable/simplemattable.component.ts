@@ -19,6 +19,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   @Input() data: T[] = [];
   @Input() columns: TableColumn<T, any>[] = [];
   @Input() filter: boolean = false;
+  @Input() noOpFilter: boolean = false;
   @Input() paginator: boolean = false;
   @Input() sorting: boolean = false;
   @Input() backendPagination: boolean = false;
@@ -42,6 +43,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   @Output() edit: EventEmitter<T> = new EventEmitter<T>();
   @Output() add: EventEmitter<T> = new EventEmitter<T>();
   @Output() page: EventEmitter<PageEvent> = new EventEmitter();
+  @Output() search: EventEmitter<string> = new EventEmitter();
 
 
   @ViewChild(MatPaginator) matPaginator: MatPaginator;
@@ -82,6 +84,10 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    * @param filterValue
    */
   applyFilter(filterValue: string) {
+    if (this.noOpFilter) {
+      this.search.emit(filterValue);
+      return;
+    }
     filterValue = filterValue.trim(); // Remove whitespace
     filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
     this.dataSource.filter = filterValue;

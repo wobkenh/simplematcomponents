@@ -10,7 +10,7 @@ A lot of different options like align, buttons, icons and even custom css allow 
 SimpleMatTable also allows you to enable adding, editing and deleting of elements in the table. 
 It supports different form fields like number, text, date and select inputs.
 
-Current test coverage (Statements/Branches/Functions/Lines): ~93%/~85%/~91%/~92%
+Current test coverage (Statements/Branches/Functions/Lines): ~93%/~84%/~91%/~92%
 
 ## Attention
 
@@ -563,6 +563,20 @@ ngOnInit() {
   });
 }
 ```  
+
+### Custom Filter
+
+If you want to use the filter feature of simplemattable by setting the `filter` input parameter to true, you will normally 
+achieve acceptable results using the provided default filter. In some situations, however, it might occur that you want to 
+define the search function yourself, e.g. when you want to fetch the search results from your server. In those cases, 
+set the `noOpFilter` input parameter to true. This will disable the default filter behaviour and emit all search term changes
+to the `search` output parameter. You can bind to this parameter and perform your custom filtering. If you change the data array
+without assigning a new array reference, make sure to reassign the array after the change
+using `this.data = data.slice(0);` (assuming your array is called `data`).  
+
+When using the filter in combination with the backend paginator,
+you might have to include some logic in your filter/getPage/page methods to make sure that the search results do not get overriden
+by page changes. (e.g. adjusting the `paginatorLength` and keeping state whether to fetch the next page from server or from search results)
     
 ## Contributing
 
