@@ -372,7 +372,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   getFormFieldOptions = (formField) => formField.options;
   isLoading = (element: T): boolean => this.dataStatus.get(element).loading;
   isEditing = (element: T): boolean => this.dataStatus.get(element).editing;
-  isEditingColumn = (tcol: TableColumn<T, any>, element: T): boolean => tcol.formField && this.isEditing(element);
+  isEditingColumn = (tcol: TableColumn<T, any>, element: T): boolean => tcol.formField && !tcol.directEdit && this.isEditing(element);
   getIconName = (tcol: TableColumn<T, any>, element: T) => tcol.icon(element[tcol.property], element);
   getDisplayedCols = (cols: TableColumn<T, any>[]): TableColumn<T, any>[] => cols.filter(col => col.visible);
   getHeaderFilterAlign = (align: Align): string => align === Align.LEFT ? 'start end' : align === Align.CENTER ? 'center end' : 'end end';

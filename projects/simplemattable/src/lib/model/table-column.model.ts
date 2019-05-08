@@ -30,6 +30,7 @@ export class TableColumn<T, P extends keyof T> {
   public textHiddenSm: boolean = false;
   public hiddenXs: boolean = false;
   public hiddenSm: boolean = false;
+  public directEdit: boolean = false;
   public ngClass: (data: T[P], dataParent: T) => string | string[] | Object;
   public ngStyle: (data: T[P], dataParent: T) => Object;
   public formField: AbstractFormField<T, P, any>;
@@ -125,6 +126,17 @@ export class TableColumn<T, P extends keyof T> {
    */
   public isVisible(visible: boolean) {
     this.visible = visible;
+    return this;
+  }
+
+  /**
+   * Use this if you want to show a form at all times even when edit mode is not activated
+   *
+   * @param directEdit
+   * @returns this
+   */
+  public isDirectEdit(directEdit: boolean) {
+    this.directEdit = directEdit;
     return this;
   }
 

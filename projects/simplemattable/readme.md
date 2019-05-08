@@ -292,6 +292,15 @@ If you have problems with the width of the filter input, have a look at the info
 - colFilterText `setColFilterText(text: string)`: Allows you to programmatically set the text of the col filter. 
 ColFilter (see above) needs to be active.
 
+- directEdit `isDirectEdit(directEdit: boolean)`: 
+There are cases where you want your user to edit the data directly without having to press edit/save first.
+A usecase for this would be if you want to display a checkbox at the end of each row, which the user can use to
+select/deselect rows. If you encounter such a usecase, set directEdit on the last column to true using this method. A form field 
+will be displayed, no matter if editing is enabled and the row is being edited. 
+Don't forget to define the form field first (see [the edit mode section](#edit-mode)).
+Under the hood, direct edit uses ngModel while edit mode uses form controls.
+By default, direct edit is turned off.
+
 ### Edit-mode
 
 Edit-mode is a major feature of SimpleMatTable. It allows you to enable the add/edit/delete functionality.
@@ -578,6 +587,7 @@ using `this.data = data.slice(0);` (assuming your array is called `data`).
 When using the filter in combination with the backend paginator,
 you might have to include some logic in your filter/getPage/page methods to make sure that the search results do not get overriden
 by page changes. (e.g. adjusting the `paginatorLength` and keeping state whether to fetch the next page from server or from search results)
+
     
 ## Contributing
 
@@ -593,6 +603,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 2.4 (7.0): HTML refactoring, direct edit feature
 + 2.3 (7.0): Progress spinner and backend pagination
 + 2.2 (7.0): Refactored setting of column filter text
 + 2.1 (7.0): Checkbox form field

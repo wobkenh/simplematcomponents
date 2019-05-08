@@ -20,6 +20,7 @@
           <li><a href="#scrollable">Scrollable</a></li>
           <li><a href="#complete">Complete</a></li>
           <li><a href="#pagination">Pagination</a></li>
+          <li><a href="#directEdit">Direct Edit</a></li>
         </ol>
       </div>
       <span class="sidemenu-subtitle">SimpleAlert</span>
@@ -909,6 +910,53 @@ getPage(offset: number, limit: number): Observable&lt;ComplexTestData[]&gt; {{"{
 &lt;smc-simplemattable [data]=&quot;dataPagination&quot; [columns]=&quot;columnsPagination&quot; [paginator]=&quot;true&quot;
                     [backendPagination]=&quot;true&quot; [paginatorLength]=&quot;101&quot;
                     [getPage]=&quot;getPage&quot;&gt;&lt;/smc-simplemattable&gt;
+      </pre>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+
+      <div class="display">
+        <div>
+          <h2 id="directEdit">15. Direct Edit</h2>
+          <span>Use direct edit on a column if you need the ngModel binding instead of a form control.</span>
+          <span>Your data item will be directly edited as the user uses the form field.</span>
+          <span>Note that errors/validations wont work with direct edit. You need to do validations yourself.</span>
+
+          <mat-tab-group>
+            <mat-tab label="Display">
+              <button mat-raised-button (click)="logDataDirectEdit()">Log Data to console</button>
+              <smc-simplemattable [data]="dataDirectEdit" [columns]="columnsDirectEdit"></smc-simplemattable>
+            </mat-tab>
+            <mat-tab label="Code">
+              <div class="code">
+                <p>Typescript - Data</p>
+                <hr>
+                <pre>
+this.dataSimple = [
+  new ComplexTestData(1, 40, 'test1', null, 'test2'),
+  new ComplexTestData(2, 42, 'test2', null, 'test3')
+];
+      </pre>
+                <p>Typescript - Columns</p>
+                <hr>
+                <pre>
+const idCol = new TableColumn&lt;ComplexTestData, &#39;id&#39;&gt;(&#39;My ID&#39;, &#39;id&#39;);
+const valueCol = new TableColumn&lt;ComplexTestData, &#39;value&#39;&gt;(&#39;My Value&#39;, &#39;value&#39;)
+  .isDirectEdit(true);
+valueCol.withFormField(valueCol.getCheckboxFormField());
+const notesCol = new TableColumn&lt;ComplexTestData, &#39;notes&#39;&gt;(&#39;My Notes&#39;, &#39;notes&#39;)
+  .isDirectEdit(true);
+notesCol.withFormField(notesCol.getTextFormField());
+this.columnsDirectEdit = [
+  idCol, valueCol, notesCol
+];
+      </pre>
+                <p>HTML</p>
+                <hr>
+                <pre>
+&lt;smc-simplemattable [data]=&quot;dataDirectEdit&quot; [columns]=&quot;columnsDirectEdit&quot;&gt;&lt;/smc-simplemattable&gt;
       </pre>
               </div>
             </mat-tab>

@@ -81,6 +81,10 @@ export class AppComponent implements OnInit {
   dataPagination: ComplexTestData[] = [];
   columnsPagination: TableColumn<any, any>[] = [];
 
+  // Direct Edit
+  dataDirectEdit: ComplexTestData[] = [];
+  columnsDirectEdit: TableColumn<any, any>[] = [];
+
   ngOnInit(): void {
     const d1 = new Date();
     d1.setDate(20);
@@ -451,6 +455,26 @@ export class AppComponent implements OnInit {
       new TableColumn<ComplexTestData, 'id'>('My ID', 'id'),
       new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
     ];
+
+
+    /*
+        Direct Edit Table
+     */
+    this.dataDirectEdit = [
+      new ComplexTestData(1, 40, 'test1', null, 'test2'),
+      new ComplexTestData(2, 42, 'test2', null, 'test3')
+    ];
+
+    const idCol = new TableColumn<ComplexTestData, 'id'>('My ID', 'id');
+    const valueCol = new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+      .isDirectEdit(true);
+    valueCol.withFormField(valueCol.getCheckboxFormField());
+    const notesCol = new TableColumn<ComplexTestData, 'notes'>('My Notes', 'notes')
+      .isDirectEdit(true);
+    notesCol.withFormField(notesCol.getTextFormField());
+    this.columnsDirectEdit = [
+      idCol, valueCol, notesCol
+    ];
   }
 
 
@@ -553,6 +577,10 @@ export class AppComponent implements OnInit {
       observable.next(data);
     }, 2000);
     return observable;
+  }
+
+  logDataDirectEdit() {
+    console.log(this.dataDirectEdit);
   }
 }
 
