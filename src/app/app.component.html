@@ -866,9 +866,11 @@ this.columnsComplete = [completeIdCol, completeTestErrorCol, completeDesCol, com
           <mat-tab-group>
             <mat-tab label="Display">
               <button mat-raised-button (click)="resetToPageZero()">Go to page index zero</button>
-              <button mat-raised-button (click)="resetToPageSizeTen()">Go to page size of 10</button>
+              <button mat-raised-button (click)="resetToPageSizeTen()">Set page size to 10</button>
+              <button mat-raised-button (click)="paginatorLength=paginatorLength+1">Add Page</button>
               <smc-simplemattable [data]="dataPagination" [columns]="columnsPagination" [paginator]="true"
-                                  [backendPagination]="true" [paginatorLength]="101" [pageSettings]="pageSettings"
+                                  [backendPagination]="true" [paginatorLength]="paginatorLength"
+                                  [pageSettings]="pageSettings"
                                   [getPage]="getPage"></smc-simplemattable>
             </mat-tab>
             <mat-tab label="Code">
@@ -922,9 +924,10 @@ resetToPageSizeTen() {{"{"}}&#x2063;
                 <hr>
                 <pre>
 &lt;button mat-raised-button (click)=&quot;resetToPageZero()&quot;&gt;Go to page index zero&lt;/button&gt;
-&lt;button mat-raised-button (click)=&quot;resetToPageSizeTen()&quot;&gt;Go to page size of 10&lt;/button&gt;
+&lt;button mat-raised-button (click)=&quot;resetToPageSizeTen()&quot;&gt;Set page size to 10&lt;/button&gt;
+&lt;button mat-raised-button (click)=&quot;paginatorLength=paginatorLength+1&quot;&gt;Add Page&lt;/button&gt;
 &lt;smc-simplemattable [data]=&quot;dataPagination&quot; [columns]=&quot;columnsPagination&quot; [paginator]=&quot;true&quot;
-                    [backendPagination]=&quot;true&quot; [paginatorLength]=&quot;101&quot;
+                    [backendPagination]=&quot;true&quot; [paginatorLength]=&quot;pageSettings&quot;
                     [getPage]=&quot;getPage&quot;&gt;&lt;/smc-simplemattable&gt;
       </pre>
               </div>

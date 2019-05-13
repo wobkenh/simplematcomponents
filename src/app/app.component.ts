@@ -82,6 +82,7 @@ export class AppComponent implements OnInit {
   dataPagination: ComplexTestData[] = [];
   columnsPagination: TableColumn<any, any>[] = [];
   pageSettings: PageSettings;
+  paginatorLength = 101;
 
   // Direct Edit
   dataDirectEdit: ComplexTestData[] = [];
@@ -484,6 +485,7 @@ export class AppComponent implements OnInit {
 
   getDateStr = (date: Date) => (date.getDate() < 10 ? ('0' + date.getDate()) : date.getDate()) + '.' +
     (date.getMonth() < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)) + '.' + date.getFullYear();
+
 
   openInfo() {
     this.isInfoOpen = true;
