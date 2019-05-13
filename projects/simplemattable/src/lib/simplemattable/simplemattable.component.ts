@@ -446,30 +446,25 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     if (changes.data) {
       this.onDataChanges();
     }
-    if (this.backendPagination && this.matPaginator) {
-      if (changes.pageSettings && this.pageSettings) {
-        // When using backend pagination, the user can programmatically select a page and the page size
-        // via the page settings object. The paginator selections are changed here.
-        const hasIndex = !isNaN(this.pageSettings.pageIndex);
-        const hasSize = !isNaN(this.pageSettings.pageSize);
-        const previousIndex = this.matPaginator.pageIndex;
-        if (hasIndex) {
-          this.matPaginator.pageIndex = this.pageSettings.pageIndex;
-        }
-        if (hasSize) {
-          this.matPaginator.pageSize = this.pageSettings.pageSize;
-        }
-        if (hasIndex || hasSize) {
-          this.onPageEvent({
-            previousPageIndex: previousIndex,
-            length: this.matPaginator.length,
-            pageIndex: this.matPaginator.pageIndex,
-            pageSize: this.matPaginator.pageSize
-          });
-        }
+    if (this.backendPagination && this.matPaginator && changes.pageSettings && this.pageSettings) {
+      // When using backend pagination, the user can programmatically select a page and the page size
+      // via the page settings object. The paginator selections are changed here.
+      const hasIndex = !isNaN(this.pageSettings.pageIndex);
+      const hasSize = !isNaN(this.pageSettings.pageSize);
+      const previousIndex = this.matPaginator.pageIndex;
+      if (hasIndex) {
+        this.matPaginator.pageIndex = this.pageSettings.pageIndex;
       }
-      if (changes.paginatorLength && !isNaN(this.paginatorLength)) {
-        this.matPaginator.length = this.paginatorLength;
+      if (hasSize) {
+        this.matPaginator.pageSize = this.pageSettings.pageSize;
+      }
+      if (hasIndex || hasSize) {
+        this.onPageEvent({
+          previousPageIndex: previousIndex,
+          length: this.matPaginator.length,
+          pageIndex: this.matPaginator.pageIndex,
+          pageSize: this.matPaginator.pageSize
+        });
       }
     }
   }
