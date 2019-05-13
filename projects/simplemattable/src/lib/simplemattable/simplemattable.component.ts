@@ -8,6 +8,7 @@ import {FormFieldType} from '../model/form-field-type.model';
 import {DataStatus} from '../model/data-status.model';
 import {FormError} from '../model/form-error.model';
 import {Observable} from 'rxjs';
+import {PageSettings} from '../model/page-settings.model';
 
 @Component({
   selector: 'smc-simplemattable',
@@ -38,6 +39,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   @Input() cancelIcon: string;
   @Input() create: () => T;
   @Input() sticky: boolean = false;
+  @Input() pageSettings: PageSettings;
 
   @Output() delete: EventEmitter<T> = new EventEmitter<T>();
   @Output() edit: EventEmitter<T> = new EventEmitter<T>();
@@ -443,6 +445,27 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.data) {
       this.onDataChanges();
+    }
+    if (this.backendPagination && changes.pageSettings && this.pageSettings) {
+      // When using backend pagination, the user can programmatically select a page and the page size
+      // via the page settings object. The paginator selections are changed here.
+      const hasIndex = !isNaN(this.pageSettings.pageIndex);
+      const hasSize = !isNaN(this.pageSettings.pageSize);
+      const previousIndex = this.matPaginator.pageIndex;
+      if (hasIndex) {
+        this.matPaginator.pageIndex = this.pageSettings.pageIndex;
+      }
+      if (hasSize) {
+        this.matPaginator.pageSize = this.pageSettings.pageSize;
+      }
+      if (hasIndex || hasSize) {
+        this.onPageEvent({
+          previousPageIndex: previousIndex,
+          length: this.matPaginator.length,
+          pageIndex: this.matPaginator.pageIndex,
+          pageSize: this.matPaginator.pageSize
+        });
+      }
     }
   }
 

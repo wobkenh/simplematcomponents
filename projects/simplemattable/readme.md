@@ -553,6 +553,20 @@ To further reduce bloat, simplemattable will fetch the first page of data itself
 This only works if the `getPage` parameter was set when simplemattable was constructed. 
 See [the demo](https://simplex24.de/smc-demo#pagination) for an example.
 
+If you want to programmatically change the page size or page index, use the `pageSettings` input parameter.
+Create a new `PageSettings` object and fill the pageIndex, page Size or both to your liking. Simplemattable will automatically detect the change
+and forward the new settings to the paginator. Also, a new page event will be emitted, so you normally do not need to write any extra code.
+
+All you need to go back to the first page, assuming you bound the pageSettings variable to the `pageSettings` input parameter of simplemattable, is:
+
+```
+this.pageSettings = {⁣
+  pageIndex: 0
+};
+```
+
+
+
 ### Progress Spinner
 
 You can turn on a progress spinner by setting the input parameter `loading` to true. 
@@ -603,6 +617,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 2.5 (7.0): Programmatically change page index / size when using backend pagination
 + 2.4 (7.0): HTML refactoring, direct edit feature
 + 2.3 (7.0): Progress spinner and backend pagination
 + 2.2 (7.0): Refactored setting of column filter text

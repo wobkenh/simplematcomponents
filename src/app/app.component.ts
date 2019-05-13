@@ -7,6 +7,7 @@ import {Width} from '../../projects/simplemattable/src/lib/model/width.model';
 import {AbstractControl, Validators} from '@angular/forms';
 import {Height} from '../../projects/simplemattable/src/lib/model/height.model';
 import {Observable, Subject} from 'rxjs';
+import {PageSettings} from '../../projects/simplemattable/src/lib/model/page-settings.model';
 
 @Component({
   selector: 'smc-root',
@@ -80,6 +81,7 @@ export class AppComponent implements OnInit {
   // Pagination
   dataPagination: ComplexTestData[] = [];
   columnsPagination: TableColumn<any, any>[] = [];
+  pageSettings: PageSettings;
 
   // Direct Edit
   dataDirectEdit: ComplexTestData[] = [];
@@ -561,6 +563,17 @@ export class AppComponent implements OnInit {
     console.log(this.dataForm);
   }
 
+  resetToPageZero() {
+    this.pageSettings = {
+      pageIndex: 0
+    };
+  }
+
+  resetToPageSizeTen() {
+    this.pageSettings = {
+      pageSize: 10
+    };
+  }
 
   getPage(offset: number, limit: number): Observable<ComplexTestData[]> {
     console.log('Fetching page index ' + offset + ' with page size' + limit);
