@@ -48,7 +48,8 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   @Output() search: EventEmitter<string> = new EventEmitter();
 
 
-  @ViewChild(MatPaginator) matPaginator: MatPaginator;
+  @ViewChild('frontendPaginator') matFrontendPaginator: MatPaginator;
+  @ViewChild('backendPaginator') matBackendPaginator: MatPaginator;
   @ViewChild(MatSort) matSort: MatSort;
   @ViewChild(MatTable) matTable: MatTable<T>;
 
@@ -446,26 +447,29 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     if (changes.data) {
       this.onDataChanges();
     }
-    if (this.backendPagination && this.matPaginator && changes.pageSettings && this.pageSettings) {
+    if (this.backendPagination && this.matBackendPaginator && changes.pageSettings && this.pageSettings) {
       // When using backend pagination, the user can programmatically select a page and the page size
       // via the page settings object. The paginator selections are changed here.
       const hasIndex = !isNaN(this.pageSettings.pageIndex);
       const hasSize = !isNaN(this.pageSettings.pageSize);
-      const previousIndex = this.matPaginator.pageIndex;
+      const previousIndex = this.matBackendPaginator.pageIndex;
       if (hasIndex) {
-        this.matPaginator.pageIndex = this.pageSettings.pageIndex;
+        this.matBackendPaginator.pageIndex = this.pageSettings.pageIndex;
       }
       if (hasSize) {
-        this.matPaginator.pageSize = this.pageSettings.pageSize;
+        this.matBackendPaginator.pageSize = this.pageSettings.pageSize;
       }
       if (hasIndex || hasSize) {
         this.onPageEvent({
           previousPageIndex: previousIndex,
-          length: this.matPaginator.length,
-          pageIndex: this.matPaginator.pageIndex,
-          pageSize: this.matPaginator.pageSize
+          length: this.matBackendPaginator.length,
+          pageIndex: this.matBackendPaginator.pageIndex,
+          pageSize: this.matBackendPaginator.pageSize
         });
       }
+    }
+    if (this.paginator && !this.backendPagination && changes.paginator) {
+      this.dataSource.paginator = this.matFrontendPaginator;
     }
   }
 
@@ -585,7 +589,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
 
       if (this.paginator && !this.backendPagination) {
-        this.dataSource.paginator = this.matPaginator;
+        this.dataSource.paginator = this.matFrontendPaginator;
       }
       if (this.sorting) {
         // Closure for visible cols possible since column change will always also provoke a dataSource rebuild
@@ -625,7 +629,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   ngAfterViewInit(): void {
     if (this.paginator && this.dataSource && !this.backendPagination) {
-      this.dataSource.paginator = this.matPaginator;
+      this.dataSource.paginator = this.matFrontendPaginator;
     }
     if (this.sorting && this.dataSource) {
       this.dataSource.sort = this.matSort;

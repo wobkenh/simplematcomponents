@@ -277,7 +277,8 @@
 </div>
 
 <ng-container *ngIf="paginator">
-  <mat-paginator *ngIf="backendPagination; else frontendPaginator" style="margin-top: 10px" fxFlex="0 0 auto"
+  <mat-paginator *ngIf="backendPagination; else frontendPaginatorTemplate" style="margin-top: 10px" fxFlex="0 0 auto"
+                 #backendPaginator
                  [length]="paginatorLength"
                  [pageSize]="paginatorPageSize"
                  [pageSizeOptions]="paginatorPageSizeOptions"
@@ -285,8 +286,9 @@
                  (page)="onPageEvent($event)"
   >
   </mat-paginator>
-  <ng-template #frontendPaginator>
+  <ng-template #frontendPaginatorTemplate>
     <mat-paginator style="margin-top: 10px" fxFlex="0 0 auto"
+                   #frontendPaginator
                    [pageSize]="paginatorPageSize"
                    [pageSizeOptions]="paginatorPageSizeOptions"
                    [showFirstLastButtons]="true">
