@@ -48,6 +48,8 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   @Output() search: EventEmitter<string> = new EventEmitter();
 
 
+  // TODO: ViewChild cant bind dynamic components, so frontend paginator currently cant be turned on/off dynamically
+  //      Maybe use ViewChildren to get a querylist
   @ViewChild('frontendPaginator') matFrontendPaginator: MatPaginator;
   @ViewChild('backendPaginator') matBackendPaginator: MatPaginator;
   @ViewChild(MatSort) matSort: MatSort;
@@ -467,9 +469,6 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
           pageSize: this.matBackendPaginator.pageSize
         });
       }
-    }
-    if (this.paginator && !this.backendPagination && changes.paginator) {
-      this.dataSource.paginator = this.matFrontendPaginator;
     }
   }
 
