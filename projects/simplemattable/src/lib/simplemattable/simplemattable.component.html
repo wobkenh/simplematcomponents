@@ -210,7 +210,7 @@
             <ng-template #tdButtonCell>
               <!-- Buttoncells -->
               <button *ngIf="tcol.button === buttonType.BASIC" mat-button [color]="tcol.buttonColor"
-                      (click)="onClick(tcol, element, true)">
+                      (click)="onClick(tcol, element, true)" type="button">
                 <mat-icon *ngIf="tcol.icon">{{getIconName(tcol, element)}}</mat-icon>
                 <span style="padding: 2px 0" *ngIf="getStringRepresentation(tcol, element)"
                       [fxHide.xs]="tcol.textHiddenXs || tcol.textHiddenSm" [fxHide.sm]="tcol.textHiddenSm">
@@ -218,7 +218,7 @@
               </span>
               </button>
               <button *ngIf="tcol.button === buttonType.RAISED" mat-raised-button [color]="tcol.buttonColor"
-                      (click)="onClick(tcol, element, true)">
+                      (click)="onClick(tcol, element, true)" type="button">
                 <mat-icon *ngIf="tcol.icon">{{getIconName(tcol, element)}}</mat-icon>
                 <span style="padding: 2px 0" *ngIf="getStringRepresentation(tcol, element)"
                       [fxHide.xs]="tcol.textHiddenXs || tcol.textHiddenSm" [fxHide.sm]="tcol.textHiddenSm">
@@ -226,7 +226,7 @@
               </span>
               </button>
               <button *ngIf="tcol.button === buttonType.ICON" mat-icon-button [color]="tcol.buttonColor"
-                      (click)="onClick(tcol, element, true)">
+                      (click)="onClick(tcol, element, true)" type="button">
                 <mat-icon *ngIf="tcol.icon">{{getIconName(tcol, element)}}</mat-icon>
               </button>
             </ng-template>

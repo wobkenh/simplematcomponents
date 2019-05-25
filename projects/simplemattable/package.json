@@ -1,6 +1,6 @@
 {
   "name": "simplemattable",
-  "version": "2.5.5",
+  "version": "2.5.6",
   "description": "A simplified, declarative table-library using @angular/material's MatTable with form capabilities for adding/editing/deleting data",
   "author": "Henning Wobken",
   "license": "MIT",
