@@ -252,6 +252,9 @@ If specified, the onClick function will be executed on a click event.
 - buttonColor (`.withButtonColor(buttonColor: ThemePalette)`): If the button type is set, buttonColor allows you to change the button color. Can be either `'primary'`, `'warn'` or `'accent'`.
 If you leave the button color empty, the standard white/transparent background (depending on button type) will be used.
 
+- buttonDisabled (`.withButtonDisabled(disabledFn: (data: T[P], dataParent: T) => boolean)`): If a button is present (see `withButton`), 
+use this function to switch the button between active and disabled state.
+
 - maxLines (`.withMaxLines(maxLineLength: number)`): Maximum lines of text in a cell. Note that this refers to the maximum number of lines in the cell. 
 If the text is longer, a scrollbar will appear, but the cell will not grow any larger.
 If not specified, a span will be used that ignores linebreaks in the text and spans over as many lines as needed.

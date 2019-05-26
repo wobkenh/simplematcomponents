@@ -16,6 +16,7 @@ export class TableColumn<T, P extends keyof T> {
   public transform: (data: T[P], dataParent: T) => string;
   public width: string;
   public heightFn: (data: T[P], dataParent: T) => Height;
+  public disabledFn: (data: T[P], dataParent: T) => boolean;
   public align: Align = Align.LEFT;
   public sortable: boolean = true;
   public sortTransform: (data: T[P], dataParent: T) => number | string;
@@ -103,6 +104,17 @@ export class TableColumn<T, P extends keyof T> {
    */
   public withAlign(align: Align) {
     this.align = align;
+    return this;
+  }
+
+  /**
+   * Whether the button is disabled or not.
+   *
+   * @param disabledFn
+   * @returns this
+   */
+  public withButtonDisabled(disabledFn: (data: T[P], dataParent: T) => boolean) {
+    this.disabledFn = disabledFn;
     return this;
   }
 
