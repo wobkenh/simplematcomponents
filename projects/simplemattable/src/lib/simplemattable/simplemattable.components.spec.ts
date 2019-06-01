@@ -562,7 +562,7 @@ describe('TestcompComponent', () => {
       <smc-simplemattable [data]="data" [columns]="columns"></smc-simplemattable>`
   })
   class TestHostComponent {
-    @ViewChild(SimplemattableComponent) simplemattable: SimplemattableComponent<ComplexTestData>;
+    @ViewChild(SimplemattableComponent, {static: true}) simplemattable: SimplemattableComponent<ComplexTestData>;
     tcolPlain = new TableColumn<ComplexTestData, 'id'>('ID', 'id');
     tcolUnused = new TableColumn<ComplexTestData, 'id'>('ID', 'id');
     columns: TableColumn<ComplexTestData, any>[] = [
@@ -627,7 +627,7 @@ describe('TestcompComponent', () => {
                           [addable]="true" [editable]="true" [deletable]="true" [create]="createFn"></smc-simplemattable>`
   })
   class TestFullHostComponent {
-    @ViewChild(SimplemattableComponent) simplemattable: SimplemattableComponent<ComplexTestData>;
+    @ViewChild(SimplemattableComponent, {static: true}) simplemattable: SimplemattableComponent<ComplexTestData>;
     tcolPlain = new TableColumn<ComplexTestData, 'id'>('ID', 'id');
     columns: TableColumn<ComplexTestData, any>[] = [
       this.tcolPlain
@@ -686,7 +686,7 @@ describe('TestcompComponent', () => {
       <smc-simplemattable [data]="data" [columns]="columns" [addable]="true"></smc-simplemattable>`
   })
   class TestErrorHostComponent {
-    @ViewChild(SimplemattableComponent) simplemattable: SimplemattableComponent<ComplexTestData>;
+    @ViewChild(SimplemattableComponent, {static: true}) simplemattable: SimplemattableComponent<ComplexTestData>;
     tcolPlain = new TableColumn<ComplexTestData, 'id'>('ID', 'id');
     columns: TableColumn<ComplexTestData, any>[] = [
       this.tcolPlain
