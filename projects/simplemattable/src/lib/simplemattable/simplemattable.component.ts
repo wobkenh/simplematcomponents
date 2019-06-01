@@ -1,6 +1,5 @@
 import {AfterViewInit, Component, DoCheck, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {TableColumn} from '../model/table-column.model';
-import {MatPaginator, MatSort, MatTable, MatTableDataSource, PageEvent} from '@angular/material';
 import {Align} from '../model/align.model';
 import {ButtonType} from '../model/button-type.model';
 import {AbstractControl, FormBuilder} from '@angular/forms';
@@ -9,6 +8,9 @@ import {DataStatus} from '../model/data-status.model';
 import {FormError} from '../model/form-error.model';
 import {Observable} from 'rxjs';
 import {PageSettings} from '../model/page-settings.model';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import {MatTable, MatTableDataSource} from '@angular/material/table';
+import {MatSort} from '@angular/material/sort';
 
 @Component({
   selector: 'smc-simplemattable',
@@ -50,10 +52,10 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   // TODO: ViewChild cant bind dynamic components, so frontend paginator currently cant be turned on/off dynamically
   //      Maybe use ViewChildren to get a querylist
-  @ViewChild('frontendPaginator', { static: false }) matFrontendPaginator: MatPaginator;
-  @ViewChild('backendPaginator', { static: false }) matBackendPaginator: MatPaginator;
-  @ViewChild(MatSort, { static: true }) matSort: MatSort;
-  @ViewChild(MatTable, { static: true }) matTable: MatTable<T>;
+  @ViewChild('frontendPaginator', {static: false}) matFrontendPaginator: MatPaginator;
+  @ViewChild('backendPaginator', {static: false}) matBackendPaginator: MatPaginator;
+  @ViewChild(MatSort, {static: true}) matSort: MatSort;
+  @ViewChild(MatTable, {static: true}) matTable: MatTable<T>;
 
   displayedColumns = [];
   dataSource: MatTableDataSource<T>;
