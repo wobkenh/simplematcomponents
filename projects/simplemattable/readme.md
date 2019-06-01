@@ -15,7 +15,7 @@ Current test coverage (Statements/Branches/Functions/Lines): ~93%/~84%/~91%/~92%
 ## Attention
 
 To all users of simplemattable 1.X: Due to issues concerning the row height when using material components (e.g. `<mat-table>`),
-simplemattable was now (Version 2.X) changed to use the material directives (e.g. `<table mat-table>`). 
+simplemattable was now (Version 2 and up) changed to use the material directives (e.g. `<table mat-table>`). 
 This solution allows for full control over the table css and eliminates the problems regarding component isolation.
 
 So what changed for you? Column widths might now be different since they will be calculated according to the standard html table functionality.
@@ -48,7 +48,7 @@ Instead, you can now only supply widths that can be parsed by the width css prop
 ## Prerequisites
 
 Simplemattable is for use with Angular Material Design only. As of the first version, 
-it requires Angular Material 6.0. Later Versions require Angular Material 7.0 or above. Also make sure to add @angular/flex-layout to your list of dependencies.
+it requires at least Angular Material 6.0. Some features are only available in versions which require a higher Angular version. Using the latest Angular version means you can make use of the newest version of simplemattable. Also make sure to add @angular/flex-layout to your list of dependencies.
 
 For a detailed list of neccessary dependencies, see [section Dependencies](#dependencies).
 
@@ -620,6 +620,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 3.0 (8.0): Updated to Angular 8
 + 2.5 (7.0): Programmatically change page index / size when using backend pagination
 + 2.4 (7.0): HTML refactoring, direct edit feature
 + 2.3 (7.0): Progress spinner and backend pagination
@@ -661,16 +662,19 @@ It is not planned to backport SimpleMatTable to any older Angular version.
 Simplemattable only uses peer dependencies, so for the newest version of simplemattable you need the following packages (with compatible versions) in your package.json:
 
 ```
-"@angular/common": "^7.0.0",
-"@angular/core": "^7.0.0",
-"@angular/material": "^7.0.0",
-"@angular/cdk": "^7.0.0",
-"@angular/platform-browser": "^7.0.0",
-"@angular/flex-layout": "^7.0.0-beta.19"
+"@angular/common": "^8.0.0",
+"@angular/core": "^8.0.0",
+"@angular/material": "^8.0.0",
+"@angular/cdk": "^8.0.0",
+"@angular/platform-browser": "^8.0.0",
+"@angular/flex-layout": "^8.0.0-beta.26"
 ```  
+
 
 + For use with Angular >= 6.0 and < 6.1.8, use Version 1.2 of simplemattable.
 + For use with Angular >= 6.1.8 and < 7.0, use Version 1.3 of simplemattable.
++ For use with Angular >= 7.0 and < 8.0, use Version 2.5.7 of simplemattable.
++ For use with Angular >= 8.0 and < 9.0, use the newest version of simplemattable.
 
 ## Authors
 

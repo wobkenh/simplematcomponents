@@ -50,10 +50,10 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   // TODO: ViewChild cant bind dynamic components, so frontend paginator currently cant be turned on/off dynamically
   //      Maybe use ViewChildren to get a querylist
-  @ViewChild('frontendPaginator') matFrontendPaginator: MatPaginator;
-  @ViewChild('backendPaginator') matBackendPaginator: MatPaginator;
-  @ViewChild(MatSort) matSort: MatSort;
-  @ViewChild(MatTable) matTable: MatTable<T>;
+  @ViewChild('frontendPaginator', { static: false }) matFrontendPaginator: MatPaginator;
+  @ViewChild('backendPaginator', { static: false }) matBackendPaginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) matSort: MatSort;
+  @ViewChild(MatTable, { static: true }) matTable: MatTable<T>;
 
   displayedColumns = [];
   dataSource: MatTableDataSource<T>;
