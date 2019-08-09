@@ -87,6 +87,8 @@ export class AppComponent implements OnInit {
   // Direct Edit
   dataDirectEdit: ComplexTestData[] = [];
   columnsDirectEdit: TableColumn<any, any>[] = [];
+  dataDirectEdit2: ComplexTestData[] = [];
+  columnsDirectEdit2: TableColumn<any, any>[] = [];
 
   ngOnInit(): void {
     const d1 = new Date();
@@ -478,10 +480,27 @@ export class AppComponent implements OnInit {
     this.columnsDirectEdit = [
       idCol, valueCol, notesCol
     ];
+
+    this.dataDirectEdit2 = [
+      new ComplexTestData(1, 40, 'test1', null, 'test2'),
+      new ComplexTestData(2, 42, 'test2', null, 'test3')
+    ];
+    const boolCol = new TableColumn<ComplexTestData, any>('Select to delete', '_deleteFlag').isDirectEdit(true);
+    boolCol.withFormField(boolCol.getCheckboxFormField());
+    this.columnsDirectEdit2 = [
+      new TableColumn<ComplexTestData, 'id'>('My ID', 'id'),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value'),
+      boolCol
+    ];
+  }
+
+  deleteSelected() {
+    this.dataDirectEdit2 = this.dataDirectEdit2.filter(datum => !datum['_deleteFlag']);
   }
 
 
   pastDateValidator = (control: AbstractControl) => control.value < new Date() ? null : {'pastDate': true};
+
 
   getDateStr = (date: Date) => (date.getDate() < 10 ? ('0' + date.getDate()) : date.getDate()) + '.' +
     (date.getMonth() < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)) + '.' + date.getFullYear();

@@ -13,3 +13,7 @@ smc-simplemattable .mat-form-field-infix {
 body {
   margin: 0;
 }
+
+.mat-tab-body-content > .mat-raised-button {
+  margin-bottom: 10px;
+}
