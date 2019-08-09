@@ -70,6 +70,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   buttonType = ButtonType;
   formFieldType = FormFieldType;
   isChrome = false;
+  private lastFilterValue = '';
 
 
   constructor(private fb: FormBuilder) {
@@ -91,6 +92,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    * @param filterValue
    */
   applyFilter(filterValue: string) {
+    this.lastFilterValue = filterValue;
     if (this.noOpFilter) {
       this.search.emit(filterValue);
       return;
@@ -625,6 +627,9 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
       this.displayedColumns = this.getDisplayedCols(this.columns).map((col, i) => i.toString() + '_' + col.property);
       if (this.editable || this.addable || this.deletable) {
         this.displayedColumns.push('actions');
+      }
+      if (this.filter || this.hasColumnFilter()) {
+        this.applyFilter(this.lastFilterValue);
       }
     }
   }
