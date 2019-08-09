@@ -44,7 +44,6 @@
         <td mat-cell *matCellDef="let element; let rowIndex = index;"
             [fxHide.xs]="tcol.hiddenXs || tcol.hiddenSm" [fxHide.sm]="tcol.hiddenSm"
             (click)="onClick(tcol, element, false)">
-          <!--[fxFlex]="getFxFlex(tcol)"-->
           <div
             fxLayout="row" [fxLayoutAlign]="getCellAlign(tcol.align)"
             [ngClass]="getCellCssClass(tcol, element)"
