@@ -12,8 +12,44 @@ smc-simplemattable .mat-form-field-infix {
 
 body {
   margin: 0;
+  background: #fafafa;
 }
 
 .mat-tab-body-content > .mat-raised-button {
   margin-bottom: 10px;
+}
+
+
+.code {
+  text-align: left;
+  padding: 15px;
+}
+
+.code p {
+  font-style: italic;
+  color: rgba(0, 0, 0, 0.67);
+}
+
+.code pre {
+  background-color: white;
+  padding: 15px;
+  border-radius: 15px;
+  overflow: auto;
+}
+
+.display {
+  display: flex;
+  place-content: center;
+}
+
+.display > div {
+  max-width: 100%;
+  width: 1000px;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+mat-tab-group {
+  margin-top: 25px;
 }

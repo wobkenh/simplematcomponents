@@ -67,6 +67,12 @@ td {
   bottom: 0;
   background-color: rgba(255, 255, 255, 0.7);
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
+  z-index: 99999; /* Otherwise, new items in the table will hide the loading screen  */
+}
+
+:host {
+  position: relative;
 }
