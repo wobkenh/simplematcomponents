@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, DoCheck, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, DoCheck, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, ElementRef, HostListener} from '@angular/core';
 import {TableColumn} from '../model/table-column.model';
 import {Align} from '../model/align.model';
 import {ButtonType} from '../model/button-type.model';
@@ -11,6 +11,7 @@ import {PageSettings} from '../model/page-settings.model';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatTable, MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
+import { Height } from '../model/height.model';
 
 @Component({
   selector: 'smc-simplemattable',
@@ -41,7 +42,14 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   @Input() cancelIcon: string;
   @Input() create: () => T;
   @Input() sticky: boolean = false;
+  @Input() overflowAuto: boolean = false;
   @Input() pageSettings: PageSettings;
+  @Input() infiniteScrolling: boolean = false;
+  @Input() infiniteScrollingPageSize: number = 10;
+  @Input() infiniteScrollingHeight: Height = Height.px(200);
+  private infiniteScrollingPage: number = 0;
+  private infiniteScrollingHasMore: boolean = true;
+  private infiniteScrollingHasScrolled: boolean = false;
 
   @Output() delete: EventEmitter<T> = new EventEmitter<T>();
   @Output() edit: EventEmitter<T> = new EventEmitter<T>();
@@ -49,13 +57,11 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   @Output() page: EventEmitter<PageEvent> = new EventEmitter();
   @Output() search: EventEmitter<string> = new EventEmitter();
 
-
-  // TODO: ViewChild cant bind dynamic components, so frontend paginator currently cant be turned on/off dynamically
-  //      Maybe use ViewChildren to get a querylist
-  @ViewChild('frontendPaginator', {static: false}) matFrontendPaginator: MatPaginator;
-  @ViewChild('backendPaginator', {static: false}) matBackendPaginator: MatPaginator;
+  matFrontendPaginator: MatPaginator;
+  matBackendPaginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) matSort: MatSort;
   @ViewChild(MatTable, {static: true}) matTable: MatTable<T>;
+  scrollContainer: ElementRef;
 
   displayedColumns = [];
   dataSource: MatTableDataSource<T>;
@@ -73,6 +79,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   private lastFilterValue = '';
 
 
+
   constructor(private fb: FormBuilder) {
   }
 
@@ -85,6 +92,22 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
         ' Model by binding to the create input parameter.');
     }
   }
+
+  @ViewChild('frontendPaginator', { static: false })
+  set frontendPaginator(frontendPaginator: MatPaginator) {
+      this.matFrontendPaginator = frontendPaginator; // May be set/unset multiple times if user changes input flags;
+  }
+
+  @ViewChild('backendPaginator', { static: false })
+  set backendPaginator(backendPaginator: MatPaginator) {
+      this.matBackendPaginator = backendPaginator; // May be set/unset multiple times if user changes input flags;
+  }
+
+  @ViewChild('scrollContainer', { static: false })
+  set outerContainer(scrollContainer: ElementRef) {
+      this.scrollContainer = scrollContainer; // May be set/unset multiple times if user changes input flags;
+  }
+
 
   /**
    * Sets DataSource filter using the search string from the search input field.
@@ -132,6 +155,78 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   onClick(tcol: TableColumn<T, any>, element: T, fromButton: boolean) {
     if (fromButton ? this.isButtonClickable(tcol) : this.isCellClickable(tcol, element)) {
       tcol.onClick(element[tcol.property], element);
+    }
+  }
+
+  @HostListener('window:scroll', [])
+  onScrollWindow() {
+    if (!this.overflowAuto && !this.sticky && this.infiniteScrolling) {
+      // In chrome and some browser scroll is given to body tag
+      const clientHeight = document.documentElement.clientHeight;
+      const pos = (document.documentElement.scrollTop || document.body.scrollTop) + clientHeight;
+      const max = document.documentElement.scrollHeight;
+      this.onScroll(clientHeight, pos, max);
+    }
+  }
+
+  onScrollComponent(event) {
+    if ((this.overflowAuto || this.sticky) && this.infiniteScrolling) {
+      const ele = event.target;
+      const clientHeight = ele.clientHeight;
+      const pos = ele.scrollTop + clientHeight;
+      const max = ele.scrollHeight;
+      this.onScroll(clientHeight, pos, max);
+    }
+  }
+
+  /**
+   * Method called when component or window has been scrolled and infinite scrolling for respective type is enabled.
+   * @param event event
+   */
+  onScroll(clientHeight: number, pos: number, max: number) {
+
+    // In case someone navigates to the page, one scroll event might be thrown
+    // to reset the scroll position after the page has previously been scrolled
+    if (!(clientHeight === pos && pos === max)) {
+        this.infiniteScrollingHasScrolled = true;
+    }
+    let buffer;
+    if (this.infiniteScrollingHeight.isPercent()) {
+      buffer = clientHeight * this.infiniteScrollingHeight.getNumber();
+    } else {
+      buffer = this.infiniteScrollingHeight.getNumber();
+    }
+    if (pos >= max - buffer) {
+        if (this.infiniteScrollingHasMore) {
+            if (!this.loading) {
+                this.infiniteScrollingPage++;
+                // Scrolled to bottom, loading next page
+                this.loadInfiniteScrollPage();
+            } else {
+                // Ignoring scroll to bottom since we are already loading
+            }
+        }
+        // else => Ignoring scroll to bottom since there are no more items
+    }
+  }
+
+  loadInfiniteScrollPage() {
+    this.page.emit({
+      pageIndex: this.infiniteScrollingPage,
+      pageSize: this.infiniteScrollingPageSize,
+      previousPageIndex: this.infiniteScrollingPage - 1,
+      length: this.data.length
+    });
+    if (this.getPage) {
+      this.loading = true;
+      this.getPage(this.infiniteScrollingPage, this.infiniteScrollingPageSize).subscribe(pageData => {
+        if (pageData.length < this.infiniteScrollingPageSize) {
+          this.infiniteScrollingHasMore = false;
+        }
+        this.data.push(...pageData);
+        this.onDataChanges();
+        this.loading = false;
+      });
     }
   }
 
@@ -397,7 +492,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   getOuterContainerStyle() {
     return {
-      'overflow': this.sticky ? 'auto' : 'visible',
+      'overflow': (this.overflowAuto || this.sticky) ? 'auto' : 'visible',
       'position': 'relative',
       'flex': this.loading ? '1 0 200px' : '1 1 1e-09px' // Outer containing is holding the progress spinner while loading
     };
@@ -631,6 +726,30 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
       if (this.filter || this.hasColumnFilter()) {
         this.applyFilter(this.lastFilterValue);
       }
+      if (this.infiniteScrolling) {
+        setTimeout(() => {
+          // If the posts do not fill the whole screen, scolling down might not work, so the user has no chance to reload
+          // Therefore, load posts until a scrollbar appears or all posts are loaded
+          if (!this.infiniteScrollingHasScrolled && this.infiniteScrollingHasMore && !this.loading) {
+            let pos;
+            let max;
+            if (this.sticky || this.overflowAuto) {
+              // Component scroll
+              const ele = this.scrollContainer.nativeElement;
+              pos = ele.clientHeight;
+              max = ele.scrollHeight;
+            } else {
+              // Window scroll
+              pos = (document.documentElement.scrollTop || document.body.scrollTop) + document.documentElement.clientHeight;
+              max = document.documentElement.scrollHeight;
+            }
+            if (pos === max) {
+                this.infiniteScrollingPage++;
+                this.loadInfiniteScrollPage();
+            }
+          }
+        }, 500);
+      }
     }
   }
 
@@ -652,6 +771,8 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
           length: 0,
           previousPageIndex: 0
         });
+      } else if (this.infiniteScrolling) {
+        this.loadInfiniteScrollPage();
       }
     });
   }

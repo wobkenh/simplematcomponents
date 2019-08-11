@@ -1,13 +1,14 @@
-<!--<div fxLayout="column" fxFlex="1 1 auto">-->
 <div *ngIf="filter" fxFlex="0 0 auto">
   <mat-form-field style="width: 100%;">
     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
   </mat-form-field>
 </div>
-<div fxFlex [ngStyle]="getOuterContainerStyle()">
-  <div *ngIf="loading" class="loading-div">
+<div *ngIf="loading && !infiniteScrolling" class="loading-div">
+  <div style="display: flex; align-items: center; justify-content: center; flex: 0 1 100vh;">
     <mat-progress-spinner mode="indeterminate" color="primary"></mat-progress-spinner>
   </div>
+</div>
+<div fxFlex [ngStyle]="getOuterContainerStyle()" (scroll)="onScrollComponent($event)" #scrollContainer id="smtScrollContainer">
   <table mat-table [dataSource]="dataSource" matSort [matSortDisabled]="!sorting" style="width: 100%"
          [ngClass]="getTableClass()">
     <ng-container *ngFor="let tcol of getDisplayedCols(columns); let columnIndex = index">
@@ -273,6 +274,11 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: sticky" [ngStyle]="getTableHeaderStyle()"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+
+  <div *ngIf="loading && infiniteScrolling" style="display: flex; justify-content: center; padding-top: 15px; padding-bottom: 10px; overflow: hidden;">
+      <mat-progress-spinner mode="indeterminate" color="primary"></mat-progress-spinner>
+  </div>
+
 </div>
 
 <ng-container *ngIf="paginator">

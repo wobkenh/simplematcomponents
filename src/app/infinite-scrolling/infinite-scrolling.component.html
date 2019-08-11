@@ -1,0 +1,151 @@
+<div class="display">
+  <div>
+    <h2 id="infiniteScrolling">16. Infinite Scrolling</h2>
+    <span>Turn on infinite scrolling to let the user view more entries by scrolling down.</span>
+    <span style="margin-bottom: 10px">Just like with pagination, the new data can be fetched using either the getPage parameter or reacting to the page event.</span>
+
+    <span style="margin-bottom: 10px">Additionally, you can pass a height object to the "infiniteScrollingHeight" parameter to change the point at which a new page will be fetched. Default is 200px, which means that a new page will be fetched if the user is 200px or less away from reaching the bottom.</span>
+
+    <span>Regarding the placement of the scrollbar, you have two options:</span>
+
+    <h3>Scrollbar on Simplemattable</h3>
+    <span>Limit the height of simplemattable and let the content of simplemattable be scrollable using either the overflowAuto or the sticky options:</span>
+    <mat-tab-group>
+      <mat-tab label="Display">
+        <smc-simplemattable [data]="dataInfiniteScroll" [columns]="columnsInfiniteScroll" [infiniteScrolling]="true"
+                            [sticky]="true" [getPage]="getPage" style="height: 400px"></smc-simplemattable>
+      </mat-tab>
+      <mat-tab label="Code">
+        <div class="code">
+          <p>Typescript - Data</p>
+          <hr>
+          <pre>
+this.dataSimple = []; // Initial state
+</pre>
+          <p>Typescript - Columns</p>
+          <hr>
+          <pre>
+this.columnsSimple = [
+  new TableColumn&lt;ComplexTestData, 'id'&gt;('My ID', 'id'),
+  new TableColumn&lt;ComplexTestData, 'value'&gt;('My Value', 'value')
+];
+</pre>
+          <p>Typescript - getPage and reset functions</p>
+          <hr>
+          <pre>
+getPage(offset: number, limit: number): Observable&lt;TestData[]&gt; {{"{"}}
+  /*
+    Note that normally you would just return an observable obtained from a service method, e.g.:
+    return this.myService.get(offset, limit);
+  */
+  console.log(&#39;Fetching page index &#39; + offset + &#39; with page size &#39; + limit);
+  const observable = new Subject&lt;TestData[]&gt;();
+  setTimeout(() =&gt; {{"{"}}
+    // simulate backend request
+    const data: TestData[] = [];
+    // Generate entries up to the max count to simulate backend having no more data
+    const limitThisPage = Math.min(limit, this.paginatorLength - (offset * limit));
+    for (let i = 0; i &lt; limitThisPage; i++) {{"{"}}
+      data.push(new TestData(&#39;Page &#39; + (offset + 1), &#39;Entry &#39; + (i + 1 + (offset * limit)), null));
+    }
+    observable.next(data);
+  }, 1000);
+  return observable;
+}
+
+resetToPageZero() {{"{"}}&#x2063;
+  this.pageSettings = {{"{"}}&#x2063;
+    pageIndex: 0
+  };
+}
+
+resetToPageSizeTen() {{"{"}}&#x2063;
+  this.pageSettings = {{"{"}}&#x2063;
+    pageSize: 10
+  };
+}
+</pre>
+          <p>HTML</p>
+          <hr>
+          <pre>
+&lt;button mat-raised-button (click)=&quot;resetToPageZero()&quot;&gt;Go to page index zero&lt;/button&gt;
+&lt;button mat-raised-button (click)=&quot;resetToPageSizeTen()&quot;&gt;Set page size to 10&lt;/button&gt;
+&lt;button mat-raised-button (click)=&quot;paginatorLength=paginatorLength+1&quot;&gt;Add Page&lt;/button&gt;
+&lt;smc-simplemattable [data]=&quot;dataPagination&quot; [columns]=&quot;columnsPagination&quot; [paginator]=&quot;true&quot;
+              [backendPagination]=&quot;true&quot; [paginatorLength]=&quot;pageSettings&quot;
+              [getPage]=&quot;getPage&quot;&gt;&lt;/smc-simplemattable&gt;
+</pre>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+
+    <h3>Scrollbar on Window</h3>
+    <span>Leave the simplemattable height unlimited and let the window have the scrollbar.</span>
+    <span>Note that the sticky header option is not available when using this strategy.</span>
+    <mat-tab-group>
+        <mat-tab label="Display">
+          <smc-simplemattable [data]="dataInfiniteScroll2" [columns]="columnsInfiniteScroll" [infiniteScrolling]="true"
+                              [getPage]="getPage"></smc-simplemattable>
+        </mat-tab>
+        <mat-tab label="Code">
+          <div class="code">
+            <p>Typescript - Data</p>
+            <hr>
+            <pre>
+  this.dataSimple = []; // Initial state
+  </pre>
+            <p>Typescript - Columns</p>
+            <hr>
+            <pre>
+  this.columnsSimple = [
+  new TableColumn&lt;ComplexTestData, 'id'&gt;('My ID', 'id'),
+  new TableColumn&lt;ComplexTestData, 'value'&gt;('My Value', 'value')
+  ];
+  </pre>
+            <p>Typescript - getPage and reset functions</p>
+            <hr>
+            <pre>
+  getPage(offset: number, limit: number): Observable&lt;ComplexTestData[]&gt; {{"{"}}&#x2063;
+  console.log(&#39;Fetching page index &#39; + offset + &#39; with page size&#39; + limit);
+  const observable = new Subject&lt;ComplexTestData[]&gt;();
+  setTimeout(() =&gt; {{"{"}}&#x2063;
+  // simulate backend request
+  const data: ComplexTestData[] = [];
+  if (offset === 10) {{"{"}}&#x2063;
+  limit = 1; // Simulate last page with only 1 entry
+  }
+  for (let i = 0; i &lt; limit; i++) {{"{"}}&#x2063;
+  data.push(new ComplexTestData(i + offset * limit, i + offset * limit, &#39;&#39;, null, &#39;&#39;));
+  }
+  observable.next(data);
+  }, 2000);
+  return observable;
+  }
+
+  resetToPageZero() {{"{"}}&#x2063;
+  this.pageSettings = {{"{"}}&#x2063;
+  pageIndex: 0
+  };
+  }
+
+  resetToPageSizeTen() {{"{"}}&#x2063;
+  this.pageSettings = {{"{"}}&#x2063;
+  pageSize: 10
+  };
+  }
+  </pre>
+            <p>HTML</p>
+            <hr>
+            <pre>
+  &lt;button mat-raised-button (click)=&quot;resetToPageZero()&quot;&gt;Go to page index zero&lt;/button&gt;
+  &lt;button mat-raised-button (click)=&quot;resetToPageSizeTen()&quot;&gt;Set page size to 10&lt;/button&gt;
+  &lt;button mat-raised-button (click)=&quot;paginatorLength=paginatorLength+1&quot;&gt;Add Page&lt;/button&gt;
+  &lt;smc-simplemattable [data]=&quot;dataPagination&quot; [columns]=&quot;columnsPagination&quot; [paginator]=&quot;true&quot;
+                [backendPagination]=&quot;true&quot; [paginatorLength]=&quot;pageSettings&quot;
+                [getPage]=&quot;getPage&quot;&gt;&lt;/smc-simplemattable&gt;
+  </pre>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+  </div>
+</div>

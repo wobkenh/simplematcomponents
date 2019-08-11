@@ -1,0 +1,45 @@
+<!-- Width -->
+<div class="display">
+    <div>
+      <h2 id="width">Width and Height</h2>
+      <span>Use the width-object to set the width of a column and the height-function to set the height of a cell.</span>
+      <br>
+      <span>You can use percent or pixel based values.</span>
+      <br>
+      <span>The standard table layout calculations will be used to determine the width of each column and the height of each cell.</span>
+      <mat-tab-group>
+        <mat-tab label="Display">
+          <smc-simplemattable [data]="dataWidth" [columns]="columnsWidth"></smc-simplemattable>
+        </mat-tab>
+        <mat-tab label="Code">
+          <div class="code">
+            <p>Typescript - Data</p>
+            <hr>
+            <pre>
+this.dataWidth = [
+  new ComplexTestData(1, 40, 'test1', null, 'test2'),
+  new ComplexTestData(2, 42, 'test2', null, 'test3')
+];
+  </pre>
+            <p>Typescript - Columns</p>
+            <hr>
+            <pre>
+this.columnsWidth = [
+  new TableColumn&lt;ComplexTestData, 'id'&gt;('My ID', 'id')
+    .withWidth(Width.px(100))
+    .withHeightFn((id) => id === 1 ? Height.px(100) : null),
+  new TableColumn&lt;ComplexTestData, 'value'&gt;('My Value', 'value')
+    .withWidth(Width.pct(50)),
+  new TableColumn&lt;ComplexTestData, 'description'&gt;('My Description', 'description')
+];
+  </pre>
+            <p>HTML</p>
+            <hr>
+            <pre>
+&lt;smc-simplemattable [data]=&quot;dataWidth&quot; [columns]=&quot;columnsWidth&quot;&gt;&lt;/smc-simplemattable&gt;
+  </pre>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>

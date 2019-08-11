@@ -19,4 +19,12 @@ export class Height {
     return this.percent ? this.percent + '%' : this.pixel + 'px';
   }
 
+  getNumber(): number {
+    return this.percent || this.pixel;
+  }
+
+  isPercent(): boolean {
+    return !!this.percent;
+  }
+
 }
