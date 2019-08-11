@@ -739,13 +739,12 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
               pos = ele.clientHeight;
               max = ele.scrollHeight;
             } else {
-              // Windows scroll
+              // Window scroll
               pos = (document.documentElement.scrollTop || document.body.scrollTop) + document.documentElement.clientHeight;
               max = document.documentElement.scrollHeight;
             }
             if (pos === max) {
                 this.infiniteScrollingPage++;
-                console.log('No scrollbar yet, loading next page ' + this.infiniteScrollingPage);
                 this.loadInfiniteScrollPage();
             }
           }
