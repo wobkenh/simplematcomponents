@@ -6,7 +6,7 @@ import {AbstractControl, FormBuilder} from '@angular/forms';
 import {FormFieldType} from '../model/form-field-type.model';
 import {DataStatus} from '../model/data-status.model';
 import {FormError} from '../model/form-error.model';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {PageSettings} from '../model/page-settings.model';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatTable, MatTableDataSource} from '@angular/material/table';
@@ -56,6 +56,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   @Output() add: EventEmitter<T> = new EventEmitter<T>();
   @Output() page: EventEmitter<PageEvent> = new EventEmitter();
   @Output() search: EventEmitter<string> = new EventEmitter();
+  @Output() renderedData: EventEmitter<T[]> = new EventEmitter();
 
   matFrontendPaginator: MatPaginator;
   matBackendPaginator: MatPaginator;
@@ -77,6 +78,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   formFieldType = FormFieldType;
   isChrome = false;
   private lastFilterValue = '';
+  private renderedDataSubscription: Subscription;
 
 
 
@@ -664,6 +666,17 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
         tmpData.unshift(this.addedItem);
       }
       this.dataSource = new MatTableDataSource(tmpData);
+
+      // Listen to data changes
+      if (this.renderedDataSubscription) {
+        this.renderedDataSubscription.unsubscribe();
+      }
+      this.renderedDataSubscription = this.dataSource.connect().subscribe((data) => {
+        console.log(data);
+        this.renderedData.emit(data);
+      });
+
+      // Filter
       this.dataSource.filterPredicate = (data: T, filter: string) => {
         const filterWords = filter.toLowerCase().trim().split(' ');
         const allString = this.columns.reduce((str, col) => str + this.getStringRepresentation(col, data).toLowerCase().trim(), '');
@@ -686,10 +699,12 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
         return true;
       };
 
-
+      // Pagination
       if (this.paginator && !this.backendPagination) {
         this.dataSource.paginator = this.matFrontendPaginator;
       }
+
+      // Sorting
       if (this.sorting) {
         // Closure for visible cols possible since column change will always also provoke a dataSource rebuild
         const visibleCols = this.columns.filter(col => col.visible);
@@ -719,6 +734,8 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
           return data[tcol.property];
         };
       }
+
+      // Filter
       this.displayedColumns = this.getDisplayedCols(this.columns).map((col, i) => i.toString() + '_' + col.property);
       if (this.editable || this.addable || this.deletable) {
         this.displayedColumns.push('actions');
@@ -726,6 +743,8 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
       if (this.filter || this.hasColumnFilter()) {
         this.applyFilter(this.lastFilterValue);
       }
+
+      // Scrolling
       if (this.infiniteScrolling) {
         setTimeout(() => {
           // If the posts do not fill the whole screen, scolling down might not work, so the user has no chance to reload

@@ -9,11 +9,19 @@
     <span>Regarding the placement of the scrollbar, you have two options:</span>
 
     <h3>Scrollbar on Simplemattable</h3>
-    <span>Limit the height of simplemattable and let the content of simplemattable be scrollable using either the overflowAuto or the sticky options:</span>
+    <span>Limit the height of simplemattable and let the content of simplemattable be scrollable using either the overflowAuto or the sticky option.</span>
+    <span>Even though the paginator is missing, you can still use the renderedData output events to get the displayed data, e.g. to show a count.</span>
     <mat-tab-group>
       <mat-tab label="Display">
-        <smc-simplemattable [data]="dataInfiniteScroll" [columns]="columnsInfiniteScroll" [infiniteScrolling]="true"
-                            [sticky]="true" [getPage]="getPage" style="height: 400px"></smc-simplemattable>
+        <div style="padding: 10px; background: white;">
+          <smc-simplemattable [data]="dataInfiniteScroll" [columns]="columnsInfiniteScroll" [infiniteScrolling]="true" [filter]="true"
+                              (renderedData)="updateCount($event)"
+                              [sticky]="true" [getPage]="getPage" style="height: 400px;"></smc-simplemattable>
+          <mat-divider></mat-divider>
+          <div style="display: flex; align-items: center; justify-content: flex-end; padding: 20px 20px 10px 20px">
+              Showing {{itemCount}} entries
+          </div>
+        </div>
       </mat-tab>
       <mat-tab label="Code">
         <div class="code">
@@ -64,16 +72,23 @@ resetToPageSizeTen() {{"{"}}&#x2063;
     pageSize: 10
   };
 }
+
+updateCount(data: TestData[]) {{"{"}}&#x2063;
+  this.itemCount = data.length;
+}
 </pre>
           <p>HTML</p>
           <hr>
           <pre>
-&lt;button mat-raised-button (click)=&quot;resetToPageZero()&quot;&gt;Go to page index zero&lt;/button&gt;
-&lt;button mat-raised-button (click)=&quot;resetToPageSizeTen()&quot;&gt;Set page size to 10&lt;/button&gt;
-&lt;button mat-raised-button (click)=&quot;paginatorLength=paginatorLength+1&quot;&gt;Add Page&lt;/button&gt;
-&lt;smc-simplemattable [data]=&quot;dataPagination&quot; [columns]=&quot;columnsPagination&quot; [paginator]=&quot;true&quot;
-              [backendPagination]=&quot;true&quot; [paginatorLength]=&quot;pageSettings&quot;
-              [getPage]=&quot;getPage&quot;&gt;&lt;/smc-simplemattable&gt;
+&lt;div style=&quot;padding: 10px; background: white;&quot;&gt;
+  &lt;smc-simplemattable [data]=&quot;dataInfiniteScroll&quot; [columns]=&quot;columnsInfiniteScroll&quot; [infiniteScrolling]=&quot;true&quot; [filter]=&quot;true&quot;
+                      (renderedData)=&quot;updateCount($event)&quot;
+                      [sticky]=&quot;true&quot; [getPage]=&quot;getPage&quot; style=&quot;height: 400px;&quot;&gt;&lt;/smc-simplemattable&gt;
+  &lt;mat-divider&gt;&lt;/mat-divider&gt;
+  &lt;div style=&quot;display: flex; align-items: center; justify-content: flex-end; padding: 20px 20px 10px 20px&quot;&gt;
+      Showing {{itemCount}} entries
+  &lt;/div&gt;
+&lt;/div&gt;
 </pre>
         </div>
       </mat-tab>

@@ -14,6 +14,7 @@ export class InfiniteScrollingComponent implements OnInit {
   dataInfiniteScroll: TestData[] = [];
   dataInfiniteScroll2: TestData[] = [];
   columnsInfiniteScroll: TableColumn<any, any>[] = [];
+  itemCount = 0;
 
   constructor() { }
 
@@ -45,6 +46,10 @@ export class InfiniteScrollingComponent implements OnInit {
       observable.next(data);
     }, 1000);
     return observable;
+  }
+
+  updateCount(data: TestData[]) {
+    this.itemCount = data.length;
   }
 
 }
