@@ -36,6 +36,7 @@ Instead, you can now only supply widths that can be parsed by the width css prop
     + [TableColumn options](#tablecolumn-options)
     + [Edit-Mode](#edit-mode)
     + [Pagination](#pagination)
+    + [Pagination](#infinite-scrolling)
     + [Progress spinner](#progress-spinner)
     + [Custom Filter](#custom-filter)
 - [Contributing](#contributing)
@@ -138,6 +139,8 @@ The paginator, filter and sorting are optional. If omitted, the flags will defau
 The paginater can further be customized by the optional input parameter `[paginatorPageSize]`, which takes a number and sets the initial entries per page count. 
 Also, via `[paginatorPageSizeOptions]`, which takes a number array, you can change the pagesize options that will be selectable in the paginator.
 For more information on the paginator feature, have a look at the [paginator section](#pagination)
+
+If instead of pagination, you want lazy loading via scrolling, you can use the infiniteScrolling options. For more information regarding infinite scrolling, have a look at the [infinite scrolling section](#infinite-scrolling)
 
 You can make the header of the table sticky using the `[sticky]` flag. The sticky header is turned off by default.  
 
@@ -568,7 +571,16 @@ this.pageSettings = {⁣
 };
 ```
 
+### Infinite Scrolling
 
+When infinite scrolling is used, the user has to scroll to the bottom to fetch the next page of data.
+You can turn on infinite scrolling via the `infiniteScrolling` flag.
+
+You can further customize the page loading behaviour via `infiniteScrollingPageSize` and `infiniteScrollingHeight`.
+`infiniteScrollingPageSize` controls the page size while `infiniteScrollingHeight` controls the at which scrolling point the next page will be fetched. E.g. if you set a height of 200px, which is also the default value, the next page will be fetched when the user is 200px or less away from the bottom.
+`infiniteScrollingHeight` takes a height object, which can be percent or pixel based.
+
+The loading itself is done in the same way as pagination. You supply an observable in the `getPage` parameter, which will then be called on page fetch. Also, the `page` event will be fired when a new page should be loaded. For more information, see the pagination section above.
 
 ### Progress Spinner
 
@@ -620,6 +632,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 3.1 (8.0): Infinite Scrolling
 + 3.0 (8.0): Updated to Angular 8
 + 2.5 (7.0): Programmatically change page index / size when using backend pagination
 + 2.4 (7.0): HTML refactoring, direct edit feature
