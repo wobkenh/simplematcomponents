@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { TableColumn } from 'projects/simplemattable/src/public_api';
 import { ComplexTestData } from '../model/test-data.model';
+import PerfectScrollbar from 'perfect-scrollbar';
 
 @Component({
   selector: 'smc-scrollable',
   templateUrl: './scrollable.component.html',
   styleUrls: ['./scrollable.component.css']
 })
-export class ScrollableComponent implements OnInit {
+export class ScrollableComponent implements OnInit, AfterViewInit {
 
   // Scrollable
   dataScrollable: ComplexTestData[] = [];
@@ -41,6 +42,11 @@ export class ScrollableComponent implements OnInit {
       new TableColumn<ComplexTestData, 'value'>('My Value', 'value'),
       new TableColumn<ComplexTestData, 'description'>('My Description', 'description')
     ];
+  }
+
+  ngAfterViewInit() {
+    const container: any = document.querySelector('#smtScrollContainer');
+    const ps = new PerfectScrollbar(container);
   }
 
 }

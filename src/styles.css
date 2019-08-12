@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import "~perfect-scrollbar/css/perfect-scrollbar";
 
 .red-bg-cell {
   background: #992222 !important;
