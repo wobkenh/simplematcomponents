@@ -672,7 +672,6 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
         this.renderedDataSubscription.unsubscribe();
       }
       this.renderedDataSubscription = this.dataSource.connect().subscribe((data) => {
-        console.log(data);
         this.renderedData.emit(data);
       });
 
