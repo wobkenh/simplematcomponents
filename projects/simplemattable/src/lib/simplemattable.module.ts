@@ -5,7 +5,6 @@ import {
   MatCommonModule,
   MatDatepickerModule,
   MatIconModule,
-  MatInputModule,
   MatNativeDateModule,
   MatPaginatorModule,
   MatProgressSpinnerModule,
@@ -13,6 +12,7 @@ import {
   MatSortModule,
   MatTableModule
 } from '@angular/material';
+import {MatInputModule} from '@angular/material/input';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
