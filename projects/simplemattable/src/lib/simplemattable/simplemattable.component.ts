@@ -12,6 +12,7 @@ import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatTable, MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
 import { Height } from '../model/height.model';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'smc-simplemattable',
@@ -57,6 +58,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   @Output() page: EventEmitter<PageEvent> = new EventEmitter();
   @Output() search: EventEmitter<string> = new EventEmitter();
   @Output() renderedData: EventEmitter<T[]> = new EventEmitter();
+  @Output() error: EventEmitter<any> = new EventEmitter();
 
   matFrontendPaginator: MatPaginator;
   matBackendPaginator: MatPaginator;
@@ -228,6 +230,9 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
         this.data.push(...pageData);
         this.onDataChanges();
         this.loading = false;
+      }, error => {
+        this.loading = false;
+        this.error.emit(error);
       });
     }
   }
@@ -448,6 +453,9 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
         this.data = pageData;
         this.onDataChanges();
         this.loading = false;
+      }, error => {
+        this.loading = false;
+        this.error.emit(error);
       });
     }
   }
