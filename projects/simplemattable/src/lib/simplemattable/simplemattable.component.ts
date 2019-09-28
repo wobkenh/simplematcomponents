@@ -55,6 +55,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   @Input() cancelIcon: string;
   @Input() create: () => T;
   @Input() sticky: boolean = false;
+  @Input() stickyButtons: boolean = false;
   @Input() overflowAuto: boolean = false;
   @Input() pageSettings: PageSettings;
   @Input() infiniteScrolling: boolean = false;

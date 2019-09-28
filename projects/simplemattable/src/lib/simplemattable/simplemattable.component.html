@@ -8,11 +8,13 @@
     <mat-progress-spinner mode="indeterminate" color="primary"></mat-progress-spinner>
   </div>
 </div>
-<div fxFlex [ngStyle]="getOuterContainerStyle()" (scroll)="onScrollComponent($event)" #scrollContainer id="smtScrollContainer">
+<div fxFlex [ngStyle]="getOuterContainerStyle()" (scroll)="onScrollComponent($event)" #scrollContainer
+     id="smtScrollContainer">
   <table mat-table [dataSource]="dataSource" matSort [matSortDisabled]="!sorting" style="width: 100%"
          [ngClass]="getTableClass()">
     <ng-container *ngFor="let tcol of getDisplayedCols(columns); let columnIndex = index">
-      <ng-container matColumnDef="{{columnIndex.toString() + '_' + tcol.property.toString()}}">
+      <ng-container matColumnDef="{{columnIndex.toString() + '_' + tcol.property.toString()}}"
+                    [sticky]="tcol.sticky" [stickyEnd]="tcol.stickyEnd">
         <th mat-header-cell *matHeaderCellDef [ngStyle]="getTableCellStyle(tcol)"
             [fxHide.xs]="tcol.hiddenXs || tcol.hiddenSm" [fxHide.sm]="tcol.hiddenSm">
           <div fxLayout="row" style="height: 100%"
@@ -236,7 +238,7 @@
     </ng-container>
 
     <!-- edit/add/delete buttons -->
-    <ng-container *ngIf="editable || deletable || addable" matColumnDef="actions">
+    <ng-container *ngIf="editable || deletable || addable" matColumnDef="actions" [stickyEnd]="stickyButtons">
       <th mat-header-cell *matHeaderCellDef style="width: 104px;">
         <div class="filler-div" style="align-items: center; display: flex; justify-content: flex-end;">
           <button mat-icon-button *ngIf="addable" color="primary" (click)="startAddElement()"
@@ -275,8 +277,9 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <div *ngIf="loading && infiniteScrolling" style="display: flex; justify-content: center; padding-top: 15px; padding-bottom: 10px; overflow: hidden;">
-      <mat-progress-spinner mode="indeterminate" color="primary"></mat-progress-spinner>
+  <div *ngIf="loading && infiniteScrolling"
+       style="display: flex; justify-content: center; padding-top: 15px; padding-bottom: 10px; overflow: hidden;">
+    <mat-progress-spinner mode="indeterminate" color="primary"></mat-progress-spinner>
   </div>
 
 </div>

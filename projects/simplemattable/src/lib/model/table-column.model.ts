@@ -36,6 +36,8 @@ export class TableColumn<T, P extends keyof T> {
   public ngStyle: (data: T[P], dataParent: T) => Object;
   public formField: AbstractFormField<T, P, any>;
   public colFilter: boolean = false;
+  public sticky: boolean = false;
+  public stickyEnd: boolean = false;
   private colFilterText: ColFilterTextHolder = {
     applied: true,
     text: ''
@@ -115,6 +117,36 @@ export class TableColumn<T, P extends keyof T> {
    */
   public withButtonDisabled(disabledFn: (data: T[P], dataParent: T) => boolean) {
     this.disabledFn = disabledFn;
+    return this;
+  }
+
+  /**
+   * Pass true to make this column stick to the start of the table.
+   * A sticky column will stay in place even when the table is too wide for the viewport.
+   * The column will start sticking once it reaches the start of the table.
+   * If it is supposed to stick to the end, use {@link #isStickyEnd}
+   * Default is false.
+   *
+   * @param sticky
+   * @returns this
+   */
+  public isSticky(sticky: boolean) {
+    this.sticky = sticky;
+    return this;
+  }
+
+  /**
+   * Pass true to make this column stick to the start of the table.
+   * A sticky column will stay in place even when the table is too wide for the viewport.
+   * The column will start sticking once it reaches the start of the table.
+   * If it is supposed to stick to the end, use {@link #isSticky}
+   * Default is false.
+   *
+   * @param stickyEnd
+   * @returns this
+   */
+  public isStickyEnd(stickyEnd: boolean) {
+    this.stickyEnd = stickyEnd;
     return this;
   }
 

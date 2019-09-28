@@ -145,6 +145,10 @@ If instead of pagination, you want lazy loading via scrolling, you can use the i
 You can make the header of the table sticky using the `[sticky]` flag. The sticky header is turned off by default.  
 
 If you want to enable adding/editing/deleting of elements in the table, have a look at [the section about edit-mode](#edit-mode).
+If you want to stick the button column to the end of the table, use the `stickyButtons` option.
+
+If you want to know which elements are currently displayed in your table, use the `renderedData` output parameter.
+If you want to know which elements apply to the current filter, use the `filteredData` output parameter.
 
 ### Complex Model
 
@@ -306,6 +310,14 @@ will be displayed, no matter if editing is enabled and the row is being edited.
 Don't forget to define the form field first (see [the edit mode section](#edit-mode)).
 Under the hood, direct edit uses ngModel while edit mode uses form controls.
 By default, direct edit is turned off.
+
+- sticky `isSticky(sticky: boolean)`:
+If you have a wide table that is scrollable and want to make a column stick, use the sticky table column options.
+The sticky options sticks the column to the left of the table. It will start to stick once it has passed the left border of the table.
+
+- stickyEnd `isStickyEnd(stickyEnd: boolean)`:
+The same as `sticky`, but the column will stick to the end of the table. 
+The column will start sticking once it has passed the right border of the table.
 
 ### Edit-mode
 
@@ -632,6 +644,8 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 3.3 (8.0): Sticky columns and filtered data output parameter
++ 3.2 (8.0): Error output event
 + 3.1 (8.0): Infinite Scrolling
 + 3.0 (8.0): Updated to Angular 8
 + 2.5 (7.0): Programmatically change page index / size when using backend pagination
