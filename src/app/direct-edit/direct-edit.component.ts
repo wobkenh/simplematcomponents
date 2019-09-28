@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { ComplexTestData } from '../model/test-data.model';
-import { TableColumn } from 'projects/simplemattable/src/public_api';
+import {Component, OnInit} from '@angular/core';
+import {ComplexTestData} from '../model/test-data.model';
+import {TableColumn} from 'projects/simplemattable/src/public_api';
 
 @Component({
   selector: 'smc-direct-edit',
@@ -14,8 +14,10 @@ export class DirectEditComponent implements OnInit {
   columnsDirectEdit: TableColumn<any, any>[] = [];
   dataDirectEdit2: ComplexTestData[] = [];
   columnsDirectEdit2: TableColumn<any, any>[] = [];
+  filteredData: ComplexTestData[] = [];
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
     /*
@@ -23,7 +25,10 @@ export class DirectEditComponent implements OnInit {
      */
     this.dataDirectEdit = [
       new ComplexTestData(1, 40, 'test1', null, 'test2'),
-      new ComplexTestData(2, 42, 'test2', null, 'test3')
+      new ComplexTestData(2, 42, 'test2', null, 'test3'),
+      new ComplexTestData(3, 42, 'test3', null, 'test4'),
+      new ComplexTestData(4, 42, 'test4', null, 'test5'),
+      new ComplexTestData(5, 42, 'test5', null, 'test6')
     ];
 
     const idCol = new TableColumn<ComplexTestData, 'id'>('My ID', 'id');
@@ -39,7 +44,17 @@ export class DirectEditComponent implements OnInit {
 
     this.dataDirectEdit2 = [
       new ComplexTestData(1, 40, 'test1', null, 'test2'),
-      new ComplexTestData(2, 42, 'test2', null, 'test3')
+      new ComplexTestData(2, 42, 'test2', null, 'test3'),
+      new ComplexTestData(3, 42, 'test2', null, 'test3'),
+      new ComplexTestData(4, 42, 'test2', null, 'test3'),
+      new ComplexTestData(5, 42, 'test2', null, 'test3'),
+      new ComplexTestData(6, 42, 'test2', null, 'test3'),
+      new ComplexTestData(7, 42, 'test2', null, 'test3'),
+      new ComplexTestData(8, 42, 'test2', null, 'test3'),
+      new ComplexTestData(9, 42, 'test2', null, 'test3'),
+      new ComplexTestData(10, 42, 'test2', null, 'test3'),
+      new ComplexTestData(11, 42, 'test2', null, 'test3'),
+      new ComplexTestData(12, 42, 'test2', null, 'test3')
     ];
     const boolCol = new TableColumn<ComplexTestData, any>('Select to delete', '_deleteFlag').isDirectEdit(true);
     boolCol.withFormField(boolCol.getCheckboxFormField());
@@ -56,6 +71,19 @@ export class DirectEditComponent implements OnInit {
 
   logDataDirectEdit() {
     console.log(this.dataDirectEdit);
+  }
+
+
+  deleteAllFiltered() {
+    const idsToDelete = this.filteredData.map(datum => datum.id);
+    this.dataDirectEdit2 = this.dataDirectEdit2.filter(datum => !idsToDelete.includes(datum.id));
+  }
+
+  selectAllFiltered() {
+    const idsToSelect = this.filteredData.map(datum => datum.id);
+    this.dataDirectEdit2
+      .filter(datum => idsToSelect.includes(datum.id))
+      .forEach(datum => datum['_deleteFlag'] = true);
   }
 
 }

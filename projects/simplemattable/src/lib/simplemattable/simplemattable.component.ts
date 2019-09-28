@@ -1,4 +1,17 @@
-import {AfterViewInit, Component, DoCheck, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, ElementRef, HostListener} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  DoCheck,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {TableColumn} from '../model/table-column.model';
 import {Align} from '../model/align.model';
 import {ButtonType} from '../model/button-type.model';
@@ -11,8 +24,7 @@ import {PageSettings} from '../model/page-settings.model';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatTable, MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
-import { Height } from '../model/height.model';
-import { HttpErrorResponse } from '@angular/common/http';
+import {Height} from '../model/height.model';
 
 @Component({
   selector: 'smc-simplemattable',
@@ -58,6 +70,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   @Output() page: EventEmitter<PageEvent> = new EventEmitter();
   @Output() search: EventEmitter<string> = new EventEmitter();
   @Output() renderedData: EventEmitter<T[]> = new EventEmitter();
+  @Output() filteredData: EventEmitter<T[]> = new EventEmitter();
   @Output() error: EventEmitter<any> = new EventEmitter();
 
   matFrontendPaginator: MatPaginator;
@@ -83,7 +96,6 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   private renderedDataSubscription: Subscription;
 
 
-
   constructor(private fb: FormBuilder) {
   }
 
@@ -97,19 +109,19 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     }
   }
 
-  @ViewChild('frontendPaginator', { static: false })
+  @ViewChild('frontendPaginator', {static: false})
   set frontendPaginator(frontendPaginator: MatPaginator) {
-      this.matFrontendPaginator = frontendPaginator; // May be set/unset multiple times if user changes input flags;
+    this.matFrontendPaginator = frontendPaginator; // May be set/unset multiple times if user changes input flags;
   }
 
-  @ViewChild('backendPaginator', { static: false })
+  @ViewChild('backendPaginator', {static: false})
   set backendPaginator(backendPaginator: MatPaginator) {
-      this.matBackendPaginator = backendPaginator; // May be set/unset multiple times if user changes input flags;
+    this.matBackendPaginator = backendPaginator; // May be set/unset multiple times if user changes input flags;
   }
 
-  @ViewChild('scrollContainer', { static: false })
+  @ViewChild('scrollContainer', {static: false})
   set outerContainer(scrollContainer: ElementRef) {
-      this.scrollContainer = scrollContainer; // May be set/unset multiple times if user changes input flags;
+    this.scrollContainer = scrollContainer; // May be set/unset multiple times if user changes input flags;
   }
 
 
@@ -185,14 +197,16 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   /**
    * Method called when component or window has been scrolled and infinite scrolling for respective type is enabled.
-   * @param event event
+   * @param clientHeight
+   * @param pos
+   * @param max
    */
   onScroll(clientHeight: number, pos: number, max: number) {
 
     // In case someone navigates to the page, one scroll event might be thrown
     // to reset the scroll position after the page has previously been scrolled
     if (!(clientHeight === pos && pos === max)) {
-        this.infiniteScrollingHasScrolled = true;
+      this.infiniteScrollingHasScrolled = true;
     }
     let buffer;
     if (this.infiniteScrollingHeight.isPercent()) {
@@ -201,16 +215,16 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
       buffer = this.infiniteScrollingHeight.getNumber();
     }
     if (pos >= max - buffer) {
-        if (this.infiniteScrollingHasMore) {
-            if (!this.loading) {
-                this.infiniteScrollingPage++;
-                // Scrolled to bottom, loading next page
-                this.loadInfiniteScrollPage();
-            } else {
-                // Ignoring scroll to bottom since we are already loading
-            }
+      if (this.infiniteScrollingHasMore) {
+        if (!this.loading) {
+          this.infiniteScrollingPage++;
+          // Scrolled to bottom, loading next page
+          this.loadInfiniteScrollPage();
+        } else {
+          // Ignoring scroll to bottom since we are already loading
         }
-        // else => Ignoring scroll to bottom since there are no more items
+      }
+      // else => Ignoring scroll to bottom since there are no more items
     }
   }
 
@@ -681,6 +695,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
       }
       this.renderedDataSubscription = this.dataSource.connect().subscribe((data) => {
         this.renderedData.emit(data);
+        this.filteredData.emit(data);
       });
 
       // Filter
@@ -770,8 +785,8 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
               max = document.documentElement.scrollHeight;
             }
             if (pos === max) {
-                this.infiniteScrollingPage++;
-                this.loadInfiniteScrollPage();
+              this.infiniteScrollingPage++;
+              this.loadInfiniteScrollPage();
             }
           }
         }, 500);
