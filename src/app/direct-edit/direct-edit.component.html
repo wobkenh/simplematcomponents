@@ -47,7 +47,7 @@ idCol, valueCol, notesCol
 
 <div class="display">
   <div>
-    <h2 id="directEdit2">15.2 Direct Edit</h2>
+    <h2 id="directEdit2">Direct Edit</h2>
     <span>Example of a check-for-delete table using a direct edit checkbox.</span>
 
     <mat-tab-group>
@@ -63,6 +63,8 @@ idCol, valueCol, notesCol
           <p>Typescript - Data</p>
           <hr>
           <pre>
+filteredData: ComplexTestData[] = [];
+
 this.dataDirectEdit2 = [
 new ComplexTestData(1, 40, 'test1', null, 'test2'),
 new ComplexTestData(2, 42, 'test2', null, 'test3')
@@ -85,12 +87,27 @@ boolCol
 deleteSelected() {{ "{" }}
             this.dataDirectEdit2 = this.dataDirectEdit2.filter(datum =&gt; !datum[&#39;_deleteFlag&#39;]);
 }
+
+deleteAllFiltered() {{ "{" }}
+            const idsToDelete = this.filteredData.map(datum => datum.id);
+            this.dataDirectEdit2 = this.dataDirectEdit2.filter(datum => !idsToDelete.includes(datum.id));
+}
+
+selectAllFiltered() {{ "{" }}
+            const idsToSelect = this.filteredData.map(datum => datum.id);
+            this.dataDirectEdit2
+              .filter(datum => idsToSelect.includes(datum.id))
+              .forEach(datum => datum['_deleteFlag'] = true);
+}
 </pre>
           <p>HTML</p>
           <hr>
           <pre>
 &lt;button mat-raised-button (click)=&quot;deleteSelected()&quot;&gt;Delete Selected&lt;/button&gt;
-&lt;smc-simplemattable [data]=&quot;dataDirectEdit2&quot; [columns]=&quot;columnsDirectEdit2&quot;&gt;&lt;/smc-simplemattable&gt;
+&lt;button mat-raised-button (click)=&quot;selectAllFiltered()&quot;&gt;Select all filtered elements&lt;/button&gt;
+&lt;button mat-raised-button (click)=&quot;deleteAllFiltered()&quot;&gt;Delete all filtered elements&lt;/button&gt;
+&lt;smc-simplemattable [data]=&quot;dataDirectEdit2&quot; [columns]=&quot;columnsDirectEdit2&quot; [filter]=&quot;true&quot;
+                    (filteredData)=&quot;filteredData=$event&quot; [paginator]=&quot;true&quot;&gt;&lt;/smc-simplemattable&gt;
 </pre>
         </div>
       </mat-tab>
