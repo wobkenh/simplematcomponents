@@ -4,6 +4,7 @@
     <span>Use direct edit on a column if you need the ngModel binding instead of a form control.</span>
     <span>Your data item will be directly edited as the user uses the form field.</span>
     <span>Note that errors/validations wont work with direct edit. You need to do validations yourself.</span>
+    <span>Validating can be done using the <pre style="display:inline">onDirectEditModelChange</pre> callback on the form field. See the first table for an example.</span>
 
     <mat-tab-group>
       <mat-tab label="Display">
@@ -26,9 +27,11 @@ new ComplexTestData(2, 42, 'test2', null, 'test3')
 const idCol = new TableColumn&lt;ComplexTestData, &#39;id&#39;&gt;(&#39;My ID&#39;, &#39;id&#39;);
 const valueCol = new TableColumn&lt;ComplexTestData, &#39;value&#39;&gt;(&#39;My Value&#39;, &#39;value&#39;)
 .isDirectEdit(true);
-valueCol.withFormField(valueCol.getCheckboxFormField());
-const notesCol = new TableColumn&lt;ComplexTestData, &#39;notes&#39;&gt;(&#39;My Notes&#39;, &#39;notes&#39;)
-.isDirectEdit(true);
+valueCol.withFormField(valueCol.getNumberFormField().withOnDirectEditModelChange((newValue, property, element) =&gt; {{ "{" }}
+  console.log(`New value of field &quot;value&quot; of element with id ${{ "{" }}element.id} is: ${{ "{" }}newValue} and old value was: ${{ "{" }}property}`);
+  // Note that we have to set the new value ourselves when using this callback!
+  element.value = newValue;
+}));
 notesCol.withFormField(notesCol.getTextFormField());
 this.columnsDirectEdit = [
 idCol, valueCol, notesCol

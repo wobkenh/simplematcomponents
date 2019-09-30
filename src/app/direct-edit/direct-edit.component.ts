@@ -34,7 +34,11 @@ export class DirectEditComponent implements OnInit {
     const idCol = new TableColumn<ComplexTestData, 'id'>('My ID', 'id');
     const valueCol = new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
       .isDirectEdit(true);
-    valueCol.withFormField(valueCol.getCheckboxFormField());
+    valueCol.withFormField(valueCol.getNumberFormField().withOnDirectEditModelChange((newValue, property, element) => {
+      console.log(`New value of field "value" of element with id ${element.id} is: ${newValue} and old value was: ${property}`);
+      // Note that we have to set the new value ourselves when using this callback!
+      element.value = newValue;
+    }));
     const notesCol = new TableColumn<ComplexTestData, 'notes'>('My Notes', 'notes')
       .isDirectEdit(true);
     notesCol.withFormField(notesCol.getTextFormField());

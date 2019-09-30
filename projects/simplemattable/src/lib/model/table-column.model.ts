@@ -38,6 +38,7 @@ export class TableColumn<T, P extends keyof T> {
   public colFilter: boolean = false;
   public sticky: boolean = false;
   public stickyEnd: boolean = false;
+
   private colFilterText: ColFilterTextHolder = {
     applied: true,
     text: ''

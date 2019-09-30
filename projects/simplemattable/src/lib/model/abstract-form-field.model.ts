@@ -11,6 +11,17 @@ export class AbstractFormField<T, P extends keyof T, F> {
   placeholder: string = '';
   focus: boolean = false;
   hint: string = '';
+  onDirectEditModelChange: (value: F, data: T[P], dataParent: T) => void;
+
+  /**
+   * When direct edit is enabled, you can use this function to listen to data changes from the user.
+   * @param onModelChange callback that is called when the data changes
+   * @returns this
+   */
+  public withOnDirectEditModelChange(onModelChange: (value: F, data: T[P], dataParent: T) => void): this {
+    this.onDirectEditModelChange = onModelChange;
+    return this;
+  }
 
   /**
    * Validator functions that can be applied to a form control.
