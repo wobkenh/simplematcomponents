@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   Component,
+  ComponentFactoryResolver,
   DoCheck,
   ElementRef,
   EventEmitter,
@@ -10,7 +11,8 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  ViewChild
+  ViewChild,
+  ViewContainerRef
 } from '@angular/core';
 import {TableColumn} from '../model/table-column.model';
 import {Align} from '../model/align.model';
@@ -97,7 +99,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   private renderedDataSubscription: Subscription;
 
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private resolver: ComponentFactoryResolver) {
   }
 
   ngOnInit(): void {
@@ -817,6 +819,10 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
         this.loadInfiniteScrollPage();
       }
     });
+  }
+
+  createComponent(tcol: TableColumn<T, any>, viewRef: ViewContainerRef) {
+    const componenetRef = viewRef.createComponent(this.resolver.resolveComponentFactory(tcol.ngComponent));
   }
 
 }

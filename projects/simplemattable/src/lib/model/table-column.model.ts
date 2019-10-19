@@ -10,6 +10,7 @@ import {SelectFormField} from './select-form-field.model';
 import {LargeTextFormField} from './large-text-form-field.model';
 import {Height} from './height.model';
 import {CheckboxFormField} from './checkbox-form-field.model';
+import {Type} from '@angular/core';
 
 export class TableColumn<T, P extends keyof T> {
 
@@ -38,6 +39,8 @@ export class TableColumn<T, P extends keyof T> {
   public colFilter: boolean = false;
   public sticky: boolean = false;
   public stickyEnd: boolean = false;
+  public ngComponent: Type<any>;
+  public ngComponentInput: (data: T[P], dataParent: T) => void;
   private colFilterText: ColFilterTextHolder = {
     applied: true,
     text: ''
@@ -323,6 +326,16 @@ export class TableColumn<T, P extends keyof T> {
     return this;
   }
 
+  public withNgComponent(ngComponent: Type<any>) {
+    this.ngComponent = ngComponent;
+    return this;
+  }
+
+  public withNgComponentInput(ngComponentInput: (data: T[P], dataParent: T) => void) {
+    this.ngComponentInput = ngComponentInput;
+    return this;
+  }
+
   /**
    * Will enable Column-Specific string search.
    */
@@ -418,6 +431,7 @@ export class TableColumn<T, P extends keyof T> {
   public getColFilterText(): ColFilterTextHolder {
     return this.colFilterText;
   }
+
 
 }
 

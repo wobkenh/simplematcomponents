@@ -134,7 +134,7 @@
 
               <ng-template #tdNotEditing>
                 <!-- Direct Edit Form Fields (ngModel instead of form controls) -->
-                <ng-container *ngIf="tcol.directEdit && tcol.formField; else tdDefault"
+                <ng-container *ngIf="tcol.directEdit && tcol.formField; else tdComponent"
                               [ngSwitch]="tcol.formField.formType">
                   <mat-form-field *ngSwitchCase="formFieldType.TEXT" style="width: 100%;padding: 0 5px">
                     <input matInput type="text" [placeholder]="tcol.formField.placeholder"
@@ -170,15 +170,21 @@
                     <mat-hint>{{tcol.formField.hint}}</mat-hint>
                   </mat-form-field>
                   <mat-form-field *ngSwitchCase="formFieldType.LARGE_TEXT" style="width: 100%;padding: 0 5px">
-                <textarea matInput [(ngModel)]="element[tcol.property]"
-                          style="width: 100%; padding: 2px 0;"
-                          [id]="tcol.formField.focus ? rowIndex + '-smt-focus-input' : ''"
-                          matTextareaAutosize [matAutosizeMaxRows]="getFormFieldMaxLines(tcol.formField)"
-                          [matAutosizeMinRows]="getFormFieldMinLines(tcol.formField)"
-                          [placeholder]="tcol.formField.placeholder"></textarea>
+                    <textarea matInput [(ngModel)]="element[tcol.property]"
+                              style="width: 100%; padding: 2px 0;"
+                              [id]="tcol.formField.focus ? rowIndex + '-smt-focus-input' : ''"
+                              matTextareaAutosize [matAutosizeMaxRows]="getFormFieldMaxLines(tcol.formField)"
+                              [matAutosizeMinRows]="getFormFieldMinLines(tcol.formField)"
+                              [placeholder]="tcol.formField.placeholder"></textarea>
                     <mat-hint>{{tcol.formField.hint}}</mat-hint>
                   </mat-form-field>
                 </ng-container>
+
+                <ng-template #tdComponent>
+                  <div *ngIf="tcol.ngComponent; else tdDefault" #tcolContainer>
+                    {{createComponent(tcol, tcolContainer)}}
+                  </div>
+                </ng-template>
 
                 <ng-template #tdDefault>
                   <!-- Standardcell: Icon + (Textarea or Span) -->
@@ -200,8 +206,8 @@
                     <span style="padding: 2px 0" [fxHide.xs]="tcol.textHiddenXs || tcol.textHiddenSm"
                           [fxHide.sm]="tcol.textHiddenSm"
                           *ngIf="!tcol.maxLines && getStringRepresentation(tcol, element)">
-                  {{getStringRepresentation(tcol, element)}}
-                </span>
+                      {{getStringRepresentation(tcol, element)}}
+                    </span>
                   </div>
                 </ng-template>
               </ng-template>

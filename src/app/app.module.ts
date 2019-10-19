@@ -33,6 +33,8 @@ import {WidthHeightComponent} from './width-height/width-height.component';
 import {AlertComponent} from './alert/alert.component';
 import {HomeComponent} from './home/home.component';
 import {StickyColumnsComponent} from './sticky-columns/sticky-columns.component';
+import { ComponentInjectionComponent } from './component-injection/component-injection.component';
+import { ComponentInjectionComponentComponent } from './component-injection-component/component-injection-component.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +57,9 @@ import {StickyColumnsComponent} from './sticky-columns/sticky-columns.component'
     WidthHeightComponent,
     AlertComponent,
     HomeComponent,
-    StickyColumnsComponent
+    StickyColumnsComponent,
+    ComponentInjectionComponent,
+    ComponentInjectionComponentComponent
   ],
   imports: [
     BrowserModule,
