@@ -319,6 +319,20 @@ The sticky options sticks the column to the left of the table. It will start to 
 The same as `sticky`, but the column will stick to the end of the table. 
 The column will start sticking once it has passed the right border of the table.
 
+- ngComponent `withNgComponent(ngComponent: Type<any>)`:
+If ngstyle/ngclass and string transformations are not enough, you can substitute the cell content with your own component.
+Use this method to supply the Component Type. Use the Component Name as the parameter (e.g. `MyCustomComponent`).
+Have a look at `withNgComponentInput` to feed the component with input.
+
+- ngComponentInput `withNgComponentInput(ngComponentInput: (component: any, data: T[P], dataParent: T) => void)`:
+If you want to display your own angular component in the table cells and have activated this feature through `withNgComponent`,
+then you can supply a function here to fill the input parameters of your component. The function will be passed the component instance
+as well as the data / element the cell represents. Change detection is linked to the simplemattable change detection, 
+so changes to the table column will be reflected instantly while changes to data will be reflected after the reference of your data array has changed.
+Note: to accomplish type safety, explicitly state the type of your Component when defining this function.
+The component instance is listed as "any" to avoid having to pass a third generic to the table column.
+
+
 ### Edit-mode
 
 Edit-mode is a major feature of SimpleMatTable. It allows you to enable the add/edit/delete functionality.
@@ -644,6 +658,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 3.4 (8.0): Custom Components (External Component Injection)
 + 3.3 (8.0): Sticky columns and filtered data output parameter
 + 3.2 (8.0): Error output event
 + 3.1 (8.0): Infinite Scrolling
