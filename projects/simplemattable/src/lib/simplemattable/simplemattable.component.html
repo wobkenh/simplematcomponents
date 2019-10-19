@@ -181,9 +181,11 @@
                 </ng-container>
 
                 <ng-template #tdComponent>
-                  <div *ngIf="tcol.ngComponent; else tdDefault" #tcolContainer>
-                    {{createComponent(tcol, tcolContainer)}}
-                  </div>
+                  <smc-external-component-wrapper
+                    *ngIf="tcol.ngComponent; else tdDefault"
+                    [dataParent]="element" [tcolProperty]="tcol.property"
+                    [ngComponent]="tcol.ngComponent" [ngComponentInput]="tcol.ngComponentInput"
+                  ></smc-external-component-wrapper>
                 </ng-template>
 
                 <ng-template #tdDefault>

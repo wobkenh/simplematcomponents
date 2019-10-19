@@ -40,7 +40,7 @@ export class TableColumn<T, P extends keyof T> {
   public sticky: boolean = false;
   public stickyEnd: boolean = false;
   public ngComponent: Type<any>;
-  public ngComponentInput: (data: T[P], dataParent: T) => void;
+  public ngComponentInput: (component: any, data: T[P], dataParent: T) => void;
   private colFilterText: ColFilterTextHolder = {
     applied: true,
     text: ''
@@ -326,12 +326,29 @@ export class TableColumn<T, P extends keyof T> {
     return this;
   }
 
+  /**
+   * If ngstyle/ngclass and string transformations are not enough, you can substitute the cell content with your own component.
+   * Use this method to supply the Component Type (Use the Component Name as the parameter).
+   * Have a look at {@link #withNgComponentInput} to feed the component with input
+   *
+   * @param ngComponent Component Class
+   */
   public withNgComponent(ngComponent: Type<any>) {
     this.ngComponent = ngComponent;
     return this;
   }
 
-  public withNgComponentInput(ngComponentInput: (data: T[P], dataParent: T) => void) {
+  /**
+   * If you want to display your own angular component in the table cells and have activated this feature through {@link #withNgComponent},
+   * then you can supply a function here to fill the input parameters of your component. The function will be passed the component instance
+   * as well as the data / element the cell represents.
+   *
+   * Note: to accomplish type safety, explicitly state the type of your Component when defining this function.
+   * The component instance is listed as "any" to avoid having to pass a third generic to the table column.
+   *
+   * @param ngComponentInput
+   */
+  public withNgComponentInput(ngComponentInput: (component: any, data: T[P], dataParent: T) => void) {
     this.ngComponentInput = ngComponentInput;
     return this;
   }

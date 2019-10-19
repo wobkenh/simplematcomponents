@@ -1,7 +1,6 @@
 import {
   AfterViewInit,
   Component,
-  ComponentFactoryResolver,
   DoCheck,
   ElementRef,
   EventEmitter,
@@ -10,9 +9,10 @@ import {
   OnChanges,
   OnInit,
   Output,
+  QueryList,
   SimpleChanges,
   ViewChild,
-  ViewContainerRef
+  ViewChildren
 } from '@angular/core';
 import {TableColumn} from '../model/table-column.model';
 import {Align} from '../model/align.model';
@@ -27,6 +27,7 @@ import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatTable, MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
 import {Height} from '../model/height.model';
+import {ExternalComponentWrapperComponent} from '../external-component-wrapper/external-component-wrapper.component';
 
 @Component({
   selector: 'smc-simplemattable',
@@ -81,6 +82,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   @ViewChild(MatSort, {static: true}) matSort: MatSort;
   @ViewChild(MatTable, {static: true}) matTable: MatTable<T>;
   scrollContainer: ElementRef;
+  @ViewChildren(ExternalComponentWrapperComponent) externalComponents: QueryList<ExternalComponentWrapperComponent>;
 
   displayedColumns = [];
   dataSource: MatTableDataSource<T>;
@@ -99,7 +101,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   private renderedDataSubscription: Subscription;
 
 
-  constructor(private fb: FormBuilder, private resolver: ComponentFactoryResolver) {
+  constructor(private fb: FormBuilder) {
   }
 
   ngOnInit(): void {
@@ -603,6 +605,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     this.clearAddedEntry();
     this.recreateDataSource();
     this.cleanUpAfterDataChange();
+    this.updateExternalComponents();
   }
 
   private clearAddedEntry() {
@@ -620,6 +623,12 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     this.formControls.clear();
     if (this.matSort && this.matSort.active) {
       this.dataSource.data = this.dataSource.sortData(this.dataSource.data, this.matSort);
+    }
+  }
+
+  private updateExternalComponents() {
+    if (this.externalComponents) {
+      this.externalComponents.forEach(component => component.refreshInput());
     }
   }
 
@@ -819,10 +828,6 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
         this.loadInfiniteScrollPage();
       }
     });
-  }
-
-  createComponent(tcol: TableColumn<T, any>, viewRef: ViewContainerRef) {
-    const componenetRef = viewRef.createComponent(this.resolver.resolveComponentFactory(tcol.ngComponent));
   }
 
 }
