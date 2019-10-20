@@ -27,6 +27,7 @@ import {LargeTextFormField} from '../model/large-text-form-field.model';
 import {SelectFormField} from '../model/select-form-field.model';
 import {Height} from '../model/height.model';
 import {Width} from '../model/width.model';
+import {ExternalComponentWrapperComponent} from '../external-component-wrapper/external-component-wrapper.component';
 
 describe('TestcompComponent', () => {
   let hostComponent: TestHostComponent;
@@ -54,7 +55,7 @@ describe('TestcompComponent', () => {
         BrowserAnimationsModule,
         MatPaginatorModule
       ],
-      declarations: [SimplemattableComponent, TestHostComponent]
+      declarations: [SimplemattableComponent, TestHostComponent, ExternalComponentWrapperComponent]
     })
       .compileComponents();
   }));
@@ -559,7 +560,7 @@ describe('TestcompComponent', () => {
   @Component({
     selector: `smc-host-component`,
     template: `
-      <smc-simplemattable [data]="data" [columns]="columns"></smc-simplemattable>`
+        <smc-simplemattable [data]="data" [columns]="columns"></smc-simplemattable>`
   })
   class TestHostComponent {
     @ViewChild(SimplemattableComponent, {static: true}) simplemattable: SimplemattableComponent<ComplexTestData>;
@@ -623,8 +624,8 @@ describe('TestcompComponent', () => {
   @Component({
     selector: `smc-host-component-full`,
     template: `
-      <smc-simplemattable [data]="data" [columns]="columns" [sorting]="true" [paginator]="true" [filter]="true"
-                          [addable]="true" [editable]="true" [deletable]="true" [create]="createFn"></smc-simplemattable>`
+        <smc-simplemattable [data]="data" [columns]="columns" [sorting]="true" [paginator]="true" [filter]="true"
+                            [addable]="true" [editable]="true" [deletable]="true" [create]="createFn"></smc-simplemattable>`
   })
   class TestFullHostComponent {
     @ViewChild(SimplemattableComponent, {static: true}) simplemattable: SimplemattableComponent<ComplexTestData>;
@@ -683,7 +684,7 @@ describe('TestcompComponent', () => {
   @Component({
     selector: `smc-host-component-error`,
     template: `
-      <smc-simplemattable [data]="data" [columns]="columns" [addable]="true"></smc-simplemattable>`
+        <smc-simplemattable [data]="data" [columns]="columns" [addable]="true"></smc-simplemattable>`
   })
   class TestErrorHostComponent {
     @ViewChild(SimplemattableComponent, {static: true}) simplemattable: SimplemattableComponent<ComplexTestData>;

@@ -19,6 +19,7 @@ import {DirectEditComponent} from './direct-edit/direct-edit.component';
 import {AlertComponent} from './alert/alert.component';
 import {HomeComponent} from './home/home.component';
 import {StickyColumnsComponent} from './sticky-columns/sticky-columns.component';
+import {ComponentInjectionComponent} from './component-injection/component-injection.component';
 
 
 const routes: Routes = [
@@ -40,6 +41,7 @@ const routes: Routes = [
   {path: 'pagination', component: PaginationComponent},
   {path: 'direct-edit', component: DirectEditComponent},
   {path: 'alert', component: AlertComponent},
+  {path: 'custom-components', component: ComponentInjectionComponent},
   {path: '', component: HomeComponent},
 ];
 

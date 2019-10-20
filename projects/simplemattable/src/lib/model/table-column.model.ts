@@ -10,6 +10,7 @@ import {SelectFormField} from './select-form-field.model';
 import {LargeTextFormField} from './large-text-form-field.model';
 import {Height} from './height.model';
 import {CheckboxFormField} from './checkbox-form-field.model';
+import {Type} from '@angular/core';
 
 export class TableColumn<T, P extends keyof T> {
 
@@ -38,6 +39,8 @@ export class TableColumn<T, P extends keyof T> {
   public colFilter: boolean = false;
   public sticky: boolean = false;
   public stickyEnd: boolean = false;
+  public ngComponent: Type<any>;
+  public ngComponentInput: (component: any, data: T[P], dataParent: T) => void;
 
   private colFilterText: ColFilterTextHolder = {
     applied: true,
@@ -325,6 +328,33 @@ export class TableColumn<T, P extends keyof T> {
   }
 
   /**
+   * If ngstyle/ngclass and string transformations are not enough, you can substitute the cell content with your own component.
+   * Use this method to supply the Component Type (Use the Component Name as the parameter).
+   * Have a look at {@link #withNgComponentInput} to feed the component with input
+   *
+   * @param ngComponent Component Class
+   */
+  public withNgComponent(ngComponent: Type<any>) {
+    this.ngComponent = ngComponent;
+    return this;
+  }
+
+  /**
+   * If you want to display your own angular component in the table cells and have activated this feature through {@link #withNgComponent},
+   * then you can supply a function here to fill the input parameters of your component. The function will be passed the component instance
+   * as well as the data / element the cell represents.
+   *
+   * Note: to accomplish type safety, explicitly state the type of your Component when defining this function.
+   * The component instance is listed as "any" to avoid having to pass a third generic to the table column.
+   *
+   * @param ngComponentInput
+   */
+  public withNgComponentInput(ngComponentInput: (component: any, data: T[P], dataParent: T) => void) {
+    this.ngComponentInput = ngComponentInput;
+    return this;
+  }
+
+  /**
    * Will enable Column-Specific string search.
    */
   public withColFilter() {
@@ -419,6 +449,7 @@ export class TableColumn<T, P extends keyof T> {
   public getColFilterText(): ColFilterTextHolder {
     return this.colFilterText;
   }
+
 
 }
 

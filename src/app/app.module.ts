@@ -33,6 +33,8 @@ import {WidthHeightComponent} from './width-height/width-height.component';
 import {AlertComponent} from './alert/alert.component';
 import {HomeComponent} from './home/home.component';
 import {StickyColumnsComponent} from './sticky-columns/sticky-columns.component';
+import {ComponentInjectionComponent} from './component-injection/component-injection.component';
+import {CustomTableCellComponent} from './custom-table-cell/custom-table-cell.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +57,9 @@ import {StickyColumnsComponent} from './sticky-columns/sticky-columns.component'
     WidthHeightComponent,
     AlertComponent,
     HomeComponent,
-    StickyColumnsComponent
+    StickyColumnsComponent,
+    ComponentInjectionComponent,
+    CustomTableCellComponent
   ],
   imports: [
     BrowserModule,
@@ -72,6 +76,7 @@ import {StickyColumnsComponent} from './sticky-columns/sticky-columns.component'
     MatListModule,
     MatIconModule
   ],
+  entryComponents: [CustomTableCellComponent],
   providers: [],
   bootstrap: [AppComponent]
 })

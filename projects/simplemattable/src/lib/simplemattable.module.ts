@@ -16,6 +16,7 @@ import {MatInputModule} from '@angular/material/input';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { ExternalComponentWrapperComponent } from './external-component-wrapper/external-component-wrapper.component';
 
 @NgModule({
   imports: [
@@ -36,7 +37,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     MatPaginatorModule,
     MatCheckboxModule
   ],
-  declarations: [SimplemattableComponent],
+  declarations: [SimplemattableComponent, ExternalComponentWrapperComponent],
   exports: [SimplemattableComponent]
 })
 export class SimplemattableModule { }

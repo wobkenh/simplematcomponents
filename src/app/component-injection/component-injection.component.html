@@ -1,0 +1,77 @@
+<div class="display">
+  <div>
+    <h2 id="simple">Custom Components</h2>
+    <span>Simplemattable offers quite powerful tools to customize the way table cells appear.</span>
+    <span>However, sometimes, this might now be enough. In such cases, you can tell simplemattable to render one of your own components into the table cells.</span>
+    <span>If your component has input parameters that need to be filled with data from your model, you can specify a function in which you can acces the component instance and the data. In this function, you can fill in the input parameters of your component yourself.</span>
+
+    <mat-tab-group>
+      <mat-tab label="Display">
+        <button mat-raised-button (click)="changeData()">Add to id</button>
+        <button mat-raised-button (click)="toggleColumn()">Toggle id visibility</button>
+        <smc-simplemattable [data]="dataCustomComponent" [columns]="columnsCustomComponent"></smc-simplemattable>
+      </mat-tab>
+      <mat-tab label="Code">
+        <div class="code">
+          <p>Typescript - Data</p>
+          <hr>
+          <pre>
+this.dataCustomComponent = [
+  new ComplexTestData(1, 40, 'test1', null, 'test2'),
+  new ComplexTestData(2, 42, 'test2', null, 'test3')
+];
+  </pre>
+          <p>Typescript - Columns</p>
+          <hr>
+          <pre>
+this.columnsCustomComponent = [
+  new TableColumn&lt;ComplexTestData, &#39;id&#39;&gt;(&#39;My ID&#39;, &#39;id&#39;)
+    .withNgComponent(CustomTableCellComponent)
+    .withNgComponentInput((component: CustomTableCellComponent, data, dataParent) =&gt; {{"{"}}&#x2063;
+      // Fill the input parameters of your component - type safe if you state the class of your component above
+      // data and dataParent on the other hand will be type safe automatically
+      component.input = data;
+    }),
+  new TableColumn&lt;ComplexTestData, &#39;value&#39;&gt;(&#39;My Value&#39;, &#39;value&#39;)
+];
+  </pre>
+          <p>Typescript - Functions</p>
+          <hr>
+          <pre>
+changeData() {{"{"}}&#x2063;
+  for (const datum of this.dataCustomComponent) {{"{"}}&#x2063;
+    datum.id++;
+  }
+  this.dataCustomComponent = this.dataCustomComponent.slice(0);
+}
+
+toggleColumn() {{"{"}}&#x2063;
+  this.columnsCustomComponent[0].visible = !this.columnsCustomComponent[0].visible;
+}
+  </pre>
+
+          <p>Typescript - Custom Component (CustomTableCellComponent)</p>
+          <hr>
+          <pre>
+@Input() input;
+  </pre>
+          <p>HTML</p>
+          <hr>
+          <pre>
+&#x3C;button mat-raised-button (click)=&#x22;changeData()&#x22;&#x3E;Add to id&#x3C;/button&#x3E;
+&#x3C;button mat-raised-button (click)=&#x22;toggleColumn()&#x22;&#x3E;Toggle id visibility&#x3C;/button&#x3E;
+&lt;smc-simplemattable [data]=&quot;dataCustomComponent&quot; [columns]=&quot;columnsCustomComponent&quot;&gt;&lt;/smc-simplemattable&gt;
+  </pre>
+          <p>HTML - Custom Component (CustomTableCellComponent)</p>
+          <hr>
+          <pre>
+&lt;h3&gt;This cell would normally have ID {{"{"}}{{"{"}}input}}&lt;/h3&gt;
+&lt;p&gt;
+  custom-table-cell-component works.
+&lt;/p&gt;
+  </pre>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
