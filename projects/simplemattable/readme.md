@@ -406,6 +406,12 @@ in a way that it can be set as the property of your model.
 If omitted, the value is applied directly. 
 You should only omit this function if the property datatype equals the form field data type.
 - focus (`withFocus(focus: boolean)`): Default is false. If set to true, the input of this form field will be focused when the user clicks add or edit.
+- onDirectEditModelChange (`withOnDirectEditModelChange(onModelChange: (value: F, data: T[P], dataParent: T) => void)`): This callback is only available
+when using directEdit. It can be used to observe, prevent or change the changes the user makes in the form field.
+When this callback is supplied and Angular calls ngModelChange, instead of updating the model directly, this callback will be called.
+Note that this means you have to change the model yourself. You can use the parameters of the callback for this,
+which include not only the new value of the form field, but also the current property value (`data`, normally this equals the old value) 
+and the whole element (`dataParent`). 
 
 Note that placeholders, hints, validators and errors will not work on checkbox form fields.
 
@@ -656,7 +662,8 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
-+ 3.4 (8.0): Custom Components (External Component Injection)
++ 3.5 (8.0): Custom Components (External Component Injection)
++ 3.4 (8.0): Direct Edit output callback
 + 3.3 (8.0): Sticky columns and filtered data output parameter
 + 3.2 (8.0): Error output event
 + 3.1 (8.0): Infinite Scrolling

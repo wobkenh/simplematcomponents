@@ -138,22 +138,23 @@
                               [ngSwitch]="tcol.formField.formType">
                   <mat-form-field *ngSwitchCase="formFieldType.TEXT" style="width: 100%;padding: 0 5px">
                     <input matInput type="text" [placeholder]="tcol.formField.placeholder"
-                           [(ngModel)]="element[tcol.property]"
+                           [ngModel]="element[tcol.property]" (ngModelChange)="directEditElementChanged(tcol, element, $event)"
                            [id]="tcol.formField.focus ? rowIndex + '-smt-focus-input' : ''">
                     <mat-hint>{{tcol.formField.hint}}</mat-hint>
                   </mat-form-field>
                   <mat-form-field *ngSwitchCase="formFieldType.NUMBER" style="width: 100%;padding: 0 5px">
-                    <input matInput type="number" [(ngModel)]="element[tcol.property]"
+                    <input matInput type="number" [ngModel]="element[tcol.property]" (ngModelChange)="directEditElementChanged(tcol, element, $event)"
                            [placeholder]="tcol.formField.placeholder"
                            [id]="tcol.formField.focus ? rowIndex + '-smt-focus-input' : ''">
                     <mat-hint>{{tcol.formField.hint}}</mat-hint>
                   </mat-form-field>
                   <mat-checkbox *ngSwitchCase="formFieldType.CHECKBOX" style="padding: 0 5px"
-                                [(ngModel)]="element[tcol.property]"
+                                [ngModel]="element[tcol.property]" (ngModelChange)="directEditElementChanged(tcol, element, $event)"
                   ></mat-checkbox>
                   <mat-form-field *ngSwitchCase="formFieldType.DATE" style="width: 98%;">
                     <!-- For whatever reason, you cant wrap the date picker input in a ng-container -->
                     <input matInput [id]="tcol.formField.focus ? rowIndex + '-smt-focus-input' : ''"
+                           [ngModel]="element[tcol.property]" (ngModelChange)="directEditElementChanged(tcol, element, $event)"
                            [ngStyle]="{'text-align': getTextAlign(tcol.align)}" [matDatepicker]="picker"
                            [placeholder]="tcol.formField.placeholder">
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -161,7 +162,8 @@
                     <mat-hint>{{tcol.formField.hint}}</mat-hint>
                   </mat-form-field>
                   <mat-form-field *ngSwitchCase="formFieldType.SELECT" style="width: 100%;padding: 0 5px">
-                    <mat-select [(ngModel)]="element[tcol.property]" [placeholder]="tcol.formField.placeholder"
+                    <mat-select [ngModel]="element[tcol.property]" [placeholder]="tcol.formField.placeholder"
+                                (ngModelChange)="directEditElementChanged(tcol, element, $event)"
                                 [id]="tcol.formField.focus ? rowIndex + '-smt-focus-input' : ''">
                       <mat-option *ngFor="let option of getFormFieldOptions(tcol.formField);" [value]="option.value">
                         {{option.display}}
@@ -170,7 +172,7 @@
                     <mat-hint>{{tcol.formField.hint}}</mat-hint>
                   </mat-form-field>
                   <mat-form-field *ngSwitchCase="formFieldType.LARGE_TEXT" style="width: 100%;padding: 0 5px">
-                    <textarea matInput [(ngModel)]="element[tcol.property]"
+                    <textarea matInput [ngModel]="element[tcol.property]" (ngModelChange)="directEditElementChanged(tcol, element, $event)"
                               style="width: 100%; padding: 2px 0;"
                               [id]="tcol.formField.focus ? rowIndex + '-smt-focus-input' : ''"
                               matTextareaAutosize [matAutosizeMaxRows]="getFormFieldMaxLines(tcol.formField)"

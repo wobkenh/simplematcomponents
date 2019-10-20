@@ -479,6 +479,14 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     }
   }
 
+  directEditElementChanged(tcol: TableColumn<T, any>, element: T, newValue) {
+    if (tcol.formField.onDirectEditModelChange) {
+      tcol.formField.onDirectEditModelChange(newValue, element[tcol.property], element);
+    } else {
+      element[tcol.property] = newValue;
+    }
+  }
+
   /*
 
       Next up are some simpler methods.

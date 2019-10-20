@@ -41,6 +41,7 @@ export class TableColumn<T, P extends keyof T> {
   public stickyEnd: boolean = false;
   public ngComponent: Type<any>;
   public ngComponentInput: (component: any, data: T[P], dataParent: T) => void;
+
   private colFilterText: ColFilterTextHolder = {
     applied: true,
     text: ''
