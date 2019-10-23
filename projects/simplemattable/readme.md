@@ -584,10 +584,11 @@ So if you have problems displaying your data, first check that the array referen
 
 The `getPage: (offset: number, limit: number) => Observable<T[]>` input parameter is a function which takes the page index (offset) and 
 page size (limit) and returns an observable, which simplemattable will then use to fetch the data of the next page.
-When using this approach, the getPage function acts as the glue between your server and simplemattable. While waiting for the observable to finish, simplemattable will show a progress spinner. If the observable fails (e.g. http request is unsuccessfull), the progress spinner disappears and an event with the error is emitted by the `error` output paremeter.
+When using this approach, the getPage function acts as the glue between your server and simplemattable. While waiting for the observable to finish, simplemattable will show a progress spinner. If the observable fails (e.g. http request is unsuccessful), the progress spinner disappears and an event with the error is emitted by the `error` output paremeter.
 To further reduce bloat, simplemattable will fetch the first page of data itself using the default size and page index 0.
 This only works if the `getPage` parameter was set when simplemattable was constructed. 
-See [the demo](https://simplex24.de/smc-demo#pagination) for an example.
+Note that `this` in the supplied function will be the simplemattable component by default. To change this back to your own component, use `.bind(this)` when supplying the function.
+See [the demo](https://simplex24.de/smc-demo/pagination) for an example.
 
 If you want to programmatically change the page size or page index, use the `pageSettings` input parameter.
 Create a new `PageSettings` object and fill the pageIndex, page Size or both to your liking. Simplemattable will automatically detect the change

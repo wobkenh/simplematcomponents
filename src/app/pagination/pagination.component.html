@@ -68,9 +68,10 @@ resetToPageSizeTen() {{"{"}}&#x2063;
             <pre>
 &lt;button mat-raised-button (click)=&quot;resetToPageZero()&quot;&gt;Go to page index zero&lt;/button&gt;
 &lt;button mat-raised-button (click)=&quot;resetToPageSizeTen()&quot;&gt;Set page size to 10&lt;/button&gt;
+&lt;!-- Note the &quot;.bind(this)&quot; to change the &quot;this&quot; in your function back to your component  --&gt;
 &lt;smc-simplemattable [data]=&quot;dataPagination&quot; [columns]=&quot;columnsPagination&quot; [paginator]=&quot;true&quot;
                 [backendPagination]=&quot;true&quot; [paginatorLength]=&quot;pageSettings&quot;
-                [getPage]=&quot;getPage&quot;&gt;&lt;/smc-simplemattable&gt;
+                [getPage]=&quot;getPage.bind(this)&quot;&gt;&lt;/smc-simplemattable&gt;
   </pre>
           </div>
         </mat-tab>
