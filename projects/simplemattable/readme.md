@@ -148,6 +148,9 @@ If you want to stick the button column to the end of the table, use the `stickyB
 If you want to know which elements are currently displayed in your table, use the `renderedData` output parameter.
 If you want to know which elements apply to the current filter, use the `filteredData` output parameter.
 
+If you want to be informed when the user clicks on a row, listen to the `rowClick` output event. 
+If you also want to make the table rows to appear clickable via a hover effect and pointer cursor, set the input parameter `rowClickable` to true.
+
 ### Complex Model
 
 If you have a more complex model, for example
@@ -296,6 +299,8 @@ Note that the styles will be applied to a `<div>` that fills the `<td>` element 
 The column filter works just like the filter feature of the table, but only filters rows using the values of the column. 
 To set the text of a column filter programmatically, call the method `setColFilterText(text: string)` on the table column.
 If you have problems with the width of the filter input, have a look at the info in the Edit-mode chapter below.
+
+- colFilterLabel: (`.withColFilterLabel(label: string)`): Sets the label displayed as placeholder in the column filter input.
 
 - colFilterText `setColFilterText(text: string)`: Allows you to programmatically set the text of the col filter. 
 ColFilter (see above) needs to be active.

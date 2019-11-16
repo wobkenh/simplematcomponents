@@ -39,6 +39,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   @Input() data: T[] = [];
   @Input() columns: TableColumn<T, any>[] = [];
   @Input() filter: boolean = false;
+  @Input() filterLabel: string = 'Filter';
   @Input() noOpFilter: boolean = false;
   @Input() paginator: boolean = false;
   @Input() sorting: boolean = false;
@@ -64,6 +65,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   @Input() infiniteScrolling: boolean = false;
   @Input() infiniteScrollingPageSize: number = 10;
   @Input() infiniteScrollingHeight: Height = Height.px(200);
+  @Input() rowClickable: boolean = false;
   private infiniteScrollingPage: number = 0;
   private infiniteScrollingHasMore: boolean = true;
   private infiniteScrollingHasScrolled: boolean = false;
@@ -76,6 +78,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   @Output() renderedData: EventEmitter<T[]> = new EventEmitter();
   @Output() filteredData: EventEmitter<T[]> = new EventEmitter();
   @Output() error: EventEmitter<any> = new EventEmitter();
+  @Output() rowClick: EventEmitter<T> = new EventEmitter<T>();
 
   matFrontendPaginator: MatPaginator;
   matBackendPaginator: MatPaginator;
@@ -836,6 +839,10 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
         this.loadInfiniteScrollPage();
       }
     });
+  }
+
+  rowClicked(row: T) {
+    this.rowClick.emit(row);
   }
 
 }

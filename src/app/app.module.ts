@@ -35,6 +35,7 @@ import {HomeComponent} from './home/home.component';
 import {StickyColumnsComponent} from './sticky-columns/sticky-columns.component';
 import {ComponentInjectionComponent} from './component-injection/component-injection.component';
 import {CustomTableCellComponent} from './custom-table-cell/custom-table-cell.component';
+import { InternationalizationComponent } from './internationalization/internationalization.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import {CustomTableCellComponent} from './custom-table-cell/custom-table-cell.co
     HomeComponent,
     StickyColumnsComponent,
     ComponentInjectionComponent,
-    CustomTableCellComponent
+    CustomTableCellComponent,
+    InternationalizationComponent
   ],
   imports: [
     BrowserModule,

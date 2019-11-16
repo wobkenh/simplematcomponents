@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { TableColumn, ButtonType } from 'projects/simplemattable/src/public_api';
-import { ComplexTestData, TestData } from '../model/test-data.model';
+import {Component, OnInit} from '@angular/core';
+import {ButtonType, TableColumn} from 'projects/simplemattable/src/public_api';
+import {ComplexTestData, TestData} from '../model/test-data.model';
 
 @Component({
   selector: 'smc-icons-buttons',
@@ -12,12 +12,16 @@ export class IconsButtonsComponent implements OnInit {
   // Icons and Buttons Table
   dataIconsButtons: ComplexTestData[] = [];
   columnsIconsButtons: TableColumn<any, any>[] = [];
+  columnsRowClickable: TableColumn<any, any>[] = [];
   linkClickCountIconsButtons = 0;
   linkLastClickedIconsButtons = 0;
   btnClickCountIconsButtons = 0;
   btnLastClickedIconsButtons = 0;
+  rowClickCount = 0;
+  rowLastClickedId = 0;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
     const d1 = new Date();
@@ -50,6 +54,16 @@ export class IconsButtonsComponent implements OnInit {
       new TableColumn<ComplexTestData, 'description'>('My Description - Icon', 'description')
         .withIcon((description) => description === 'test1' ? 'delete' : 'wifi'),
     ];
+    this.columnsRowClickable = [
+      new TableColumn<ComplexTestData, 'id'>('My ID', 'id'),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value'),
+      new TableColumn<ComplexTestData, 'description'>('My Description - Icon', 'description')
+        .withIcon((description) => description === 'test1' ? 'delete' : 'wifi'),
+    ];
   }
 
+  rowClicked(data: ComplexTestData) {
+    this.rowClickCount++;
+    this.rowLastClickedId = data.id;
+  }
 }

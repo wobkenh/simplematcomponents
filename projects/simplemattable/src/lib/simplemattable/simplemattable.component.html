@@ -1,6 +1,6 @@
 <div *ngIf="filter" fxFlex="0 0 auto">
   <mat-form-field style="width: 100%;">
-    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    <input matInput (keyup)="applyFilter($event.target.value)" [placeholder]="filterLabel">
   </mat-form-field>
 </div>
 <div *ngIf="loading && !infiniteScrolling" class="loading-div">
@@ -36,7 +36,7 @@
               </div>
               <div style="padding: 0 5px">
                 <mat-form-field [ngStyle]="{'text-align': getTextAlign(tcol.align)}">
-                  <input matInput placeholder="Filter" [formControl]="getColFilterFormControl(tcol)"
+                  <input matInput [placeholder]="tcol.colFilterLabel" [formControl]="getColFilterFormControl(tcol)"
                          (keyup)="applyColFilter()" (click)="$event.stopPropagation()">
                 </mat-form-field>
               </div>
@@ -138,23 +138,27 @@
                               [ngSwitch]="tcol.formField.formType">
                   <mat-form-field *ngSwitchCase="formFieldType.TEXT" style="width: 100%;padding: 0 5px">
                     <input matInput type="text" [placeholder]="tcol.formField.placeholder"
-                           [ngModel]="element[tcol.property]" (ngModelChange)="directEditElementChanged(tcol, element, $event)"
+                           [ngModel]="element[tcol.property]"
+                           (ngModelChange)="directEditElementChanged(tcol, element, $event)"
                            [id]="tcol.formField.focus ? rowIndex + '-smt-focus-input' : ''">
                     <mat-hint>{{tcol.formField.hint}}</mat-hint>
                   </mat-form-field>
                   <mat-form-field *ngSwitchCase="formFieldType.NUMBER" style="width: 100%;padding: 0 5px">
-                    <input matInput type="number" [ngModel]="element[tcol.property]" (ngModelChange)="directEditElementChanged(tcol, element, $event)"
+                    <input matInput type="number" [ngModel]="element[tcol.property]"
+                           (ngModelChange)="directEditElementChanged(tcol, element, $event)"
                            [placeholder]="tcol.formField.placeholder"
                            [id]="tcol.formField.focus ? rowIndex + '-smt-focus-input' : ''">
                     <mat-hint>{{tcol.formField.hint}}</mat-hint>
                   </mat-form-field>
                   <mat-checkbox *ngSwitchCase="formFieldType.CHECKBOX" style="padding: 0 5px"
-                                [ngModel]="element[tcol.property]" (ngModelChange)="directEditElementChanged(tcol, element, $event)"
+                                [ngModel]="element[tcol.property]"
+                                (ngModelChange)="directEditElementChanged(tcol, element, $event)"
                   ></mat-checkbox>
                   <mat-form-field *ngSwitchCase="formFieldType.DATE" style="width: 98%;">
                     <!-- For whatever reason, you cant wrap the date picker input in a ng-container -->
                     <input matInput [id]="tcol.formField.focus ? rowIndex + '-smt-focus-input' : ''"
-                           [ngModel]="element[tcol.property]" (ngModelChange)="directEditElementChanged(tcol, element, $event)"
+                           [ngModel]="element[tcol.property]"
+                           (ngModelChange)="directEditElementChanged(tcol, element, $event)"
                            [ngStyle]="{'text-align': getTextAlign(tcol.align)}" [matDatepicker]="picker"
                            [placeholder]="tcol.formField.placeholder">
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -172,7 +176,8 @@
                     <mat-hint>{{tcol.formField.hint}}</mat-hint>
                   </mat-form-field>
                   <mat-form-field *ngSwitchCase="formFieldType.LARGE_TEXT" style="width: 100%;padding: 0 5px">
-                    <textarea matInput [ngModel]="element[tcol.property]" (ngModelChange)="directEditElementChanged(tcol, element, $event)"
+                    <textarea matInput [ngModel]="element[tcol.property]"
+                              (ngModelChange)="directEditElementChanged(tcol, element, $event)"
                               style="width: 100%; padding: 2px 0;"
                               [id]="tcol.formField.focus ? rowIndex + '-smt-focus-input' : ''"
                               matTextareaAutosize [matAutosizeMaxRows]="getFormFieldMaxLines(tcol.formField)"
@@ -284,7 +289,8 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: sticky" [ngStyle]="getTableHeaderStyle()"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'on-click': !!rowClickable}"
+        (click)="rowClicked(row)"></tr>
   </table>
 
   <div *ngIf="loading && infiniteScrolling"

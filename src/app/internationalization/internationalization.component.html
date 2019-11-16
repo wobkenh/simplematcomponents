@@ -1,0 +1,45 @@
+<div class="display">
+  <div>
+    <h2 id="simple">Internationalization</h2>
+    <span>Simplemattable uses Angular Material DataTable, so the internationalization classes of the corresponding features can be used:</span>
+    <div class="list">
+      <div>
+        <ul>
+          <li>
+            <span class="inline-code">MatSortHeaderIntl</span>
+            for sorting button Label
+          </li>
+          <li>
+            <span class="inline-code">MatPaginatorIntl</span>
+            for paginator button texts
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <p>You can provide your own implementation of the classes above as shown <a
+      href="https://stackoverflow.com/questions/46869616/how-to-use-matpaginatorintl">in this Stackoverflow thread</a>.
+    </p>
+    <p>For internationalization of the date input form field, see <a
+      href="https://material.angular.io/components/datepicker/overview#internationalization">the Angular Material
+      Docs</a></p>
+
+    <div style="margin-top: 15px">Simplemattable itself only has two labels which you would have to provide for
+      internationalization:
+    </div>
+    <div class="list">
+      <div>
+        <ul>
+          <li>Filter placeholder/label on simplemattable. Change this via the <span
+            class="inline-code">filterLabel</span>
+            input parameter. Default is 'Filter'.
+          </li>
+          <li>Column filter placeholder/label on table column. Change this via the table column option <span
+            class="inline-code">colFilterLabel</span>. Default is 'Filter'.
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -37,6 +37,7 @@ export class TableColumn<T, P extends keyof T> {
   public ngStyle: (data: T[P], dataParent: T) => Object;
   public formField: AbstractFormField<T, P, any>;
   public colFilter: boolean = false;
+  public colFilterLabel: string = 'Filter';
   public sticky: boolean = false;
   public stickyEnd: boolean = false;
   public ngComponent: Type<any>;
@@ -359,6 +360,14 @@ export class TableColumn<T, P extends keyof T> {
    */
   public withColFilter() {
     this.colFilter = true;
+    return this;
+  }
+
+  /**
+   * Sets the label displayed as placeholder in the column filter input.
+   */
+  public withColFilterLabel(label: string) {
+    this.colFilterLabel = label;
     return this;
   }
 

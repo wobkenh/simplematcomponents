@@ -1,7 +1,8 @@
 import {NgModule} from '@angular/core';
 import {SimplemattableComponent} from './simplemattable/simplemattable.component';
 import {
-  MatButtonModule, MatCheckboxModule,
+  MatButtonModule,
+  MatCheckboxModule,
   MatCommonModule,
   MatDatepickerModule,
   MatIconModule,
@@ -16,7 +17,8 @@ import {MatInputModule} from '@angular/material/input';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { ExternalComponentWrapperComponent } from './external-component-wrapper/external-component-wrapper.component';
+import {ExternalComponentWrapperComponent} from './external-component-wrapper/external-component-wrapper.component';
+import {MatRippleModule} from '@angular/material/core';
 
 @NgModule({
   imports: [
@@ -35,9 +37,11 @@ import { ExternalComponentWrapperComponent } from './external-component-wrapper/
     MatSelectModule,
     MatButtonModule,
     MatPaginatorModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatRippleModule
   ],
   declarations: [SimplemattableComponent, ExternalComponentWrapperComponent],
   exports: [SimplemattableComponent]
 })
-export class SimplemattableModule { }
+export class SimplemattableModule {
+}

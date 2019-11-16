@@ -1,35 +1,35 @@
 <!-- Column Icons And Buttons -->
-<div class="display">
-    <div>
-      <h2 id="iconsbuttons">Icons and Buttons</h2>
-      <span>You can display all material style button types (normal, raised, icon).</span>
-      <br>
-      <span>You can specify an on click on all cells, even if they have no button. With no button type specified, the cell will turn into a clickable cell.</span>
-      <br>
-      <span>You can add an icon derived from the cells data to a column. You can also combine buttons and icons as you wish.</span>
-      <mat-tab-group>
-        <mat-tab label="Display">
-          <div style="display: flex; flex-direction: column; padding: 10px 0">
-            <span>Link Click count: {{linkClickCountIconsButtons}}</span>
-            <span>Link Last clicked ID: {{linkLastClickedIconsButtons}}</span>
-            <span>Raised Button Click count: {{btnClickCountIconsButtons}}</span>
-            <span>Raised Button Last clicked Value: {{btnLastClickedIconsButtons}}</span>
-          </div>
-          <smc-simplemattable [data]="dataIconsButtons" [columns]="columnsIconsButtons"></smc-simplemattable>
-        </mat-tab>
-        <mat-tab label="Code">
-          <div class="code">
-            <p>Typescript - Data</p>
-            <hr>
-            <pre>
+<div class="display" style="flex-direction: column; align-items: center">
+  <div>
+    <h2 id="iconsbuttons">Icons and Buttons</h2>
+    <span>You can display all material style button types (normal, raised, icon).</span>
+    <br>
+    <span>You can specify an on click on all cells, even if they have no button. With no button type specified, the cell will turn into a clickable cell.</span>
+    <br>
+    <span>You can add an icon derived from the cells data to a column. You can also combine buttons and icons as you wish.</span>
+    <mat-tab-group>
+      <mat-tab label="Display">
+        <div style="display: flex; flex-direction: column; padding: 10px 0">
+          <span>Link Click count: {{linkClickCountIconsButtons}}</span>
+          <span>Link Last clicked ID: {{linkLastClickedIconsButtons}}</span>
+          <span>Raised Button Click count: {{btnClickCountIconsButtons}}</span>
+          <span>Raised Button Last clicked Value: {{btnLastClickedIconsButtons}}</span>
+        </div>
+        <smc-simplemattable [data]="dataIconsButtons" [columns]="columnsIconsButtons"></smc-simplemattable>
+      </mat-tab>
+      <mat-tab label="Code">
+        <div class="code">
+          <p>Typescript - Data</p>
+          <hr>
+          <pre>
 this.dataVisibility = [
   new ComplexTestData(1, 40, 'test1', new TestData('Key1', 'Value1', d1), 'test2'),
   new ComplexTestData(2, 42, 'test2', new TestData('Key2', 'Value2', d2), 'test3')
 ];
   </pre>
-            <p>Typescript - Columns</p>
-            <hr>
-            <pre>
+          <p>Typescript - Columns</p>
+          <hr>
+          <pre>
 this.columnsIconsButtons = [
   new TableColumn&lt;ComplexTestData, 'id'&gt;('My ID - Link', 'id')
     .withOnClick(id =&gt; {{"{"}}&#x2063;
@@ -46,9 +46,9 @@ this.columnsIconsButtons = [
     .withIcon((description) =&gt; description === 'test1' ? 'delete' : 'wifi'),
 ];
   </pre>
-            <p>HTML</p>
-            <hr>
-            <pre>
+          <p>HTML</p>
+          <hr>
+          <pre>
 &lt;span&gt;Link Click count: {{"{"}}{{"{"}}linkClickCountIconsButtons}}&lt;/span&gt;
 &lt;br&gt;
 &lt;span&gt;Link Last clicked ID: {{"{"}}{{"{"}}linkLastClickedIconsButtons}}&lt;/span&gt;
@@ -58,8 +58,59 @@ this.columnsIconsButtons = [
 &lt;span&gt;Raised Button Last clicked Value: {{"{"}}{{"{"}}btnLastClickedIconsButtons}}&lt;/span&gt;
 &lt;smc-simplemattable [data]=&quot;dataIconsButtons&quot; [columns]=&quot;columnsIconsButtons&quot;&gt;&lt;/smc-simplemattable&gt;
   </pre>
-          </div>
-        </mat-tab>
-      </mat-tab-group>
-    </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
   </div>
+
+
+  <div>
+    <h2>Clickable Rows</h2>
+    <span>Instead of making table cells clickable, you can also make whole rows clickable.</span>
+    <br>
+    <span>It is recommended not to have other clickable items in your table cells if you use this.</span>
+    <br>
+    <mat-tab-group>
+      <mat-tab label="Display">
+        <div style="display: flex; flex-direction: column; padding: 10px 0">
+          <span>Link Click count: {{rowClickCount}}</span>
+          <span>Link Last clicked ID: {{rowLastClickedId}}</span>
+        </div>
+        <smc-simplemattable [data]="dataIconsButtons" [columns]="columnsRowClickable" [rowClickable]="true"
+                            (rowClick)="rowClicked($event)"></smc-simplemattable>
+      </mat-tab>
+      <mat-tab label="Code">
+        <div class="code">
+          <p>Typescript - Data</p>
+          <hr>
+          <pre>
+this.dataVisibility = [
+  new ComplexTestData(1, 40, 'test1', new TestData('Key1', 'Value1', d1), 'test2'),
+  new ComplexTestData(2, 42, 'test2', new TestData('Key2', 'Value2', d2), 'test3')
+];
+  </pre>
+          <p>Typescript - Columns</p>
+          <hr>
+          <pre>
+this.columnsRowClickable = [
+  new TableColumn&lt;ComplexTestData, &#39;id&#39;&gt;(&#39;My ID&#39;, &#39;id&#39;),
+  new TableColumn&lt;ComplexTestData, &#39;value&#39;&gt;(&#39;My Value&#39;, &#39;value&#39;),
+  new TableColumn&lt;ComplexTestData, &#39;description&#39;&gt;(&#39;My Description - Icon&#39;, &#39;description&#39;)
+    .withIcon((description) =&gt; description === &#39;test1&#39; ? &#39;delete&#39; : &#39;wifi&#39;),
+];
+  </pre>
+          <p>HTML</p>
+          <hr>
+          <pre>
+&lt;div style=&quot;display: flex; flex-direction: column; padding: 10px 0&quot;&gt;
+  &lt;span&gt;Link Click count: {{"{"}}{{"{"}}rowClickCount}}&lt;/span&gt;
+  &lt;span&gt;Link Last clicked ID: {{"{"}}{{"{"}}rowLastClickedId}}&lt;/span&gt;
+&lt;/div&gt;
+&lt;smc-simplemattable [data]=&quot;dataIconsButtons&quot; [columns]=&quot;columnsRowClickable&quot; [rowClickable]=&quot;true&quot;
+                    (rowClick)=&quot;rowClicked($event)&quot;&gt;&lt;/smc-simplemattable&gt;
+  </pre>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

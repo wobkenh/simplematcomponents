@@ -1,22 +1,23 @@
 <!-- Complete Table -->
 <div class="display">
-    <div>
-      <h2 id="complete">Complete Table</h2>
-      <span>So lets throw everything you've seen so far and even more together and see what happens...</span>
-      <mat-tab-group>
-        <mat-tab label="Display">
-          <smc-simplemattable [data]="dataComplete" [columns]="columnsComplete" [paginator]="true" [filter]="true"
-                              (edit)="onEdit($event)" [paginatorPageSize]="3"
-                              [sorting]="true" [editable]="true" [addable]="true" [deletable]="true"
-                              (add)="onAdd($event)"
-                              addIcon="account_box" [deleteIcon]="'check_box_outline_blank'" [sticky]="false"
-                              [create]="createFn" (delete)="onDelete($event)"></smc-simplemattable>
-        </mat-tab>
-        <mat-tab label="Code">
-          <div class="code">
-            <p>Typescript - Data</p>
-            <hr>
-            <pre>
+  <div>
+    <h2 id="complete">Complete Table</h2>
+    <span>So lets throw everything you've seen so far and even more together and see what happens...</span>
+    <span>P.S.: Please do not make tables as useless as this one. :-)</span>
+    <mat-tab-group>
+      <mat-tab label="Display">
+        <smc-simplemattable [data]="dataComplete" [columns]="columnsComplete" [paginator]="true" [filter]="true"
+                            (edit)="onEdit($event)" [paginatorPageSize]="3"
+                            [sorting]="true" [editable]="true" [addable]="true" [deletable]="true"
+                            (add)="onAdd($event)" [filterLabel]="'I think you might be on to something...'"
+                            addIcon="account_box" [deleteIcon]="'check_box_outline_blank'" [sticky]="false"
+                            [create]="createFn" (delete)="onDelete($event)"></smc-simplemattable>
+      </mat-tab>
+      <mat-tab label="Code">
+        <div class="code">
+          <p>Typescript - Data</p>
+          <hr>
+          <pre>
 this.dataComplete = [
   new ComplexTestData(1, 40, 'test1', new TestData('Key1', 'Value1', d1), 'test1'),
   new ComplexTestData(2, 41, '', new TestData('Key2', 'Value2', d2), ''),
@@ -34,9 +35,9 @@ this.dataComplete = [
   new ComplexTestData(14, 39, 'test3', new TestData('Key3', 'Value3', d3), 'test3')
 ];
   </pre>
-            <p>Typescript - Columns</p>
-            <hr>
-            <pre>
+          <p>Typescript - Columns</p>
+          <hr>
+          <pre>
 const completeIdCol = new TableColumn&lt;ComplexTestData, 'id'&gt;('ID with button', 'id')
   .withIcon((id) =&gt; id &lt; 3 ? 'add' : 'delete')
   .withButton(ButtonType.RAISED)
@@ -68,25 +69,25 @@ const completeValueCol = new TableColumn&lt;ComplexTestData, 'value'&gt;('Number
 
 completeValueCol.withFormField(completeValueCol.getSelectFormField&lt;number&gt;()
   .withOptions([
-                {{"{"}}&#x2063;display: '39', value: 39},
-                {{"{"}}&#x2063;display: '40', value: 40},
-                {{"{"}}&#x2063;display: '41', value: 41},
-                {{"{"}}&#x2063;display: 'eine lustige Zahl', value: 420}
+            {{"{"}}&#x2063;display: '39', value: 39},
+            {{"{"}}&#x2063;display: '40', value: 40},
+            {{"{"}}&#x2063;display: '41', value: 41},
+            {{"{"}}&#x2063;display: 'eine lustige Zahl', value: 420}
   ])
 .withValidators([Validators.required, Validators.min(25)])
   .withErrors([
-                {{"{"}}&#x2063;key: 'required', msg: 'Value is required!'},
-                {{"{"}}&#x2063;key: 'min', msg: 'Value should be at least 25!'}
+            {{"{"}}&#x2063;key: 'required', msg: 'Value is required!'},
+            {{"{"}}&#x2063;key: 'min', msg: 'Value should be at least 25!'}
   ]));
 const completeTestErrorCol = new TableColumn&lt;ComplexTestData, 'data'&gt;('Nested Value Select', 'data')
 .withTransform(data =&gt; data.value)
 .withAlign(Align.CENTER);
 completeTestErrorCol.withFormField(completeTestErrorCol.getSelectFormField&lt;string&gt;()
   .withOptions([
-                {{"{"}}&#x2063;display: 'Manatee', value: 'Manatee'},
-                {{"{"}}&#x2063;display: 'Dog', value: 'Dog'},
-                {{"{"}}&#x2063;display: 'Natalie Dormer', value: 'Natalie Dormer'},
-                {{"{"}}&#x2063;display: 'A Muffin', value: 'A Hotdog'},
+            {{"{"}}&#x2063;display: 'Manatee', value: 'Manatee'},
+            {{"{"}}&#x2063;display: 'Dog', value: 'Dog'},
+            {{"{"}}&#x2063;display: 'Natalie Dormer', value: 'Natalie Dormer'},
+            {{"{"}}&#x2063;display: 'A Muffin', value: 'A Hotdog'},
   ]).withPlaceholder('Sexiest Thing alive'));
 const completeDes2Col = new TableColumn&lt;ComplexTestData, 'description'&gt;('Description2', 'description')
   .isVisible(false)
@@ -122,8 +123,8 @@ completeDateCol.withFormField(completeDateCol.getDateFormField()
   .withHint('Only past dates.')
   .withPlaceholder('Date')
   .withErrors([
-                {{"{"}}&#x2063;key: 'required', msg: 'Date is required!'},
-                {{"{"}}&#x2063;key: 'pastDate', msg: 'Date needs to be in the past!'}
+            {{"{"}}&#x2063;key: 'required', msg: 'Date is required!'},
+            {{"{"}}&#x2063;key: 'pastDate', msg: 'Date needs to be in the past!'}
   ])
   .withValidators([Validators.required, this.pastDateValidator])
   .withInit(data =&gt; data.date)
@@ -135,18 +136,18 @@ const completeMultilineCol = new TableColumn&lt;ComplexTestData, 'notes'&gt;('Th
   .withColFilter();
 this.columnsComplete = [completeIdCol, completeTestErrorCol, completeDesCol, completeDes2Col, completeValueCol, completeKeyCol, completeValCol, completeDateCol, completeMultilineCol];
   </pre>
-            <p>HTML</p>
-            <hr>
-            <pre>
+          <p>HTML</p>
+          <hr>
+          <pre>
 &lt;smc-simplemattable [data]=&quot;dataComplete&quot; [columns]=&quot;columnsComplete&quot; [paginator]=&quot;true&quot; [filter]=&quot;true&quot;
                 (edit)=&quot;onEdit($event)&quot; [paginatorPageSize]=&quot;3&quot;
                 [sorting]=&quot;true&quot; [editable]=&quot;true&quot; [addable]=&quot;true&quot; [deletable]=&quot;true&quot;
-                (add)=&quot;onAdd($event)&quot;
+                (add)=&quot;onAdd($event)&quot; [filterLabel]=&quot;'I think you might be on to something...'&quot;
                 addIcon=&quot;account_box&quot; [deleteIcon]=&quot;'check_box_outline_blank'&quot; [sticky]=&quot;false&quot;
                 [create]=&quot;createFn&quot; (delete)=&quot;onDelete($event)&quot;&gt;&lt;/smc-simplemattable&gt;
   </pre>
-          </div>
-        </mat-tab>
-      </mat-tab-group>
-    </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
   </div>
+</div>
