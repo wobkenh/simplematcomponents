@@ -718,7 +718,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
       }
       this.renderedDataSubscription = this.dataSource.connect().subscribe((data) => {
         this.renderedData.emit(data);
-        this.filteredData.emit(data);
+        this.filteredData.emit(this.dataSource.filteredData);
       });
 
       // Filter

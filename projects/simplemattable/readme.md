@@ -668,6 +668,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 3.6 (8.0): Filter labels; Clickable rows
 + 3.5 (8.0): Custom Components (External Component Injection)
 + 3.4 (8.0): Direct Edit output callback
 + 3.3 (8.0): Sticky columns and filtered data output parameter
