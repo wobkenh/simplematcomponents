@@ -18,7 +18,6 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ExternalComponentWrapperComponent} from './external-component-wrapper/external-component-wrapper.component';
-import {MatRippleModule} from '@angular/material/core';
 
 @NgModule({
   imports: [
@@ -37,8 +36,7 @@ import {MatRippleModule} from '@angular/material/core';
     MatSelectModule,
     MatButtonModule,
     MatPaginatorModule,
-    MatCheckboxModule,
-    MatRippleModule
+    MatCheckboxModule
   ],
   declarations: [SimplemattableComponent, ExternalComponentWrapperComponent],
   exports: [SimplemattableComponent]
