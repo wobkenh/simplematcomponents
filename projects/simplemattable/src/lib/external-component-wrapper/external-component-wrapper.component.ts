@@ -7,13 +7,11 @@ import {Component, ComponentFactoryResolver, ComponentRef, Input, OnChanges, Typ
 })
 export class ExternalComponentWrapperComponent implements OnChanges {
 
-  // @Input() tcol: TableColumn<T, any>;
   @Input() ngComponent: Type<any>;
   @Input() ngComponentInput: (component: any, data: any, dataParent: any) => void;
   @Input() tcolProperty: any;
   @Input() dataParent: any;
 
-  // @ViewChild('container', {static: false}) container: ViewContainerRef;
   private componentRef: ComponentRef<any>;
 
   constructor(private resolver: ComponentFactoryResolver, private viewContainerRef: ViewContainerRef) {

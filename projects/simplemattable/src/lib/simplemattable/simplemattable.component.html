@@ -289,8 +289,8 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: sticky" [ngStyle]="getTableHeaderStyle()"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'on-click': !!rowClickable}"
-        (click)="rowClicked(row)"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="getTableRowClass(row)"
+        (click)="rowClicked(row)" [ngStyle]="getTableRowStyle(row)"></tr>
   </table>
 
   <div *ngIf="loading && infiniteScrolling"

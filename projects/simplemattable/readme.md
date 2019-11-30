@@ -123,6 +123,8 @@ If you are looking for more customization options (e.g. align, width, different 
 
 ### Table
 
+#### General
+
 After you defined your table columns, you can bind them to the html element using:
 
 ```
@@ -130,6 +132,8 @@ After you defined your table columns, you can bind them to the html element usin
 ```
 
 where testData is an array of your model and columns are the TableColumns you defined earlier.
+
+#### Pagination, Filtering, Sorting
 
 Additionally, you can turn on a paginator, a filter and sorting. These are the standard MatTable Features that are also well described in
 [the Angular docs](https://material.angular.io/components/table/overview).
@@ -140,16 +144,30 @@ For more information on the paginator feature, have a look at the [paginator sec
 
 If instead of pagination, you want lazy loading via scrolling, you can use the infiniteScrolling options. For more information regarding infinite scrolling, have a look at the [infinite scrolling section](#infinite-scrolling)
 
+#### Sticky
 You can make the header of the table sticky using the `[sticky]` flag. The sticky header is turned off by default.  
-
-If you want to enable adding/editing/deleting of elements in the table, have a look at [the section about edit-mode](#edit-mode).
 If you want to stick the button column to the end of the table, use the `stickyButtons` option.
 
+#### Editing
+If you want to enable adding/editing/deleting of elements in the table, have a look at [the section about edit-mode](#edit-mode).
+
+#### Accessing the data
 If you want to know which elements are currently displayed in your table, use the `renderedData` output parameter.
 If you want to know which elements apply to the current filter, use the `filteredData` output parameter.
 
+#### Row clicks
 If you want to be informed when the user clicks on a row, listen to the `rowClick` output event. 
 If you also want to make the table rows to appear clickable via a hover effect and pointer cursor, set the input parameter `rowClickable` to true.
+
+#### Row customization
+You can apply row-specific styles using the `rowNgStyle` and `rowNgClass` attributes. 
+Both are methods which get the data of the row (your model) as parameter. 
+
+`rowNgStyle: (data: T) => Object` lets you return an object that will be fed into the `ngStyle` attribute of the table row (`<tr>`).
+
+`rowNgClass: (data: T) => string | string[] | Object` lets you return a string, string array or object that will be fed into the `ngClass` attribute of the row (`<tr>`).
+Note that when using `rowNgClass`, the row must be in the global stylesheet due to component isolation.
+
 
 ### Complex Model
 
@@ -668,6 +686,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 3.7 (8.0): rowNgStyle and rowNgClass
 + 3.6 (8.0): Filter labels; Clickable rows
 + 3.5 (8.0): Custom Components (External Component Injection)
 + 3.4 (8.0): Direct Edit output callback

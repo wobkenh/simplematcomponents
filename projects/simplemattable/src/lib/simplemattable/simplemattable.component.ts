@@ -66,6 +66,8 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   @Input() infiniteScrollingPageSize: number = 10;
   @Input() infiniteScrollingHeight: Height = Height.px(200);
   @Input() rowClickable: boolean = false;
+  @Input() rowNgStyle: (data: T) => Object;
+  @Input() rowNgClass: (data: T) => string | string[] | Object;
   private infiniteScrollingPage: number = 0;
   private infiniteScrollingHasMore: boolean = true;
   private infiniteScrollingHasScrolled: boolean = false;
@@ -310,6 +312,32 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   getTableCellStyle(tcol: TableColumn<T, any>): { [p: string]: string } {
     if (tcol.width) {
       return {'width': tcol.width.toString()};
+    } else {
+      return {};
+    }
+  }
+
+  getTableRowClass(row: T): string | string[] | Object {
+    if (this.rowNgClass) {
+      let classes = this.rowNgClass(row);
+      if (this.rowClickable) {
+        if (typeof classes === 'string') {
+          classes += ' on-click';
+        } else if (Array.isArray(classes)) {
+          classes.push('on-click');
+        } else if (typeof classes === 'object') {
+          classes['on-click'] = true;
+        }
+      }
+      return classes;
+    } else {
+      return {'on-click': !!this.rowClickable};
+    }
+  }
+
+  getTableRowStyle(row: T): Object {
+    if (this.rowNgStyle) {
+      return this.rowNgStyle(row);
     } else {
       return {};
     }
