@@ -25,7 +25,7 @@ import {Observable, Subscription} from 'rxjs';
 import {PageSettings} from '../model/page-settings.model';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatTable, MatTableDataSource} from '@angular/material/table';
-import {MatSort} from '@angular/material/sort';
+import {MatSort, Sort} from '@angular/material/sort';
 import {Height} from '../model/height.model';
 import {ExternalComponentWrapperComponent} from '../external-component-wrapper/external-component-wrapper.component';
 
@@ -81,6 +81,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   @Output() filteredData: EventEmitter<T[]> = new EventEmitter();
   @Output() error: EventEmitter<any> = new EventEmitter();
   @Output() rowClick: EventEmitter<T> = new EventEmitter<T>();
+  @Output() sort: EventEmitter<Sort> = new EventEmitter<Sort>();
 
   matFrontendPaginator: MatPaginator;
   matBackendPaginator: MatPaginator;
@@ -873,4 +874,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     this.rowClick.emit(row);
   }
 
+  sortChanged(sortEvent: Sort) {
+    this.sort.emit(sortEvent);
+  }
 }

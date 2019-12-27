@@ -11,7 +11,7 @@
 <div fxFlex [ngStyle]="getOuterContainerStyle()" (scroll)="onScrollComponent($event)" #scrollContainer
      id="smtScrollContainer">
   <table mat-table [dataSource]="dataSource" matSort [matSortDisabled]="!sorting" style="width: 100%"
-         [ngClass]="getTableClass()">
+         (matSortChange)="sortChanged($event)" [ngClass]="getTableClass()">
     <ng-container *ngFor="let tcol of getDisplayedCols(columns); let columnIndex = index">
       <ng-container matColumnDef="{{columnIndex.toString() + '_' + tcol.property.toString()}}"
                     [sticky]="tcol.sticky" [stickyEnd]="tcol.stickyEnd">

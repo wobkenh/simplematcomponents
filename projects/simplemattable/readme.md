@@ -138,6 +138,9 @@ where testData is an array of your model and columns are the TableColumns you de
 Additionally, you can turn on a paginator, a filter and sorting. These are the standard MatTable Features that are also well described in
 [the Angular docs](https://material.angular.io/components/table/overview).
 The paginator, filter and sorting are optional. If omitted, the flags will default to false.
+
+If you want to caputure changes in sorting, you can use the `(sort)` output event from simplemattable.
+
 The paginater can further be customized by the optional input parameter `[paginatorPageSize]`, which takes a number and sets the initial entries per page count. 
 Also, via `[paginatorPageSizeOptions]`, which takes a number array, you can change the pagesize options that will be selectable in the paginator.
 For more information on the paginator feature, have a look at the [paginator section](#pagination)
@@ -686,6 +689,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 3.8 (8.0): sort event
 + 3.7 (8.0): rowNgStyle and rowNgClass
 + 3.6 (8.0): Filter labels; Clickable rows
 + 3.5 (8.0): Custom Components (External Component Injection)
