@@ -19,7 +19,7 @@ export class TableColumn<T,
   X extends (keyof T | never) = never,
   W extends (keyof T | never) = never> {
 
-  public transform: (data: T[P], dataParent: T) => string;
+  public transform: (data: T[P], dataParent?: T) => string;
   public width: string;
   public heightFn: (data: T[P], dataParent: T) => Height;
   public disabledFn: (data: T[P], dataParent: T) => boolean;
