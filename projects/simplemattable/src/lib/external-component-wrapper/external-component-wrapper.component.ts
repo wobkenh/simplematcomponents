@@ -8,8 +8,14 @@ import {Component, ComponentFactoryResolver, ComponentRef, Input, OnChanges, Typ
 export class ExternalComponentWrapperComponent implements OnChanges {
 
   @Input() ngComponent: Type<any>;
-  @Input() ngComponentInput: (component: any, data: any, dataParent: any) => void;
+  @Input() ngComponentInput: (component: any, data: any,
+    secondData?: any, thirdData?: any,
+    fourthData?: any, fifthData?: any, dataParent?: any) => void;
   @Input() tcolProperty: any;
+  @Input() secondProperty: any;
+  @Input() thirdProperty: any;
+  @Input() fourthProperty: any;
+  @Input() fifthProperty: any;
   @Input() dataParent: any;
 
   private componentRef: ComponentRef<any>;
@@ -21,12 +27,20 @@ export class ExternalComponentWrapperComponent implements OnChanges {
     this.viewContainerRef.clear();
     this.componentRef = this.viewContainerRef.createComponent(this.resolver.resolveComponentFactory(this.ngComponent));
     if (this.ngComponentInput) {
-      this.ngComponentInput(this.componentRef.instance, this.dataParent[this.tcolProperty], this.dataParent);
+      this.ngComponentInput(this.componentRef.instance,
+        this.dataParent[this.tcolProperty],
+        this.dataParent[this.secondProperty], this.dataParent[this.thirdProperty],
+        this.dataParent[this.fourthProperty], this.dataParent[this.fifthProperty],
+        this.dataParent);
     }
   }
 
   refreshInput() {
-    this.ngComponentInput(this.componentRef.instance, this.dataParent[this.tcolProperty], this.dataParent);
+    this.ngComponentInput(this.componentRef.instance,
+      this.dataParent[this.tcolProperty],
+      this.dataParent[this.secondProperty], this.dataParent[this.thirdProperty],
+      this.dataParent[this.fourthProperty], this.dataParent[this.fifthProperty],
+      this.dataParent);
   }
 
 }

@@ -12,7 +12,12 @@ import {Height} from './height.model';
 import {CheckboxFormField} from './checkbox-form-field.model';
 import {Type} from '@angular/core';
 
-export class TableColumn<T, P extends keyof T> {
+export class TableColumn<T,
+  P extends keyof T,
+  Z extends (keyof T | never) = never,
+  Y extends (keyof T | never) = never,
+  X extends (keyof T | never) = never,
+  W extends (keyof T | never) = never> {
 
   public transform: (data: T[P], dataParent: T) => string;
   public width: string;
@@ -41,7 +46,9 @@ export class TableColumn<T, P extends keyof T> {
   public sticky: boolean = false;
   public stickyEnd: boolean = false;
   public ngComponent: Type<any>;
-  public ngComponentInput: (component: any, data: T[P], dataParent: T) => void;
+  public ngComponentInput: (component: any, data: T[P],
+    secondData?: T[Z], thirdData?: T[Y],
+    fourthData?: T[X], fifthData?: T[W], dataParent?: T) => void;
 
   private colFilterText: ColFilterTextHolder = {
     applied: true,
@@ -49,7 +56,9 @@ export class TableColumn<T, P extends keyof T> {
   };
 
   constructor(public name: string,
-              public property: P) {
+    public property: P,
+    public secondProperty?: Z, public thirdProperty?: Y,
+    public fourthProperty?: X, public fifthProperty?: W) {
   }
 
   /**
@@ -63,6 +72,7 @@ export class TableColumn<T, P extends keyof T> {
     this.transform = transformFn;
     return this;
   }
+
 
   /**
    * Function that returns the sort value of a cell.
@@ -350,7 +360,11 @@ export class TableColumn<T, P extends keyof T> {
    *
    * @param ngComponentInput
    */
-  public withNgComponentInput(ngComponentInput: (component: any, data: T[P], dataParent: T) => void) {
+  public withNgComponentInput(ngComponentInput: (component: any,
+    data: T[P],
+    secondData?: T[Z], thirdData?: T[Y],
+    fourthData?: T[X], fifthData?: T[W],
+    dataParent?: T) => void) {
     this.ngComponentInput = ngComponentInput;
     return this;
   }
@@ -461,7 +475,6 @@ export class TableColumn<T, P extends keyof T> {
 
 
 }
-
 interface ColFilterTextHolder {
   text: string;
   applied: boolean;

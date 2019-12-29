@@ -25,7 +25,7 @@ import {Observable, Subscription} from 'rxjs';
 import {PageSettings} from '../model/page-settings.model';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatTable, MatTableDataSource} from '@angular/material/table';
-import {MatSort} from '@angular/material/sort';
+import {MatSort, Sort} from '@angular/material/sort';
 import {Height} from '../model/height.model';
 import {ExternalComponentWrapperComponent} from '../external-component-wrapper/external-component-wrapper.component';
 
@@ -37,7 +37,7 @@ import {ExternalComponentWrapperComponent} from '../external-component-wrapper/e
 export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, AfterViewInit {
 
   @Input() data: T[] = [];
-  @Input() columns: TableColumn<T, any>[] = [];
+  @Input() columns: TableColumn<T, any, any>[] = [];
   @Input() filter: boolean = false;
   @Input() filterLabel: string = 'Filter';
   @Input() noOpFilter: boolean = false;
@@ -81,6 +81,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   @Output() filteredData: EventEmitter<T[]> = new EventEmitter();
   @Output() error: EventEmitter<any> = new EventEmitter();
   @Output() rowClick: EventEmitter<T> = new EventEmitter<T>();
+  @Output() sort: EventEmitter<Sort> = new EventEmitter<Sort>();
 
   matFrontendPaginator: MatPaginator;
   matBackendPaginator: MatPaginator;
@@ -92,12 +93,12 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   displayedColumns = [];
   dataSource: MatTableDataSource<T>;
   private dataStatus: Map<T, DataStatus> = new Map<T, DataStatus>(); // to know whether or not a row is being edited
-  private oldColumns: TableColumn<T, any>[] = []; // For dirty-checking
+  private oldColumns: TableColumn<T, any,any>[] = []; // For dirty-checking
   addedItem: T = null;
   // There may only be one form control per cell
   // FormControls are identified by <rowIndex>_<colIndex>
   formControls: Map<string, AbstractControl> = new Map<string, AbstractControl>();
-  colFilterFormControls = new Map<TableColumn<T, any>, AbstractControl>();
+  colFilterFormControls = new Map<TableColumn<T, any, any>, AbstractControl>();
 
   buttonType = ButtonType;
   formFieldType = FormFieldType;
@@ -178,7 +179,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    * @param element Clicked element
    * @param fromButton true = button; false = cell
    */
-  onClick(tcol: TableColumn<T, any>, element: T, fromButton: boolean) {
+  onClick(tcol: TableColumn<T, any, any>, element: T, fromButton: boolean) {
     if (fromButton ? this.isButtonClickable(tcol) : this.isCellClickable(tcol, element)) {
       tcol.onClick(element[tcol.property], element);
     }
@@ -269,7 +270,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    * @param element the element
    * @returns ngClass Object
    */
-  getCellCssClass(tcol: TableColumn<T, any>, element: T): Object {
+  getCellCssClass(tcol: TableColumn<T, any, any>, element: T): Object {
     const defaultClass = {'filler-div': true, 'on-click': (tcol.onClick && !tcol.button)};
     if (!tcol.ngClass) {
       return defaultClass;
@@ -295,7 +296,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    * @param element
    * @returns ngStyleObject
    */
-  getCellCssStyle(tcol: TableColumn<T, any>, element: T): Object {
+  getCellCssStyle(tcol: TableColumn<T, any, any>, element: T): Object {
     const baseValue = tcol.ngStyle ? tcol.ngStyle(element[tcol.property], element) : {};
     baseValue['textAlign'] = this.getTextAlign(tcol.align);
     if (tcol.heightFn) {
@@ -309,7 +310,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     return baseValue;
   }
 
-  getTableCellStyle(tcol: TableColumn<T, any>): { [p: string]: string } {
+  getTableCellStyle(tcol: TableColumn<T, any, any>): { [p: string]: string } {
     if (tcol.width) {
       return {'width': tcol.width.toString()};
     } else {
@@ -354,7 +355,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    * @param element Element, used to set the initial value if creation of a new control is necessary
    * @returns AbstractFormControl
    */
-  getFormControl(rowIndex: number, colIndex: number, tcol: TableColumn<T, any>, element: T): AbstractControl {
+  getFormControl(rowIndex: number, colIndex: number, tcol: TableColumn<T, any, any>, element: T): AbstractControl {
     const id = rowIndex + '_' + colIndex;
     if (this.formControls.has(id)) {
       return this.formControls.get(id);
@@ -366,7 +367,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     }
   }
 
-  getColFilterFormControl(tableColumn: TableColumn<T, any>): AbstractControl {
+  getColFilterFormControl(tableColumn: TableColumn<T, any, any>): AbstractControl {
     return this.colFilterFormControls.get(tableColumn);
   }
 
@@ -392,7 +393,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    * @param element
    * @returns List of FormError objects that are currently active (their condition is met)
    */
-  getCurrentErrors(rowIndex: number, colIndex: number, tcol: TableColumn<T, any>, element: T): FormError[] {
+  getCurrentErrors(rowIndex: number, colIndex: number, tcol: TableColumn<T, any, any>, element: T): FormError[] {
     const formField = this.getFormControl(rowIndex, colIndex, tcol, element);
     return tcol.formField.errors.filter(error => formField.hasError(error.key));
   }
@@ -433,7 +434,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     }
     const element = this.deepCopy(oldElement); // Deep copy old object to not override table values
     controls.forEach(control => {
-      const tcol: TableColumn<T, any> = this.getDisplayedCols(this.columns)[control.col];
+      const tcol: TableColumn<T, any, any> = this.getDisplayedCols(this.columns)[control.col];
       const val = control.control.value;
       if (element[tcol.property] instanceof Object && !(element[tcol.property] instanceof Date) && !tcol.formField.apply) {
         throw Error('Could not map value "' + val + '" to property "' + tcol.property + '". ' +
@@ -510,7 +511,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     }
   }
 
-  directEditElementChanged(tcol: TableColumn<T, any>, element: T, newValue) {
+  directEditElementChanged(tcol: TableColumn<T, any, any>, element: T, newValue) {
     if (tcol.formField.onDirectEditModelChange) {
       tcol.formField.onDirectEditModelChange(newValue, element[tcol.property], element);
     } else {
@@ -526,7 +527,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
    */
 
-  getStringRepresentation(tcol: TableColumn<T, any>, element: T): string {
+  getStringRepresentation(tcol: TableColumn<T, any, any>, element: T): string {
     if (tcol.transform) {
       return tcol.transform(element[tcol.property], element);
     } else if (element[tcol.property] === null || element[tcol.property] === undefined) {
@@ -536,27 +537,27 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     }
   }
 
-  private isButtonClickable = (tcol: TableColumn<T, any>) => tcol.onClick && tcol.button;
-  private isCellClickable = (tcol: TableColumn<T, any>, element: T) => tcol.onClick && !tcol.button && !this.isEditing(element);
+  private isButtonClickable = (tcol: TableColumn<T, any, any>) => tcol.onClick && tcol.button;
+  private isCellClickable = (tcol: TableColumn<T, any, any>, element: T) => tcol.onClick && !tcol.button && !this.isEditing(element);
 
   getFormFieldMaxLines = (formField) => formField.maxLines;
   getFormFieldMinLines = (formField) => formField.minLines;
   getFormFieldOptions = (formField) => formField.options;
   isLoading = (element: T): boolean => this.dataStatus.get(element).loading;
   isEditing = (element: T): boolean => this.dataStatus.get(element).editing;
-  isEditingColumn = (tcol: TableColumn<T, any>, element: T): boolean => tcol.formField && !tcol.directEdit && this.isEditing(element);
-  getIconName = (tcol: TableColumn<T, any>, element: T) => tcol.icon(element[tcol.property], element);
-  getDisplayedCols = (cols: TableColumn<T, any>[]): TableColumn<T, any>[] => cols.filter(col => col.visible);
+  isEditingColumn = (tcol: TableColumn<T, any, any>, element: T): boolean => tcol.formField && !tcol.directEdit && this.isEditing(element);
+  getIconName = (tcol: TableColumn<T, any, any>, element: T) => tcol.icon(element[tcol.property], element);
+  getDisplayedCols = (cols: TableColumn<T, any, any>[]): TableColumn<T, any, any>[] => cols.filter(col => col.visible);
   getHeaderFilterAlign = (align: Align): string => align === Align.LEFT ? 'start end' : align === Align.CENTER ? 'center end' : 'end end';
   getHeaderNoFilterAlign = (align: Align): string => align === Align.LEFT ? 'start center' : align === Align.CENTER ? 'center center' : 'end center';
   getCellAlign = (align: Align): string => align === Align.LEFT ? 'start center' : align === Align.CENTER ? 'center center' : 'end center';
   getTextAlign = (align: Align): string => align === Align.LEFT ? 'start' : align === Align.CENTER ? 'center' : 'end';
-  isCenterAlign = (tcol: TableColumn<T, any>): boolean => tcol.align === Align.CENTER;
-  isLeftAlign = (tcol: TableColumn<T, any>): boolean => tcol.align === Align.LEFT;
+  isCenterAlign = (tcol: TableColumn<T, any, any>): boolean => tcol.align === Align.CENTER;
+  isLeftAlign = (tcol: TableColumn<T, any, any>): boolean => tcol.align === Align.LEFT;
   hasColumnFilter = (): boolean => this.getDisplayedCols(this.columns).some(tcol => tcol.colFilter);
   getTableHeaderStyle = (): Object => this.hasColumnFilter() ? {height: '100%'} : {};
   getTableClass = (): string => (this.sticky ? 'sticky-th' : 'non-sticky-th') + (this.isChrome ? ' chrome' : '');
-  isButtonDisabled = (tcol: TableColumn<T, any>, element: T): boolean => tcol.disabledFn ? tcol.disabledFn(element[tcol.property], element) : false;
+  isButtonDisabled = (tcol: TableColumn<T, any, any>, element: T): boolean => tcol.disabledFn ? tcol.disabledFn(element[tcol.property], element) : false;
 
   getOuterContainerStyle() {
     return {
@@ -873,4 +874,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     this.rowClick.emit(row);
   }
 
+  sortChanged(sortEvent: Sort) {
+    this.sort.emit(sortEvent);
+  }
 }
