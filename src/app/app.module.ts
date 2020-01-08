@@ -36,6 +36,7 @@ import {StickyColumnsComponent} from './sticky-columns/sticky-columns.component'
 import {ComponentInjectionComponent} from './component-injection/component-injection.component';
 import {CustomTableCellComponent} from './custom-table-cell/custom-table-cell.component';
 import { InternationalizationComponent } from './internationalization/internationalization.component';
+import { PlaygroundComponent } from './playground/playground.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { InternationalizationComponent } from './internationalization/internatio
     StickyColumnsComponent,
     ComponentInjectionComponent,
     CustomTableCellComponent,
-    InternationalizationComponent
+    InternationalizationComponent,
+    PlaygroundComponent
   ],
   imports: [
     BrowserModule,

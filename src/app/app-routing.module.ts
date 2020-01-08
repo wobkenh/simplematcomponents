@@ -21,6 +21,7 @@ import {HomeComponent} from './home/home.component';
 import {StickyColumnsComponent} from './sticky-columns/sticky-columns.component';
 import {ComponentInjectionComponent} from './component-injection/component-injection.component';
 import {InternationalizationComponent} from './internationalization/internationalization.component';
+import {PlaygroundComponent} from './playground/playground.component';
 
 
 const routes: Routes = [
@@ -44,6 +45,7 @@ const routes: Routes = [
   {path: 'alert', component: AlertComponent},
   {path: 'custom-components', component: ComponentInjectionComponent},
   {path: 'internationalization', component: InternationalizationComponent},
+  {path: 'playground', component: PlaygroundComponent},
   {path: '', component: HomeComponent},
 ];
 

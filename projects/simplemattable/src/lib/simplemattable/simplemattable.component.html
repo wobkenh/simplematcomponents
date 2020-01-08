@@ -57,17 +57,38 @@
             <!--            1. Check if it is a button. If yes, display as button only-->
             <!--            2. Check if the cell is currently edited. If yes, display as form field with form control-->
             <!--            3. Check if the cell is directly edited (= constantly editing). If yes, display as form field with ngModel-->
-            <!--            4. If previous checks failed, display as text/textarea-->
-            <!--            The hierarchie with "ngIf else" is used to avoid duplicate condition checks -->
-            <ng-container *ngIf="!tcol.button; else tdButtonCell">
-              <!-- FormFields -->
-              <!-- You cannot wrap mat-error or input + mat-error into ng-container -->
-              <!-- for errors: angular material only looks at direct childs of mat-form-field -->
-              <!-- For input + mat-error: ExpressionChangedAfterItHasBeenCheckedError will be thrown if wrapped in
-               a ng-container with formControl input binding when the error message changes -->
-              <!-- No other chance than to tolerate the duplicate code here. -->
-              <ng-container *ngIf="isEditingColumn(tcol, element); else tdNotEditing"
-                            [ngSwitch]="tcol.formField.formType">
+            <!--            4. Check if the cell is an external component. If yes, display as external component -->
+            <!--            5. If previous checks failed, display as text/textarea-->
+            <ng-container [ngSwitch]="getTableCellType(tcol, element)">
+
+              <ng-container *ngSwitchCase="'button'">
+                <!-- Buttoncells -->
+                <button *ngIf="tcol.button === buttonType.BASIC" mat-button [color]="tcol.buttonColor"
+                        (click)="onClick(tcol, element, true)" [disabled]="isButtonDisabled(tcol, element)"
+                        type="button">
+                  <mat-icon *ngIf="tcol.icon">{{getIconName(tcol, element)}}</mat-icon>
+                  <span style="padding: 2px 0" *ngIf="getStringRepresentation(tcol, element)"
+                        [fxHide.xs]="tcol.textHiddenXs || tcol.textHiddenSm" [fxHide.sm]="tcol.textHiddenSm">
+                {{getStringRepresentation(tcol, element)}}
+              </span>
+                </button>
+                <button *ngIf="tcol.button === buttonType.RAISED" mat-raised-button [color]="tcol.buttonColor"
+                        (click)="onClick(tcol, element, true)" [disabled]="isButtonDisabled(tcol, element)"
+                        type="button">
+                  <mat-icon *ngIf="tcol.icon">{{getIconName(tcol, element)}}</mat-icon>
+                  <span style="padding: 2px 0" *ngIf="getStringRepresentation(tcol, element)"
+                        [fxHide.xs]="tcol.textHiddenXs || tcol.textHiddenSm" [fxHide.sm]="tcol.textHiddenSm">
+                {{getStringRepresentation(tcol, element)}}
+              </span>
+                </button>
+                <button *ngIf="tcol.button === buttonType.ICON" mat-icon-button [color]="tcol.buttonColor"
+                        (click)="onClick(tcol, element, true)" [disabled]="isButtonDisabled(tcol, element)"
+                        type="button">
+                  <mat-icon *ngIf="tcol.icon">{{getIconName(tcol, element)}}</mat-icon>
+                </button>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'form'" [ngSwitch]="tcol.formField.formType">
                 <mat-form-field *ngSwitchCase="formFieldType.TEXT" style="width: 100%;padding: 0 5px"
                                 (keyup.enter)="saveElement(rowIndex, element)">
                   <input matInput [formControl]="getFormControl(rowIndex, columnIndex, tcol, element)" type="text"
@@ -132,121 +153,91 @@
                 </mat-form-field>
               </ng-container>
 
-              <ng-template #tdNotEditing>
-                <!-- Direct Edit Form Fields (ngModel instead of form controls) -->
-                <ng-container *ngIf="tcol.directEdit && tcol.formField; else tdComponent"
-                              [ngSwitch]="tcol.formField.formType">
-                  <mat-form-field *ngSwitchCase="formFieldType.TEXT" style="width: 100%;padding: 0 5px">
-                    <input matInput type="text" [placeholder]="tcol.formField.placeholder"
-                           [ngModel]="element[tcol.property]"
-                           (ngModelChange)="directEditElementChanged(tcol, element, $event)"
-                           [id]="tcol.formField.focus ? rowIndex + '-smt-focus-input' : ''">
-                    <mat-hint>{{tcol.formField.hint}}</mat-hint>
-                  </mat-form-field>
-                  <mat-form-field *ngSwitchCase="formFieldType.NUMBER" style="width: 100%;padding: 0 5px">
-                    <input matInput type="number" [ngModel]="element[tcol.property]"
-                           (ngModelChange)="directEditElementChanged(tcol, element, $event)"
-                           [placeholder]="tcol.formField.placeholder"
-                           [id]="tcol.formField.focus ? rowIndex + '-smt-focus-input' : ''">
-                    <mat-hint>{{tcol.formField.hint}}</mat-hint>
-                  </mat-form-field>
-                  <mat-checkbox *ngSwitchCase="formFieldType.CHECKBOX" style="padding: 0 5px"
-                                [ngModel]="element[tcol.property]"
-                                (ngModelChange)="directEditElementChanged(tcol, element, $event)"
-                  ></mat-checkbox>
-                  <mat-form-field *ngSwitchCase="formFieldType.DATE" style="width: 98%;">
-                    <!-- For whatever reason, you cant wrap the date picker input in a ng-container -->
-                    <input matInput [id]="tcol.formField.focus ? rowIndex + '-smt-focus-input' : ''"
-                           [ngModel]="element[tcol.property]"
-                           (ngModelChange)="directEditElementChanged(tcol, element, $event)"
-                           [ngStyle]="{'text-align': getTextAlign(tcol.align)}" [matDatepicker]="picker"
-                           [placeholder]="tcol.formField.placeholder">
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                    <mat-hint>{{tcol.formField.hint}}</mat-hint>
-                  </mat-form-field>
-                  <mat-form-field *ngSwitchCase="formFieldType.SELECT" style="width: 100%;padding: 0 5px">
-                    <mat-select [ngModel]="element[tcol.property]" [placeholder]="tcol.formField.placeholder"
-                                (ngModelChange)="directEditElementChanged(tcol, element, $event)"
-                                [id]="tcol.formField.focus ? rowIndex + '-smt-focus-input' : ''">
-                      <mat-option *ngFor="let option of getFormFieldOptions(tcol.formField);" [value]="option.value">
-                        {{option.display}}
-                      </mat-option>
-                    </mat-select>
-                    <mat-hint>{{tcol.formField.hint}}</mat-hint>
-                  </mat-form-field>
-                  <mat-form-field *ngSwitchCase="formFieldType.LARGE_TEXT" style="width: 100%;padding: 0 5px">
-                    <textarea matInput [ngModel]="element[tcol.property]"
-                              (ngModelChange)="directEditElementChanged(tcol, element, $event)"
-                              style="width: 100%; padding: 2px 0;"
-                              [id]="tcol.formField.focus ? rowIndex + '-smt-focus-input' : ''"
-                              matTextareaAutosize [matAutosizeMaxRows]="getFormFieldMaxLines(tcol.formField)"
-                              [matAutosizeMinRows]="getFormFieldMinLines(tcol.formField)"
-                              [placeholder]="tcol.formField.placeholder"></textarea>
-                    <mat-hint>{{tcol.formField.hint}}</mat-hint>
-                  </mat-form-field>
-                </ng-container>
 
-                <ng-template #tdComponent>
-                  <smc-external-component-wrapper
-                    *ngIf="tcol.ngComponent; else tdDefault"
-                    [dataParent]="element" [tcolProperty]="tcol.property"
-                    [ngComponent]="tcol.ngComponent" [ngComponentInput]="tcol.ngComponentInput"
-                  ></smc-external-component-wrapper>
-                </ng-template>
-
-                <ng-template #tdDefault>
-                  <!-- Standardcell: Icon + (Textarea or Span) -->
-                  <div *ngIf="(!tcol.directEdit || !tcol.formField) && !isEditingColumn(tcol, element)"
-                       fxLayout="row"
-                       fxLayoutGap="5px"
-                       [fxLayoutAlign]="getCellAlign(tcol.align)" [ngStyle.gt-xs]="{'padding':'0 5px'}"
-                       style="width: 100%;">
-                    <mat-icon *ngIf="tcol.icon">{{getIconName(tcol, element)}}</mat-icon>
-                    <!-- Warning: Do not introduce linebreaks into the textareas content as they will be displayed -->
-                    <!-- Be careful when formatting -->
-                    <textarea *ngIf="tcol.maxLines && getStringRepresentation(tcol, element)"
-                              matInput matTextareaAutosize [matAutosizeMaxRows]="tcol.maxLines"
-                              [matAutosizeMinRows]="tcol.minLines" [readonly]="true"
-                              [ngStyle]="{'text-align': getTextAlign(tcol.align)}"
-                              [fxHide.xs]="tcol.textHiddenXs || tcol.textHiddenSm"
-                              [fxHide.sm]="tcol.textHiddenSm"
-                              style="width: 100%; padding: 2px 0;">{{getStringRepresentation(tcol, element)}}</textarea>
-                    <span style="padding: 2px 0" [fxHide.xs]="tcol.textHiddenXs || tcol.textHiddenSm"
-                          [fxHide.sm]="tcol.textHiddenSm"
-                          *ngIf="!tcol.maxLines && getStringRepresentation(tcol, element)">
+              <ng-container *ngSwitchCase="'text'">
+                <!-- Standardcell: Icon + (Textarea or Span) -->
+                <div fxLayout="row" fxLayoutGap="5px"
+                     [fxLayoutAlign]="getCellAlign(tcol.align)" [ngStyle.gt-xs]="{'padding':'0 5px'}"
+                     style="width: 100%;">
+                  <mat-icon *ngIf="tcol.icon">{{getIconName(tcol, element)}}</mat-icon>
+                  <!-- Warning: Do not introduce linebreaks into the textareas content as they will be displayed -->
+                  <!-- Be careful when formatting -->
+                  <textarea *ngIf="tcol.maxLines && getStringRepresentation(tcol, element)"
+                            matInput matTextareaAutosize [matAutosizeMaxRows]="tcol.maxLines"
+                            [matAutosizeMinRows]="tcol.minLines" [readonly]="true"
+                            [ngStyle]="{'text-align': getTextAlign(tcol.align)}"
+                            [fxHide.xs]="tcol.textHiddenXs || tcol.textHiddenSm"
+                            [fxHide.sm]="tcol.textHiddenSm"
+                            style="width: 100%; padding: 2px 0;">{{getStringRepresentation(tcol, element)}}</textarea>
+                  <span style="padding: 2px 0" [fxHide.xs]="tcol.textHiddenXs || tcol.textHiddenSm"
+                        [fxHide.sm]="tcol.textHiddenSm"
+                        *ngIf="!tcol.maxLines && getStringRepresentation(tcol, element)">
                       {{getStringRepresentation(tcol, element)}}
                     </span>
-                  </div>
-                </ng-template>
-              </ng-template>
+                </div>
+              </ng-container>
 
+              <ng-container *ngSwitchCase="'component'">
+                <smc-external-component-wrapper
+                  [dataParent]="element" [tcolProperty]="tcol.property"
+                  [ngComponent]="tcol.ngComponent" [ngComponentInput]="tcol.ngComponentInput"
+                ></smc-external-component-wrapper>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'directEdit'"
+                            [ngSwitch]="tcol.formField.formType">
+                <mat-form-field *ngSwitchCase="formFieldType.TEXT" style="width: 100%;padding: 0 5px">
+                  <input matInput type="text" [placeholder]="tcol.formField.placeholder"
+                         [ngModel]="element[tcol.property]"
+                         (ngModelChange)="directEditElementChanged(tcol, element, $event)"
+                         [id]="tcol.formField.focus ? rowIndex + '-smt-focus-input' : ''">
+                  <mat-hint>{{tcol.formField.hint}}</mat-hint>
+                </mat-form-field>
+                <mat-form-field *ngSwitchCase="formFieldType.NUMBER" style="width: 100%;padding: 0 5px">
+                  <input matInput type="number" [ngModel]="element[tcol.property]"
+                         (ngModelChange)="directEditElementChanged(tcol, element, $event)"
+                         [placeholder]="tcol.formField.placeholder"
+                         [id]="tcol.formField.focus ? rowIndex + '-smt-focus-input' : ''">
+                  <mat-hint>{{tcol.formField.hint}}</mat-hint>
+                </mat-form-field>
+                <mat-checkbox *ngSwitchCase="formFieldType.CHECKBOX" style="padding: 0 5px"
+                              [ngModel]="element[tcol.property]"
+                              (ngModelChange)="directEditElementChanged(tcol, element, $event)"
+                ></mat-checkbox>
+                <mat-form-field *ngSwitchCase="formFieldType.DATE" style="width: 98%;">
+                  <!-- For whatever reason, you cant wrap the date picker input in a ng-container -->
+                  <input matInput [id]="tcol.formField.focus ? rowIndex + '-smt-focus-input' : ''"
+                         [ngModel]="element[tcol.property]"
+                         (ngModelChange)="directEditElementChanged(tcol, element, $event)"
+                         [ngStyle]="{'text-align': getTextAlign(tcol.align)}" [matDatepicker]="picker"
+                         [placeholder]="tcol.formField.placeholder">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                  <mat-hint>{{tcol.formField.hint}}</mat-hint>
+                </mat-form-field>
+                <mat-form-field *ngSwitchCase="formFieldType.SELECT" style="width: 100%;padding: 0 5px">
+                  <mat-select [ngModel]="element[tcol.property]" [placeholder]="tcol.formField.placeholder"
+                              (ngModelChange)="directEditElementChanged(tcol, element, $event)"
+                              [id]="tcol.formField.focus ? rowIndex + '-smt-focus-input' : ''">
+                    <mat-option *ngFor="let option of getFormFieldOptions(tcol.formField);" [value]="option.value">
+                      {{option.display}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-hint>{{tcol.formField.hint}}</mat-hint>
+                </mat-form-field>
+                <mat-form-field *ngSwitchCase="formFieldType.LARGE_TEXT" style="width: 100%;padding: 0 5px">
+                                  <textarea matInput [ngModel]="element[tcol.property]"
+                                            (ngModelChange)="directEditElementChanged(tcol, element, $event)"
+                                            style="width: 100%; padding: 2px 0;"
+                                            [id]="tcol.formField.focus ? rowIndex + '-smt-focus-input' : ''"
+                                            matTextareaAutosize
+                                            [matAutosizeMaxRows]="getFormFieldMaxLines(tcol.formField)"
+                                            [matAutosizeMinRows]="getFormFieldMinLines(tcol.formField)"
+                                            [placeholder]="tcol.formField.placeholder"></textarea>
+                  <mat-hint>{{tcol.formField.hint}}</mat-hint>
+                </mat-form-field>
+              </ng-container>
             </ng-container>
-
-
-            <ng-template #tdButtonCell>
-              <!-- Buttoncells -->
-              <button *ngIf="tcol.button === buttonType.BASIC" mat-button [color]="tcol.buttonColor"
-                      (click)="onClick(tcol, element, true)" [disabled]="isButtonDisabled(tcol, element)" type="button">
-                <mat-icon *ngIf="tcol.icon">{{getIconName(tcol, element)}}</mat-icon>
-                <span style="padding: 2px 0" *ngIf="getStringRepresentation(tcol, element)"
-                      [fxHide.xs]="tcol.textHiddenXs || tcol.textHiddenSm" [fxHide.sm]="tcol.textHiddenSm">
-                {{getStringRepresentation(tcol, element)}}
-              </span>
-              </button>
-              <button *ngIf="tcol.button === buttonType.RAISED" mat-raised-button [color]="tcol.buttonColor"
-                      (click)="onClick(tcol, element, true)" [disabled]="isButtonDisabled(tcol, element)" type="button">
-                <mat-icon *ngIf="tcol.icon">{{getIconName(tcol, element)}}</mat-icon>
-                <span style="padding: 2px 0" *ngIf="getStringRepresentation(tcol, element)"
-                      [fxHide.xs]="tcol.textHiddenXs || tcol.textHiddenSm" [fxHide.sm]="tcol.textHiddenSm">
-                {{getStringRepresentation(tcol, element)}}
-              </span>
-              </button>
-              <button *ngIf="tcol.button === buttonType.ICON" mat-icon-button [color]="tcol.buttonColor"
-                      (click)="onClick(tcol, element, true)" [disabled]="isButtonDisabled(tcol, element)" type="button">
-                <mat-icon *ngIf="tcol.icon">{{getIconName(tcol, element)}}</mat-icon>
-              </button>
-            </ng-template>
           </div>
         </td>
       </ng-container>

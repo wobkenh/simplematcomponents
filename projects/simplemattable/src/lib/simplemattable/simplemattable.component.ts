@@ -344,6 +344,22 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     }
   }
 
+  getTableCellType(tcol: TableColumn<T, any>, element: T): TableColumnDisplayType {
+    if (tcol.button) {
+      return 'button';
+    }
+    if (this.isEditingColumn(tcol, element)) {
+      return 'form';
+    }
+    if (tcol.directEdit && tcol.formField) {
+      return 'directEdit';
+    }
+    if (tcol.ngComponent) {
+      return 'component';
+    }
+    return 'text';
+  }
+
 
   /**
    * Returns the form control for a cell. If not currently present, it will create a new FormControl.
@@ -878,3 +894,5 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     this.sort.emit(sortEvent);
   }
 }
+
+type TableColumnDisplayType = 'text' | 'button' | 'directEdit' | 'form' | 'component';
