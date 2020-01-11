@@ -13,9 +13,11 @@ import {FormError} from '../model/form-error.model';
   styleUrls: ['./table-cell.component.css']
 })
 export class TableCellComponent<T> implements OnInit {
+
   // Enums
   buttonType = ButtonType;
   formFieldType = FormFieldType;
+
   // Inputs
   tableColumn: TableColumn<any, any>;
   element: T;
@@ -26,9 +28,11 @@ export class TableCellComponent<T> implements OnInit {
   columnIndex: number;
   @Input()
   formControls: Map<string, AbstractControl>;
+
   // Outputs
   @Output()
   save = new EventEmitter<SaveEvent<T>>();
+
   // State derived from inputs
   formControl: AbstractControl;
   cellAlign: string = '';
@@ -72,7 +76,9 @@ export class TableCellComponent<T> implements OnInit {
     // Updates that only are affected by the table column
     this.cellAlign = this.getCellAlign(this.tableColumn.align);
     this.inputCssStyle = {'text-align': this.getTextAlign(this.tableColumn.align)};
-    this.inputId = this.tableColumn.formField.focus ? this.rowIndex + '-smt-focus-input' : '';
+    if (this.tableColumn.formField) {
+      this.inputId = this.tableColumn.formField.focus ? this.rowIndex + '-smt-focus-input' : '';
+    }
   }
 
   private updateTableColumnAndData() {
@@ -93,6 +99,7 @@ export class TableCellComponent<T> implements OnInit {
     // All updates that require table column AND editing state
     if (this.tableColumn) {
       this.cellType = this.getTableCellType(this.tableColumn, this.editing);
+      console.log(this.cellType);
       if (this.cellType === 'form') {
         this.formControl = this.getFormControl(this.rowIndex, this.columnIndex, this.tableColumn, this.element);
       }
