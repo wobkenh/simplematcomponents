@@ -1,0 +1,189 @@
+<div
+  fxLayout="row" [fxLayoutAlign]="cellAlign"
+  [ngClass]="cellCssClass"
+  [ngStyle]="cellCssStyle">
+
+
+  <!--            Explanation for the hierarchy:-->
+  <!--            1. Check if it is a button. If yes, display as button only-->
+  <!--            2. Check if the cell is currently edited. If yes, display as form field with form control-->
+  <!--            3. Check if the cell is directly edited (= constantly editing). If yes, display as form field with ngModel-->
+  <!--            4. Check if the cell is an external component. If yes, display as external component -->
+  <!--            5. If previous checks failed, display as text/textarea-->
+  <ng-container [ngSwitch]="cellType">
+
+    <ng-container *ngSwitchCase="'button'" [ngSwitch]="tableColumn.button">
+      <!-- Buttoncells -->
+      <button *ngSwitchCase="buttonType.BASIC" mat-button [color]="tableColumn.buttonColor"
+              (click)="onClick(tableColumn, element)" [disabled]="buttonDisabled"
+              type="button">
+        <mat-icon *ngIf="tableColumn.icon">{{iconName}}</mat-icon>
+        <span style="padding: 2px 0" *ngIf="stringRepresentation"
+              [fxHide.xs]="tableColumn.textHiddenXs || tableColumn.textHiddenSm" [fxHide.sm]="tableColumn.textHiddenSm">
+                {{stringRepresentation}}
+              </span>
+      </button>
+      <button *ngSwitchCase="buttonType.RAISED" mat-raised-button [color]="tableColumn.buttonColor"
+              (click)="onClick(tableColumn, element)" [disabled]="buttonDisabled"
+              type="button">
+        <mat-icon *ngIf="tableColumn.icon">{{iconName}}</mat-icon>
+        <span style="padding: 2px 0" *ngIf="stringRepresentation"
+              [fxHide.xs]="tableColumn.textHiddenXs || tableColumn.textHiddenSm" [fxHide.sm]="tableColumn.textHiddenSm">
+                {{stringRepresentation}}
+              </span>
+      </button>
+      <button *ngSwitchCase="buttonType.ICON" mat-icon-button [color]="tableColumn.buttonColor"
+              (click)="onClick(tableColumn, element)" [disabled]="buttonDisabled"
+              type="button">
+        <mat-icon *ngIf="tableColumn.icon">{{iconName}}</mat-icon>
+      </button>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'form'" [ngSwitch]="tableColumn.formField.formType">
+      <mat-form-field *ngSwitchCase="formFieldType.TEXT" style="width: 100%;padding: 0 5px"
+                      (keyup.enter)="save.emit({rowIndex: rowIndex, element: element})">
+        <input matInput [formControl]="formControl" type="text"
+               [placeholder]="tableColumn.formField.placeholder"
+               [id]="inputId">
+        <mat-error *ngFor="let error of getCurrentErrors(tableColumn, formControl);">
+          {{error.msg}}
+        </mat-error>
+        <mat-hint>{{tableColumn.formField.hint}}</mat-hint>
+      </mat-form-field>
+      <mat-form-field *ngSwitchCase="formFieldType.NUMBER" style="width: 100%;padding: 0 5px"
+                      (keyup.enter)="save.emit({rowIndex: rowIndex, element: element})">
+        <input matInput type="number" [formControl]="formControl"
+               [placeholder]="tableColumn.formField.placeholder" [id]="inputId">
+        <mat-error *ngFor="let error of getCurrentErrors(tableColumn, formControl);">
+          {{error.msg}}
+        </mat-error>
+        <mat-hint>{{tableColumn.formField.hint}}</mat-hint>
+      </mat-form-field>
+      <mat-checkbox *ngSwitchCase="formFieldType.CHECKBOX"
+                    (keyup.enter)="save.emit({rowIndex: rowIndex, element: element})"
+                    [formControl]="formControl"
+                    style="padding: 0 5px"
+      ></mat-checkbox>
+      <mat-form-field *ngSwitchCase="formFieldType.DATE" style="width: 98%;">
+        <!-- For whatever reason, you cant wrap the date picker input in a ng-container -->
+        <input matInput [formControl]="formControl" [id]="inputId"
+               [ngStyle]="inputCssStyle" [matDatepicker]="picker"
+               [placeholder]="tableColumn.formField.placeholder"
+               (keyup.enter)="save.emit({rowIndex: rowIndex, element: element})">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngFor="let error of getCurrentErrors(tableColumn, formControl);">
+          {{error.msg}}
+        </mat-error>
+        <mat-hint>{{tableColumn.formField.hint}}</mat-hint>
+      </mat-form-field>
+      <mat-form-field *ngSwitchCase="formFieldType.SELECT" style="width: 100%;padding: 0 5px">
+        <mat-select [formControl]="formControl"
+                    [placeholder]="tableColumn.formField.placeholder" [id]="inputId">
+          <!-- Options need to be accessed this way to avoid compile error -->
+          <!-- Cant cast to select form field in html, but we know it is one -->
+          <mat-option *ngFor="let option of tableColumn.formField['options'];" [value]="option.value">
+            {{option.display}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngFor="let error of getCurrentErrors(tableColumn, formControl);">
+          {{error.msg}}
+        </mat-error>
+        <mat-hint>{{tableColumn.formField.hint}}</mat-hint>
+      </mat-form-field>
+      <mat-form-field *ngSwitchCase="formFieldType.LARGE_TEXT" style="width: 100%;padding: 0 5px">
+        <!-- Max/Min lines need to be accessed this way to avoid compile error -->
+        <!-- Cant cast to large text form field in html, but we know it is one -->
+        <textarea matInput [formControl]="formControl"
+                  style="width: 100%; padding: 2px 0;" [id]="inputId"
+                  matTextareaAutosize [matAutosizeMaxRows]="tableColumn.formField['maxLines']"
+                  [matAutosizeMinRows]="tableColumn.formField['minLines']"
+                  [placeholder]="tableColumn.formField.placeholder"></textarea>
+        <mat-error *ngFor="let error of getCurrentErrors(tableColumn, formControl);">
+          {{error.msg}}
+        </mat-error>
+        <mat-hint>{{tableColumn.formField.hint}}</mat-hint>
+      </mat-form-field>
+    </ng-container>
+
+
+    <ng-container *ngSwitchCase="'text'">
+      <!-- Standardcell: Icon + (Textarea or Span) -->
+      <div fxLayout="row" fxLayoutGap="5px"
+           [fxLayoutAlign]="cellAlign" [ngStyle.gt-xs]="{'padding':'0 5px'}"
+           style="width: 100%;">
+        <mat-icon *ngIf="tableColumn.icon">{{iconName}}</mat-icon>
+        <!-- Warning: Do not introduce linebreaks into the textareas content as they will be displayed -->
+        <!-- Be careful when formatting -->
+        <textarea *ngIf="tableColumn.maxLines && stringRepresentation"
+                  matInput matTextareaAutosize [matAutosizeMaxRows]="tableColumn.maxLines"
+                  [matAutosizeMinRows]="tableColumn.minLines" [readonly]="true"
+                  [ngStyle]="inputCssStyle"
+                  [fxHide.xs]="tableColumn.textHiddenXs || tableColumn.textHiddenSm"
+                  [fxHide.sm]="tableColumn.textHiddenSm"
+                  style="width: 100%; padding: 2px 0;">{{stringRepresentation}}</textarea>
+        <span style="padding: 2px 0" [fxHide.xs]="tableColumn.textHiddenXs || tableColumn.textHiddenSm"
+              [fxHide.sm]="tableColumn.textHiddenSm"
+              *ngIf="!tableColumn.maxLines && stringRepresentation">
+                      {{stringRepresentation}}
+                    </span>
+      </div>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'component'">
+      <smc-external-component-wrapper
+        [dataParent]="element" [tcolProperty]="tableColumn.property"
+        [ngComponent]="tableColumn.ngComponent" [ngComponentInput]="tableColumn.ngComponentInput"
+      ></smc-external-component-wrapper>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'directEdit'"
+                  [ngSwitch]="tableColumn.formField.formType">
+      <mat-form-field *ngSwitchCase="formFieldType.TEXT" style="width: 100%;padding: 0 5px">
+        <input matInput type="text" [placeholder]="tableColumn.formField.placeholder"
+               [ngModel]="element[tableColumn.property]"
+               (ngModelChange)="directEditElementChanged(tableColumn, element, $event)" [id]="inputId">
+        <mat-hint>{{tableColumn.formField.hint}}</mat-hint>
+      </mat-form-field>
+      <mat-form-field *ngSwitchCase="formFieldType.NUMBER" style="width: 100%;padding: 0 5px">
+        <input matInput type="number" [ngModel]="element[tableColumn.property]"
+               (ngModelChange)="directEditElementChanged(tableColumn, element, $event)"
+               [placeholder]="tableColumn.formField.placeholder" [id]="inputId">
+        <mat-hint>{{tableColumn.formField.hint}}</mat-hint>
+      </mat-form-field>
+      <mat-checkbox *ngSwitchCase="formFieldType.CHECKBOX" style="padding: 0 5px"
+                    [ngModel]="element[tableColumn.property]"
+                    (ngModelChange)="directEditElementChanged(tableColumn, element, $event)"
+      ></mat-checkbox>
+      <mat-form-field *ngSwitchCase="formFieldType.DATE" style="width: 98%;">
+        <!-- For whatever reason, you cant wrap the date picker input in a ng-container -->
+        <input matInput [id]="inputId" [ngModel]="element[tableColumn.property]"
+               (ngModelChange)="directEditElementChanged(tableColumn, element, $event)"
+               [ngStyle]="inputCssStyle" [matDatepicker]="picker"
+               [placeholder]="tableColumn.formField.placeholder">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-hint>{{tableColumn.formField.hint}}</mat-hint>
+      </mat-form-field>
+      <mat-form-field *ngSwitchCase="formFieldType.SELECT" style="width: 100%;padding: 0 5px">
+        <mat-select [ngModel]="element[tableColumn.property]" [placeholder]="tableColumn.formField.placeholder"
+                    (ngModelChange)="directEditElementChanged(tableColumn, element, $event)" [id]="inputId">
+          <mat-option *ngFor="let option of tableColumn.formField['options'];" [value]="option.value">
+            {{option.display}}
+          </mat-option>
+        </mat-select>
+        <mat-hint>{{tableColumn.formField.hint}}</mat-hint>
+      </mat-form-field>
+      <mat-form-field *ngSwitchCase="formFieldType.LARGE_TEXT" style="width: 100%;padding: 0 5px">
+        <textarea matInput [ngModel]="element[tableColumn.property]"
+                  (ngModelChange)="directEditElementChanged(tableColumn, element, $event)"
+                  style="width: 100%; padding: 2px 0;" [id]="inputId"
+                  matTextareaAutosize
+                  [matAutosizeMaxRows]="tableColumn.formField['maxLines']"
+                  [matAutosizeMinRows]="tableColumn.formField['minLines']"
+                  [placeholder]="tableColumn.formField.placeholder"></textarea>
+        <mat-hint>{{tableColumn.formField.hint}}</mat-hint>
+      </mat-form-field>
+    </ng-container>
+  </ng-container>
+</div>
