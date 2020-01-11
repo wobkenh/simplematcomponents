@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {TableColumn} from '../model/table-column.model';
 import {Align} from '../model/align.model';
 import {ButtonType} from '../model/button-type.model';
@@ -6,6 +6,7 @@ import {FormFieldType} from '../model/form-field-type.model';
 import {SaveEvent} from '../model/table-cell-events.model';
 import {AbstractControl, FormBuilder} from '@angular/forms';
 import {FormError} from '../model/form-error.model';
+import {ExternalComponentWrapperComponent} from '../external-component-wrapper/external-component-wrapper.component';
 
 @Component({
   selector: 'smc-table-cell',
@@ -34,6 +35,7 @@ export class TableCellComponent<T> implements OnInit {
   save = new EventEmitter<SaveEvent<T>>();
 
   // State derived from inputs
+  @ViewChild(ExternalComponentWrapperComponent, {static: false}) externalComponents: ExternalComponentWrapperComponent;
   formControl: AbstractControl;
   cellAlign: string = '';
   cellCssClass: Object = {};
@@ -70,6 +72,13 @@ export class TableCellComponent<T> implements OnInit {
     this.updateTableColumnAndEditing();
   }
 
+  @Input()
+  set refreshTrigger(refreshTrigger: number) {
+    if (this.externalComponents) {
+      this.externalComponents.refreshInput();
+    }
+  }
+
   // Update methods
 
   private updateTableColumn() {
@@ -88,7 +97,6 @@ export class TableCellComponent<T> implements OnInit {
       this.cellCssStyle = this.getCellCssStyle(this.tableColumn, this.element);
       this.buttonDisabled = this.isButtonDisabled(this.tableColumn, this.element);
       this.stringRepresentation = this.getStringRepresentation(this.tableColumn, this.element);
-      console.log('String representation: ' + this.stringRepresentation);
       if (this.tableColumn.icon) {
         this.iconName = this.getIconName(this.tableColumn, this.element);
       }
@@ -99,7 +107,6 @@ export class TableCellComponent<T> implements OnInit {
     // All updates that require table column AND editing state
     if (this.tableColumn) {
       this.cellType = this.getTableCellType(this.tableColumn, this.editing);
-      console.log(this.cellType);
       if (this.cellType === 'form') {
         this.formControl = this.getFormControl(this.rowIndex, this.columnIndex, this.tableColumn, this.element);
       }
