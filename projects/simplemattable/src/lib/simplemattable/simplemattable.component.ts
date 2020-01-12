@@ -85,7 +85,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   displayedColumns = [];
   dataSource: MatTableDataSource<T>;
-  private dataStatus: Map<T, DataStatus> = new Map<T, DataStatus>(); // to know whether or not a row is being edited
+  dataStatus: Map<T, DataStatus> = new Map<T, DataStatus>(); // to know whether or not a row is being edited
   private oldColumns: TableColumn<T, any>[] = []; // For dirty-checking
   addedItem: T = null;
   // There may only be one form control per cell
@@ -97,7 +97,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   private lastFilterValue = '';
   private renderedDataSubscription: Subscription;
   // Trigger on data change
-  private refreshTrigger: number = 0;
+  refreshTrigger: number = 0;
 
 
   constructor(private fb: FormBuilder) {
@@ -440,20 +440,14 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   private isButtonClickable = (tcol: TableColumn<T, any>) => tcol.onClick && tcol.button;
   private isCellClickable = (tcol: TableColumn<T, any>, element: T) => tcol.onClick && !tcol.button && !this.isEditing(element);
 
-  getFormFieldMaxLines = (formField) => formField.maxLines;
-  getFormFieldMinLines = (formField) => formField.minLines;
-  getFormFieldOptions = (formField) => formField.options;
   isLoading = (element: T): boolean => this.dataStatus.get(element).loading;
   isEditing = (element: T): boolean => this.dataStatus.get(element).editing;
-  isEditingColumn = (tcol: TableColumn<T, any>, element: T): boolean => tcol.formField && !tcol.directEdit && this.isEditing(element);
-  getIconName = (tcol: TableColumn<T, any>, element: T) => tcol.icon(element[tcol.property], element);
   getDisplayedCols = (cols: TableColumn<T, any>[]): TableColumn<T, any>[] => cols.filter(col => col.visible);
   getHeaderFilterAlign = (align: Align): string => align === Align.LEFT ? 'start end' : align === Align.CENTER ? 'center end' : 'end end';
   getHeaderNoFilterAlign = (align: Align): string => align === Align.LEFT ? 'start center' : align === Align.CENTER ? 'center center' : 'end center';
 
   getTextAlign = (align: Align): string => align === Align.LEFT ? 'start' : align === Align.CENTER ? 'center' : 'end';
   isCenterAlign = (tcol: TableColumn<T, any>): boolean => tcol.align === Align.CENTER;
-  isLeftAlign = (tcol: TableColumn<T, any>): boolean => tcol.align === Align.LEFT;
   hasColumnFilter = (): boolean => this.getDisplayedCols(this.columns).some(tcol => tcol.colFilter);
   getTableHeaderStyle = (): Object => this.hasColumnFilter() ? {height: '100%'} : {};
   getTableClass = (): string => (this.sticky ? 'sticky-th' : 'non-sticky-th') + (this.isChrome ? ' chrome' : '');

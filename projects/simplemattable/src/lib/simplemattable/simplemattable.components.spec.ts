@@ -17,19 +17,17 @@ import {
   MatSortModule,
   MatTableModule
 } from '@angular/material';
-import {FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {CommonModule} from '@angular/common';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {Align} from '../model/align.model';
 import {ButtonType} from '../model/button-type.model';
-import {LargeTextFormField} from '../model/large-text-form-field.model';
-import {SelectFormField} from '../model/select-form-field.model';
-import {Height} from '../model/height.model';
 import {Width} from '../model/width.model';
 import {ExternalComponentWrapperComponent} from '../external-component-wrapper/external-component-wrapper.component';
+import {TableCellComponent} from '../table-cell/table-cell.component';
 
-describe('TestcompComponent', () => {
+describe('SimplemattableComponent', () => {
   let hostComponent: TestHostComponent;
   let testHostFixture: ComponentFixture<TestHostComponent>;
   let smt: SimplemattableComponent<ComplexTestData>;
@@ -55,7 +53,7 @@ describe('TestcompComponent', () => {
         BrowserAnimationsModule,
         MatPaginatorModule
       ],
-      declarations: [SimplemattableComponent, TestHostComponent, ExternalComponentWrapperComponent]
+      declarations: [SimplemattableComponent, TestHostComponent, ExternalComponentWrapperComponent, TableCellComponent]
     })
       .compileComponents();
   }));
@@ -136,112 +134,7 @@ describe('TestcompComponent', () => {
     expect(tcolNoButtonClickable.onClick).toHaveBeenCalledTimes(1);
   });
 
-  it('ngClass plain object', () => {
-    const tcol = hostComponent.tcolPlain;
-    const data = hostComponent.data[0];
-    const res = smt.getCellCssClass(tcol, data);
-    expect(res).toEqual({'filler-div': true, 'on-click': undefined});
-  });
-  it('ngClass clickable', () => {
-    const tcol = hostComponent.tcolUnused
-      .withOnClick(() => {
-      });
-    const data = hostComponent.data[0];
-    const res = smt.getCellCssClass(tcol, data);
-    expect(res).toEqual({'filler-div': true, 'on-click': true});
-  });
-  it('ngClass button and two classes', () => {
-    const tcol = hostComponent.tcolUnused
-      .withNgClass(() => 'testclass1 testclass2')
-      .withOnClick(() => {
-      })
-      .withButton(ButtonType.BASIC);
-    // no matter how you return it, should always result in the same ngClass
-    const data = hostComponent.data[0];
-    expect(smt.getCellCssClass(tcol, data)).toEqual({'filler-div': true, 'on-click': false, 'testclass1': true, 'testclass2': true});
 
-    tcol.withNgClass(() => ['testclass1', 'testclass2']);
-    expect(smt.getCellCssClass(tcol, data)).toEqual({'filler-div': true, 'on-click': false, 'testclass1': true, 'testclass2': true});
-
-    tcol.withNgClass(() => ({'testclass1': true, 'testclass2': true}));
-    expect(smt.getCellCssClass(tcol, data)).toEqual({'filler-div': true, 'on-click': false, 'testclass1': true, 'testclass2': true});
-  });
-  it('ngClass default style if ngClass returns falsy value', () => {
-    const tcol = hostComponent.tcolUnused
-      .withNgClass(() => null)
-      .withOnClick(() => {
-      })
-      .withButton(ButtonType.BASIC);
-    // ngClassFn gives back nothing --> should return default style
-    expect(smt.getCellCssClass(tcol, hostComponent.data[0])).toEqual({'filler-div': true, 'on-click': false});
-  });
-  it('ngStyle', () => {
-    const tcol = hostComponent.tcolUnused;
-    const data = hostComponent.data[0];
-    expect(smt.getCellCssStyle(tcol, data)).toEqual({'textAlign': 'start', 'minHeight': '48px'});
-    const style = {'textAlign': 'start', 'color': '#FFFFFF', 'border': '1px solid black', 'minHeight': '48px'};
-    tcol.withNgStyle(() => style);
-    expect(smt.getCellCssStyle(tcol, data)).toEqual(style);
-  });
-  it('ngStyle with height', () => {
-    const tcol = hostComponent.tcolUnused;
-    tcol.withHeightFn(() => Height.px(30));
-    const data = hostComponent.data[0];
-    expect(smt.getCellCssStyle(tcol, data)).toEqual({'textAlign': 'start', 'height': '30px'});
-    tcol.withHeightFn(() => Height.pct(30));
-    expect(smt.getCellCssStyle(tcol, data)).toEqual({'textAlign': 'start', 'height': '30%'});
-  });
-  it('get form control', () => {
-    const tcol = hostComponent.tcolUnused
-      .withFormField(hostComponent.tcolUnused.getNumberFormField().withPlaceholder('placeholder').withHint('hint'));
-    // new Form Control
-    const fc = smt.getFormControl(0, 0, hostComponent.tcolUnused, hostComponent.data[0]);
-    expect(fc).toBeTruthy();
-    expect(tcol.formField.placeholder).toEqual('placeholder');
-    expect(tcol.formField.hint).toEqual('hint');
-    // Reload Form Control
-    expect(smt.getFormControl(0, 0, hostComponent.tcolUnused, hostComponent.data[0])).toBe(fc);
-    // New Form Control with init
-    const validators = [Validators.required, Validators.min(5)];
-    tcol.withFormField(hostComponent.tcolUnused.getNumberFormField()
-      .withInit(() => 420)
-      .withValidators(validators));
-    const res = smt.getFormControl(42, 0, hostComponent.tcolUnused, hostComponent.data[0]);
-    expect(res.value).toBe(420);
-    expect(res.valid).toBe(true);
-    res.patchValue(2);
-    expect(res.valid).toBe(false);
-    res.patchValue(null);
-    expect(res.valid).toBe(false);
-    res.patchValue(100);
-    expect(res.valid).toBe(true);
-
-    tcol.withMaxLines(25)
-      .withMinLines(5)
-      .withFormField(tcol.getLargeTextFormField().withInit(() => 'hi').withApply(null));
-    const fcText = smt.getFormControl(84, 0, hostComponent.tcolUnused, hostComponent.data[0]);
-    expect(fcText).toBeTruthy();
-    expect(fcText.value).toEqual('hi');
-  });
-  it('is form valid', () => {
-    const validators = [Validators.required, Validators.min(5)];
-    const tcol = hostComponent.tcolUnused
-      .withFormField(hostComponent.tcolUnused.getNumberFormField()
-        .withInit(() => 420)
-        .withValidators(validators));
-    const fc1 = smt.getFormControl(0, 0, tcol, hostComponent.data[0]);
-    const fc2 = smt.getFormControl(0, 1, tcol, hostComponent.data[0]);
-    expect(smt.isFormValid(0)).toBe(true);
-    fc1.patchValue(0);
-    expect(smt.isFormValid(0)).toBe(false);
-    fc1.patchValue(420);
-    // unrelated, invalid form control should not change test results:
-    const fc3 = smt.getFormControl(5, 1, tcol, hostComponent.data[0]);
-    fc3.patchValue(0);
-    expect(smt.isFormValid(0)).toBe(true);
-    fc2.patchValue(0);
-    expect(smt.isFormValid(0)).toBe(false);
-  });
   it('apply col filter', () => {
     smt.dataSource.filter = 'Natalie Dormer';
     smt.applyColFilter();
@@ -258,28 +151,10 @@ describe('TestcompComponent', () => {
     smt.ngDoCheck();
     expect(smt.colFilterFormControls.get(tcol).value).toBe('');
     tcol.setColFilterText('1');
-    expect(smt.dataSource.filter).toBe('');
+    // expect(smt.dataSource.filter).toBe('');
     smt.ngDoCheck();
     expect(smt.colFilterFormControls.get(tcol).value).toBe('1');
     expect(smt.dataSource.filter).toBe(' '); // str has changed ==> successfully reapplied filter
-  });
-  it('get form errors', () => {
-    const validators = [Validators.required, Validators.min(5)];
-    const tcol = hostComponent.tcolUnused
-      .withFormField(hostComponent.tcolUnused.getNumberFormField()
-        .withErrors([
-          {key: 'required', msg: 'test required'},
-          {key: 'min', msg: 'test min'}
-        ])
-        .withValidators(validators));
-    const fc = smt.getFormControl(0, 0, tcol, hostComponent.data[0]);
-    fc.patchValue(0);
-    expect(smt.getCurrentErrors(0, 0, tcol, hostComponent.data[0])).toEqual([{key: 'min', msg: 'test min'}]);
-    fc.patchValue(null);
-    expect(smt.getCurrentErrors(0, 0, tcol, hostComponent.data[0]))
-      .toEqual([{key: 'required', msg: 'test required'}]);
-    fc.patchValue(420);
-    expect(smt.getCurrentErrors(0, 0, tcol, hostComponent.data[0])).toEqual([]);
   });
   it('start add element', () => {
     const data = new ComplexTestData(4242, new TestData('test', 1, new Date()));
@@ -399,53 +274,6 @@ describe('TestcompComponent', () => {
     expect(smt['isButtonClickable'](tcol)).toBeFalsy();
     expect(smt['isCellClickable'](tcol, data)).toBeFalsy();
   });
-  it('form field property retriever functions', () => {
-    const field = new LargeTextFormField()
-      .withMaxLines(42)
-      .withMinLines(15);
-    expect(smt.getFormFieldMaxLines(field)).toBe(42);
-    expect(smt.getFormFieldMinLines(field)).toBe(15);
-    const options = [
-      {display: 'the answer to life, the universe and everything', value: 42},
-      {display: 'evil number', value: 41},
-    ];
-    const field2 = new SelectFormField()
-      .withOptions(options);
-    expect(smt.getFormFieldOptions(field2)).toBe(options);
-  });
-  it('status query functions', () => {
-    const data = hostComponent.data[0];
-    const tcolPlain = hostComponent.tcolPlain;
-    const tcolFormField = new TableColumn<ComplexTestData, 'testData'>('Date', 'testData');
-    tcolFormField.withFormField(tcolFormField.getDateFormField()
-      .withInit(testData => testData.date)
-      .withApply((newDate, testData) => {
-        testData.date = newDate;
-        return testData;
-      }));
-    hostComponent.columns.push(tcolFormField);
-    testHostFixture.detectChanges();
-    expect(smt.isLoading(data)).toBeFalsy();
-    expect(smt.isEditing(data)).toBeFalsy();
-    expect(smt.isEditingColumn(tcolFormField, data)).toBeFalsy();
-    expect(smt.isEditingColumn(tcolPlain, data)).toBeFalsy();
-    smt.startEditElement(data, 1);
-    expect(smt.isLoading(data)).toBeFalsy();
-    expect(smt.isEditing(data)).toBeTruthy();
-    expect(smt.isEditingColumn(tcolFormField, data)).toBeTruthy();
-    expect(smt.isEditingColumn(tcolPlain, data)).toBeFalsy();
-    smt.saveElement(0, data);
-    expect(smt.isLoading(data)).toBeTruthy();
-    expect(smt.isEditing(data)).toBeTruthy();
-    expect(smt.isEditingColumn(tcolFormField, data)).toBeTruthy();
-    expect(smt.isEditingColumn(tcolPlain, data)).toBeFalsy();
-  });
-  it('icon name', () => {
-    const data = hostComponent.data[0];
-    const tcol = hostComponent.tcolPlain;
-    tcol.withIcon(() => 'iconname');
-    expect(smt.getIconName(tcol, data)).toBe('iconname');
-  });
   it('get displayed cols', () => {
     const tcol = hostComponent.tcolPlain;
     expect(smt.getDisplayedCols([tcol])).toEqual([tcol]);
@@ -460,9 +288,6 @@ describe('TestcompComponent', () => {
     expect(smt.getHeaderNoFilterAlign(Align.LEFT)).toBe('start center');
     expect(smt.getHeaderNoFilterAlign(Align.CENTER)).toBe('center center');
     expect(smt.getHeaderNoFilterAlign(Align.RIGHT)).toBe('end center');
-    expect(smt.getCellAlign(Align.LEFT)).toBe('start center');
-    expect(smt.getCellAlign(Align.CENTER)).toBe('center center');
-    expect(smt.getCellAlign(Align.RIGHT)).toBe('end center');
     expect(smt.getTextAlign(Align.LEFT)).toBe('start');
     expect(smt.getTextAlign(Align.CENTER)).toBe('center');
     expect(smt.getTextAlign(Align.RIGHT)).toBe('end');
@@ -473,17 +298,62 @@ describe('TestcompComponent', () => {
     tcol.withAlign(Align.RIGHT);
     expect(smt.isCenterAlign(tcol)).toBe(false);
     tcol.withAlign(Align.CENTER);
-    expect(smt.isLeftAlign(tcol)).toBe(false);
-    tcol.withAlign(Align.LEFT);
-    expect(smt.isLeftAlign(tcol)).toBe(true);
-    tcol.withAlign(Align.RIGHT);
-    expect(smt.isLeftAlign(tcol)).toBe(false);
+  });
+  it('status query functions', () => {
+    const data = hostComponent.data[0];
+    const tcolPlain = hostComponent.tcolPlain;
+    const tcolFormField = new TableColumn<ComplexTestData, 'testData'>('Date', 'testData');
+    tcolFormField.withFormField(tcolFormField.getDateFormField()
+      .withInit(testData => testData.date)
+      .withApply((newDate, testData) => {
+        testData.date = newDate;
+        return testData;
+      }));
+    hostComponent.columns.push(tcolFormField);
+    testHostFixture.detectChanges();
+    const tableCell = new TableCellComponent(new FormBuilder());
+    expect(smt.isLoading(data)).toBeFalsy();
+    expect(smt.isEditing(data)).toBeFalsy();
+    expect(tableCell.isEditingColumn(tcolFormField, false)).toBeFalsy();
+    expect(tableCell.isEditingColumn(tcolPlain, false)).toBeFalsy();
+    smt.startEditElement(data, 1);
+    expect(smt.isLoading(data)).toBeFalsy();
+    expect(smt.isEditing(data)).toBeTruthy();
+    expect(tableCell.isEditingColumn(tcolFormField, true)).toBeTruthy();
+    expect(tableCell.isEditingColumn(tcolPlain, true)).toBeFalsy();
+    smt.saveElement(0, data);
+    expect(smt.isLoading(data)).toBeTruthy();
+    expect(smt.isEditing(data)).toBeTruthy();
+    expect(tableCell.isEditingColumn(tcolFormField, true)).toBeTruthy();
+    expect(tableCell.isEditingColumn(tcolPlain, true)).toBeFalsy();
+  });
+  it('is form valid', () => {
+    const validators = [Validators.required, Validators.min(5)];
+    const tcol = hostComponent.tcolUnused
+      .withFormField(hostComponent.tcolUnused.getNumberFormField()
+        .withInit(() => 420)
+        .withValidators(validators));
+    const tableCell = new TableCellComponent(new FormBuilder());
+    tableCell.formControls = smt.formControls;
+    const fc1 = tableCell.getFormControl(0, 0, tcol, hostComponent.data[0]);
+    const fc2 = tableCell.getFormControl(0, 1, tcol, hostComponent.data[0]);
+    expect(smt.isFormValid(0)).toBe(true);
+    fc1.patchValue(0);
+    expect(smt.isFormValid(0)).toBe(false);
+    fc1.patchValue(420);
+    // unrelated, invalid form control should not change test results:
+    const fc3 = tableCell.getFormControl(5, 1, tcol, hostComponent.data[0]);
+    fc3.patchValue(0);
+    expect(smt.isFormValid(0)).toBe(true);
+    fc2.patchValue(0);
+    expect(smt.isFormValid(0)).toBe(false);
   });
   it('array to object, iterator to array, deep copy', () => {
     // array to object
     const arr = ['42a', '42b'];
-    expect(smt.arrayToObject(arr)).toEqual({'42a': true, '42b': true});
-    expect(smt.arrayToObject([])).toEqual({});
+    const tableCell = new TableCellComponent(new FormBuilder());
+    expect(tableCell.arrayToObject(arr)).toEqual({'42a': true, '42b': true});
+    expect(tableCell.arrayToObject([])).toEqual({});
     // iterator to array
     const map = new Map();
     map.set('test', 42);
@@ -560,7 +430,7 @@ describe('TestcompComponent', () => {
   @Component({
     selector: `smc-host-component`,
     template: `
-        <smc-simplemattable [data]="data" [columns]="columns"></smc-simplemattable>`
+      <smc-simplemattable [data]="data" [columns]="columns"></smc-simplemattable>`
   })
   class TestHostComponent {
     @ViewChild(SimplemattableComponent, {static: true}) simplemattable: SimplemattableComponent<ComplexTestData>;
@@ -602,7 +472,7 @@ describe('TestcompComponent', () => {
         BrowserAnimationsModule,
         MatPaginatorModule
       ],
-      declarations: [SimplemattableComponent, TestFullHostComponent]
+      declarations: [SimplemattableComponent, TestFullHostComponent, TableCellComponent, ExternalComponentWrapperComponent]
     })
       .compileComponents();
   }));
@@ -624,8 +494,8 @@ describe('TestcompComponent', () => {
   @Component({
     selector: `smc-host-component-full`,
     template: `
-        <smc-simplemattable [data]="data" [columns]="columns" [sorting]="true" [paginator]="true" [filter]="true"
-                            [addable]="true" [editable]="true" [deletable]="true" [create]="createFn"></smc-simplemattable>`
+      <smc-simplemattable [data]="data" [columns]="columns" [sorting]="true" [paginator]="true" [filter]="true"
+                          [addable]="true" [editable]="true" [deletable]="true" [create]="createFn"></smc-simplemattable>`
   })
   class TestFullHostComponent {
     @ViewChild(SimplemattableComponent, {static: true}) simplemattable: SimplemattableComponent<ComplexTestData>;
@@ -684,7 +554,7 @@ describe('TestcompComponent', () => {
   @Component({
     selector: `smc-host-component-error`,
     template: `
-        <smc-simplemattable [data]="data" [columns]="columns" [addable]="true"></smc-simplemattable>`
+      <smc-simplemattable [data]="data" [columns]="columns" [addable]="true"></smc-simplemattable>`
   })
   class TestErrorHostComponent {
     @ViewChild(SimplemattableComponent, {static: true}) simplemattable: SimplemattableComponent<ComplexTestData>;

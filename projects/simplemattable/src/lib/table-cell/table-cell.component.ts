@@ -226,7 +226,7 @@ export class TableCellComponent<T> implements OnInit {
 
   getTextAlign = (align: Align): string => align === Align.LEFT ? 'start' : align === Align.CENTER ? 'center' : 'end';
 
-  private getCellAlign = (align: Align): string => align === Align.LEFT ? 'start center' : align === Align.CENTER ? 'center center' : 'end center';
+  getCellAlign = (align: Align): string => align === Align.LEFT ? 'start center' : align === Align.CENTER ? 'center center' : 'end center';
 
   /**
    * Uses the TableColumn ngClass property to create the ngStyle Object for a table cell.
@@ -236,7 +236,7 @@ export class TableCellComponent<T> implements OnInit {
    * @param element the element
    * @returns ngClass Object
    */
-  private getCellCssClass(tcol: TableColumn<T, any>, element: T): Object {
+  getCellCssClass(tcol: TableColumn<T, any>, element: T): Object {
     const defaultClass = {'filler-div': true, 'on-click': (tcol.onClick && !tcol.button)};
     if (!tcol.ngClass) {
       return defaultClass;
@@ -254,7 +254,7 @@ export class TableCellComponent<T> implements OnInit {
     }
   }
 
-  private arrayToObject(arr: string[]): Object { // turn ['css-class-a', 'css-class-b'] into {'css-class-a': true, 'css-class-b': true}
+  arrayToObject(arr: string[]): Object { // turn ['css-class-a', 'css-class-b'] into {'css-class-a': true, 'css-class-b': true}
     return arr.reduce((acc, entry) => {
       acc[entry] = true;
       return acc;
