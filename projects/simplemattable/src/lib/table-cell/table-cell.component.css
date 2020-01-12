@@ -1,0 +1,22 @@
+/* on click needed for clickable cells */
+
+.on-click:hover {
+  background-color: rgba(200, 200, 200, 0.4);
+}
+
+.on-click {
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.on-click textarea {
+  cursor: pointer;
+}
+
+.on-click:active {
+  background-color: rgba(150, 150, 150, 0.4);
+}
+
+.filler-div {
+  height: 100%;
+}

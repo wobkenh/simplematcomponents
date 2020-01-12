@@ -689,6 +689,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 4.0 (8.0): performance upgrades
 + 3.8 (8.0): sort event
 + 3.7 (8.0): rowNgStyle and rowNgClass
 + 3.6 (8.0): Filter labels; Clickable rows
