@@ -1,5 +1,5 @@
 import {
-  AfterViewInit,
+  AfterContentInit,
   Component,
   DoCheck,
   ElementRef,
@@ -12,23 +12,23 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import {TableColumn} from '../model/table-column.model';
-import {Align} from '../model/align.model';
-import {AbstractControl, FormBuilder} from '@angular/forms';
-import {DataStatus} from '../model/data-status.model';
-import {Observable, Subscription} from 'rxjs';
-import {PageSettings} from '../model/page-settings.model';
-import {MatPaginator, PageEvent} from '@angular/material/paginator';
-import {MatTable, MatTableDataSource} from '@angular/material/table';
-import {MatSort, Sort} from '@angular/material/sort';
-import {Height} from '../model/height.model';
+import { TableColumn } from '../model/table-column.model';
+import { Align } from '../model/align.model';
+import { AbstractControl, FormBuilder } from '@angular/forms';
+import { DataStatus } from '../model/data-status.model';
+import { Observable, Subscription } from 'rxjs';
+import { PageSettings } from '../model/page-settings.model';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatSort, Sort } from '@angular/material/sort';
+import { Height } from '../model/height.model';
 
 @Component({
   selector: 'smc-simplemattable',
   templateUrl: './simplemattable.component.html',
   styleUrls: ['./simplemattable.component.css']
 })
-export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, AfterViewInit {
+export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, AfterContentInit {
 
   @Input() data: T[] = [];
   @Input() columns: TableColumn<T, any>[] = [];
@@ -79,8 +79,8 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   matFrontendPaginator: MatPaginator;
   matBackendPaginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) matSort: MatSort;
-  @ViewChild(MatTable, {static: true}) matTable: MatTable<T>;
+  @ViewChild(MatSort, { static: true }) matSort: MatSort;
+  @ViewChild(MatTable, { static: true }) matTable: MatTable<T>;
   scrollContainer: ElementRef;
 
   displayedColumns = [];
@@ -113,17 +113,17 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     }
   }
 
-  @ViewChild('frontendPaginator', {static: false})
+  @ViewChild('frontendPaginator', { static: false })
   set frontendPaginator(frontendPaginator: MatPaginator) {
     this.matFrontendPaginator = frontendPaginator; // May be set/unset multiple times if user changes input flags;
   }
 
-  @ViewChild('backendPaginator', {static: false})
+  @ViewChild('backendPaginator', { static: false })
   set backendPaginator(backendPaginator: MatPaginator) {
     this.matBackendPaginator = backendPaginator; // May be set/unset multiple times if user changes input flags;
   }
 
-  @ViewChild('scrollContainer', {static: false})
+  @ViewChild('scrollContainer', { static: false })
   set outerContainer(scrollContainer: ElementRef) {
     this.scrollContainer = scrollContainer; // May be set/unset multiple times if user changes input flags;
   }
@@ -257,7 +257,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   getTableCellStyle(tcol: TableColumn<T, any>): { [p: string]: string } {
     if (tcol.width) {
-      return {'width': tcol.width.toString()};
+      return { 'width': tcol.width.toString() };
     } else {
       return {};
     }
@@ -277,7 +277,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
       }
       return classes;
     } else {
-      return {'on-click': !!this.rowClickable};
+      return { 'on-click': !!this.rowClickable };
     }
   }
 
@@ -336,7 +336,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     // so we can check if the id starts with the index to find all controls of that row
     const controls: { col: number, control: AbstractControl }[] = this.iteratorToArray(this.formControls.entries())
       .filter((entry) => entry[0].startsWith(rowIndex.toString()))
-      .map(entry => ({col: +(entry[0].split('_')[1]), control: entry[1]})); // need col index for later
+      .map(entry => ({ col: +(entry[0].split('_')[1]), control: entry[1] })); // need col index for later
     if (controls.some(control => !control.control.valid)) {
       return;
     }
@@ -377,7 +377,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
       if (focusedElement) {
         focusedElement.focus();
       }
-    }, 150);
+    });
   }
 
   /**
@@ -449,7 +449,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   getTextAlign = (align: Align): string => align === Align.LEFT ? 'start' : align === Align.CENTER ? 'center' : 'end';
   isCenterAlign = (tcol: TableColumn<T, any>): boolean => tcol.align === Align.CENTER;
   hasColumnFilter = (): boolean => this.getDisplayedCols(this.columns).some(tcol => tcol.colFilter);
-  getTableHeaderStyle = (): Object => this.hasColumnFilter() ? {height: '100%'} : {};
+  getTableHeaderStyle = (): Object => this.hasColumnFilter() ? { height: '100%' } : {};
   getTableClass = (): string => (this.sticky ? 'sticky-th' : 'non-sticky-th') + (this.isChrome ? ' chrome' : '');
 
   getOuterContainerStyle() {
@@ -726,28 +726,24 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     }
   }
 
-  ngAfterViewInit(): void {
+  ngAfterContentInit(): void {
     if (this.paginator && this.dataSource && !this.backendPagination) {
       this.dataSource.paginator = this.matFrontendPaginator;
     }
     if (this.sorting && this.dataSource) {
       this.dataSource.sort = this.matSort;
     }
-    // setTimeout to avoid ExpressionChangedAfterItHasBeenCheckedError
-    // we cant place this in the ngOnInit method because the view is not yet initialized
-    // and so the layout will be buggy (e.g. neglecting specified height) if we start loading immediately
-    setTimeout(() => {
-      if (this.paginator && this.backendPagination) {
-        this.onPageEvent({
-          pageSize: this.paginatorPageSize,
-          pageIndex: 0,
-          length: 0,
-          previousPageIndex: 0
-        });
-      } else if (this.infiniteScrolling) {
-        this.loadInfiniteScrollPage();
-      }
-    });
+    if (this.paginator && this.backendPagination) {
+      this.onPageEvent({
+        pageSize: this.paginatorPageSize,
+        pageIndex: 0,
+        length: 0,
+        previousPageIndex: 0
+      });
+    } else if (this.infiniteScrolling) {
+      this.loadInfiniteScrollPage();
+    }
+
   }
 
   rowClicked(row: T) {
