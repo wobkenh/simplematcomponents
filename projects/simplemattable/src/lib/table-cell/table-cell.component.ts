@@ -2,11 +2,15 @@ import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angula
 import {TableColumn} from '../model/table-column.model';
 import {Align} from '../model/align.model';
 import {ButtonType} from '../model/button-type.model';
-import {FormFieldType} from '../model/form-field-type.model';
 import {SaveEvent} from '../model/table-cell-events.model';
 import {AbstractControl, FormBuilder} from '@angular/forms';
 import {FormError} from '../model/form-error.model';
 import {ExternalComponentWrapperComponent} from '../external-component-wrapper/external-component-wrapper.component';
+import {AbstractFormField} from '../model/abstract-form-field.model';
+import {SelectFormFieldOption} from '../model/select-form-field-option.model';
+import {FormFieldType} from '../model/form-field-type.model';
+import {LargeTextFormField} from '../model/large-text-form-field.model';
+import {SelectFormField} from '../model/select-form-field.model';
 
 @Component({
   selector: 'smc-table-cell',
@@ -113,6 +117,29 @@ export class TableCellComponent<T> implements OnInit {
     }
   }
 
+  // Methods for access to attributes of specific form field classes
+  // We cant cast in html and we want to be type safe, so here we go
+
+  getMaxLines(formField: AbstractFormField<any, any, any>): number {
+    if (formField.formType === FormFieldType.LARGE_TEXT) {
+      const largeTextFormField = formField as LargeTextFormField<any, any>;
+      return largeTextFormField.maxLines;
+    }
+  }
+
+  getMinLines(formField: AbstractFormField<any, any, any>): number {
+    if (formField.formType === FormFieldType.LARGE_TEXT) {
+      const largeTextFormField = formField as LargeTextFormField<any, any>;
+      return largeTextFormField.maxLines;
+    }
+  }
+
+  getOptions(formField: AbstractFormField<any, any, any>): SelectFormFieldOption<any>[] {
+    if (formField.formType === FormFieldType.SELECT) {
+      const selectFormField = formField as SelectFormField<any, any, any>;
+      return selectFormField.options;
+    }
+  }
 
   // Calculations and actions
 

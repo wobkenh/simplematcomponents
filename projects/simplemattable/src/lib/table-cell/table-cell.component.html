@@ -82,7 +82,7 @@
                     [placeholder]="tableColumn.formField.placeholder" [id]="inputId">
           <!-- Options need to be accessed this way to avoid compile error -->
           <!-- Cant cast to select form field in html, but we know it is one -->
-          <mat-option *ngFor="let option of tableColumn.formField['options'];" [value]="option.value">
+          <mat-option *ngFor="let option of getOptions(tableColumn.formField);" [value]="option.value">
             {{option.display}}
           </mat-option>
         </mat-select>
@@ -96,8 +96,8 @@
         <!-- Cant cast to large text form field in html, but we know it is one -->
         <textarea matInput [formControl]="formControl"
                   style="width: 100%; padding: 2px 0;" [id]="inputId"
-                  matTextareaAutosize [matAutosizeMaxRows]="tableColumn.formField['maxLines']"
-                  [matAutosizeMinRows]="tableColumn.formField['minLines']"
+                  matTextareaAutosize [matAutosizeMaxRows]="getMaxLines(tableColumn.formField)"
+                  [matAutosizeMinRows]="getMinLines(tableColumn.formField)"
                   [placeholder]="tableColumn.formField.placeholder"></textarea>
         <mat-error *ngFor="let error of getCurrentErrors(tableColumn, formControl);">
           {{error.msg}}
@@ -168,7 +168,7 @@
       <mat-form-field *ngSwitchCase="formFieldType.SELECT" style="width: 100%;padding: 0 5px">
         <mat-select [ngModel]="element[tableColumn.property]" [placeholder]="tableColumn.formField.placeholder"
                     (ngModelChange)="directEditElementChanged(tableColumn, element, $event)" [id]="inputId">
-          <mat-option *ngFor="let option of tableColumn.formField['options'];" [value]="option.value">
+          <mat-option *ngFor="let option of getOptions(tableColumn.formField);" [value]="option.value">
             {{option.display}}
           </mat-option>
         </mat-select>
@@ -179,8 +179,8 @@
                   (ngModelChange)="directEditElementChanged(tableColumn, element, $event)"
                   style="width: 100%; padding: 2px 0;" [id]="inputId"
                   matTextareaAutosize
-                  [matAutosizeMaxRows]="tableColumn.formField['maxLines']"
-                  [matAutosizeMinRows]="tableColumn.formField['minLines']"
+                  [matAutosizeMaxRows]="getMaxLines(tableColumn.formField)"
+                  [matAutosizeMinRows]="getMinLines(tableColumn.formField)"
                   [placeholder]="tableColumn.formField.placeholder"></textarea>
         <mat-hint>{{tableColumn.formField.hint}}</mat-hint>
       </mat-form-field>

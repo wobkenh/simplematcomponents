@@ -48,7 +48,7 @@
             [fxHide.xs]="tcol.hiddenXs || tcol.hiddenSm" [fxHide.sm]="tcol.hiddenSm"
             (click)="onClick(tcol, element, false)">
           <smc-table-cell [dataParent]="element" [rowIndex]="rowIndex" [refreshTrigger]="refreshTrigger"
-                          [columnIndex]="columnIndex" [isEditing]="dataStatus.get(element).editing"
+                          [columnIndex]="columnIndex" [isEditing]="dataStatus.get(element)?.editing"
                           [tableColumnInput]="tcol" [formControls]="formControls"
                           (save)="saveElement($event.rowIndex, $event.element)"></smc-table-cell>
         </td>
