@@ -689,6 +689,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 5.0 (9.0): updated to angular 9
 + 4.0 (8.0): performance upgrades
 + 3.8 (8.0): sort event
 + 3.7 (8.0): rowNgStyle and rowNgClass
@@ -740,19 +741,20 @@ It is not planned to backport SimpleMatTable to any older Angular version.
 Simplemattable only uses peer dependencies, so for the newest version of simplemattable you need the following packages (with compatible versions) in your package.json:
 
 ```
-"@angular/common": "^8.0.0",
-"@angular/core": "^8.0.0",
-"@angular/material": "^8.0.0",
-"@angular/cdk": "^8.0.0",
-"@angular/platform-browser": "^8.0.0",
-"@angular/flex-layout": "^8.0.0-beta.26"
+"@angular/common": "^9.0.0",
+"@angular/core": "^9.0.0",
+"@angular/material": "^9.0.0",
+"@angular/cdk": "^9.0.0",
+"@angular/platform-browser": "^9.0.0",
+"@angular/flex-layout": "^9.0.0-beta.29"
 ```  
 
 
 + For use with Angular >= 6.0 and < 6.1.8, use Version 1.2 of simplemattable.
 + For use with Angular >= 6.1.8 and < 7.0, use Version 1.3 of simplemattable.
 + For use with Angular >= 7.0 and < 8.0, use Version 2.5.7 of simplemattable.
-+ For use with Angular >= 8.0 and < 9.0, use the newest version of simplemattable.
++ For use with Angular >= 8.0 and < 9.0, use Version 4.0 of simplemattable.
++ For use with Angular >= 9.0, use the newest version of simplemattable.
 
 ## Authors
 
