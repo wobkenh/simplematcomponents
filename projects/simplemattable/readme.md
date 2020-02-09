@@ -13,7 +13,7 @@ It supports different form fields like number, text, date and select inputs.
 ## Attention
 
 To all users of simplemattable 1.X: Due to issues concerning the row height when using material components (e.g. `<mat-table>`),
-simplemattable was now (Version 2 and up) changed to use the material directives (e.g. `<table mat-table>`). 
+simplemattable was (Version 2 and up) changed to use the material directives (e.g. `<table mat-table>`). 
 This solution allows for full control over the table css and eliminates the problems regarding component isolation.
 
 So what changed for you? Column widths might now be different since they will be calculated according to the standard html table functionality.
