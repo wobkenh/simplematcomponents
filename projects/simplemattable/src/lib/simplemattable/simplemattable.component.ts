@@ -113,17 +113,17 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     }
   }
 
-  @ViewChild('frontendPaginator', {static: false})
+  @ViewChild('frontendPaginator')
   set frontendPaginator(frontendPaginator: MatPaginator) {
     this.matFrontendPaginator = frontendPaginator; // May be set/unset multiple times if user changes input flags;
   }
 
-  @ViewChild('backendPaginator', {static: false})
+  @ViewChild('backendPaginator')
   set backendPaginator(backendPaginator: MatPaginator) {
     this.matBackendPaginator = backendPaginator; // May be set/unset multiple times if user changes input flags;
   }
 
-  @ViewChild('scrollContainer', {static: false})
+  @ViewChild('scrollContainer')
   set outerContainer(scrollContainer: ElementRef) {
     this.scrollContainer = scrollContainer; // May be set/unset multiple times if user changes input flags;
   }

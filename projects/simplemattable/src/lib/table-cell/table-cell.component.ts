@@ -39,7 +39,7 @@ export class TableCellComponent<T> implements OnInit {
   save = new EventEmitter<SaveEvent<T>>();
 
   // State derived from inputs
-  @ViewChild(ExternalComponentWrapperComponent, {static: false}) externalComponents: ExternalComponentWrapperComponent;
+  @ViewChild(ExternalComponentWrapperComponent) externalComponents: ExternalComponentWrapperComponent;
   formControl: AbstractControl;
   cellAlign: string = '';
   cellCssClass: Object = {};
