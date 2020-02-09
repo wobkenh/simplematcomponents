@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {TableColumn} from 'simplemattable';
+import {TableColumn} from '../../../projects/simplemattable/src/lib/model/table-column.model';
 
 @Component({
   selector: 'smc-playground',
