@@ -1,6 +1,6 @@
 import {Align} from './align.model';
 import {ButtonType} from './button-type.model';
-import {ThemePalette} from '@angular/material';
+import { ThemePalette } from '@angular/material/core';
 import {Width} from './width.model';
 import {AbstractFormField} from './abstract-form-field.model';
 import {NumberFormField} from './number-form-field.model';
