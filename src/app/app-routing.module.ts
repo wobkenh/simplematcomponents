@@ -22,6 +22,7 @@ import {StickyColumnsComponent} from './sticky-columns/sticky-columns.component'
 import {ComponentInjectionComponent} from './component-injection/component-injection.component';
 import {InternationalizationComponent} from './internationalization/internationalization.component';
 import {PlaygroundComponent} from './playground/playground.component';
+import {DragNDropColumnsComponent} from './drag-n-drop-columns/drag-n-drop-columns.component';
 
 
 const routes: Routes = [
@@ -31,6 +32,7 @@ const routes: Routes = [
   {path: 'width-height', component: WidthHeightComponent},
   {path: 'align', component: AlignComponent},
   {path: 'sortable', component: SortableComponent},
+  {path: 'drag-drop-columns', component: DragNDropColumnsComponent},
   {path: 'visibility', component: VisibilityComponent},
   {path: 'icons-buttons', component: IconsButtonsComponent},
   {path: 'multiline', component: MultilineComponent},

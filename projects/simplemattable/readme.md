@@ -10,16 +10,6 @@ A lot of different options like align, buttons, icons and even custom css allow 
 SimpleMatTable also allows you to enable adding, editing and deleting of elements in the table. 
 It supports different form fields like number, text, date and select inputs.
 
-## Attention
-
-To all users of simplemattable 1.X: Due to issues concerning the row height when using material components (e.g. `<mat-table>`),
-simplemattable was (Version 2 and up) changed to use the material directives (e.g. `<table mat-table>`). 
-This solution allows for full control over the table css and eliminates the problems regarding component isolation.
-
-So what changed for you? Column widths might now be different since they will be calculated according to the standard html table functionality.
-If you used the width property on columns, you can no longer enter a flex string or specify shrink/grow.
-Instead, you can now only supply widths that can be parsed by the width css property (preferably via the width-object).   
-
 ## Table of contents
 
 - [Prerequisites](#prerequisites)
@@ -28,13 +18,13 @@ Instead, you can now only supply widths that can be parsed by the width css prop
 - [Usage](#usage)
     + [Model](#model)
     + [TableColumns](#tablecolumns)
-    + [Table](#table)
+    + [Table (+ table options)](#table)
     + [Complex model](#complex-model)
     + [Dynamic updates](#dynamic-updates)
     + [TableColumn options](#tablecolumn-options)
     + [Edit-Mode](#edit-mode)
     + [Pagination](#pagination)
-    + [Pagination](#infinite-scrolling)
+    + [Infinite Scrolling](#infinite-scrolling)
     + [Progress spinner](#progress-spinner)
     + [Custom Filter](#custom-filter)
 - [Contributing](#contributing)
@@ -150,6 +140,10 @@ If instead of pagination, you want lazy loading via scrolling, you can use the i
 #### Sticky
 You can make the header of the table sticky using the `[sticky]` flag. The sticky header is turned off by default.  
 If you want to stick the button column to the end of the table, use the `stickyButtons` option.
+
+#### Column Reordering / Drag and Drop
+To enable the user to reorder the columns by dragging and dropping the table headers, set the `columnDragAndDrop` flag of simplemattable to true. 
+Default ist false.
 
 #### Editing
 If you want to enable adding/editing/deleting of elements in the table, have a look at [the section about edit-mode](#edit-mode).
@@ -620,7 +614,7 @@ If you want to programmatically change the page size or page index, use the `pag
 Create a new `PageSettings` object and fill the pageIndex, page Size or both to your liking. Simplemattable will automatically detect the change
 and forward the new settings to the paginator. Also, a new page event will be emitted, so you normally do not need to write any extra code.
 
-All you need to go back to the first page, assuming you bound the pageSettings variable to the `pageSettings` input parameter of simplemattable, is:
+All you need to do to go back to the first page, assuming you bound the pageSettings variable to the `pageSettings` input parameter of simplemattable, is:
 
 ```
 this.pageSettings = {⁣
@@ -634,7 +628,7 @@ When infinite scrolling is used, the user has to scroll to the bottom to fetch t
 You can turn on infinite scrolling via the `infiniteScrolling` flag.
 
 You can further customize the page loading behaviour via `infiniteScrollingPageSize` and `infiniteScrollingHeight`.
-`infiniteScrollingPageSize` controls the page size while `infiniteScrollingHeight` controls the at which scrolling point the next page will be fetched. E.g. if you set a height of 200px, which is also the default value, the next page will be fetched when the user is 200px or less away from the bottom.
+`infiniteScrollingPageSize` controls the page size while `infiniteScrollingHeight` controls at which scrolling point the next page will be fetched. E.g. if you set a height of 200px, which is also the default value, the next page will be fetched when the user is 200px or less away from the bottom.
 `infiniteScrollingHeight` takes a height object, which can be percent or pixel based.
 
 The loading itself is done in the same way as pagination. You supply an observable in the `getPage` parameter, which will then be called on page fetch. Also, the `page` event will be fired when a new page should be loaded. For more information, see the pagination section above.
@@ -689,6 +683,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 5.1 (9.1): Reordering of columns via drag and drop
 + 5.0 (9.0): updated to angular 9
 + 4.0 (8.0): performance upgrades
 + 3.8 (8.0): sort event

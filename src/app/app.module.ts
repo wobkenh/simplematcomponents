@@ -35,6 +35,7 @@ import {ComponentInjectionComponent} from './component-injection/component-injec
 import {CustomTableCellComponent} from './custom-table-cell/custom-table-cell.component';
 import { InternationalizationComponent } from './internationalization/internationalization.component';
 import { PlaygroundComponent } from './playground/playground.component';
+import { DragNDropColumnsComponent } from './drag-n-drop-columns/drag-n-drop-columns.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { PlaygroundComponent } from './playground/playground.component';
     ComponentInjectionComponent,
     CustomTableCellComponent,
     InternationalizationComponent,
-    PlaygroundComponent
+    PlaygroundComponent,
+    DragNDropColumnsComponent
   ],
   imports: [
     BrowserModule,

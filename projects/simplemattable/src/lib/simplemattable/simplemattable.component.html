@@ -11,11 +11,13 @@
 <div fxFlex [ngStyle]="getOuterContainerStyle()" (scroll)="onScrollComponent($event)" #scrollContainer
      id="smtScrollContainer">
   <table mat-table [dataSource]="dataSource" matSort [matSortDisabled]="!sorting" style="width: 100%"
-         (matSortChange)="sortChanged($event)" [ngClass]="getTableClass()">
+         [cdkDropListDisabled]="!columnDragAndDrop"
+         (matSortChange)="sortChanged($event)" [ngClass]="getTableClass()" cdkDropList
+         cdkDropListOrientation="horizontal" (cdkDropListDropped)="dropColumn($event)">
     <ng-container *ngFor="let tcol of getDisplayedCols(columns); let columnIndex = index">
       <ng-container matColumnDef="{{columnIndex.toString() + '_' + tcol.property.toString()}}"
                     [sticky]="tcol.sticky" [stickyEnd]="tcol.stickyEnd">
-        <th mat-header-cell *matHeaderCellDef [ngStyle]="getTableCellStyle(tcol)"
+        <th mat-header-cell *matHeaderCellDef [ngStyle]="getTableCellStyle(tcol)" cdkDrag
             [fxHide.xs]="tcol.hiddenXs || tcol.hiddenSm" [fxHide.sm]="tcol.hiddenSm">
           <div fxLayout="row" style="height: 100%"
                [fxLayoutAlign]="tcol.colFilter ? getHeaderFilterAlign(tcol.align) : getHeaderNoFilterAlign(tcol.align)">
@@ -47,9 +49,10 @@
         <td mat-cell *matCellDef="let element; let rowIndex = index;"
             [fxHide.xs]="tcol.hiddenXs || tcol.hiddenSm" [fxHide.sm]="tcol.hiddenSm"
             (click)="onClick(tcol, element, false)">
-          <smc-table-cell [dataParent]="element" [rowIndex]="rowIndex" [refreshTrigger]="refreshTrigger"
+          <smc-table-cell [formControls]="formControls" [dataParent]="element" [rowIndex]="rowIndex"
+                          [refreshTrigger]="refreshTrigger"
                           [columnIndex]="columnIndex" [isEditing]="dataStatus.get(element)?.editing"
-                          [tableColumnInput]="tcol" [formControls]="formControls"
+                          [tableColumnInput]="tcol"
                           (save)="saveElement($event.rowIndex, $event.element)"></smc-table-cell>
         </td>
       </ng-container>
@@ -57,7 +60,7 @@
 
     <!-- edit/add/delete buttons -->
     <ng-container *ngIf="editable || deletable || addable" matColumnDef="actions" [stickyEnd]="stickyButtons">
-      <th mat-header-cell *matHeaderCellDef style="width: 104px;">
+      <th mat-header-cell *matHeaderCellDef style="width: 104px;" cdkDrag>
         <div class="filler-div" style="align-items: center; display: flex; justify-content: flex-end;">
           <button mat-icon-button *ngIf="addable" color="primary" (click)="startAddElement()"
                   [disabled]="!!addedItem">

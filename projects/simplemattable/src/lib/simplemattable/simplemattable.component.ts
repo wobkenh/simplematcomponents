@@ -22,6 +22,7 @@ import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatTable, MatTableDataSource} from '@angular/material/table';
 import {MatSort, Sort} from '@angular/material/sort';
 import {Height} from '../model/height.model';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'smc-simplemattable',
@@ -62,6 +63,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   @Input() rowClickable: boolean = false;
   @Input() rowNgStyle: (data: T) => Object;
   @Input() rowNgClass: (data: T) => string | string[] | Object;
+  @Input() columnDragAndDrop: boolean = false;
   private infiniteScrollingPage: number = 0;
   private infiniteScrollingHasMore: boolean = true;
   private infiniteScrollingHasScrolled: boolean = false;
@@ -83,7 +85,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   @ViewChild(MatTable, {static: true}) matTable: MatTable<T>;
   scrollContainer: ElementRef;
 
-  displayedColumns = [];
+  displayedColumns: string[] = [];
   dataSource: MatTableDataSource<T>;
   dataStatus: Map<T, DataStatus> = new Map<T, DataStatus>(); // to know whether or not a row is being edited
   private oldColumns: TableColumn<T, any>[] = []; // For dirty-checking
@@ -99,6 +101,10 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   // Trigger on data change
   refreshTrigger: number = 0;
 
+  // Drag n drop
+  // Contains the columns ids of the displayed columns and their tablecolumn objects
+  columnIds: Map<string, TableColumn<T, any>> = new Map();
+  actionIndex: number = -1;
 
   constructor(private fb: FormBuilder) {
   }
@@ -126,6 +132,58 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   @ViewChild('scrollContainer')
   set outerContainer(scrollContainer: ElementRef) {
     this.scrollContainer = scrollContainer; // May be set/unset multiple times if user changes input flags;
+  }
+
+  /**
+   * Called when user changes order of columns
+   * @param event
+   */
+  dropColumn(event: CdkDragDrop<string[]>) {
+    const hasActions = this.displayedColumns.includes('actions');
+    // For explanation of actual previous index see comment below
+    let actualPreviousIndex;
+    if (hasActions && this.actionIndex >= 0 && this.actionIndex <= event.previousIndex) {
+      actualPreviousIndex = event.previousIndex + 1;
+    } else {
+      actualPreviousIndex = event.previousIndex;
+    }
+    const draggedColumnId = this.displayedColumns[actualPreviousIndex];
+    const replacedColumnId = this.displayedColumns[event.currentIndex];
+    // For whatever reason, the previousIndex is always the last index for the actions column
+    // but only the previousIndex. The current index is correct.
+    if (hasActions && event.previousIndex === this.displayedColumns.length - 1) {
+      this.actionIndex = event.currentIndex;
+      this.recreateDataSource();
+    } else {
+      const draggedColumn = this.columnIds.get(draggedColumnId);
+      const draggedColumnIndex = this.columns.findIndex(column => column === draggedColumn);
+      let replacedColumnIndex;
+      if (replacedColumnId === 'actions') {
+        let targetColumnIndex;
+        if (actualPreviousIndex < this.actionIndex) {
+          targetColumnIndex = event.currentIndex - 1;
+          this.actionIndex--;
+        } else {
+          targetColumnIndex = event.currentIndex + 1;
+          this.actionIndex++;
+        }
+        const targetColumnId = this.displayedColumns[targetColumnIndex];
+        const replacedColumn = this.columnIds.get(targetColumnId);
+        replacedColumnIndex = this.columns.findIndex(column => column === replacedColumn);
+      } else {
+        const replacedColumn = this.columnIds.get(replacedColumnId);
+        replacedColumnIndex = this.columns.findIndex(column => column === replacedColumn);
+        if (actualPreviousIndex > this.actionIndex && event.currentIndex < this.actionIndex) {
+          this.actionIndex++;
+        } else if (event.currentIndex > this.actionIndex && actualPreviousIndex < this.actionIndex) {
+          this.actionIndex--;
+        }
+      }
+      // DataSource (including displayedColumns) will be recreated
+      // so we do not need to switch the position in displayedColumns; only in columns
+      moveItemInArray(this.columns, draggedColumnIndex, replacedColumnIndex);
+      this.recreateDataSource();
+    }
   }
 
 
@@ -689,11 +747,25 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
         };
       }
 
-      // Filter
-      this.displayedColumns = this.getDisplayedCols(this.columns).map((col, i) => i.toString() + '_' + col.property);
+      // Filter columns to display
+      this.columnIds.clear();
+      // Dont assign displayedColumns directly as view gets updated when reference changes
+      const displayedColumns = this.getDisplayedCols(this.columns).map((col, i) => {
+        const columnId = i.toString() + '_' + col.property;
+        this.columnIds.set(columnId, col);
+        return columnId;
+      });
+      // TODO: Action Index
       if (this.editable || this.addable || this.deletable) {
-        this.displayedColumns.push('actions');
+        if (this.actionIndex >= 0) {
+          displayedColumns.splice(this.actionIndex, 0, 'actions');
+        } else {
+          this.actionIndex = displayedColumns.length;
+          displayedColumns.push('actions');
+        }
       }
+      this.displayedColumns = displayedColumns;
+
       if (this.filter || this.hasColumnFilter()) {
         this.applyFilter(this.lastFilterValue);
       }

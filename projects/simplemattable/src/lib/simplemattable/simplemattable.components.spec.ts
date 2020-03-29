@@ -3,17 +3,17 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {SimplemattableComponent} from './simplemattable.component';
 import {Component, ViewChild} from '@angular/core';
 import {TableColumn} from '../model/table-column.model';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatCommonModule, MatNativeDateModule } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSelectModule } from '@angular/material/select';
-import { MatSortModule } from '@angular/material/sort';
-import { MatTableModule } from '@angular/material/table';
+import {MatButtonModule} from '@angular/material/button';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatCommonModule, MatNativeDateModule} from '@angular/material/core';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatIconModule} from '@angular/material/icon';
+import {MatInputModule} from '@angular/material/input';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatSelectModule} from '@angular/material/select';
+import {MatSortModule} from '@angular/material/sort';
+import {MatTableModule} from '@angular/material/table';
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {CommonModule} from '@angular/common';
@@ -23,6 +23,7 @@ import {ButtonType} from '../model/button-type.model';
 import {Width} from '../model/width.model';
 import {ExternalComponentWrapperComponent} from '../external-component-wrapper/external-component-wrapper.component';
 import {TableCellComponent} from '../table-cell/table-cell.component';
+import {CdkDragDrop} from '@angular/cdk/drag-drop';
 
 describe('SimplemattableComponent', () => {
   let hostComponent: TestHostComponent;
@@ -188,10 +189,12 @@ describe('SimplemattableComponent', () => {
     testHostFixture.detectChanges();
     spyOn(smt.add, 'emit');
     spyOn(smt.edit, 'emit');
+
     // Invalid test data --> should not emit
     smt.saveElement(hostComponent.data.length - 1, data);
     expect(smt.add.emit).toHaveBeenCalledTimes(0);
     expect(smt.edit.emit).toHaveBeenCalledTimes(0);
+
     // Changing value to sth valid --> should emit edit
     data.testData.key = 'not short';
     hostComponent.data = hostComponent.data.slice(0);
@@ -201,6 +204,7 @@ describe('SimplemattableComponent', () => {
     expect(smt.edit.emit).toHaveBeenCalledTimes(1);
     expect(smt.edit.emit).toHaveBeenCalledWith(data);
     expect(smt['dataStatus'].get(data).loading).toBe(true);
+
     // Adding new (valid) element and saving it --> should emit add
     const newData = new ComplexTestData(420, new TestData('the answer to life, the universe and everything', 42, new Date()));
     smt.create = () => newData;
@@ -422,6 +426,88 @@ describe('SimplemattableComponent', () => {
       .withColFilter();
     expect(smt.getTableHeaderStyle()).toEqual({'height': '100%'});
   });
+  it('drag and drop columns simple', () => {
+    const firstColumn = new TableColumn<ComplexTestData, 'testData'>('TestData', 'testData');
+    const secondColumn = new TableColumn<ComplexTestData, 'id'>('ID', 'id');
+    smt.columns = [
+      firstColumn, secondColumn
+    ];
+    testHostFixture.detectChanges();
+    expect(smt.displayedColumns).toEqual(['0_testData', '1_id']);
+    smt.dropColumn(createDropEvent(0, 1));
+    expect(smt.displayedColumns).toEqual(['0_id', '1_testData']);
+    smt.dropColumn(createDropEvent(1, 0));
+    expect(smt.displayedColumns).toEqual(['0_testData', '1_id']);
+    smt.dropColumn(createDropEvent(0, 0));
+    smt.dropColumn(createDropEvent(1, 1));
+    expect(smt.displayedColumns).toEqual(['0_testData', '1_id']);
+  });
+  it('drag and drop columns with actions', () => {
+    const firstColumn = new TableColumn<ComplexTestData, 'testData'>('TestData', 'testData');
+    const secondColumn = new TableColumn<ComplexTestData, 'id'>('ID', 'id');
+    smt.columns = [
+      firstColumn, secondColumn
+    ];
+    smt.editable = true;
+    testHostFixture.detectChanges();
+    expect(smt.displayedColumns).toEqual(['0_testData', '1_id', 'actions']);
+    expect(smt.actionIndex).toEqual(2);
+
+    smt.dropColumn(createDropEvent(0, 1));
+    expect(smt.displayedColumns).toEqual(['0_id', '1_testData', 'actions']);
+    expect(smt.actionIndex).toEqual(2);
+
+    smt.dropColumn(createDropEvent(1, 0));
+    expect(smt.displayedColumns).toEqual(['0_testData', '1_id', 'actions']);
+    expect(smt.actionIndex).toEqual(2);
+
+    smt.dropColumn(createDropEvent(0, 0));
+    smt.dropColumn(createDropEvent(1, 1));
+    smt.dropColumn(createDropEvent(2, 2));
+    expect(smt.displayedColumns).toEqual(['0_testData', '1_id', 'actions']);
+    expect(smt.actionIndex).toEqual(2);
+
+    smt.dropColumn(createDropEvent(0, 2));
+    expect(smt.displayedColumns).toEqual(['0_id', 'actions', '1_testData']);
+    expect(smt.actionIndex).toEqual(1);
+
+    smt.dropColumn(createDropEvent(0, 1));
+    expect(smt.displayedColumns).toEqual(['actions', '0_id', '1_testData']);
+    expect(smt.actionIndex).toEqual(0);
+
+    // previous index is bugged, see #dropColumn
+    smt.dropColumn(createDropEvent(1, 0));
+    expect(smt.displayedColumns).toEqual(['0_testData', 'actions', '1_id']);
+    expect(smt.actionIndex).toEqual(1);
+
+    smt.dropColumn(createDropEvent(1, 1));
+    expect(smt.displayedColumns).toEqual(['0_testData', '1_id', 'actions']);
+    expect(smt.actionIndex).toEqual(2);
+
+    smt.dropColumn(createDropEvent(2, 0));
+    expect(smt.displayedColumns).toEqual(['actions', '0_testData', '1_id']);
+    expect(smt.actionIndex).toEqual(0);
+
+    smt.dropColumn(createDropEvent(2, 1));
+    expect(smt.displayedColumns).toEqual(['0_testData', 'actions', '1_id']);
+    expect(smt.actionIndex).toEqual(1);
+
+    smt.dropColumn(createDropEvent(2, 2));
+    expect(smt.displayedColumns).toEqual(['0_testData', '1_id', 'actions']);
+    expect(smt.actionIndex).toEqual(2);
+  });
+
+  function createDropEvent(previousIndex: number, currentIndex: number): CdkDragDrop<string[]> {
+    return {
+      currentIndex: currentIndex,
+      previousIndex: previousIndex,
+      container: null,
+      distance: null,
+      isPointerOverContainer: false,
+      item: null,
+      previousContainer: null
+    };
+  }
 
 
   @Component({
