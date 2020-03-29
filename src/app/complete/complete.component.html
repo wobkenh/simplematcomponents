@@ -2,18 +2,31 @@
 <div class="display">
   <div>
     <h2 id="complete">Complete Table</h2>
-    <span>So lets throw everything you've seen so far and even more together and see what happens...</span>
-    <span>P.S.: Please do not make tables as useless as this one. :-)</span>
+    <p>
+      So lets throw everything you've seen so far and even more together and see what happens...
+      <br>
+      P.S.: Please do not make tables as useless as this one. :-)
+    </p>
     <mat-tab-group>
-      <mat-tab label="Display">
-        <smc-simplemattable [data]="dataComplete" [columns]="columnsComplete" [paginator]="true" [filter]="true"
-                            (edit)="onEdit($event)" [paginatorPageSize]="3"
-                            [sorting]="true" [editable]="true" [addable]="true" [deletable]="true"
-                            (add)="onAdd($event)" [filterLabel]="'I think you might be on to something...'"
-                            addIcon="account_box" [deleteIcon]="'check_box_outline_blank'" [sticky]="false"
-                            [create]="createFn" (delete)="onDelete($event)"></smc-simplemattable>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>visibility</mat-icon>
+          Display
+        </ng-template>
+        <div class="smt-container">
+          <smc-simplemattable [data]="dataComplete" [columns]="columnsComplete" [paginator]="true" [filter]="true"
+                              (edit)="onEdit($event)" [paginatorPageSize]="3"
+                              [sorting]="true" [editable]="true" [addable]="true" [deletable]="true"
+                              (add)="onAdd($event)" [filterLabel]="'I think you might be on to something...'"
+                              addIcon="account_box" [deleteIcon]="'check_box_outline_blank'" [sticky]="false"
+                              [create]="createFn" (delete)="onDelete($event)"></smc-simplemattable>
+        </div>
       </mat-tab>
-      <mat-tab label="Code">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>code</mat-icon>
+          Code
+        </ng-template>
         <div class="code">
           <p>Typescript - Data</p>
           <hr>

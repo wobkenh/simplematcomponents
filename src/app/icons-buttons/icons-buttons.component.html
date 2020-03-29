@@ -2,22 +2,35 @@
 <div class="display" style="flex-direction: column; align-items: center">
   <div>
     <h2 id="iconsbuttons">Icons and Buttons</h2>
-    <span>You can display all material style button types (normal, raised, icon).</span>
-    <br>
-    <span>You can specify an on click on all cells, even if they have no button. With no button type specified, the cell will turn into a clickable cell.</span>
-    <br>
-    <span>You can add an icon derived from the cells data to a column. You can also combine buttons and icons as you wish.</span>
+    <p>
+      You can display all material style button types (normal, raised, icon).
+
+      You can specify an on click on all cells, even if they have no button. With no button type specified, the cell
+      will turn into a clickable cell.
+
+      You can add an icon derived from the cells data to a column. You can also combine buttons and icons as you wish.
+    </p>
     <mat-tab-group>
-      <mat-tab label="Display">
-        <div style="display: flex; flex-direction: column; padding: 10px 0">
-          <span>Link Click count: {{linkClickCountIconsButtons}}</span>
-          <span>Link Last clicked ID: {{linkLastClickedIconsButtons}}</span>
-          <span>Raised Button Click count: {{btnClickCountIconsButtons}}</span>
-          <span>Raised Button Last clicked Value: {{btnLastClickedIconsButtons}}</span>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>visibility</mat-icon>
+          Display
+        </ng-template>
+        <div class="smt-container">
+          <div style="display: flex; flex-direction: column; padding-bottom: 25px">
+            <span>Link Click count: {{linkClickCountIconsButtons}}</span>
+            <span>Link Last clicked ID: {{linkLastClickedIconsButtons}}</span>
+            <span>Raised Button Click count: {{btnClickCountIconsButtons}}</span>
+            <span>Raised Button Last clicked Value: {{btnLastClickedIconsButtons}}</span>
+          </div>
+          <smc-simplemattable [data]="dataIconsButtons" [columns]="columnsIconsButtons"></smc-simplemattable>
         </div>
-        <smc-simplemattable [data]="dataIconsButtons" [columns]="columnsIconsButtons"></smc-simplemattable>
       </mat-tab>
-      <mat-tab label="Code">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>code</mat-icon>
+          Code
+        </ng-template>
         <div class="code">
           <p>Typescript - Data</p>
           <hr>
@@ -66,20 +79,30 @@ this.columnsIconsButtons = [
 
   <div>
     <h2>Clickable Rows</h2>
-    <span>Instead of making table cells clickable, you can also make whole rows clickable.</span>
-    <br>
-    <span>It is recommended not to have other clickable items in your table cells if you use this.</span>
-    <br>
+    <p>
+      Instead of making table cells clickable, you can also make whole rows clickable.
+      It is recommended not to have other clickable items in your table cells if you use this.
+    </p>
     <mat-tab-group>
-      <mat-tab label="Display">
-        <div style="display: flex; flex-direction: column; padding: 10px 0">
-          <span>Link Click count: {{rowClickCount}}</span>
-          <span>Link Last clicked ID: {{rowLastClickedId}}</span>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>visibility</mat-icon>
+          Display
+        </ng-template>
+        <div class="smt-container">
+          <div style="display: flex; flex-direction: column; padding-bottom: 25px">
+            <span>Link Click count: {{rowClickCount}}</span>
+            <span>Link Last clicked ID: {{rowLastClickedId}}</span>
+          </div>
+          <smc-simplemattable [data]="dataIconsButtons" [columns]="columnsRowClickable" [rowClickable]="true"
+                              (rowClick)="rowClicked($event)"></smc-simplemattable>
         </div>
-        <smc-simplemattable [data]="dataIconsButtons" [columns]="columnsRowClickable" [rowClickable]="true"
-                            (rowClick)="rowClicked($event)"></smc-simplemattable>
       </mat-tab>
-      <mat-tab label="Code">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>code</mat-icon>
+          Code
+        </ng-template>
         <div class="code">
           <p>Typescript - Data</p>
           <hr>

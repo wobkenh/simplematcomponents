@@ -1,5 +1,5 @@
 <div *ngIf="filter" fxFlex="0 0 auto">
-  <mat-form-field style="width: 100%;">
+  <mat-form-field style="width: 100%; padding: 0 15px; box-sizing: border-box">
     <input matInput (keyup)="applyFilter($event.target.value)" [placeholder]="filterLabel">
   </mat-form-field>
 </div>

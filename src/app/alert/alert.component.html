@@ -1,127 +1,167 @@
 <h2>SimpleAlert</h2>
-      <div style="display: flex; justify-content: center">
-        <div style="max-width: 1000px">
-          <p>SimpleAlert is a simple Angular component for info, error, danger and success alerts, inspired by bootstrap
-            alerts. It can be dynamically opened/closed with opening/closing animations and can contain any content via
-            ng-content.</p>
-        </div>
-      </div>
-      <hr>
+<div style="display: flex; justify-content: center">
+  <div style="max-width: 1000px">
+    <p>SimpleAlert is a simple Angular component for info, error, danger and success alerts, inspired by bootstrap
+      alerts. It can be dynamically opened/closed with opening/closing animations and can contain any content via
+      ng-content.</p>
+  </div>
+</div>
+<hr>
 
-      <div class="display">
-        <div>
-          <h2 id="infoAlert" style="margin-top: 50px;">1. Info Alert</h2>
-          <mat-tab-group>
-            <mat-tab label="Display">
-              <button (click)="openInfo()" mat-raised-button>open info</button>
-              <smc-simplealert [(isOpen)]="isInfoOpen" [type]="alertType.INFO">This is an info alert!</smc-simplealert>
-            </mat-tab>
-            <mat-tab label="Code">
-              <div class="code">
-                <p>Typescript</p>
-                <hr>
-                <pre>
+<div class="display">
+  <div>
+    <h2 id="infoAlert" style="margin-top: 50px;">1. Info Alert</h2>
+    <mat-tab-group>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>visibility</mat-icon>
+          Display
+        </ng-template>
+        <div class="smt-container">
+          <button (click)="openInfo()" mat-raised-button>open info</button>
+          <smc-simplealert [(isOpen)]="isInfoOpen" [type]="alertType.INFO">This is an info alert!</smc-simplealert>
+        </div>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>code</mat-icon>
+          Code
+        </ng-template>
+        <div class="code">
+          <p>Typescript</p>
+          <hr>
+          <pre>
 alertType = AlertType;
 isInfoOpen = true;
 openInfo() {{"{"}}&#x2063;
   this.isInfoOpen = true;
 }</pre>
-                <p>HTML</p>
-                <hr>
-                <pre>
+          <p>HTML</p>
+          <hr>
+          <pre>
 &lt;button (click)=&quot;openInfo()&quot; mat-raised-button&gt;open info&lt;/button&gt;
 &lt;smc-simplealert [(isOpen)]=&quot;isInfoOpen&quot; [type]=&quot;alertType.INFO&quot;&gt;This is an info alert!&lt;/smc-simplealert&gt;</pre>
-              </div>
-            </mat-tab>
-          </mat-tab-group>
         </div>
-      </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
 
 
-      <div class="display">
-        <div>
-          <h2 id="errorAlert" style="margin-top: 50px;">2. Error Alert</h2>
-          <mat-tab-group>
-            <mat-tab label="Display">
-              <button (click)="openError()" mat-raised-button>open error</button>
-              <smc-simplealert [(isOpen)]="isErrorOpen" [type]="alertType.ERROR">This is an error alert!
-              </smc-simplealert>
-            </mat-tab>
-            <mat-tab label="Code">
-              <div class="code">
-                <p>Typescript</p>
-                <hr>
-                <pre>
+<div class="display">
+  <div>
+    <h2 id="errorAlert" style="margin-top: 50px;">2. Error Alert</h2>
+    <mat-tab-group>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>visibility</mat-icon>
+          Display
+        </ng-template>
+        <div class="smt-container">
+          <button (click)="openError()" mat-raised-button>open error</button>
+          <smc-simplealert [(isOpen)]="isErrorOpen" [type]="alertType.ERROR">This is an error alert!
+          </smc-simplealert>
+        </div>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>code</mat-icon>
+          Code
+        </ng-template>
+        <div class="code">
+          <p>Typescript</p>
+          <hr>
+          <pre>
 alertType = AlertType;
 isErrorOpen = true;
 openError() {{"{"}}&#x2063;
   this.isErrorOpen = true;
 }</pre>
-                <p>HTML</p>
-                <hr>
-                <pre>
+          <p>HTML</p>
+          <hr>
+          <pre>
 &lt;button (click)=&quot;openInfo()&quot; mat-raised-button&gt;open error&lt;/button&gt;
 &lt;smc-simplealert [(isOpen)]=&quot;isErrorOpen&quot; [type]=&quot;alertType.ERROR&quot;&gt;This is an error alert!&lt;/smc-simplealert&gt;</pre>
-              </div>
-            </mat-tab>
-          </mat-tab-group>
         </div>
-      </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
 
 
-      <div class="display">
-        <div>
-          <h2 id="warnAlert" style="margin-top: 50px;">3. Warn Alert</h2>
-          <mat-tab-group>
-            <mat-tab label="Display">
-              <button (click)="openError()" mat-raised-button>open warn</button>
-              <smc-simplealert [(isOpen)]="isWarnOpen" [type]="alertType.WARN">This is a warn alert!</smc-simplealert>
-            </mat-tab>
-            <mat-tab label="Code">
-              <div class="code">
-                <p>Typescript</p>
-                <hr>
-                <pre>
+<div class="display">
+  <div>
+    <h2 id="warnAlert" style="margin-top: 50px;">3. Warn Alert</h2>
+    <mat-tab-group>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>visibility</mat-icon>
+          Display
+        </ng-template>
+        <div class="smt-container">
+          <button (click)="openError()" mat-raised-button>open warn</button>
+          <smc-simplealert [(isOpen)]="isWarnOpen" [type]="alertType.WARN">This is a warn alert!</smc-simplealert>
+        </div>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>code</mat-icon>
+          Code
+        </ng-template>
+        <div class="code">
+          <p>Typescript</p>
+          <hr>
+          <pre>
 alertType = AlertType;
 openWarn() {{"{"}}&#x2063;
   this.isWarnOpen = true;
 }</pre>
-                <p>HTML</p>
-                <hr>
-                <pre>
+          <p>HTML</p>
+          <hr>
+          <pre>
 &lt;button (click)=&quot;openWarn()&quot; mat-raised-button&gt;open warn&lt;/button&gt;
 &lt;smc-simplealert [(isOpen)]=&quot;isWarnOpen&quot; [type]=&quot;alertType.WARN&quot;&gt;This is a warn alert!&lt;/smc-simplealert&gt;</pre>
-              </div>
-            </mat-tab>
-          </mat-tab-group>
         </div>
-      </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
 
-      <div class="display">
-        <div>
-          <h2 id="successAlert" style="margin-top: 50px;">4. Success Alert</h2>
-          <mat-tab-group>
-            <mat-tab label="Display">
-              <button (click)="openError()" mat-raised-button>open success</button>
-              <smc-simplealert [(isOpen)]="isWarnOpen" [type]="alertType.SUCCESS">This is a success alert!
-              </smc-simplealert>
-            </mat-tab>
-            <mat-tab label="Code">
-              <div class="code">
-                <p>Typescript</p>
-                <hr>
-                <pre>
+<div class="display">
+  <div>
+    <h2 id="successAlert" style="margin-top: 50px;">4. Success Alert</h2>
+    <mat-tab-group>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>visibility</mat-icon>
+          Display
+        </ng-template>
+        <div class="smt-container">
+          <button (click)="openError()" mat-raised-button>open success</button>
+          <smc-simplealert [(isOpen)]="isWarnOpen" [type]="alertType.SUCCESS">This is a success alert!
+          </smc-simplealert>
+        </div>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>code</mat-icon>
+          Code
+        </ng-template>
+        <div class="code">
+          <p>Typescript</p>
+          <hr>
+          <pre>
 alertType = AlertType;
 openSuccess() {{"{"}}&#x2063;
   this.isSuccessOpen = true;
 }</pre>
-                <p>HTML</p>
-                <hr>
-                <pre>
+          <p>HTML</p>
+          <hr>
+          <pre>
 &lt;button (click)=&quot;openSuccess()&quot; mat-raised-button&gt;open success&lt;/button&gt;
 &lt;smc-simplealert [(isOpen)]=&quot;isSuccessOpen&quot; [type]=&quot;alertType.WARN&quot;&gt;This is a success alert!&lt;/smc-simplealert&gt;</pre>
-              </div>
-            </mat-tab>
-          </mat-tab-group>
         </div>
-      </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

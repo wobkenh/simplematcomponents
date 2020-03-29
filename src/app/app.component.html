@@ -1,89 +1,52 @@
-<mat-sidenav-container>
-  <mat-sidenav
-    mode="side"
-    opened
-    [fixedInViewport]="true"
-    style="background-color: rgba(0,0,0,.03);"
-  >
-    <div class="mat-body">
-      <h3 routerLink="/" style="margin-left: 16px; margin-right: 16px">SimpleMatComponents</h3>
+<mat-sidenav-container class="sidenav-container" autosize>
 
-      <mat-nav-list>
-        <!-- class="nav-list" -->
-        <h3 mat-subheader>SimpleMatTable</h3>
-        <mat-list-item routerLink="/simple" routerLinkActive="active-item">
-          <span mat-line>Simple</span>
-        </mat-list-item>
-        <mat-list-item routerLink="/transform" routerLinkActive="active-item">
-          <span mat-line>Transform</span>
-        </mat-list-item>
-        <mat-list-item routerLink="/width-height" routerLinkActive="active-item">
-          <span mat-line>Width and Height</span>
-        </mat-list-item>
-        <mat-list-item routerLink="/align" routerLinkActive="active-item">
-          <span mat-line>Align</span>
-        </mat-list-item>
-        <mat-list-item routerLink="/sortable" routerLinkActive="active-item">
-          <span mat-line>Sortable</span>
-        </mat-list-item>
-        <mat-list-item routerLink="/visibility" routerLinkActive="active-item">
-          <span mat-line>Visibility/Responsive</span>
-        </mat-list-item>
-        <mat-list-item routerLink="/icons-buttons" routerLinkActive="active-item">
-          <span mat-line>Icons and Buttons</span>
-        </mat-list-item>
-        <mat-list-item routerLink="/multiline" routerLinkActive="active-item">
-          <span mat-line>Multiline values</span>
-        </mat-list-item>
-        <mat-list-item routerLink="/drag-drop-columns" routerLinkActive="active-item">
-          <span mat-line>Drag and drop columns</span>
-        </mat-list-item>
-        <mat-list-item routerLink="/custom-css" routerLinkActive="active-item">
-          <span mat-line>Custom CSS</span>
-        </mat-list-item>
-        <mat-list-item routerLink="/filter" routerLinkActive="active-item">
-          <span mat-line>Filter</span>
-        </mat-list-item>
-        <mat-list-item routerLink="/forms" routerLinkActive="active-item">
-          <span mat-line>Forms</span>
-        </mat-list-item>
-        <mat-list-item routerLink="/scrollable" routerLinkActive="active-item">
-          <span mat-line>Scrollable</span>
-        </mat-list-item>
-        <mat-list-item routerLink="/sticky-columns" routerLinkActive="active-item">
-          <span mat-line>Sticky columns</span>
-        </mat-list-item>
-        <mat-list-item routerLink="/pagination" routerLinkActive="active-item">
-          <span mat-line>Pagination</span>
-        </mat-list-item>
-        <mat-list-item routerLink="/direct-edit" routerLinkActive="active-item">
-          <span mat-line>Direct Edit</span>
-        </mat-list-item>
-        <mat-list-item routerLink="/infinite-scroll" routerLinkActive="active-item">
-          <span mat-line>Infinite Scrolling</span>
-        </mat-list-item>
-        <mat-list-item routerLink="/custom-components" routerLinkActive="active-item">
-          <span mat-line>Custom Components</span>
-        </mat-list-item>
-        <mat-list-item routerLink="/internationalization" routerLinkActive="active-item">
-          <span mat-line>Internationalization</span>
-        </mat-list-item>
-        <mat-list-item routerLink="/complete" routerLinkActive="active-item">
-          <span mat-line>Complete</span>
-        </mat-list-item>
-        <mat-divider style="margin: 15px 0 0 0;"></mat-divider>
-        <h3 mat-subheader>SimpleAlert</h3>
-        <mat-list-item routerLink="/alert">
-          <span mat-line>Alert</span>
-        </mat-list-item>
-      </mat-nav-list>
-    </div>
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+               [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+               [mode]="(isHandset$ | async) ? 'over' : 'side'"
+               [opened]="(isHandset$ | async) === false">
+    <mat-toolbar color="primary" class="mat-elevation-z5 toolbar">
+      <span>Simple Material Components</span>
+    </mat-toolbar>
+    <mat-list>
+      <h3 mat-subheader style="margin-top: 0">SimpleMatTable</h3>
+
+      <ng-container *ngFor="let item of simpleMatTableItems">
+        <a mat-list-item class="nav-list-item" [routerLink]="item.link" routerLinkActive="active-link">
+          <div mat-line>{{item.text}}</div>
+        </a>
+      </ng-container>
+      <mat-divider style="margin-top: 15px"></mat-divider>
+      <h3 mat-subheader>SimpleAlert</h3>
+      <a mat-list-item class="nav-list-item" routerLink="/alert" routerLinkActive="active-link">
+        <div mat-line>Alert</div>
+      </a>
+    </mat-list>
   </mat-sidenav>
+
   <mat-sidenav-content>
-    <div style="text-align:center; padding-top: 50px;" class="mat-body">
-      <main>
-        <router-outlet></router-outlet>
-      </main>
-    </div>
+    <mat-toolbar color="primary" class="mat-elevation-z5 toolbar">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span fxHide.lt-md style="flex: 0 0 auto;">Demo</span>
+      <span style="flex: 1 1 auto"></span>
+      <span fxHide.lt-md style="flex: 0 0 auto; font-weight: bold">View on:</span>
+      <a class="repo-links" href="https://github.com/wobkenh/simplematcomponents" target="_blank"><img
+        src="assets/github_logo_white.png" style="height: 40px"></a>
+      <a class="repo-links" href="https://www.npmjs.com/package/simplemattable" target="_blank"><img
+        src="assets/npm_logo.svg" style="height: 25px"></a>
+    </mat-toolbar>
+    <main>
+      <router-outlet></router-outlet>
+    </main>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+
+
+

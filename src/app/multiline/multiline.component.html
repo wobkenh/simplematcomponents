@@ -1,22 +1,34 @@
 <!-- Multiline Values -->
 <div class="display">
-    <div>
-      <h2 id="multiline">Multiline values</h2>
-      <span>By default, text that is too long for a cell will break into multiple lines according to the tables layout.</span>
-      <br>
-      <span>However, since &lt;span&gt; is used to display the text, line feeds in the text will not be displayed.</span>
-      <br>
-      <span>If you wish to display line feeds, use the textarea feature, which can be activated by specifying the maxLines attribute.</span>
-      <mat-tab-group>
-        <mat-tab label="Display">
+  <div>
+    <h2 id="multiline">Multiline values</h2>
+    <p>
+      By default, text that is too long for a cell will break into multiple lines according to the tables layout.
 
+      However, since &lt;span&gt; is used to display the text, line feeds in the text will not be displayed.
+
+      If you wish to display line feeds, use the textarea feature, which can be activated by specifying the maxLines
+      attribute.
+    </p>
+    <mat-tab-group>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>visibility</mat-icon>
+          Display
+        </ng-template>
+        <div class="smt-container">
           <smc-simplemattable [data]="dataMultiline" [columns]="columnsMultiline"></smc-simplemattable>
-        </mat-tab>
-        <mat-tab label="Code">
-          <div class="code">
-            <p>Typescript - Data</p>
-            <hr>
-            <pre>
+        </div>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>code</mat-icon>
+          Code
+        </ng-template>
+        <div class="code">
+          <p>Typescript - Data</p>
+          <hr>
+          <pre>
 this.dataMultiline = [
   new ComplexTestData(1, 40, 'Lorem ipsum dolor sit amet, consetetur sadipscing ' +
     'elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam ' +
@@ -25,9 +37,9 @@ this.dataMultiline = [
   new ComplexTestData(3, 43, 'Regular Text!!!', null, 'test3')
 ];
   </pre>
-            <p>Typescript - Columns</p>
-            <hr>
-            <pre>
+          <p>Typescript - Columns</p>
+          <hr>
+          <pre>
 this.columnsMultiline = [
   new TableColumn&lt;ComplexTestData, 'id'&gt;('My ID - Link', 'id')
     .withWidth(Width.px(100)),
@@ -37,13 +49,13 @@ this.columnsMultiline = [
     .withMaxLines(5),
 ];
   </pre>
-            <p>HTML</p>
-            <hr>
-            <pre>
+          <p>HTML</p>
+          <hr>
+          <pre>
 &lt;smc-simplemattable [data]=&quot;dataMultiline&quot; [columns]=&quot;columnsMultiline&quot;&gt;&lt;/smc-simplemattable&gt;
   </pre>
-          </div>
-        </mat-tab>
-      </mat-tab-group>
-    </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
   </div>
+</div>

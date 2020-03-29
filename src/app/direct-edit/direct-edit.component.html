@@ -1,17 +1,30 @@
 <div class="display">
   <div>
     <h2 id="directEdit">Direct Edit</h2>
-    <span>Use direct edit on a column if you need the ngModel binding instead of a form control.</span>
-    <span>Your data item will be directly edited as the user uses the form field.</span>
-    <span>Note that errors/validations wont work with direct edit. You need to do validations yourself.</span>
-    <span>Validating can be done using the <pre style="display:inline">onDirectEditModelChange</pre> callback on the form field. See the first table for an example.</span>
+    <div style="line-height: 1.5">
+      Use direct edit on a column if you need the ngModel binding instead of a form control.
+      Your data item will be directly edited as the user uses the form field.
+      Note that errors/validations wont work with direct edit. You need to do validations yourself.
+      Validating can be done using the <pre style="display:inline">onDirectEditModelChange</pre> callback on the form field. See the first table for an example.
+    </div>
 
     <mat-tab-group>
-      <mat-tab label="Display">
-        <button mat-raised-button (click)="logDataDirectEdit()">Log Data to console</button>
-        <smc-simplemattable [data]="dataDirectEdit" [columns]="columnsDirectEdit"></smc-simplemattable>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>visibility</mat-icon>
+          Display
+        </ng-template>
+        <div class="smt-container">
+          <button mat-raised-button (click)="logDataDirectEdit()" style="margin-bottom: 25px">Log Data to console
+          </button>
+          <smc-simplemattable [data]="dataDirectEdit" [columns]="columnsDirectEdit"></smc-simplemattable>
+        </div>
       </mat-tab>
-      <mat-tab label="Code">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>code</mat-icon>
+          Code
+        </ng-template>
         <div class="code">
           <p>Typescript - Data</p>
           <hr>
@@ -28,7 +41,8 @@ const idCol = new TableColumn&lt;ComplexTestData, &#39;id&#39;&gt;(&#39;My ID&#3
 const valueCol = new TableColumn&lt;ComplexTestData, &#39;value&#39;&gt;(&#39;My Value&#39;, &#39;value&#39;)
 .isDirectEdit(true);
 valueCol.withFormField(valueCol.getNumberFormField().withOnDirectEditModelChange((newValue, property, element) =&gt; {{ "{" }}
-  console.log(`New value of field &quot;value&quot; of element with id ${{ "{" }}element.id} is: ${{ "{" }}newValue} and old value was: ${{ "{" }}property}`);
+            console.log(`New value of field &quot;value&quot; of element with id ${{ "{" }}element.id} is: ${{ "{" }}
+            newValue} and old value was: ${{ "{" }}property}`);
   // Note that we have to set the new value ourselves when using this callback!
   element.value = newValue;
 }));
@@ -51,17 +65,32 @@ idCol, valueCol, notesCol
 <div class="display">
   <div>
     <h2 id="directEdit2">Direct Edit</h2>
-    <span>Example of a check-for-delete table using a direct edit checkbox.</span>
+    <p>Example of a check-for-delete table using a direct edit checkbox.</p>
 
     <mat-tab-group>
-      <mat-tab label="Display">
-        <button mat-raised-button (click)="deleteSelected()">Delete Selected</button>
-        <button mat-raised-button (click)="selectAllFiltered()">Select all filtered elements</button>
-        <button mat-raised-button (click)="deleteAllFiltered()">Delete all filtered elements</button>
-        <smc-simplemattable [data]="dataDirectEdit2" [columns]="columnsDirectEdit2" [filter]="true"
-                            (filteredData)="filteredData=$event" [paginator]="true"></smc-simplemattable>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>visibility</mat-icon>
+          Display
+        </ng-template>
+        <div class="smt-container">
+          <div style="margin-bottom: 25px;">
+            <button mat-raised-button (click)="deleteSelected()" style="margin-right: 15px">Delete Selected</button>
+            <button mat-raised-button (click)="selectAllFiltered()" style="margin-right: 15px">Select all filtered
+              elements
+            </button>
+            <button mat-raised-button (click)="deleteAllFiltered()">Delete all filtered elements</button>
+          </div>
+          <smc-simplemattable [data]="dataDirectEdit2" [columns]="columnsDirectEdit2" [filter]="true"
+                              style="background: white"
+                              (filteredData)="filteredData=$event" [paginator]="true"></smc-simplemattable>
+        </div>
       </mat-tab>
-      <mat-tab label="Code">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>code</mat-icon>
+          Code
+        </ng-template>
         <div class="code">
           <p>Typescript - Data</p>
           <hr>

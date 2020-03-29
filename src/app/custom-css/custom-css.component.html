@@ -1,28 +1,39 @@
 <!-- Custom CSS -->
 <div class="display">
-    <div>
-      <h2 id="customcss">Custom CSS</h2>
-      <span>You can easily and dynamically apply css to the content of the table cell.</span>
-      <br>
-      <span>SimpleMatTable will simply forward the style-object to Angular, so everything that works with standard Angular ngStyle/ngClass works here too.</span>
-      <mat-tab-group>
-        <mat-tab label="Display">
+  <div>
+    <h2 id="customcss">Custom CSS</h2>
+    <p>
+      You can easily and dynamically apply css to the content of the table cell.
+      SimpleMatTable will simply forward the style-object to Angular, so everything that works with standard Angular ngStyle/ngClass works here too.
+    </p>
+    <mat-tab-group>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>visibility</mat-icon>
+          Display
+        </ng-template>
+        <div class="smt-container">
           <smc-simplemattable [data]="dataCustomCss" [columns]="columnsCustomCss"></smc-simplemattable>
-        </mat-tab>
-        <mat-tab label="Code">
-          <div class="code">
-            <p>Typescript - Data</p>
-            <hr>
-            <pre>
+        </div>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>code</mat-icon>
+          Code
+        </ng-template>
+        <div class="code">
+          <p>Typescript - Data</p>
+          <hr>
+          <pre>
 this.dataCustomCss = [
   new ComplexTestData(1, 40, 'description 1', null, 'test2'),
   new ComplexTestData(2, 42, 'description 2', null, 'test3'),
   new ComplexTestData(3, 43, 'description 3', null, 'test3')
 ];
   </pre>
-            <p>Typescript - Columns</p>
-            <hr>
-            <pre>
+          <p>Typescript - Columns</p>
+          <hr>
+          <pre>
 this.columnsCustomCss = [
   new TableColumn&lt;ComplexTestData, 'id'&gt;('My ID - Color depends on id', 'id')
     .withNgStyle((id) =&gt; ({{"{"}}'background-color': 'rgb(0, ' + id * 50 + ', 0)'})),
@@ -32,21 +43,21 @@ this.columnsCustomCss = [
     .withNgClass(() =&gt; 'red-bg-cell')
 ];
   </pre>
-            <p>Global CSS (styles.css)</p>
-            <hr>
-            <pre>
+          <p>Global CSS (styles.css)</p>
+          <hr>
+          <pre>
 .red-bg-cell {{"{"}}&#x2063;
   background: #992222 !important;
   color: white;
 }
   </pre>
-            <p>HTML</p>
-            <hr>
-            <pre>
+          <p>HTML</p>
+          <hr>
+          <pre>
 &lt;smc-simplemattable [data]=&quot;dataCustomCss&quot; [columns]=&quot;columnsCustomCss&quot;&gt;&lt;/smc-simplemattable&gt;
   </pre>
-          </div>
-        </mat-tab>
-      </mat-tab-group>
-    </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
   </div>
+</div>

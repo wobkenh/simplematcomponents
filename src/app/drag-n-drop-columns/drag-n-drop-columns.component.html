@@ -1,14 +1,28 @@
 <div class="display">
   <div>
-    <h2 id="simple">Simple</h2>
-    <span>Create your data, declare your tables, feed both to simplemattable and you're good to go!</span>
+    <h2 id="simple">Reordering columns by drag and drop</h2>
+    <div style="line-height: 1.5">Allows the user to reorder the columns by dragging the table headers around. Activate
+      this by setting the
+      <pre style="display: inline">columnDragAndDrop</pre>
+      flag.
+    </div>
 
     <mat-tab-group>
-      <mat-tab label="Display">
-        <smc-simplemattable [data]="dataSimple" [columns]="columnsSimple"
-                            [columnDragAndDrop]="true"></smc-simplemattable>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>visibility</mat-icon>
+          Display
+        </ng-template>
+        <div class="smt-container">
+          <smc-simplemattable [data]="dataSimple" [columns]="columnsSimple"
+                              [columnDragAndDrop]="true"></smc-simplemattable>
+        </div>
       </mat-tab>
-      <mat-tab label="Code">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>code</mat-icon>
+          Code
+        </ng-template>
         <div class="code">
           <p>Typescript - Data</p>
           <hr>

@@ -1,17 +1,34 @@
 <div class="display">
   <div>
     <h2 id="simple">Sticky columns</h2>
-    <span>If you have a wide table that is scrollable and want to make a column stick, use the sticky table column options.</span>
-    <span>You can use the sticky option to stick the column to the left of the table and stickyEnd to stick the column to the right of the table.</span>
-    <span>The column will stick once it passed the left (sticky) or right (stickyEnd) border of the table.</span>
-    <span>To make the button column that comes with the form functionalities sticky, use the simplemattable stickyButtons option.</span>
+    <p>
+      If you have a wide table that is scrollable and want to make a column stick, use the sticky table column options.
+
+      You can use the sticky option to stick the column to the left of the table and stickyEnd to stick the column to
+      the right of the table.
+
+      The column will stick once it passed the left (sticky) or right (stickyEnd) border of the table.
+
+      To make the button column that comes with the form functionalities sticky, use the simplemattable stickyButtons
+      option.
+    </p>
 
     <mat-tab-group>
-      <mat-tab label="Display">
-        <smc-simplemattable [data]="dataSimple" [columns]="columnsSimple" [stickyButtons]="true"
-                            [editable]="true"></smc-simplemattable>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>visibility</mat-icon>
+          Display
+        </ng-template>
+        <div class="smt-container" style="padding-left: 0; padding-right: 0">
+          <smc-simplemattable [data]="dataSimple" [columns]="columnsSimple" [stickyButtons]="true"
+                              [editable]="true"></smc-simplemattable>
+        </div>
       </mat-tab>
-      <mat-tab label="Code">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>code</mat-icon>
+          Code
+        </ng-template>
         <div class="code">
           <p>Typescript - Data</p>
           <hr>

@@ -10,19 +10,52 @@ smc-simplemattable .mat-form-field-infix {
   width: 100% !important;
 }
 
+smc-simplemattable {
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),0px 5px 8px 0px rgba(0, 0, 0, 0.14),0px 1px 14px 0px rgba(0, 0, 0, 0.12);
+}
+
+.smt-container {
+  padding: 50px 25px 25px 25px;
+}
+
+.mat-tab-label-content mat-icon {
+  margin-right: 15px;
+}
+
 body {
   margin: 0;
-  background: #fafafa;
+  background: white;
+  font-family: Roboto,Helvetica Neue Light,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  scrollbar-width: thin;
+  scrollbar-color: #673ab7 rgba(0, 0, 0, 0.1);
+}
+
+html, body {
+  height: 100%;
 }
 
 .mat-tab-body-content > .mat-raised-button {
   margin-bottom: 10px;
 }
 
+mat-tab-group {
+  background: rgb(245, 247, 249);
+  border-radius: 10px;
+  margin: 40px 0 15px 0;
+  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),0px 2px 2px 0px rgba(0, 0, 0, 0.14),0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+}
+
+mat-tab-header {
+  background: white;
+}
+
 
 .code {
   text-align: left;
   padding: 15px;
+  background: white;
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),0px 1px 1px 0px rgba(0, 0, 0, 0.14),0px 1px 3px 0px rgba(0, 0, 0, 0.12);
 }
 
 .code p {
@@ -31,10 +64,11 @@ body {
 }
 
 .code pre {
-  background-color: white;
+  background-color: rgb(245, 247, 249);
   padding: 15px;
   border-radius: 15px;
   overflow: auto;
+  border: 1px solid rgba(0, 0, 0,0.12);
 }
 
 .display {
@@ -50,6 +84,28 @@ body {
   flex-direction: column;
 }
 
-mat-tab-group {
-  margin-top: 25px;
+@media(max-width: 1250px) {
+  .display > div {
+    padding: 20px 10px;
+  }
+}
+
+.display > div > p {
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Scrollbar Fun */
+
+::-webkit-scrollbar {
+ width: 12px; /* for vertical scrollbars */
+ height: 12px; /* for horizontal scrollbars */
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #673ab7;
 }

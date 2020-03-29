@@ -1,30 +1,48 @@
 <div class="display">
   <div>
     <h2 id="infiniteScrolling">Infinite Scrolling</h2>
-    <span>Turn on infinite scrolling to let the user view more entries by scrolling down.</span>
-    <span style="margin-bottom: 10px">Just like with pagination, the new data can be fetched using either the getPage parameter or reacting to the page event.</span>
+    <p>
+      Turn on infinite scrolling to let the user view more entries by scrolling down.
+      Just like with pagination, the new data can be fetched using either the getPage parameter or reacting to the page
+      event.
 
-    <span style="margin-bottom: 10px">Additionally, you can pass a height object to the "infiniteScrollingHeight" parameter to change the point at which a new page will be fetched. Default is 200px, which means that a new page will be fetched if the user is 200px or less away from reaching the bottom.</span>
+      Additionally, you can pass a height object to the "infiniteScrollingHeight" parameter to change the point at which
+      a new page will be fetched. Default is 200px, which means that a new page will be fetched if the user is 200px or
+      less away from reaching the bottom.
 
-    <span>Regarding the placement of the scrollbar, you have two options:</span>
+      Regarding the placement of the scrollbar, you have two options:
+    </p>
 
     <h3>Scrollbar on Simplemattable</h3>
-    <span>Limit the height of simplemattable and let the content of simplemattable be scrollable using either the overflowAuto or the sticky option.</span>
-    <span>Even though the paginator is missing, you can still use the renderedData output events to get the displayed data, e.g. to show a count.</span>
+    <p>
+      Limit the height of simplemattable and let the content of simplemattable be scrollable using either the
+      overflowAuto or the sticky option.
+
+      Even though the paginator is missing, you can still use the renderedData output events to get the displayed data,
+      e.g. to show a count.
+    </p>
     <mat-tab-group>
-      <mat-tab label="Display">
-        <div style="padding: 10px; background: white;">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>visibility</mat-icon>
+          Display
+        </ng-template>
+        <div class="smt-container">
           <smc-simplemattable [data]="dataInfiniteScroll" [columns]="columnsInfiniteScroll" [infiniteScrolling]="true"
-                              [filter]="true"
-                              (renderedData)="updateCount($event)"
-                              [sticky]="true" [getPage]="getPage" style="height: 400px;"></smc-simplemattable>
+                              [filter]="true" (renderedData)="updateCount($event)"
+                              [sticky]="true" [getPage]="getPage"
+                              style="height: 400px; background: white"></smc-simplemattable>
           <mat-divider></mat-divider>
           <div style="display: flex; align-items: center; justify-content: flex-end; padding: 20px 20px 10px 20px">
             Showing {{itemCount}} entries
           </div>
         </div>
       </mat-tab>
-      <mat-tab label="Code">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>code</mat-icon>
+          Code
+        </ng-template>
         <div class="code">
           <p>Typescript - Data</p>
           <hr>
@@ -96,14 +114,26 @@ updateCount(data: TestData[]) {{"{"}}&#x2063;
     </mat-tab-group>
 
     <h3>Scrollbar on Window</h3>
-    <span>Leave the simplemattable height unlimited and let the window have the scrollbar.</span>
-    <span>Note that the sticky header option is not available when using this strategy.</span>
+    <p>
+      Leave the simplemattable height unlimited and let the window have the scrollbar.
+      Note that the sticky header option is not available when using this strategy.
+    </p>
     <mat-tab-group>
-      <mat-tab label="Display">
-        <smc-simplemattable [data]="dataInfiniteScroll2" [columns]="columnsInfiniteScroll" [infiniteScrolling]="true"
-                            [getPage]="getPage"></smc-simplemattable>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>visibility</mat-icon>
+          Display
+        </ng-template>
+        <div class="smt-container">
+          <smc-simplemattable [data]="dataInfiniteScroll2" [columns]="columnsInfiniteScroll" [infiniteScrolling]="true"
+                              [getPage]="getPage"></smc-simplemattable>
+        </div>
       </mat-tab>
-      <mat-tab label="Code">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>code</mat-icon>
+          Code
+        </ng-template>
         <div class="code">
           <p>Typescript - Data</p>
           <hr>

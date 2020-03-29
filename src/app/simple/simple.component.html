@@ -1,16 +1,26 @@
 <div class="display">
     <div>
       <h2 id="simple">Simple</h2>
-      <span>Create your data, declare your tables, feed both to simplemattable and you're good to go!</span>
+      <p>Create your data, declare your tables, feed both to simplemattable and you're good to go!</p>
 
       <mat-tab-group>
-        <mat-tab label="Display">
-          <smc-simplemattable [data]="dataSimple" [columns]="columnsSimple"></smc-simplemattable>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>visibility</mat-icon>
+            Display
+          </ng-template>
+          <div class="smt-container">
+            <smc-simplemattable [data]="dataSimple" [columns]="columnsSimple"></smc-simplemattable>
+          </div>
         </mat-tab>
-        <mat-tab label="Code">
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>code</mat-icon>
+            Code
+          </ng-template>
           <div class="code">
             <p>Typescript - Data</p>
-            <hr>
+            <mat-divider></mat-divider>
             <pre>
 this.dataSimple = [
   new ComplexTestData(1, 40, 'test1', null, 'test2'),
@@ -18,7 +28,7 @@ this.dataSimple = [
 ];
   </pre>
             <p>Typescript - Columns</p>
-            <hr>
+            <mat-divider></mat-divider>
             <pre>
 this.columnsSimple = [
   new TableColumn&lt;ComplexTestData, 'id'&gt;('My ID', 'id'),
@@ -26,7 +36,7 @@ this.columnsSimple = [
 ];
   </pre>
             <p>HTML</p>
-            <hr>
+            <mat-divider></mat-divider>
             <pre>
 &lt;smc-simplemattable [data]=&quot;dataSimple&quot; [columns]=&quot;columnsSimple&quot;&gt;&lt;/smc-simplemattable&gt;
   </pre>
