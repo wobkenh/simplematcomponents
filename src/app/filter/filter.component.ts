@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { TableColumn } from 'projects/simplemattable/src/public_api';
-import { ComplexTestData, TestData } from '../model/test-data.model';
+import {Component, OnInit} from '@angular/core';
+import {TableColumn} from 'projects/simplemattable/src/public_api';
+import {ComplexTestData, TestData} from '../model/test-data.model';
 
 @Component({
   selector: 'smc-filter',
@@ -12,8 +12,22 @@ export class FilterComponent implements OnInit {
   // Filter
   dataFilter: ComplexTestData[] = [];
   columnsFilter: TableColumn<any, any>[] = [];
+  typescriptData = `this.dataFilter = [
+  new ComplexTestData(1, 40, 'search for me test1', new TestData('Key1', 'Value1', d1), 'test2'),
+  new ComplexTestData(2, 42, 'or for me test2', new TestData('Key2', 'Value2', d2), 'test3')
+];`;
+  typescriptColumns = `this.columnsFilter = [
+  new TableColumn<ComplexTestData, 'id'>('My ID', 'id'),
+  new TableColumn<ComplexTestData, 'description'>('My Description with column filter', 'description')
+    .withColFilter(),
+  new TableColumn<ComplexTestData, 'data'>('Nested Value with column filter', 'data')
+    .withTransform(data => data.value)
+    .withColFilter(),
+];`;
+  html = `<smc-simplemattable [data]="dataFilter" [columns]="columnsFilter" [filter]="true"></smc-simplemattable>`;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
     const d1 = new Date();

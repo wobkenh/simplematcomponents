@@ -38,6 +38,20 @@ import {PlaygroundComponent} from './playground/playground.component';
 import {DragNDropColumnsComponent} from './drag-n-drop-columns/drag-n-drop-columns.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {FlexLayoutModule} from '@angular/flex-layout';
+import {HIGHLIGHT_OPTIONS, HighlightModule} from 'ngx-highlightjs';
+
+/**
+ * Import specific languages to avoid importing everything
+ * The following will lazy load highlight.js core script (~9.6KB) + the selected languages bundle (each lang. ~1kb)
+ */
+export function getHighlightLanguages() {
+  return {
+    typescript: () => import('highlight.js/lib/languages/typescript'),
+    css: () => import('highlight.js/lib/languages/css'),
+    xml: () => import('highlight.js/lib/languages/xml')
+  };
+}
+
 
 @NgModule({
   declarations: [
@@ -67,25 +81,33 @@ import {FlexLayoutModule} from '@angular/flex-layout';
     PlaygroundComponent,
     DragNDropColumnsComponent
   ],
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        AppRoutingModule,
-        MatCommonModule,
-        MatButtonModule,
-        SimplealertModule,
-        SimplemattableModule,
-        SimplemattableModule,
-        MatTabsModule,
-        MatSidenavModule,
-        MatCardModule,
-        MatListModule,
-        MatIconModule,
-        MatToolbarModule,
-        FlexLayoutModule
-    ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    MatCommonModule,
+    MatButtonModule,
+    SimplealertModule,
+    SimplemattableModule,
+    SimplemattableModule,
+    MatTabsModule,
+    MatSidenavModule,
+    MatCardModule,
+    MatListModule,
+    MatIconModule,
+    MatToolbarModule,
+    FlexLayoutModule,
+    HighlightModule
+  ],
   entryComponents: [CustomTableCellComponent],
-  providers: [],
+  providers: [
+    {
+      provide: HIGHLIGHT_OPTIONS,
+      useValue: {
+        languages: getHighlightLanguages()
+      }
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -236,6 +236,15 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     }
   }
 
+  // start ---   Scrolling Methods
+  /*
+      Scrolling Events are relevant only for infiniteScrolling
+      We have three different sources for scroll events:
+      1. Scroll on simplemattable component - if simplemattable itself has a scrollbar
+      2. Scroll on Parent - If a parent of simplemattable component has a scrollbar
+      3. Scroll on Window - If no parent of simplemattable has a scrollbar
+   */
+
   @HostListener('window:scroll', [])
   onScrollWindow() {
     if (!this.overflowAuto && !this.sticky && this.infiniteScrolling) {
@@ -249,12 +258,22 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   onScrollComponent(event) {
     if ((this.overflowAuto || this.sticky) && this.infiniteScrolling) {
-      const ele = event.target;
-      const clientHeight = ele.clientHeight;
-      const pos = ele.scrollTop + clientHeight;
-      const max = ele.scrollHeight;
-      this.onScroll(clientHeight, pos, max);
+      this.onScrollElement(event);
     }
+  }
+
+  onScrollParent(event) {
+    if (!this.sticky && !this.overflowAuto && this.scrollContainer) {
+      this.onScrollElement(event);
+    }
+  }
+
+  private onScrollElement(event) {
+    const ele = event.target;
+    const clientHeight = ele.clientHeight;
+    const pos = ele.scrollTop + clientHeight;
+    const max = ele.scrollHeight;
+    this.onScroll(clientHeight, pos, max);
   }
 
   /**
@@ -312,6 +331,19 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
       });
     }
   }
+
+  getScrollParent(node: any): any | null {
+    if (node == null) {
+      return null;
+    }
+    if (node.scrollHeight > node.clientHeight && node.clientHeight > 0) {
+      return node;
+    } else {
+      return this.getScrollParent(node.parentNode);
+    }
+  }
+
+  // end   ---   Scrolling Methods
 
   getTableCellStyle(tcol: TableColumn<T, any>): { [p: string]: string } {
     if (tcol.width) {
@@ -772,6 +804,18 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
       // Scrolling
       if (this.infiniteScrolling) {
+
+        // Register scroll listener
+        if (!this.sticky && !this.overflowAuto && this.scrollContainer) {
+          const parentWithScroll = this.getScrollParent(this.scrollContainer.nativeElement);
+          if (parentWithScroll) {
+            parentWithScroll.onscroll = (event) => {
+              this.onScrollParent(event);
+            };
+          }
+        }
+
+        // start loading if screen not filled
         setTimeout(() => {
           // If the posts do not fill the whole screen, scolling down might not work, so the user has no chance to reload
           // Therefore, load posts until a scrollbar appears or all posts are loaded
@@ -784,9 +828,15 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
               pos = ele.clientHeight;
               max = ele.scrollHeight;
             } else {
-              // Window scroll
-              pos = (document.documentElement.scrollTop || document.body.scrollTop) + document.documentElement.clientHeight;
-              max = document.documentElement.scrollHeight;
+              const parent = this.getScrollParent(this.scrollContainer.nativeElement);
+              if (parent) {
+                pos = parent.scrollTop + parent.clientHeight;
+                max = parent.scrollHeight;
+              } else {
+                // Window scroll
+                pos = (document.documentElement.scrollTop || document.body.scrollTop) + document.documentElement.clientHeight;
+                max = document.documentElement.scrollHeight;
+              }
             }
             if (pos === max) {
               this.infiniteScrollingPage++;

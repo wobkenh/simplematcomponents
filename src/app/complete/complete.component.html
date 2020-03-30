@@ -29,7 +29,7 @@
         </ng-template>
         <div class="code">
           <p>Typescript - Data</p>
-          <hr>
+          <mat-divider></mat-divider>
           <pre>
 this.dataComplete = [
   new ComplexTestData(1, 40, 'test1', new TestData('Key1', 'Value1', d1), 'test1'),
@@ -49,7 +49,7 @@ this.dataComplete = [
 ];
   </pre>
           <p>Typescript - Columns</p>
-          <hr>
+          <mat-divider></mat-divider>
           <pre>
 const completeIdCol = new TableColumn&lt;ComplexTestData, 'id'&gt;('ID with button', 'id')
   .withIcon((id) =&gt; id &lt; 3 ? 'add' : 'delete')
@@ -150,7 +150,7 @@ const completeMultilineCol = new TableColumn&lt;ComplexTestData, 'notes'&gt;('Th
 this.columnsComplete = [completeIdCol, completeTestErrorCol, completeDesCol, completeDes2Col, completeValueCol, completeKeyCol, completeValCol, completeDateCol, completeMultilineCol];
   </pre>
           <p>HTML</p>
-          <hr>
+          <mat-divider></mat-divider>
           <pre>
 &lt;smc-simplemattable [data]=&quot;dataComplete&quot; [columns]=&quot;columnsComplete&quot; [paginator]=&quot;true&quot; [filter]=&quot;true&quot;
                 (edit)=&quot;onEdit($event)&quot; [paginatorPageSize]=&quot;3&quot;

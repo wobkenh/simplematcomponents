@@ -683,7 +683,8 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
-+ 5.1 (9.1): Reordering of columns via drag and drop
++ 5.2 (9.0): Better scrolling recognition for Infinite Scrolling (+ Demo Application complete overhaul)
++ 5.1 (9.0): Reordering of columns via drag and drop
 + 5.0 (9.0): updated to angular 9
 + 4.0 (8.0): performance upgrades
 + 3.8 (8.0): sort event

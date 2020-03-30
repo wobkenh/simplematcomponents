@@ -31,49 +31,14 @@
         </ng-template>
         <div class="code">
           <p>Typescript - Data</p>
-          <hr>
-          <pre>
-this.dataSimple = [
-  new ComplexTestData(1000000, 400000000, &#39;test1&#39;, null, &#39;test2&#39;),
-  new ComplexTestData(2, 42, &#39;test2&#39;, null, &#39;test3&#39;),
-  new ComplexTestData(3, 43, &#39;test2&#39;, null, &#39;test3&#39;),
-  new ComplexTestData(4, 44, &#39;test2&#39;, null, &#39;test3&#39;),
-  new ComplexTestData(5, 45, &#39;test2&#39;, null, &#39;test3&#39;)
-];
-  </pre>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="typescriptData"></code></pre>
           <p>Typescript - Columns</p>
-          <hr>
-          <pre>
-this.columnsSimple = [
-  new TableColumn&lt;ComplexTestData, &#39;id&#39;&gt;(&#39;My ID&#39;, &#39;id&#39;),
-  new TableColumn&lt;ComplexTestData, &#39;value&#39;&gt;(&#39;My Value My Value&#39;, &#39;value&#39;)
-    .isSticky(true),
-  new TableColumn&lt;ComplexTestData, &#39;value&#39;&gt;(&#39;My Value&#39;, &#39;value&#39;),
-  new TableColumn&lt;ComplexTestData, &#39;value&#39;&gt;(&#39;My Value&#39;, &#39;value&#39;),
-  new TableColumn&lt;ComplexTestData, &#39;value&#39;&gt;(&#39;My Value&#39;, &#39;value&#39;),
-  new TableColumn&lt;ComplexTestData, &#39;value&#39;&gt;(&#39;My Value&#39;, &#39;value&#39;),
-  new TableColumn&lt;ComplexTestData, &#39;value&#39;&gt;(&#39;My Value&#39;, &#39;value&#39;),
-  new TableColumn&lt;ComplexTestData, &#39;value&#39;&gt;(&#39;My Value&#39;, &#39;value&#39;),
-  new TableColumn&lt;ComplexTestData, &#39;value&#39;&gt;(&#39;My Value&#39;, &#39;value&#39;),
-  new TableColumn&lt;ComplexTestData, &#39;value&#39;&gt;(&#39;My Value&#39;, &#39;value&#39;),
-  new TableColumn&lt;ComplexTestData, &#39;value&#39;&gt;(&#39;My Value&#39;, &#39;value&#39;),
-  new TableColumn&lt;ComplexTestData, &#39;value&#39;&gt;(&#39;My Value&#39;, &#39;value&#39;),
-  new TableColumn&lt;ComplexTestData, &#39;value&#39;&gt;(&#39;My Value&#39;, &#39;value&#39;),
-  new TableColumn&lt;ComplexTestData, &#39;value&#39;&gt;(&#39;My Value&#39;, &#39;value&#39;),
-  new TableColumn&lt;ComplexTestData, &#39;value&#39;&gt;(&#39;My Value&#39;, &#39;value&#39;),
-  new TableColumn&lt;ComplexTestData, &#39;value&#39;&gt;(&#39;My Value&#39;, &#39;value&#39;),
-  new TableColumn&lt;ComplexTestData, &#39;value&#39;&gt;(&#39;My Value&#39;, &#39;value&#39;),
-  new TableColumn&lt;ComplexTestData, &#39;value&#39;&gt;(&#39;My Value&#39;, &#39;value&#39;),
-  new TableColumn&lt;ComplexTestData, &#39;value&#39;&gt;(&#39;My Value&#39;, &#39;value&#39;),
-  new TableColumn&lt;ComplexTestData, &#39;value&#39;&gt;(&#39;My Value&#39;, &#39;value&#39;)
-];
-  </pre>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="typescriptColumns"></code></pre>
           <p>HTML</p>
-          <hr>
-          <pre>
-&lt;smc-simplemattable [data]=&quot;dataSimple&quot; [columns]=&quot;columnsSimple&quot; [stickyButtons]=&quot;true&quot;
-                [editable]=&quot;true&quot;&gt;&lt;/smc-simplemattable&gt;
-  </pre>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="html"></code></pre>
         </div>
       </mat-tab>
     </mat-tab-group>

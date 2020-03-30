@@ -23,39 +23,17 @@
         </ng-template>
         <div class="code">
           <p>Typescript - Data</p>
-          <hr>
-          <pre>
-this.dataCustomCss = [
-  new ComplexTestData(1, 40, 'description 1', null, 'test2'),
-  new ComplexTestData(2, 42, 'description 2', null, 'test3'),
-  new ComplexTestData(3, 43, 'description 3', null, 'test3')
-];
-  </pre>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="typescriptData"></code></pre>
           <p>Typescript - Columns</p>
-          <hr>
-          <pre>
-this.columnsCustomCss = [
-  new TableColumn&lt;ComplexTestData, 'id'&gt;('My ID - Color depends on id', 'id')
-    .withNgStyle((id) =&gt; ({{"{"}}'background-color': 'rgb(0, ' + id * 50 + ', 0)'})),
-  new TableColumn&lt;ComplexTestData, 'description'&gt;('My Description with background image (ngStyle)', 'description')
-    .withNgStyle(() =&gt; ({{"{"}}'background-image': 'url(assets/smile.png)'})),
-  new TableColumn&lt;ComplexTestData, 'description'&gt;('My Description with background color (ngClass)', 'description')
-    .withNgClass(() =&gt; 'red-bg-cell')
-];
-  </pre>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="typescriptColumns"></code></pre>
           <p>Global CSS (styles.css)</p>
-          <hr>
-          <pre>
-.red-bg-cell {{"{"}}&#x2063;
-  background: #992222 !important;
-  color: white;
-}
-  </pre>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="css"></code></pre>
           <p>HTML</p>
-          <hr>
-          <pre>
-&lt;smc-simplemattable [data]=&quot;dataCustomCss&quot; [columns]=&quot;columnsCustomCss&quot;&gt;&lt;/smc-simplemattable&gt;
-  </pre>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="html"></code></pre>
         </div>
       </mat-tab>
     </mat-tab-group>

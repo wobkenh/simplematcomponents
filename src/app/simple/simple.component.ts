@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { ComplexTestData } from '../model/test-data.model';
-import { TableColumn } from 'projects/simplemattable/src/public_api';
+import {Component, OnInit} from '@angular/core';
+import {ComplexTestData} from '../model/test-data.model';
+import {TableColumn} from 'projects/simplemattable/src/public_api';
 
 @Component({
   selector: 'smc-simple',
@@ -12,7 +12,19 @@ export class SimpleComponent implements OnInit {
   dataSimple: ComplexTestData[] = [];
   columnsSimple: TableColumn<any, any>[] = [];
 
-  constructor() {}
+  // Code
+  typescriptData = 'this.dataSimple = [\n' +
+    '  new ComplexTestData(1, 40, \'test1\', null, \'test2\'),\n' +
+    '  new ComplexTestData(2, 42, \'test2\', null, \'test3\')\n' +
+    '];';
+  typescriptColumns = 'this.columnsSimple = [\n' +
+    '  new TableColumn<ComplexTestData, \'id\'>(\'My ID\', \'id\'),\n' +
+    '  new TableColumn<ComplexTestData, \'value\'>(\'My Value\', \'value\')\n' +
+    '];';
+  html = '<smc-simplemattable [data]="dataSimple" [columns]="columnsSimple"></smc-simplemattable>';
+
+  constructor() {
+  }
 
   ngOnInit() {
     /*

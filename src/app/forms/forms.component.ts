@@ -13,6 +13,61 @@ export class FormsComponent implements OnInit {
   dataForm: ComplexTestData[] = [];
   columnsForm: TableColumn<any, any>[] = [];
   id = 42;
+  typescriptData = `this.dataForm = [
+  new ComplexTestData(1, 40, 'test1', new TestData('Key1', 'Value1', d1), 'test2'),
+  new ComplexTestData(2, 42, 'test2', new TestData('Key2', 'Value2', d2), 'test3')
+];`;
+  typescriptColumns = `const formIdCol = new TableColumn<ComplexTestData, 'id'>('My ID', 'id');
+const formValueCol = new TableColumn<ComplexTestData, 'value'>('My Value', 'value');
+formValueCol.withFormField(formValueCol.getNumberFormField());
+const formDataValCol = new TableColumn<ComplexTestData, 'data'>('Nested Value', 'data')
+  .withTransform(data => data.value);
+formDataValCol.withFormField(formDataValCol.getTextFormField()
+  .withFocus(true)
+  .withInit(data => data.value)
+  .withApply((val, data) => {
+    data.value = val;
+    return data;
+  }));
+this.columnsForm = [
+  formIdCol, formValueCol, formDataValCol
+];`;
+  typescriptMethods = `createFn(): ComplexTestData {
+  return new ComplexTestData(0, 42, '', new TestData('', '', new Date()), '');
+}
+
+formAdd(element: ComplexTestData) {
+  setTimeout(() => {
+    element.id = this.id++;
+    this.dataForm.push(element);
+    this.dataForm = this.dataForm.slice(0);
+  }, 2000);
+}
+
+formDelete(element: ComplexTestData) {
+  setTimeout(() => {
+    const index = this.dataForm.indexOf(element);
+    if (index >= 0) {
+      this.dataForm.splice(index, 1);
+      this.dataForm = this.dataForm.slice(0);
+    }
+  }, 2000);
+}
+
+formEdit(element: ComplexTestData) {
+  setTimeout(() => {
+    this.dataForm[this.dataForm.findIndex(ele => ele.id === element.id)] = element;
+    this.dataForm = this.dataForm.slice(0);
+  }, 2000);
+}
+
+logDataForm() {
+  console.log(this.dataForm);
+}`;
+  html = `<button mat-raised-button (click)="logDataForm()" style="margin-bottom: 25px">Log Data to console</button>
+<smc-simplemattable [data]="dataForm" [columns]="columnsForm" [editable]="true" [deletable]="true"
+                    [addable]="true" (add)="formAdd($event)" (delete)="formDelete($event)"
+                    (edit)="formEdit($event)" [create]="createFn"></smc-simplemattable>`;
 
   constructor() { }
 

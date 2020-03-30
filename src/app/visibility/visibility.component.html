@@ -30,32 +30,14 @@
         </ng-template>
         <div class="code">
           <p>Typescript - Data</p>
-          <hr>
-          <pre>
-this.dataVisibility = [
-  new ComplexTestData(1, 40, 'test1', new TestData('Key1', 'Value1', d1), 'test2'),
-  new ComplexTestData(2, 42, 'test2', new TestData('Key2', 'Value2', d2), 'test3')
-];
-  </pre>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="typescriptData"></code></pre>
           <p>Typescript - Columns</p>
-          <hr>
-          <pre>
-this.columnsVisibility = [
-  new TableColumn&lt;ComplexTestData, 'id'&gt;('My ID - Hidden Text on xs/sm', 'id')
-    .isTextHiddenSm(true),
-  new TableColumn&lt;ComplexTestData, 'value'&gt;('My Value - Hidden Column on xs/sm', 'value')
-    .isHiddenSm(true),
-  new TableColumn&lt;ComplexTestData, 'description'&gt;('My Description - Manual Toggle', 'description'),
-];
-  </pre>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="typescriptColumns"></code></pre>
           <p>HTML</p>
-          <hr>
-          <pre>
-&lt;button mat-raised-button (click)=&quot;columnsVisibility[2].visible = !columnsVisibility[2].visible&quot;&gt;
-Toggle Description-Column
-&lt;/button&gt;
-&lt;smc-simplemattable [data]=&quot;dataVisibility&quot; [columns]=&quot;columnsVisibility&quot;&gt;&lt;/smc-simplemattable&gt;
-  </pre>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="html"></code></pre>
         </div>
       </mat-tab>
     </mat-tab-group>
