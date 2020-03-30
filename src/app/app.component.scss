@@ -11,13 +11,15 @@ mat-sidenav {
 }
 
 .sidenav-container {
-  height: 100%;
   background: white;
+  height: 100%;
 }
 
 .nav-list-item {
   cursor: pointer;
   text-decoration: none;
+  padding: 0 32px 0 16px;
+  outline: none;
 }
 
 .nav-list-item:hover {
@@ -26,6 +28,9 @@ mat-sidenav {
 
 .toolbar {
   display: flex;
+  position: fixed;
+  z-index: 99999;
+  top: 0;
 }
 
 .toolbar span {

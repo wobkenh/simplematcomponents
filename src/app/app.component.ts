@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {map, shareReplay} from 'rxjs/operators';
 import {Observable} from 'rxjs';
+import {MatSidenavContent} from '@angular/material/sidenav';
 
 @Component({
   selector: 'smc-root',
@@ -9,6 +10,9 @@ import {Observable} from 'rxjs';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+
+  @ViewChild('sidenavContent')
+  sidenavContent: MatSidenavContent;
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -83,6 +87,11 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  onActivate(event) {
+    window.scroll(0, 0);
+    this.sidenavContent.getElementRef().nativeElement.scrollTo(0, 0);
   }
 
 }

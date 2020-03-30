@@ -22,16 +22,26 @@ smc-simplemattable {
   margin-right: 15px;
 }
 
+html {
+  height: 100%;
+}
+
 body {
+  height: calc(100% - 64px);
   margin: 0;
   background: white;
   font-family: Roboto,Helvetica Neue Light,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
-  scrollbar-width: thin;
-  scrollbar-color: #673ab7 rgba(0, 0, 0, 0.1);
+}
+
+@media(max-width: 600px) {
+  body {
+    height: calc(100% - 56px);
+  }
 }
 
 html, body {
-  height: 100%;
+  scrollbar-width: thick;
+  scrollbar-color: #673ab7 rgba(0, 0, 0, 0.1);
 }
 
 .mat-tab-body-content > .mat-raised-button {

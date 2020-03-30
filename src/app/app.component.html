@@ -1,18 +1,31 @@
-<mat-sidenav-container class="sidenav-container" autosize>
+<mat-toolbar color="primary" class="mat-elevation-z5 toolbar">
+  <button
+    type="button"
+    aria-label="Toggle sidenav"
+    mat-icon-button
+    (click)="drawer.toggle()"
+    *ngIf="isHandset$ | async">
+    <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+  </button>
+  <span fxHide.lt-md style="flex: 0 0 auto; font-weight: bold">Simple Material Components Demo</span>
+  <span style="flex: 1 1 auto"></span>
+  <span fxHide.lt-md style="flex: 0 0 auto; font-weight: bold; margin-right: 15px">View on:</span>
+  <a class="repo-links" href="https://github.com/wobkenh/simplematcomponents" target="_blank"><img
+    src="assets/github_logo_white.png" style="height: 40px"></a>
+  <a class="repo-links" href="https://www.npmjs.com/package/simplemattable" target="_blank"><img
+    src="assets/npm_logo.svg" style="height: 25px"></a>
+</mat-toolbar>
+<mat-sidenav-container class="sidenav-container" [style.marginTop.px]="(isHandset$ | async) ? 56 : 64">
 
-  <mat-sidenav #drawer class="sidenav" fixedInViewport
-               [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+  <mat-sidenav #drawer fixedInViewport [fixedTopGap]="(isHandset$ | async) ? 56 : 64"
                [mode]="(isHandset$ | async) ? 'over' : 'side'"
                [opened]="(isHandset$ | async) === false">
-    <mat-toolbar color="primary" class="mat-elevation-z5 toolbar">
-      <span>Simple Material Components</span>
-    </mat-toolbar>
     <mat-list>
       <h3 mat-subheader style="margin-top: 0">SimpleMatTable</h3>
 
       <ng-container *ngFor="let item of simpleMatTableItems">
         <a mat-list-item class="nav-list-item" [routerLink]="item.link" routerLinkActive="active-link">
-          <div mat-line>{{item.text}}</div>
+          <div mat-line style="margin-right: 20px">{{item.text}}</div>
         </a>
       </ng-container>
       <mat-divider style="margin-top: 15px"></mat-divider>
@@ -23,26 +36,9 @@
     </mat-list>
   </mat-sidenav>
 
-  <mat-sidenav-content>
-    <mat-toolbar color="primary" class="mat-elevation-z5 toolbar">
-      <button
-        type="button"
-        aria-label="Toggle sidenav"
-        mat-icon-button
-        (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async">
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-      </button>
-      <span fxHide.lt-md style="flex: 0 0 auto;">Demo</span>
-      <span style="flex: 1 1 auto"></span>
-      <span fxHide.lt-md style="flex: 0 0 auto; font-weight: bold; margin-right: 15px">View on:</span>
-      <a class="repo-links" href="https://github.com/wobkenh/simplematcomponents" target="_blank"><img
-        src="assets/github_logo_white.png" style="height: 40px"></a>
-      <a class="repo-links" href="https://www.npmjs.com/package/simplemattable" target="_blank"><img
-        src="assets/npm_logo.svg" style="height: 25px"></a>
-    </mat-toolbar>
+  <mat-sidenav-content #sidenavContent>
     <main>
-      <router-outlet></router-outlet>
+      <router-outlet (activate)="onActivate($event)"></router-outlet>
     </main>
   </mat-sidenav-content>
 </mat-sidenav-container>
