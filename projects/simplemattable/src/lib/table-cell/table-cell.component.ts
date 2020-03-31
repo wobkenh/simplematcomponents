@@ -11,6 +11,7 @@ import {SelectFormFieldOption} from '../model/select-form-field-option.model';
 import {FormFieldType} from '../model/form-field-type.model';
 import {LargeTextFormField} from '../model/large-text-form-field.model';
 import {SelectFormField} from '../model/select-form-field.model';
+import {UtilService} from '../util.service';
 
 @Component({
   selector: 'smc-table-cell',
@@ -51,7 +52,8 @@ export class TableCellComponent<T> implements OnInit {
   iconName: string = '';
   stringRepresentation: string = '';
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+              private utilService: UtilService) {
   }
 
   ngOnInit() {
@@ -87,8 +89,8 @@ export class TableCellComponent<T> implements OnInit {
 
   private updateTableColumn() {
     // Updates that only are affected by the table column
-    this.cellAlign = this.getCellAlign(this.tableColumn.align);
-    this.inputCssStyle = {'text-align': this.getTextAlign(this.tableColumn.align)};
+    this.cellAlign = this.utilService.getCellAlign(this.tableColumn.align);
+    this.inputCssStyle = {'text-align': this.utilService.getTextAlign(this.tableColumn.align)};
     if (this.tableColumn.formField) {
       this.inputId = this.tableColumn.formField.focus ? this.rowIndex + '-smt-focus-input' : '';
     }
@@ -105,6 +107,12 @@ export class TableCellComponent<T> implements OnInit {
         this.iconName = this.getIconName(this.tableColumn, this.element);
       }
     }
+  }
+
+  getCellCssClass(tcol: TableColumn<T, any>, element: T): Object {
+    const defaultClass = {'filler-div': true, 'on-click': (tcol.onClick && !tcol.button)};
+    const ngClass = tcol.ngClass ? tcol.ngClass(element[tcol.property], element) : null;
+    return this.utilService.getCellCssClass(tcol, ngClass, defaultClass);
   }
 
   private updateTableColumnAndEditing() {
@@ -239,7 +247,7 @@ export class TableCellComponent<T> implements OnInit {
    */
   getCellCssStyle(tcol: TableColumn<T, any>, element: T): Object {
     const baseValue = tcol.ngStyle ? tcol.ngStyle(element[tcol.property], element) : {};
-    baseValue['textAlign'] = this.getTextAlign(tcol.align);
+    baseValue['textAlign'] = this.utilService.getTextAlign(tcol.align);
     if (tcol.heightFn) {
       const height = tcol.heightFn(element[tcol.property], element);
       if (height) {
@@ -251,42 +259,6 @@ export class TableCellComponent<T> implements OnInit {
     return baseValue;
   }
 
-  getTextAlign = (align: Align): string => align === Align.LEFT ? 'start' : align === Align.CENTER ? 'center' : 'end';
-
-  getCellAlign = (align: Align): string => align === Align.LEFT ? 'start center' : align === Align.CENTER ? 'center center' : 'end center';
-
-  /**
-   * Uses the TableColumn ngClass property to create the ngStyle Object for a table cell.
-   * May also include some internal css classes.
-   *
-   * @param tcol TableColumn
-   * @param element the element
-   * @returns ngClass Object
-   */
-  getCellCssClass(tcol: TableColumn<T, any>, element: T): Object {
-    const defaultClass = {'filler-div': true, 'on-click': (tcol.onClick && !tcol.button)};
-    if (!tcol.ngClass) {
-      return defaultClass;
-    }
-    const ngClass = tcol.ngClass(element[tcol.property], element);
-    if (!ngClass) {
-      return defaultClass;
-    }
-    if (typeof ngClass === 'string') {
-      return Object.assign(defaultClass, this.arrayToObject(ngClass.split(' ')));
-    } else if (Array.isArray(ngClass)) {
-      return Object.assign(defaultClass, this.arrayToObject(ngClass));
-    } else {
-      return Object.assign(defaultClass, ngClass);
-    }
-  }
-
-  arrayToObject(arr: string[]): Object { // turn ['css-class-a', 'css-class-b'] into {'css-class-a': true, 'css-class-b': true}
-    return arr.reduce((acc, entry) => {
-      acc[entry] = true;
-      return acc;
-    }, {});
-  }
 }
 
 type TableColumnDisplayType = 'text' | 'button' | 'directEdit' | 'form' | 'component';

@@ -1,6 +1,6 @@
 import {Align} from './align.model';
 import {ButtonType} from './button-type.model';
-import { ThemePalette } from '@angular/material/core';
+import {ThemePalette} from '@angular/material/core';
 import {Width} from './width.model';
 import {AbstractFormField} from './abstract-form-field.model';
 import {NumberFormField} from './number-form-field.model';
@@ -34,7 +34,9 @@ export class TableColumn<T, P extends keyof T> {
   public hiddenSm: boolean = false;
   public directEdit: boolean = false;
   public ngClass: (data: T[P], dataParent: T) => string | string[] | Object;
+  public footerNgClass: (data: T[P], dataParent: T[]) => string | string[] | Object;
   public ngStyle: (data: T[P], dataParent: T) => Object;
+  public footerNgStyle: (data: T[P], dataParent: T[]) => Object;
   public formField: AbstractFormField<T, P, any>;
   public colFilter: boolean = false;
   public colFilterLabel: string = 'Filter';
@@ -42,6 +44,7 @@ export class TableColumn<T, P extends keyof T> {
   public stickyEnd: boolean = false;
   public ngComponent: Type<any>;
   public ngComponentInput: (component: any, data: T[P], dataParent: T) => void;
+  public footer: (data: T[P][], dataParent: T[]) => string;
 
   private colFilterText: ColFilterTextHolder = {
     applied: true,
@@ -61,6 +64,18 @@ export class TableColumn<T, P extends keyof T> {
    */
   public withTransform(transformFn: (data: T[P], dataParent: T) => string) {
     this.transform = transformFn;
+    return this;
+  }
+
+  /**
+   * Function that returns the display value of the footer cell for this column.
+   * If not already active through an other column, specifying the footerFn on a column will activate the footer row.
+   *
+   * @param footerFn. Arguments are the values of every cell of this column.
+   * @returns this
+   */
+  public withFooter(footerFn: (data: T[P][], dataParent: T[]) => string) {
+    this.footer = footerFn;
     return this;
   }
 
@@ -325,6 +340,34 @@ export class TableColumn<T, P extends keyof T> {
    */
   public withNgStyle(ngStyleFn: (data: T[P], dataParent: T) => Object) {
     this.ngStyle = ngStyleFn;
+    return this;
+  }
+
+  /**
+   * Function that returns something that ngClass can parse. Can be used to apply css classes to the footer cell of a column.
+   * See https://angular.io/api/common/NgClass for more information.
+   *
+   * NOTE: The Footer will only be displayed if a footer was provided with {@link #withFooter}.
+   *
+   * @param ngClassFn
+   * @returns this
+   */
+  public withFooterNgClass(ngClassFn: (data: T[P], dataParent: T[]) => string | string[] | Object) {
+    this.footerNgClass = ngClassFn;
+    return this;
+  }
+
+  /**
+   * Function that returns something that ngStyle can parse. Can be used to apply inline css to the footer cell of a column.
+   * See https://angular.io/api/common/NgStyle for more information.
+   *
+   * NOTE: The Footer will only be displayed if a footer was provided with {@link #withFooter}.
+   *
+   * @param ngStyleFn
+   * @returns this
+   */
+  public withFooterNgStyle(ngStyleFn: (data: T[P], dataParent: T[]) => Object) {
+    this.footerNgStyle = ngStyleFn;
     return this;
   }
 

@@ -23,6 +23,7 @@ import {ComponentInjectionComponent} from './component-injection/component-injec
 import {InternationalizationComponent} from './internationalization/internationalization.component';
 import {PlaygroundComponent} from './playground/playground.component';
 import {DragNDropColumnsComponent} from './drag-n-drop-columns/drag-n-drop-columns.component';
+import {FooterComponent} from './footer/footer.component';
 
 
 const routes: Routes = [
@@ -33,6 +34,7 @@ const routes: Routes = [
   {path: 'align', component: AlignComponent},
   {path: 'sortable', component: SortableComponent},
   {path: 'drag-drop-columns', component: DragNDropColumnsComponent},
+  {path: 'footer', component: FooterComponent},
   {path: 'visibility', component: VisibilityComponent},
   {path: 'icons-buttons', component: IconsButtonsComponent},
   {path: 'multiline', component: MultilineComponent},

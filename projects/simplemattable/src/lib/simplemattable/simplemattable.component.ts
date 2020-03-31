@@ -63,6 +63,8 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   @Input() rowClickable: boolean = false;
   @Input() rowNgStyle: (data: T) => Object;
   @Input() rowNgClass: (data: T) => string | string[] | Object;
+  @Input() footerRowNgStyle: (data: T[]) => Object;
+  @Input() footerRowNgClass: (data: T[]) => string | string[] | Object;
   @Input() columnDragAndDrop: boolean = false;
   private infiniteScrollingPage: number = 0;
   private infiniteScrollingHasMore: boolean = true;
@@ -105,6 +107,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   // Contains the columns ids of the displayed columns and their tablecolumn objects
   columnIds: Map<string, TableColumn<T, any>> = new Map();
   actionIndex: number = -1;
+  hasFooter: boolean = false;
 
   constructor(private fb: FormBuilder) {
   }
@@ -371,9 +374,25 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     }
   }
 
+  getTableFooterRowClass(): string | string[] | Object {
+    if (this.footerRowNgClass) {
+      return this.footerRowNgClass(this.data);
+    } else {
+      return {};
+    }
+  }
+
   getTableRowStyle(row: T): Object {
     if (this.rowNgStyle) {
       return this.rowNgStyle(row);
+    } else {
+      return {};
+    }
+  }
+
+  getTableFooterRowStyle(): Object {
+    if (this.footerRowNgStyle) {
+      return this.footerRowNgStyle(this.data);
     } else {
       return {};
     }
@@ -779,15 +798,19 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
         };
       }
 
-      // Filter columns to display
+      // Filter columns to display and footer-detection
       this.columnIds.clear();
+      let hasFooter = false; // we only want to display the footer if a visible column has the footer function
       // Dont assign displayedColumns directly as view gets updated when reference changes
       const displayedColumns = this.getDisplayedCols(this.columns).map((col, i) => {
+        if (col.footer) {
+          hasFooter = true;
+        }
         const columnId = i.toString() + '_' + col.property;
         this.columnIds.set(columnId, col);
         return columnId;
       });
-      // TODO: Action Index
+      this.hasFooter = hasFooter;
       if (this.editable || this.addable || this.deletable) {
         if (this.actionIndex >= 0) {
           displayedColumns.splice(this.actionIndex, 0, 'actions');

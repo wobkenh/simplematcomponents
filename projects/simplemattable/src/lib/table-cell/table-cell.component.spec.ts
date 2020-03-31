@@ -2,9 +2,9 @@ import {ButtonType} from '../model/button-type.model';
 import {Height} from '../model/height.model';
 import {FormBuilder, Validators} from '@angular/forms';
 import {async} from '@angular/core/testing';
-import {Align} from '../model/align.model';
 import {TableColumn} from '../model/table-column.model';
 import {TableCellComponent} from './table-cell.component';
+import {UtilService} from '../util.service';
 
 describe('TableCellComponent', () => {
   let dataSample1: ComplexTestData;
@@ -12,19 +12,9 @@ describe('TableCellComponent', () => {
   let tableColumn: TableColumn<ComplexTestData, 'id'>;
 
   beforeEach(async(() => {
-    // TestBed.configureTestingModule({
-    //   imports: [
-    //     CommonModule,
-    //     FlexLayoutModule,
-    //     FormsModule,
-    //     ReactiveFormsModule,
-    //     BrowserAnimationsModule,
-    //   ],
-    //   declarations: [SimplemattableComponent, ExternalComponentWrapperComponent]
-    // })
-    //   .compileComponents();
     dataSample1 = new ComplexTestData(1, new TestData('a', 1, new Date()));
-    tableCell = new TableCellComponent(new FormBuilder());
+    const utilService = new UtilService();
+    tableCell = new TableCellComponent(new FormBuilder(), utilService);
     tableColumn = new TableColumn<ComplexTestData, 'id'>('ID', 'id');
   }));
 
@@ -89,11 +79,6 @@ describe('TableCellComponent', () => {
     expect(tableCell.getCellCssStyle(tableColumn, dataSample1)).toEqual({'textAlign': 'start', 'height': '30px'});
     tableColumn.withHeightFn(() => Height.pct(30));
     expect(tableCell.getCellCssStyle(tableColumn, dataSample1)).toEqual({'textAlign': 'start', 'height': '30%'});
-  });
-  it('cell align', () => {
-    expect(tableCell.getCellAlign(Align.LEFT)).toBe('start center');
-    expect(tableCell.getCellAlign(Align.CENTER)).toBe('center center');
-    expect(tableCell.getCellAlign(Align.RIGHT)).toBe('end center');
   });
   it('get form control', () => {
     tableCell.formControls = new Map();

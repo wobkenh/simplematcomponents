@@ -55,6 +55,12 @@
                           [tableColumnInput]="tcol"
                           (save)="saveElement($event.rowIndex, $event.element)"></smc-table-cell>
         </td>
+
+        <ng-container *ngIf="hasFooter">
+          <td mat-footer-cell *matFooterCellDef>
+            <smc-footer-cell *ngIf="tcol.footer" [tableColumnInput]="tcol" [dataParent]="data"></smc-footer-cell>
+          </td>
+        </ng-container>
       </ng-container>
     </ng-container>
 
@@ -92,11 +98,19 @@
           <mat-spinner *ngIf="isLoading(element)" [diameter]="40"></mat-spinner>
         </div>
       </td>
+      <ng-container *ngIf="hasFooter">
+        <!-- When footer row is activated, mat table will throw errors without footer cells in every column -->
+        <td mat-footer-cell *matFooterCellDef></td>
+      </ng-container>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: sticky" [ngStyle]="getTableHeaderStyle()"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="getTableRowClass(row)"
         (click)="rowClicked(row)" [ngStyle]="getTableRowStyle(row)"></tr>
+    <ng-container *ngIf="hasFooter">
+      <tr mat-footer-row *matFooterRowDef="displayedColumns" [ngClass]="getTableFooterRowClass()"
+          [ngStyle]="getTableFooterRowStyle()"></tr>
+    </ng-container>
   </table>
 
   <div *ngIf="loading && infiniteScrolling"

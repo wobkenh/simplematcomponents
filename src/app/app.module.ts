@@ -39,6 +39,7 @@ import {DragNDropColumnsComponent} from './drag-n-drop-columns/drag-n-drop-colum
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {HIGHLIGHT_OPTIONS, HighlightModule} from 'ngx-highlightjs';
+import { FooterComponent } from './footer/footer.component';
 
 /**
  * Import specific languages to avoid importing everything
@@ -79,7 +80,8 @@ export function getHighlightLanguages() {
     CustomTableCellComponent,
     InternationalizationComponent,
     PlaygroundComponent,
-    DragNDropColumnsComponent
+    DragNDropColumnsComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

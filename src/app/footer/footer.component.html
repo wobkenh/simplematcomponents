@@ -1,0 +1,35 @@
+<!-- Align -->
+<div class="display">
+  <div>
+    <h2 id="align">Align</h2>
+    <p>You can easily change the text-direction using the align-object.</p>
+    <mat-tab-group>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>visibility</mat-icon>
+          Display
+        </ng-template>
+        <div class="smt-container">
+          <smc-simplemattable [data]="dataAlign" [columns]="columnsAlign" [footerRowNgStyle]="getFooterRowStyle"></smc-simplemattable>
+        </div>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>code</mat-icon>
+          Code
+        </ng-template>
+        <div class="code">
+          <p>Typescript - Data</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="typescriptData"></code></pre>
+          <p>Typescript - Columns</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="typescriptColumns"></code></pre>
+          <p>HTML</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="html"></code></pre>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

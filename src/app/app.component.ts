@@ -46,6 +46,9 @@ export class AppComponent implements OnInit {
       link: '/multiline',
       text: 'Multiline'
     }, {
+      link: '/footer',
+      text: 'Footer Row'
+    }, {
       link: '/drag-drop-columns',
       text: 'Drag and drop columns'
     }, {
