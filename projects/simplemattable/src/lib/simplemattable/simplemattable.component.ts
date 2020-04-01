@@ -31,54 +31,217 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 })
 export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, AfterViewInit {
 
+  /**
+   * Input. The data for your table.
+   */
   @Input() data: T[] = [];
+  /**
+   * Input. The columns for your table.
+   */
   @Input() columns: TableColumn<T, any>[] = [];
+  /**
+   * Input. True activates a single filter input to filter the whole table. Default false.
+   */
   @Input() filter: boolean = false;
+  /**
+   * Input. Text to be displayed in the filter input. Default 'Filter'.
+   */
   @Input() filterLabel: string = 'Filter';
+  /**
+   * Input. True disables the simplemattable filter algorithm and forwards searches to
+   * the search output parameter so you can do filtering yourself. Default false.
+   */
   @Input() noOpFilter: boolean = false;
+  /**
+   * Input. True activates a paginator. Default false.
+   */
   @Input() paginator: boolean = false;
+  /**
+   * Input. True activates sorting of table columns. Default false.
+   */
   @Input() sorting: boolean = false;
+  /**
+   * Input. Requires paginator to be true.
+   * Lets you fetch new pages from a server when the user navigates the pages.
+   * See getPage input and page output parameter.
+   * Default false.
+   */
   @Input() backendPagination: boolean = false;
+  /**
+   * When activated, shows a loading circle on top of the table. Default false.
+   */
   @Input() loading: boolean = false;
+  /**
+   * Function to be used by simplemattable to fetch data from a server.
+   * Use with backend pagination.
+   * Default undefined.
+   */
   @Input() getPage: (offset: number, limit: number) => Observable<T[]>;
+  /**
+   * Length of paginator. Use with backendPagination to set the count fetched from the server. Default 0.
+   */
   @Input() paginatorLength: number = 0;
+  /**
+   * Default Page Size of the paginator. Default 10.
+   */
   @Input() paginatorPageSize: number = 10;
+  /**
+   * Page Size options available for the user. Default [5, 10, 20].
+   */
   @Input() paginatorPageSizeOptions: number[] = [5, 10, 20];
+  /**
+   * True allows editing existing elements of the table. Default false.
+   */
   @Input() editable: boolean = false;
+  /**
+   * True allows the addition of new elements to the table. Default false.
+   */
   @Input() addable: boolean = false;
+  /**
+   * True allows deleting elements of the table. Default false.
+   */
   @Input() deletable: boolean = false;
+  /**
+   * Material Icon used for the edit button. Default 'edit'.
+   */
   @Input() editIcon: string;
+  /**
+   * Material Icon used for the add button. Default 'add_box'.
+   */
   @Input() addIcon: string;
+  /**
+   * Material Icon used for the delete button. Default 'delete'.
+   */
   @Input() deleteIcon: string;
+  /**
+   * Material Icon used for the save button. Default save.
+   */
   @Input() saveIcon: string;
+  /**
+   * Material Icon used for the cancel button. Default cancel.
+   */
   @Input() cancelIcon: string;
+  /**
+   * Function to create a new model instance when user adds an element to the table.
+   * Must be specified if adding is enabled. Default undefined.
+   */
   @Input() create: () => T;
+  /**
+   * True to make the table header sticky. Default false.
+   */
   @Input() sticky: boolean = false;
+  /**
+   * True to make the button column sticky (only visible when form functions are enabled).
+   * Default false.
+   */
   @Input() stickyButtons: boolean = false;
+  /**
+   * True to make the table show a scrollbar when the content is larger than the provided space.
+   */
   @Input() overflowAuto: boolean = false;
+  /**
+   * Page Settings for the paginator. Can be used to programmatically change the page.
+   */
   @Input() pageSettings: PageSettings;
+  /**
+   * True to display only a page of the elements and fetch new elements when the user scrolls to the bottom.
+   * Default false.
+   */
   @Input() infiniteScrolling: boolean = false;
+  /**
+   * Number of elements to be fetched at a time when using infinite scrolling.
+   * Default 10.
+   */
   @Input() infiniteScrollingPageSize: number = 10;
+  /**
+   * How many pixels the user needs to be away from the bottom of the page for the infinite scrolling feature to load the next page.
+   * Default 200px.
+   */
   @Input() infiniteScrollingHeight: Height = Height.px(200);
+  /**
+   * True to make the row clickable. Events will be emitted via rowClick output parameter.
+   * Default false.
+   */
   @Input() rowClickable: boolean = false;
+  /**
+   * Function to provide a style object for customization of row styling.
+   * Default undefined.
+   */
   @Input() rowNgStyle: (data: T) => Object;
+  /**
+   * Function to provide a class string/object  for customization of row styling.
+   * Default undefined.
+   */
   @Input() rowNgClass: (data: T) => string | string[] | Object;
+  /**
+   * Same as rowNgStyle, but for the footer row.
+   * Default undefined.
+   */
   @Input() footerRowNgStyle: (data: T[]) => Object;
+  /**
+   * Same as rowNgClass, but for the footer row.
+   * Default undefined.
+   */
   @Input() footerRowNgClass: (data: T[]) => string | string[] | Object;
+  /**
+   * True to allow the user to drag and drop the table columns.
+   * Default false;
+   */
   @Input() columnDragAndDrop: boolean = false;
   private infiniteScrollingPage: number = 0;
   private infiniteScrollingHasMore: boolean = true;
   private infiniteScrollingHasScrolled: boolean = false;
 
+  /**
+   * Event emitted when a user has deleted an element.
+   * Emitted value is the deleted element.
+   */
   @Output() delete: EventEmitter<T> = new EventEmitter<T>();
+  /**
+   * Event emitted when a user has edited an element.
+   * Emitted value is the edited element.
+   */
   @Output() edit: EventEmitter<T> = new EventEmitter<T>();
+  /**
+   * Event emitted when a user has added an element.
+   * Emitted value is the added element.
+   */
   @Output() add: EventEmitter<T> = new EventEmitter<T>();
+  /**
+   * Event emitted when the page was changed.
+   * Works for pagination as well as infinite scrolling.
+   */
   @Output() page: EventEmitter<PageEvent> = new EventEmitter();
+  /**
+   * Event emitted when noOpFilter is turned on and the user enters
+   * a search query into the filter input
+   */
   @Output() search: EventEmitter<string> = new EventEmitter();
+  /**
+   * Event emitted when the displayed elements have changed.
+   * Emitted value are the currently displayed elements.
+   */
   @Output() renderedData: EventEmitter<T[]> = new EventEmitter();
+  /**
+   * Event emitted when the data has been filtered by the user.
+   * Emitted value are the elements, which have tested positive against the current filter.
+   */
   @Output() filteredData: EventEmitter<T[]> = new EventEmitter();
+  /**
+   * Event emitted when using backend pagination and the observable provided by getPage threw an error.
+   * Emitted value is the error that has been thrown.
+   */
   @Output() error: EventEmitter<any> = new EventEmitter();
+  /**
+   * Event emitted when the user clicks a row.
+   * The input parameter rowClickable must be turned to true for this to work.
+   * The emitted value is the model of the row that has been clicked.
+   */
   @Output() rowClick: EventEmitter<T> = new EventEmitter<T>();
+  /**
+   * Event emitted when the user has changed the sorting.
+   * Emitted value is the new sort setting.
+   */
   @Output() sort: EventEmitter<Sort> = new EventEmitter<Sort>();
 
   matFrontendPaginator: MatPaginator;

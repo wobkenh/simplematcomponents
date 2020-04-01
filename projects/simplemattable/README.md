@@ -5,7 +5,7 @@ It allows you to quickly and in a typesafe way define tables.
 This is perfect if you want to display data in a table and do not need full control over the table HTML.
 
 Instead of copy/pasting the HTML for each column, you can describe the columns in a declarative way via Typescript code.
-A lot of different options like align, buttons, icons and even custom css allow you to further customize your table.
+A lot of different options like align, buttons, icons, custom css and even custom table cell components allow you to further customize your table.
 
 SimpleMatTable also allows you to enable adding, editing and deleting of elements in the table. 
 It supports different form fields like number, text, date and select inputs.
@@ -15,6 +15,7 @@ It supports different form fields like number, text, date and select inputs.
 - [Prerequisites](#prerequisites)
 - [Preview](#preview)
 - [Installing](#installing)
+- [Quickstart](#quickstart)
 - [Usage](#usage)
     + [Model](#model)
     + [TableColumns](#tablecolumns)
@@ -78,7 +79,9 @@ import {AppComponent} from './app.component';
 export class AppModule { }
 ```
 
-## Usage
+## Quickstart
+
+After having installed simplemattable, lets go through the steps of defining a very basic table.
 
 ### Model
 
@@ -109,23 +112,35 @@ The Constructor of TableColumn requires you to specify the string that will be d
 You already specified the property name in the generics, but since information about generics is not available at runtime, you need to specify it here again. 
 Fortunately, the property in the constructor is also typesafe.
 
-If you are looking for more customization options (e.g. align, width, different display values) for your columns, have a look at section [TableColumn options](#tablecolumn-options).
-
 ### Table
-
-#### General
 
 After you defined your table columns, you can bind them to the html element using:
 
 ```
-<smc-simplemattable [data]="testData" [columns]="columns" [paginator]="true" [filter]="true" [sorting]="true"></smc-simplemattable>
+<smc-simplemattable [data]="testData" [columns]="columns"></smc-simplemattable>
 ```
 
 where testData is an array of your model and columns are the TableColumns you defined earlier.
 
+Thats it. Your table should now display. Now you can have a look at all the options simplemattable offers.
+
+## Cheat Sheet
+
+You want a quick overview of all simplemattable options? You forgot what an option was called or what it does?
+You can easily get the most important information from the javadoc of simplemattable. 
+Simply have a look at the Input/Output parameters of the SimpleMatTable class and the `.with` methods of the TableColumn class.
+
+## Usage
+
+We have already defined a basic table in [Quickstart](#quickstart). Now its time to take a deeper dive into some of the options simplemattable offers.
+
+### Table
+
+There are several options concerning the whole table. Those are defined as input and output parameter of the Simplemattable component.
+
 #### Pagination, Filtering, Sorting
 
-Additionally, you can turn on a paginator, a filter and sorting. These are the standard MatTable Features that are also well described in
+You can turn on a paginator, a filter and sorting. These are the standard MatTable Features that are also well described in
 [the Angular docs](https://material.angular.io/components/table/overview).
 The paginator, filter and sorting are optional. If omitted, the flags will default to false.
 
@@ -165,6 +180,8 @@ Both are methods which get the data of the row (your model) as parameter.
 `rowNgClass: (data: T) => string | string[] | Object` lets you return a string, string array or object that will be fed into the `ngClass` attribute of the row (`<tr>`).
 Note that when using `rowNgClass`, the row must be in the global stylesheet due to component isolation.
 
+If you have a footer row, you may define footer-specific styles in `footerRowNgStyle: (data: T[]) => Object` and `rowNgClass: (data: T[]) => string | string[] | Object`.
+
 
 ### Complex Model
 
@@ -203,7 +220,7 @@ this.columns[0].isVisible(!this.columns[0].visible);
 Simplemattable will recognize any changes to the properties of any of the supplied columns or to the column array.
 
 Changing the data is a bit different. Performing the checks to recognize any changes on the fly would take up too much performance on large tables with complex models. 
-Therefore, the default Angular check is used, which compares the array references via ===. This means that you have to change the array reference. 
+Therefore, the default Angular check is used, which compares the array references via `===`. This means that you have to change the array reference. 
 If you have a table with the complex model described earlier, you could add a new entry using this:
 
 ```
@@ -309,6 +326,16 @@ It must return something that is parsable by the ngStyle directive. For more inf
 You do not need to use !important on ngStyle. For example, you could change the background color depending on id like this even when the column is clickable: 
 `.withNgStyle((id) => ({'background-color': id < 3 ? '#992222' : 'transparent'}))`.
 Note that the styles will be applied to a `<div>` that fills the `<td>` element completely and not to the `<td>` itself.
+
+- footer (`.withFooter(footerFn: (data: T[P][], dataParent: T[]) => string)`):
+Same as withTransform, but determines the content of the footer cell of this component. 
+If no table column has a footer function, no footer will be display. If at least one *visible* column has a footer function, the footer will be displayed.
+
+- footerNgClass: (`.withFooterNgClass(footerNgClassFn: (data: T[P][], dataParents: T[]) => string | string[] | Object)`):
+Same as ngClass, but applies to the cell in the footer row corresponding to this table column. 
+
+- footerNgStyle: (`.withFooterNgStyle(footerNgStyleFn: (data: T[P], dataParent: T) => Object)`): 
+Same as ngStyle, but applies to the cell in the footer row corresponding to this table column.
 
 - colFilter: (`.withColFilter()`): When activated, displays a column filter input below the header cell of the column. 
 The column filter works just like the filter feature of the table, but only filters rows using the values of the column. 

@@ -16,9 +16,15 @@ describe('Util.Service.TsService', () => {
     expect(utilService.getCellAlign(Align.RIGHT)).toBe('end center');
   });
   it('text align', () => {
-    expect(utilService.getTextAlign(Align.LEFT)).toBe('left');
+    expect(utilService.getTextAlign(Align.LEFT)).toBe('start');
     expect(utilService.getTextAlign(Align.CENTER)).toBe('center');
-    expect(utilService.getTextAlign(Align.RIGHT)).toBe('right');
+    expect(utilService.getTextAlign(Align.RIGHT)).toBe('end');
+  });
+  it('array to object', () => {
+    // array to object
+    const arr = ['42a', '42b'];
+    expect(utilService.arrayToObject(arr)).toEqual({'42a': true, '42b': true});
+    expect(utilService.arrayToObject([])).toEqual({});
   });
 
 });

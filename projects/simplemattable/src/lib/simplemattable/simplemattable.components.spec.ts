@@ -24,6 +24,7 @@ import {Width} from '../model/width.model';
 import {ExternalComponentWrapperComponent} from '../external-component-wrapper/external-component-wrapper.component';
 import {TableCellComponent} from '../table-cell/table-cell.component';
 import {CdkDragDrop} from '@angular/cdk/drag-drop';
+import {UtilService} from '../util.service';
 
 describe('SimplemattableComponent', () => {
   let hostComponent: TestHostComponent;
@@ -312,7 +313,7 @@ describe('SimplemattableComponent', () => {
       }));
     hostComponent.columns.push(tcolFormField);
     testHostFixture.detectChanges();
-    const tableCell = new TableCellComponent(new FormBuilder());
+    const tableCell = new TableCellComponent(new FormBuilder(), new UtilService());
     expect(smt.isLoading(data)).toBeFalsy();
     expect(smt.isEditing(data)).toBeFalsy();
     expect(tableCell.isEditingColumn(tcolFormField, false)).toBeFalsy();
@@ -334,7 +335,7 @@ describe('SimplemattableComponent', () => {
       .withFormField(hostComponent.tcolUnused.getNumberFormField()
         .withInit(() => 420)
         .withValidators(validators));
-    const tableCell = new TableCellComponent(new FormBuilder());
+    const tableCell = new TableCellComponent(new FormBuilder(), new UtilService());
     tableCell.formControls = smt.formControls;
     const fc1 = tableCell.getFormControl(0, 0, tcol, hostComponent.data[0]);
     const fc2 = tableCell.getFormControl(0, 1, tcol, hostComponent.data[0]);
@@ -350,11 +351,6 @@ describe('SimplemattableComponent', () => {
     expect(smt.isFormValid(0)).toBe(false);
   });
   it('array to object, iterator to array, deep copy', () => {
-    // array to object
-    const arr = ['42a', '42b'];
-    const tableCell = new TableCellComponent(new FormBuilder());
-    expect(tableCell.arrayToObject(arr)).toEqual({'42a': true, '42b': true});
-    expect(tableCell.arrayToObject([])).toEqual({});
     // iterator to array
     const map = new Map();
     map.set('test', 42);

@@ -81,6 +81,12 @@ mat-tab-header {
   border: 1px solid rgba(0, 0, 0,0.12);
 }
 
+p > code {
+  background-color: rgb(245, 247, 249);
+  padding: 3px;
+  border-radius: 4px;
+}
+
 .display {
   display: flex;
   place-content: center;
