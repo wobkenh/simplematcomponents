@@ -59,7 +59,7 @@ export class ExpandableRowsComponent implements OnInit {
 })
 export class ExpandableRowDetailComponent implements OnInit, DetailRowComponent<ComplexTestData> {
 
-  private element: ComplexTestData;
+  element: ComplexTestData;
 
   constructor() {
   }

@@ -9,7 +9,7 @@ import {ComplexTestData} from '../model/test-data.model';
 })
 export class ExpandableRowDetailComponent implements OnInit, DetailRowComponent<ComplexTestData> {
 
-  private element: ComplexTestData;
+  element: ComplexTestData;
 
   constructor() {
   }
