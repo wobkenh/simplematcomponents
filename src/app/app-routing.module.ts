@@ -24,6 +24,7 @@ import {InternationalizationComponent} from './internationalization/internationa
 import {PlaygroundComponent} from './playground/playground.component';
 import {DragNDropColumnsComponent} from './drag-n-drop-columns/drag-n-drop-columns.component';
 import {FooterComponent} from './footer/footer.component';
+import {ExpandableRowsComponent} from './expandable-rows/expandable-rows.component';
 
 
 const routes: Routes = [
@@ -35,6 +36,7 @@ const routes: Routes = [
   {path: 'sortable', component: SortableComponent},
   {path: 'drag-drop-columns', component: DragNDropColumnsComponent},
   {path: 'footer', component: FooterComponent},
+  {path: 'expandable-rows', component: ExpandableRowsComponent},
   {path: 'visibility', component: VisibilityComponent},
   {path: 'icons-buttons', component: IconsButtonsComponent},
   {path: 'multiline', component: MultilineComponent},

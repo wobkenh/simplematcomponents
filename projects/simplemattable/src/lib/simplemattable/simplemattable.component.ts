@@ -10,6 +10,7 @@ import {
   OnInit,
   Output,
   SimpleChanges,
+  Type,
   ViewChild
 } from '@angular/core';
 import {TableColumn} from '../model/table-column.model';
@@ -23,11 +24,20 @@ import {MatTable, MatTableDataSource} from '@angular/material/table';
 import {MatSort, Sort} from '@angular/material/sort';
 import {Height} from '../model/height.model';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {animate, state, style, transition, trigger} from '@angular/animations';
+import {DetailRowComponent} from '../model/detail-row-component';
 
 @Component({
   selector: 'smc-simplemattable',
   templateUrl: './simplemattable.component.html',
-  styleUrls: ['./simplemattable.component.css']
+  styleUrls: ['./simplemattable.component.css'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, AfterViewInit {
 
@@ -188,6 +198,15 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    * Default false;
    */
   @Input() columnDragAndDrop: boolean = false;
+  /**
+   * Component Type to be used for a detail row.
+   * Will activate the detail row feature,
+   * where clicking a row will expand it.
+   * In the expanded area, the DetailRowComponent will be rendered.
+   */
+  @Input() detailRowComponent: Type<DetailRowComponent<T>>;
+
+
   private infiniteScrollingPage: number = 0;
   private infiniteScrollingHasMore: boolean = true;
   private infiniteScrollingHasScrolled: boolean = false;
@@ -271,6 +290,8 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   columnIds: Map<string, TableColumn<T, any>> = new Map();
   actionIndex: number = -1;
   hasFooter: boolean = false;
+
+  expandedElement: T | null;
 
   constructor(private fb: FormBuilder) {
   }
@@ -523,18 +544,26 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     if (this.rowNgClass) {
       let classes = this.rowNgClass(row);
       if (this.rowClickable) {
-        if (typeof classes === 'string') {
-          classes += ' on-click';
-        } else if (Array.isArray(classes)) {
-          classes.push('on-click');
-        } else if (typeof classes === 'object') {
-          classes['on-click'] = true;
-        }
+        classes = this.addClass(classes, 'on-click');
+      }
+      if (this.detailRowComponent) {
+        classes = this.addClass(classes, 'smt-element-row');
       }
       return classes;
     } else {
-      return {'on-click': !!this.rowClickable};
+      return {'on-click': !!this.rowClickable, 'smt-element-row': !!this.detailRowComponent};
     }
+  }
+
+  private addClass(classes: string | string[] | Object, newClass: string): string | string[] | Object {
+    if (typeof classes === 'string') {
+      classes += ' ' + newClass;
+    } else if (Array.isArray(classes)) {
+      classes.push(newClass);
+    } else if (typeof classes === 'object') {
+      classes[newClass] = true;
+    }
+    return classes;
   }
 
   getTableFooterRowClass(): string | string[] | Object {
@@ -1060,6 +1089,11 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   rowClicked(row: T) {
     this.rowClick.emit(row);
+    if (this.expandedElement === row) {
+      this.expandedElement = null;
+    } else {
+      this.expandedElement = row;
+    }
   }
 
   sortChanged(sortEvent: Sort) {

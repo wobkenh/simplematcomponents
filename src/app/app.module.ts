@@ -40,6 +40,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {HIGHLIGHT_OPTIONS, HighlightModule} from 'ngx-highlightjs';
 import { FooterComponent } from './footer/footer.component';
+import { ExpandableRowsComponent } from './expandable-rows/expandable-rows.component';
+import { ExpandableRowDetailComponent } from './expandable-row-detail/expandable-row-detail.component';
 
 /**
  * Import specific languages to avoid importing everything
@@ -81,7 +83,9 @@ export function getHighlightLanguages() {
     InternationalizationComponent,
     PlaygroundComponent,
     DragNDropColumnsComponent,
-    FooterComponent
+    FooterComponent,
+    ExpandableRowsComponent,
+    ExpandableRowDetailComponent
   ],
   imports: [
     BrowserModule,

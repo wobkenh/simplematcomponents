@@ -11,6 +11,7 @@ import {LargeTextFormField} from './large-text-form-field.model';
 import {Height} from './height.model';
 import {CheckboxFormField} from './checkbox-form-field.model';
 import {Type} from '@angular/core';
+import {DetailRowComponent} from './detail-row-component';
 
 export class TableColumn<T, P extends keyof T> {
 

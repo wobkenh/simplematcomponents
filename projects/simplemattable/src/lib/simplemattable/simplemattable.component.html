@@ -11,7 +11,7 @@
 <div fxFlex [ngStyle]="getOuterContainerStyle()" (scroll)="onScrollComponent($event)" #scrollContainer
      id="smtScrollContainer">
   <table mat-table [dataSource]="dataSource" matSort [matSortDisabled]="!sorting" style="width: 100%"
-         [cdkDropListDisabled]="!columnDragAndDrop"
+         [cdkDropListDisabled]="!columnDragAndDrop" multiTemplateDataRows
          (matSortChange)="sortChanged($event)" [ngClass]="getTableClass()" cdkDropList
          cdkDropListOrientation="horizontal" (cdkDropListDropped)="dropColumn($event)">
     <ng-container *ngFor="let tcol of getDisplayedCols(columns); let columnIndex = index">
@@ -46,7 +46,7 @@
           </div>
         </th>
 
-        <td mat-cell *matCellDef="let element; let rowIndex = index;"
+        <td mat-cell *matCellDef="let element; let rowIndex = dataIndex;"
             [fxHide.xs]="tcol.hiddenXs || tcol.hiddenSm" [fxHide.sm]="tcol.hiddenSm"
             (click)="onClick(tcol, element, false)">
           <smc-table-cell [formControls]="formControls" [dataParent]="element" [rowIndex]="rowIndex"
@@ -74,7 +74,7 @@
           </button>
         </div>
       </th>
-      <td mat-cell *matCellDef="let element; let rowIndex = index;">
+      <td mat-cell *matCellDef="let element; let rowIndex = dataIndex;">
         <div style="display: flex;justify-content: flex-end; align-items: center" class="filler-div">
           <ng-container *ngIf="!isLoading(element)">
             <button *ngIf="editable && !isEditing(element)" mat-icon-button color="primary"
@@ -104,9 +104,23 @@
       </ng-container>
     </ng-container>
 
+    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+    <ng-container matColumnDef="expandedDetail" *ngIf="detailRowComponent">
+      <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+        <div [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'" class="smt-element-detail">
+          <smc-external-detail-component-wrapper
+            [element]="element" [ngComponent]="detailRowComponent"
+          ></smc-external-detail-component-wrapper>
+        </div>
+      </td>
+    </ng-container>
+
     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: sticky" [ngStyle]="getTableHeaderStyle()"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="getTableRowClass(row)"
         (click)="rowClicked(row)" [ngStyle]="getTableRowStyle(row)"></tr>
+    <ng-container *ngIf="detailRowComponent">
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="smt-detail-row"></tr>
+    </ng-container>
     <ng-container *ngIf="hasFooter">
       <tr mat-footer-row *matFooterRowDef="displayedColumns" [ngClass]="getTableFooterRowClass()"
           [ngStyle]="getTableFooterRowStyle()"></tr>

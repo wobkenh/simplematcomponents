@@ -67,6 +67,9 @@ export class AppComponent implements OnInit {
       link: '/sticky-columns',
       text: 'Sticky Columns'
     }, {
+      link: '/expandable-rows',
+      text: 'Expandable Rows'
+    }, {
       link: '/pagination',
       text: 'Pagination'
     }, {

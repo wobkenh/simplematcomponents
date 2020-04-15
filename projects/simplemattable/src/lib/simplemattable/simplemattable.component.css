@@ -79,3 +79,25 @@ td {
 :host {
   position: relative;
 }
+
+tr.smt-detail-row {
+  height: 0;
+}
+
+.smt-element-detail {
+  overflow: hidden;
+}
+
+.smt-element-row td {
+  border-bottom-width: 0;
+  cursor: pointer;
+}
+
+
+tr.smt-element-row:hover {
+  background: whitesmoke;
+}
+
+tr.smt-element-row:active {
+  background: #efefef;
+}

@@ -182,6 +182,12 @@ Note that when using `rowNgClass`, the row must be in the global stylesheet due 
 
 If you have a footer row, you may define footer-specific styles in `footerRowNgStyle: (data: T[]) => Object` and `rowNgClass: (data: T[]) => string | string[] | Object`.
 
+#### Expandable Rows
+Want to show the user some details when he clicks on a row? 
+Then define a component for your row detail content that implements the `DetailRowComponent` interface. 
+You can then pass the type to simplemattable's `detailRowComponent` input parameter. 
+The data (which element was clicked) will be passed into the Detail Component via the `onInput: (element: T) => void` method, 
+which is defined in the `DetailRowComponent` interface.
 
 ### Complex Model
 
@@ -710,6 +716,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 5.4 (9.0): Expandable Rows
 + 5.3 (9.0): Footer Row
 + 5.2 (9.0): Better scrolling recognition for Infinite Scrolling (+ Demo Application complete overhaul)
 + 5.1 (9.0): Reordering of columns via drag and drop

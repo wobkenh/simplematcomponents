@@ -17,7 +17,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ExternalComponentWrapperComponent} from './external-component-wrapper/external-component-wrapper.component';
 import {TableCellComponent} from './table-cell/table-cell.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
-import { FooterCellComponent } from './footer-cell/footer-cell.component';
+import {FooterCellComponent} from './footer-cell/footer-cell.component';
+import {ExternalDetailComponentWrapperComponent} from './external-detail-component-wrapper/external-detail-component-wrapper.component';
 
 @NgModule({
   imports: [
@@ -39,7 +40,13 @@ import { FooterCellComponent } from './footer-cell/footer-cell.component';
     MatCheckboxModule,
     DragDropModule
   ],
-  declarations: [SimplemattableComponent, ExternalComponentWrapperComponent, TableCellComponent, FooterCellComponent],
+  declarations: [
+    SimplemattableComponent,
+    ExternalComponentWrapperComponent,
+    TableCellComponent,
+    FooterCellComponent,
+    ExternalDetailComponentWrapperComponent
+  ],
   exports: [SimplemattableComponent]
 })
 export class SimplemattableModule {

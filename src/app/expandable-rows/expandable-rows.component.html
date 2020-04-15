@@ -1,0 +1,45 @@
+<div class="display">
+  <div>
+    <h2 id="simple">Expandable Rows</h2>
+    <p>Want to show the user some details when he clicks on a row? Then define a component for your row detail content
+      that implements the <code>DetailRowComponent</code> interface. You can then pass the type to simplemattable's
+      <code>detailRowComponent</code>
+      input parameter. The data (which element was clicked) will be passed into the Detail Component via the <code>onInput</code>
+      method, which is defined in
+      the <code>DetailRowComponent</code> interface.</p>
+
+    <mat-tab-group>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>visibility</mat-icon>
+          Display
+        </ng-template>
+        <div class="smt-container">
+          <smc-simplemattable [data]="dataSimple" [columns]="columnsSimple"
+                              [detailRowComponent]="detailRowComponent"></smc-simplemattable>
+        </div>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>code</mat-icon>
+          Code
+        </ng-template>
+        <div class="code">
+          <p>ExpandableRowsComponent Typescript</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="typescriptTs"></code></pre>
+          <p>ExpandableRowsComponent HTML</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="html"></code></pre>
+
+          <p>ExpandableRowDetailComponent Typescript</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="expandableRowDetailTs"></code></pre>
+          <p>ExpandableRowDetailComponent HTML</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="expandableRowDetailHtml"></code></pre>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
