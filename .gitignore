@@ -39,3 +39,8 @@ testem.log
 Thumbs.db
 
 /sh/deploy.sh
+/docker/
+/docker-int/
+/docker-prd/
+Dockerfile
+Jenkinsfile
