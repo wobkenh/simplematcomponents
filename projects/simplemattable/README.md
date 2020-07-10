@@ -716,13 +716,14 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 6.0 (10.0): Updated to angular 10
 + 5.4 (9.0): Expandable Rows
 + 5.3 (9.0): Footer Row
 + 5.2 (9.0): Better scrolling recognition for Infinite Scrolling (+ Demo Application complete overhaul)
 + 5.1 (9.0): Reordering of columns via drag and drop
-+ 5.0 (9.0): updated to angular 9
-+ 4.0 (8.0): performance upgrades
-+ 3.8 (8.0): sort event
++ 5.0 (9.0): Updated to angular 9
++ 4.0 (8.0): Performance upgrades
++ 3.8 (8.0): Sort event
 + 3.7 (8.0): rowNgStyle and rowNgClass
 + 3.6 (8.0): Filter labels; Clickable rows
 + 3.5 (8.0): Custom Components (External Component Injection)
@@ -745,7 +746,7 @@ fixed some smaller bugs regarding adding of items, filtering and focus
 + 1.2 (6.0): Customizable icons and initial focus for input fields
 + 1.1 (6.0): Use enter to save on text/number input fields
 + 1.0 (6.0): Edit-mode in all its glory: edit/add/delete with text/largetext/number/date/select inputs
-+ 0.12 (6.0): max/min lines, option to hide text/columns on small screens, ngClass and ngStyle
++ 0.12 (6.0): Max/min lines, option to hide text/columns on small screens, ngClass and ngStyle
 + 0.11 (6.0): Width rework + TableColumn constructor refactor
 + 0.10 (6.0): Buttons
 + 0.9 (6.0): Click listener support
@@ -772,12 +773,12 @@ It is not planned to backport SimpleMatTable to any older Angular version.
 Simplemattable only uses peer dependencies, so for the newest version of simplemattable you need the following packages (with compatible versions) in your package.json:
 
 ```
-"@angular/common": "^9.0.0",
-"@angular/core": "^9.0.0",
-"@angular/material": "^9.0.0",
-"@angular/cdk": "^9.0.0",
-"@angular/platform-browser": "^9.0.0",
-"@angular/flex-layout": "^9.0.0-beta.29"
+"@angular/common": "^10.0.0",
+"@angular/core": "^10.0.0",
+"@angular/material": "^10.0.0",
+"@angular/cdk": "^10.0.0",
+"@angular/platform-browser": "^10.0.0",
+"@angular/flex-layout": "^10.0.0-beta.32"
 ```  
 
 
@@ -785,7 +786,8 @@ Simplemattable only uses peer dependencies, so for the newest version of simplem
 + For use with Angular >= 6.1.8 and < 7.0, use Version 1.3 of simplemattable.
 + For use with Angular >= 7.0 and < 8.0, use Version 2.5.7 of simplemattable.
 + For use with Angular >= 8.0 and < 9.0, use Version 4.0 of simplemattable.
-+ For use with Angular >= 9.0, use the newest version of simplemattable.
++ For use with Angular >= 9.0 and < 10.0, use Version 5.4 of simplemattable.
++ For use with Angular >= 10.0, use the newest version of simplemattable.
 
 ## Authors
 
