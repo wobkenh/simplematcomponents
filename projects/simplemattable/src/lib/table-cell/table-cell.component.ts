@@ -83,6 +83,7 @@ export class TableCellComponent<T> implements OnInit {
     if (this.externalComponents) {
       this.externalComponents.refreshInput();
     }
+    this.updateTableColumnAndData();
   }
 
   // Update methods
