@@ -1,6 +1,49 @@
 <div class="display" style="min-height: 822px">
   <div>
     <h2 id="pagination">Pagination</h2>
+    <p>There are two ways to do pagination: Frontend or backend Pagination</p>
+    <h3>Frontend Pagination</h3>
+    <p>The whole data is put into simplemattable and the frontend does the pagination. Increases render speed by showing
+      less items at a time, but does not decrease download times or memory usage.</p>
+    <mat-tab-group>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>visibility</mat-icon>
+          Display
+        </ng-template>
+        <div class="smt-container">
+          <div style="margin-bottom: 25px">
+            <button mat-raised-button (click)="resetToPageZero()" style="margin-right: 15px">Go to page index zero
+            </button>
+            <button mat-raised-button (click)="resetToPageSizeTen()">Set page size to 10</button>
+          </div>
+          <smc-simplemattable [data]="dataFrontendPagination" [columns]="columnsFrontendPagination" [paginator]="true"
+                              [paginatorLength]="paginatorLength"
+                              [pageSettings]="pageSettings"></smc-simplemattable>
+        </div>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>code</mat-icon>
+          Code
+        </ng-template>
+        <div class="code">
+          <p>Typescript - Data</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="typescriptData"></code></pre>
+          <p>Typescript - Columns</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="typescriptColumns"></code></pre>
+          <p>Typescript - getPage and reset functions</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="typescriptFrontendPaginationMethods"></code></pre>
+          <p>HTML</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="htmlFrontendPagination"></code></pre>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+    <h3>Backend Pagination</h3>
     <p>
       Turn on backend pagination to only fetch the data you really need.
 

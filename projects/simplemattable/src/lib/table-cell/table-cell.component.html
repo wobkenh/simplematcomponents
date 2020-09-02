@@ -132,7 +132,7 @@
 
     <ng-container *ngSwitchCase="'component'">
       <smc-external-component-wrapper
-        [dataParent]="element" [tcolProperty]="tableColumn.property"
+        [dataParent]="element" [tcolProperty]="tableColumn.property" [dataList]="dataList"
         [ngComponent]="tableColumn.ngComponent" [ngComponentInput]="tableColumn.ngComponentInput"
       ></smc-external-component-wrapper>
     </ng-container>

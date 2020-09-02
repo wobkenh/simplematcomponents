@@ -11,20 +11,19 @@ import {LargeTextFormField} from './large-text-form-field.model';
 import {Height} from './height.model';
 import {CheckboxFormField} from './checkbox-form-field.model';
 import {Type} from '@angular/core';
-import {DetailRowComponent} from './detail-row-component';
 
 export class TableColumn<T, P extends keyof T> {
 
-  public transform: (data: T[P], dataParent: T) => string;
+  public transform: (data: T[P], dataParent: T, dataList: T[]) => string;
   public width: string;
-  public heightFn: (data: T[P], dataParent: T) => Height;
-  public disabledFn: (data: T[P], dataParent: T) => boolean;
+  public heightFn: (data: T[P], dataParent: T, dataList: T[]) => Height;
+  public disabledFn: (data: T[P], dataParent: T, dataList: T[]) => boolean;
   public align: Align = Align.LEFT;
   public sortable: boolean = true;
-  public sortTransform: (data: T[P], dataParent: T) => number | string;
+  public sortTransform: (data: T[P], dataParent: T, dataList: T[]) => number | string;
   public visible: boolean = true;
-  public icon: (data: T[P], dataParent: T) => string;
-  public onClick: (data: T[P], dataParent: T) => void;
+  public icon: (data: T[P], dataParent: T, dataList: T[]) => string;
+  public onClick: (data: T[P], dataParent: T, dataList: T[]) => void;
   public button: ButtonType;
   public buttonColor: ThemePalette;
   public maxLines: number;
@@ -34,9 +33,9 @@ export class TableColumn<T, P extends keyof T> {
   public hiddenXs: boolean = false;
   public hiddenSm: boolean = false;
   public directEdit: boolean = false;
-  public ngClass: (data: T[P], dataParent: T) => string | string[] | Object;
+  public ngClass: (data: T[P], dataParent: T, dataList: T[]) => string | string[] | Object;
   public footerNgClass: (data: T[P], dataParent: T[]) => string | string[] | Object;
-  public ngStyle: (data: T[P], dataParent: T) => Object;
+  public ngStyle: (data: T[P], dataParent: T, dataList: T[]) => Object;
   public footerNgStyle: (data: T[P], dataParent: T[]) => Object;
   public formField: AbstractFormField<T, P, any>;
   public colFilter: boolean = false;
@@ -44,7 +43,7 @@ export class TableColumn<T, P extends keyof T> {
   public sticky: boolean = false;
   public stickyEnd: boolean = false;
   public ngComponent: Type<any>;
-  public ngComponentInput: (component: any, data: T[P], dataParent: T) => void;
+  public ngComponentInput: (component: any, data: T[P], dataParent: T, dataList: T[]) => void;
   public footer: (data: T[P][], dataParent: T[]) => string;
 
   private colFilterText: ColFilterTextHolder = {
@@ -63,7 +62,7 @@ export class TableColumn<T, P extends keyof T> {
    * @param transformFn
    * @returns this
    */
-  public withTransform(transformFn: (data: T[P], dataParent: T) => string) {
+  public withTransform(transformFn: (data: T[P], dataParent: T, dataList: T[]) => string) {
     this.transform = transformFn;
     return this;
   }
@@ -87,7 +86,7 @@ export class TableColumn<T, P extends keyof T> {
    * @param transformFn
    * @returns this
    */
-  public withSortTransform(transformFn: (data: T[P], dataParent: T) => number | string) {
+  public withSortTransform(transformFn: (data: T[P], dataParent: T, dataList: T[]) => number | string) {
     this.sortTransform = transformFn;
     return this;
   }
@@ -114,7 +113,7 @@ export class TableColumn<T, P extends keyof T> {
    * To not set a height, return null.
    * @param heightFn
    */
-  public withHeightFn(heightFn: (data: T[P], dataParent: T) => Height) {
+  public withHeightFn(heightFn: (data: T[P], dataParent: T, dataList: T[]) => Height) {
     this.heightFn = heightFn;
     return this;
   }
@@ -136,7 +135,7 @@ export class TableColumn<T, P extends keyof T> {
    * @param disabledFn
    * @returns this
    */
-  public withButtonDisabled(disabledFn: (data: T[P], dataParent: T) => boolean) {
+  public withButtonDisabled(disabledFn: (data: T[P], dataParent: T, dataList: T[]) => boolean) {
     this.disabledFn = disabledFn;
     return this;
   }
@@ -254,7 +253,7 @@ export class TableColumn<T, P extends keyof T> {
    * @param iconNameFn
    * @returns this
    */
-  public withIcon(iconNameFn: (data: T[P], dataParent: T) => string) {
+  public withIcon(iconNameFn: (data: T[P], dataParent: T, dataList: T[]) => string) {
     this.icon = iconNameFn;
     return this;
   }
@@ -268,7 +267,7 @@ export class TableColumn<T, P extends keyof T> {
    * @param onClickFn
    * @returns this
    */
-  public withOnClick(onClickFn: (data: T[P], dataParent: T) => void) {
+  public withOnClick(onClickFn: (data: T[P], dataParent: T, dataList: T[]) => void) {
     this.onClick = onClickFn;
     return this;
   }
@@ -327,7 +326,7 @@ export class TableColumn<T, P extends keyof T> {
    * @param ngClassFn
    * @returns this
    */
-  public withNgClass(ngClassFn: (data: T[P], dataParent: T) => string | string[] | Object) {
+  public withNgClass(ngClassFn: (data: T[P], dataParent: T, dataList: T[]) => string | string[] | Object) {
     this.ngClass = ngClassFn;
     return this;
   }
@@ -339,7 +338,7 @@ export class TableColumn<T, P extends keyof T> {
    * @param ngStyleFn
    * @returns this
    */
-  public withNgStyle(ngStyleFn: (data: T[P], dataParent: T) => Object) {
+  public withNgStyle(ngStyleFn: (data: T[P], dataParent: T, dataList: T[]) => Object) {
     this.ngStyle = ngStyleFn;
     return this;
   }
@@ -394,7 +393,7 @@ export class TableColumn<T, P extends keyof T> {
    *
    * @param ngComponentInput
    */
-  public withNgComponentInput(ngComponentInput: (component: any, data: T[P], dataParent: T) => void) {
+  public withNgComponentInput(ngComponentInput: (component: any, data: T[P], dataParent: T, dataList: T[]) => void) {
     this.ngComponentInput = ngComponentInput;
     return this;
   }

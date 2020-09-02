@@ -8,9 +8,10 @@ import {Component, ComponentFactoryResolver, ComponentRef, Input, OnChanges, Typ
 export class ExternalComponentWrapperComponent implements OnChanges {
 
   @Input() ngComponent: Type<any>;
-  @Input() ngComponentInput: (component: any, data: any, dataParent: any) => void;
+  @Input() ngComponentInput: (component: any, data: any, dataParent: any, dataList: any) => void;
   @Input() tcolProperty: any;
   @Input() dataParent: any;
+  @Input() dataList: any;
 
   private componentRef: ComponentRef<any>;
 
@@ -21,12 +22,12 @@ export class ExternalComponentWrapperComponent implements OnChanges {
     this.viewContainerRef.clear();
     this.componentRef = this.viewContainerRef.createComponent(this.resolver.resolveComponentFactory(this.ngComponent));
     if (this.ngComponentInput) {
-      this.ngComponentInput(this.componentRef.instance, this.dataParent[this.tcolProperty], this.dataParent);
+      this.ngComponentInput(this.componentRef.instance, this.dataParent[this.tcolProperty], this.dataParent, this.dataList);
     }
   }
 
   refreshInput() {
-    this.ngComponentInput(this.componentRef.instance, this.dataParent[this.tcolProperty], this.dataParent);
+    this.ngComponentInput(this.componentRef.instance, this.dataParent[this.tcolProperty], this.dataParent, this.dataList);
   }
 
 }

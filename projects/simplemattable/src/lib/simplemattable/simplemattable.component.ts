@@ -419,7 +419,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    */
   onClick(tcol: TableColumn<T, any>, element: T, fromButton: boolean) {
     if (fromButton ? this.isButtonClickable(tcol) : this.isCellClickable(tcol, element)) {
-      tcol.onClick(element[tcol.property], element);
+      tcol.onClick(element[tcol.property], element, this.data);
     }
   }
 
@@ -650,7 +650,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
           'Please consider adding the onInit and onApply functions to the FormField of the "' + tcol.name + '"-column. ' +
           'For more information on this, see the simplemattable docs on npm or github.');
       }
-      element[tcol.property] = tcol.formField.apply ? tcol.formField.apply(val, element[tcol.property], element) : val;
+      element[tcol.property] = tcol.formField.apply ? tcol.formField.apply(val, element[tcol.property], element, this.data) : val;
     });
     this.dataStatus.get(oldElement).loading = true;
     if (this.dataStatus.get(oldElement).added) {
@@ -730,7 +730,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   getStringRepresentation(tcol: TableColumn<T, any>, element: T): string {
     if (tcol.transform) {
-      return tcol.transform(element[tcol.property], element);
+      return tcol.transform(element[tcol.property], element, this.data);
     } else if (element[tcol.property] === null || element[tcol.property] === undefined) {
       return '';
     } else {
@@ -805,24 +805,32 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     if (changes.data) {
       this.onDataChanges();
     }
-    if (this.backendPagination && this.matBackendPaginator && changes.pageSettings && this.pageSettings) {
-      // When using backend pagination, the user can programmatically select a page and the page size
+    if (changes.pageSettings && this.pageSettings) {
+      // When using pagination, the user can programmatically select a page and the page size
       // via the page settings object. The paginator selections are changed here.
       const hasIndex = !isNaN(this.pageSettings.pageIndex);
       const hasSize = !isNaN(this.pageSettings.pageSize);
-      const previousIndex = this.matBackendPaginator.pageIndex;
+
+      let paginator: MatPaginator;
+      if (this.backendPagination && this.matBackendPaginator) {
+        paginator = this.matBackendPaginator;
+      } else if (this.paginator && this.matFrontendPaginator) {
+        paginator = this.matFrontendPaginator;
+      }
+      const previousIndex = paginator.pageIndex;
+
       if (hasIndex) {
-        this.matBackendPaginator.pageIndex = this.pageSettings.pageIndex;
+        paginator.pageIndex = this.pageSettings.pageIndex;
       }
       if (hasSize) {
-        this.matBackendPaginator.pageSize = this.pageSettings.pageSize;
+        paginator.pageSize = this.pageSettings.pageSize;
       }
       if (hasIndex || hasSize) {
         this.onPageEvent({
           previousPageIndex: previousIndex,
-          length: this.matBackendPaginator.length,
-          pageIndex: this.matBackendPaginator.pageIndex,
-          pageSize: this.matBackendPaginator.pageSize
+          length: paginator.length,
+          pageIndex: paginator.pageIndex,
+          pageSize: paginator.pageSize
         });
       }
     }
@@ -1074,7 +1082,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     // we cant place this in the ngOnInit method because the view is not yet initialized
     // and so the layout will be buggy (e.g. neglecting specified height) if we start loading immediately
     setTimeout(() => {
-      if (this.paginator && this.backendPagination) {
+      if (this.paginator) {
         this.onPageEvent({
           pageSize: this.paginatorPageSize,
           pageIndex: 0,

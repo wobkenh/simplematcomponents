@@ -10,6 +10,7 @@ export class ExternalDetailComponentWrapperComponent<T> implements OnChanges {
 
   @Input() ngComponent: Type<DetailRowComponent<T>>;
   @Input() element: T;
+  @Input() dataList: T[];
 
   private componentRef: ComponentRef<DetailRowComponent<T>>;
 
@@ -19,7 +20,7 @@ export class ExternalDetailComponentWrapperComponent<T> implements OnChanges {
   ngOnChanges() {
     this.viewContainerRef.clear();
     this.componentRef = this.viewContainerRef.createComponent(this.resolver.resolveComponentFactory(this.ngComponent));
-    this.componentRef.instance.onInput(this.element);
+    this.componentRef.instance.onInput(this.element, this.dataList);
   }
 
 }

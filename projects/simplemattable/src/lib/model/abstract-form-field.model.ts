@@ -5,20 +5,20 @@ import {FormError} from './form-error.model';
 export class AbstractFormField<T, P extends keyof T, F> {
   formType: FormFieldType;
   validators: ValidatorFn[] = [];
-  init: (data: T[P], dataParent: T) => F;
-  apply: (value: F, data: T[P], dataParent: T) => T[P];
+  init: (data: T[P], dataParent: T, dataList: T[]) => F;
+  apply: (value: F, data: T[P], dataParent: T, dataList: T[]) => T[P];
   errors: FormError[] = [];
   placeholder: string = '';
   focus: boolean = false;
   hint: string = '';
-  onDirectEditModelChange: (value: F, data: T[P], dataParent: T) => void;
+  onDirectEditModelChange: (value: F, data: T[P], dataParent: T, dataList: T[]) => void;
 
   /**
    * When direct edit is enabled, you can use this function to listen to data changes from the user.
    * @param onModelChange callback that is called when the data changes
    * @returns this
    */
-  public withOnDirectEditModelChange(onModelChange: (value: F, data: T[P], dataParent: T) => void): this {
+  public withOnDirectEditModelChange(onModelChange: (value: F, data: T[P], dataParent: T, dataList: T[]) => void): this {
     this.onDirectEditModelChange = onModelChange;
     return this;
   }
@@ -47,7 +47,7 @@ export class AbstractFormField<T, P extends keyof T, F> {
    * @param initFn
    * @returns this
    */
-  withInit(initFn: (data: T[P], dataParent: T) => F): this {
+  withInit(initFn: (data: T[P], dataParent: T, dataList: T[]) => F): this {
     this.init = initFn;
     return this;
   }
@@ -60,7 +60,7 @@ export class AbstractFormField<T, P extends keyof T, F> {
    * @param applyFn
    * @returns this
    */
-  withApply(applyFn: (value: F, data: T[P], dataParent: T) => T[P]): this {
+  withApply(applyFn: (value: F, data: T[P], dataParent: T, dataList: T[]) => T[P]): this {
     this.apply = applyFn;
     return this;
   }

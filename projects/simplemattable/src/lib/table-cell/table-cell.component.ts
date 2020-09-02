@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {TableColumn} from '../model/table-column.model';
-import {Align} from '../model/align.model';
 import {ButtonType} from '../model/button-type.model';
 import {SaveEvent} from '../model/table-cell-events.model';
 import {AbstractControl, FormBuilder} from '@angular/forms';
@@ -34,6 +33,8 @@ export class TableCellComponent<T> implements OnInit {
   columnIndex: number;
   @Input()
   formControls: Map<string, AbstractControl>;
+  @Input()
+  dataList: T[];
 
   // Outputs
   @Output()
@@ -112,7 +113,7 @@ export class TableCellComponent<T> implements OnInit {
 
   getCellCssClass(tcol: TableColumn<T, any>, element: T): Object {
     const defaultClass = {'filler-div': true, 'on-click': (tcol.onClick && !tcol.button)};
-    const ngClass = tcol.ngClass ? tcol.ngClass(element[tcol.property], element) : null;
+    const ngClass = tcol.ngClass ? tcol.ngClass(element[tcol.property], element, this.dataList) : null;
     return this.utilService.getCellCssClass(tcol, ngClass, defaultClass);
   }
 
@@ -154,7 +155,7 @@ export class TableCellComponent<T> implements OnInit {
 
   directEditElementChanged(tcol: TableColumn<T, any>, element: T, newValue) {
     if (tcol.formField.onDirectEditModelChange) {
-      tcol.formField.onDirectEditModelChange(newValue, element[tcol.property], element);
+      tcol.formField.onDirectEditModelChange(newValue, element[tcol.property], element, this.dataList);
     } else {
       element[tcol.property] = newValue;
     }
@@ -186,7 +187,7 @@ export class TableCellComponent<T> implements OnInit {
     if (this.formControls.has(id)) {
       return this.formControls.get(id);
     } else {
-      const initialValue = tcol.formField.init ? tcol.formField.init(element[tcol.property], element) : element[tcol.property];
+      const initialValue = tcol.formField.init ? tcol.formField.init(element[tcol.property], element, this.dataList) : element[tcol.property];
       const control = this.fb.control(initialValue, tcol.formField.validators);
       this.formControls.set(id, control);
       return control;
@@ -202,18 +203,22 @@ export class TableCellComponent<T> implements OnInit {
    */
   onClick(tcol: TableColumn<T, any>, element: T) {
     if (this.isButtonClickable(tcol)) {
-      tcol.onClick(element[tcol.property], element);
+      tcol.onClick(element[tcol.property], element, this.dataList);
     }
   }
 
   private isButtonClickable = (tcol: TableColumn<T, any>) => tcol.onClick && tcol.button;
-  isButtonDisabled = (tcol: TableColumn<T, any>, element: T): boolean => tcol.disabledFn ? tcol.disabledFn(element[tcol.property], element) : false;
   isEditingColumn = (tcol: TableColumn<T, any>, editing: boolean): boolean => tcol.formField && !tcol.directEdit && editing;
-  getIconName = (tcol: TableColumn<T, any>, element: T) => tcol.icon(element[tcol.property], element);
+  getIconName = (tcol: TableColumn<T, any>, element: T) => tcol.icon(element[tcol.property], element, this.dataList);
+
+  isButtonDisabled(tcol: TableColumn<T, any>, element: T): boolean {
+    return tcol.disabledFn
+      ? tcol.disabledFn(element[tcol.property], element, this.dataList) : false;
+  }
 
   getStringRepresentation(tcol: TableColumn<T, any>, element: T): string {
     if (tcol.transform) {
-      return tcol.transform(element[tcol.property], element);
+      return tcol.transform(element[tcol.property], element, this.dataList);
     } else if (element[tcol.property] === null || element[tcol.property] === undefined) {
       return '';
     } else {
@@ -247,10 +252,10 @@ export class TableCellComponent<T> implements OnInit {
    * @returns ngStyleObject
    */
   getCellCssStyle(tcol: TableColumn<T, any>, element: T): Object {
-    const baseValue = tcol.ngStyle ? tcol.ngStyle(element[tcol.property], element) : {};
+    const baseValue = tcol.ngStyle ? tcol.ngStyle(element[tcol.property], element, this.dataList) : {};
     baseValue['textAlign'] = this.utilService.getTextAlign(tcol.align);
     if (tcol.heightFn) {
-      const height = tcol.heightFn(element[tcol.property], element);
+      const height = tcol.heightFn(element[tcol.property], element, this.dataList);
       if (height) {
         baseValue['height'] = height.toString();
       }

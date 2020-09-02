@@ -1,3 +1,3 @@
 export interface DetailRowComponent<T> {
-  onInput: (element: T) => void;
+  onInput: (element: T, dataList: T[]) => void;
 }

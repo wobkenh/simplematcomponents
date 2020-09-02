@@ -50,7 +50,7 @@
             [fxHide.xs]="tcol.hiddenXs || tcol.hiddenSm" [fxHide.sm]="tcol.hiddenSm"
             (click)="onClick(tcol, element, false)">
           <smc-table-cell [formControls]="formControls" [dataParent]="element" [rowIndex]="rowIndex"
-                          [refreshTrigger]="refreshTrigger"
+                          [refreshTrigger]="refreshTrigger" [dataList]="data"
                           [columnIndex]="columnIndex" [isEditing]="dataStatus.get(element)?.editing"
                           [tableColumnInput]="tcol"
                           (save)="saveElement($event.rowIndex, $event.element)"></smc-table-cell>
@@ -149,7 +149,8 @@
                    #frontendPaginator
                    [pageSize]="paginatorPageSize"
                    [pageSizeOptions]="paginatorPageSizeOptions"
-                   [showFirstLastButtons]="true">
+                   [showFirstLastButtons]="true"
+                   (page)="onPageEvent($event)">
     </mat-paginator>
   </ng-template>
 </ng-container>

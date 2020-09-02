@@ -186,7 +186,7 @@ If you have a footer row, you may define footer-specific styles in `footerRowNgS
 Want to show the user some details when he clicks on a row? 
 Then define a component for your row detail content that implements the `DetailRowComponent` interface. 
 You can then pass the type to simplemattable's `detailRowComponent` input parameter. 
-The data (which element was clicked) will be passed into the Detail Component via the `onInput: (element: T) => void` method, 
+The data (which element was clicked) will be passed into the Detail Component via the `onInput: (element: T, dataList: T[]) => void` method, 
 which is defined in the `DetailRowComponent` interface.
 
 ### Complex Model
@@ -244,13 +244,14 @@ Changes in Data will not clear the sorting selection.
 
 TableColumn has several optional parameters, allowing you to further customize the table. 
 Some of these properties are functions. 
-These functions always take the property of your model (e.g. the key property of TestData) as first parameter and the model object itself (e.g the instance of TestData) as second parameter. 
+These functions always take the property of your model (e.g. the key property of TestData) as first parameter, the model object itself (e.g the instance of TestData) as second parameter
+and the whole list of data as third parameter (e.g. List of TestData). 
 Often times, the first parameter will suffice, so you can leave out the second one. 
 Use the second one only if you need to reference another property of your model object in the function.
 
 All options are accessible using a 'is'- or 'with'-function that allows you to chain the method calls. Also, you can set the properties of the table column directly. 
 
-- transform (`.withTransform(transformFn: (data: T[P], dataParent: T) => string)`): Transform is a function that returns a string representation that will be displayed for this cell. 
+- transform (`.withTransform(transformFn: (data: T[P], dataParent: T, dataList: T[]) => string)`): Transform is a function that returns a string representation that will be displayed for this cell. 
 This is helpful if e.g. your model contains a Date but you do not want the standard JS string representation of date to show, but rather your preferred format. 
 - width (`.withWidth(width: (number | Width | string))`): The width of the column. Can bei either string, number or Width:
   + Width (recommended): Width allows you to enter the width in a typesafe way. 
@@ -260,7 +261,7 @@ This is helpful if e.g. your model contains a Date but you do not want the stand
 
   The width of the columns will be calculated like in any other html table. Attention: This differs from Version 1.X of simplemattable where flex-layout was used instead.
   
-- height (`.withHeight(heightFn: (data: T[P], dataParent: T) => Height)`): By default, the height of a row will be calculated by the table cell contents in regular html table fashion. 
+- height (`.withHeight(heightFn: (data: T[P], dataParent: T, dataList: T[]) => Height)`): By default, the height of a row will be calculated by the table cell contents in regular html table fashion. 
 If you want to change the height (e.g. you want to display an image via css background property and the cell content is not large enough), supply the height function to calculate the height for each row.
 The height function returns a Height object, which works just like the width object (see width option above).    
 
@@ -268,7 +269,7 @@ The height function returns a Height object, which works just like the width obj
 
 - sortable (`.isSortable(sortable: boolean)`): If sorting is enabled, you can disable sorting for certain columns by setting this property to false (default: true)
 
-- sortTransform (`.withSortTransform(transformFn: (data: T[P], dataParent: T) => number | string)`): If you need custom sorting, you can specify sortTransform, 
+- sortTransform (`.withSortTransform(transformFn: (data: T[P], dataParent: T, dataList: T[]) => number | string)`): If you need custom sorting, you can specify sortTransform, 
 which is a function that returns a number or string representation that is used to sort the table. 
 Sorting will use the following representation of a column:
   1. If sortTransform is available, it will apply the data to the supplied function
@@ -278,13 +279,13 @@ Sorting will use the following representation of a column:
   
 - visible (`.isVisible(visible: boolean)`): Can be used to change the visibility of a column
 
-- icon (`.withIcon(iconNameFn: (data: T[P], dataParent: T) => string)`): Icon is a function that returns the name of the icon that will be prepended to the text in the table cell. 
+- icon (`.withIcon(iconNameFn: (data: T[P], dataParent: T, dataList: T[]) => string)`): Icon is a function that returns the name of the icon that will be prepended to the text in the table cell. 
 Google Material Icons will be used, so you can [check out the icons here](https://material.io/tools/icons/). 
 If you want to only display the icon with no text, specify the transform property with a function that always returns an empty string. 
 Since icon is a function, you can decide for every row which icon you want to use, for example if you have a boolean property called 
 `checkedIn` on your model, you could do  `(checkedIn) => checkedIn ? 'check' : 'close'` for its column, which will either display a tick or a cross icon.
 
-- onClick (`.withOnClick(onClickFn: (data: T[P], dataParent: T) => void)`): OnClick enables the click listener for the table column.
+- onClick (`.withOnClick(onClickFn: (data: T[P], dataParent: T, dataList: T[]) => void)`): OnClick enables the click listener for the table column.
 If any cell (excluding the header cell) is clicked, the function onClick will be executed.
 On hover, the background of clickable cells will turn into a half-transparent gray and the cursor will become a pointer.
 This can be used for example if you have an overview table and want to display details on click. 
@@ -298,7 +299,7 @@ If specified, the onClick function will be executed on a click event.
 - buttonColor (`.withButtonColor(buttonColor: ThemePalette)`): If the button type is set, buttonColor allows you to change the button color. Can be either `'primary'`, `'warn'` or `'accent'`.
 If you leave the button color empty, the standard white/transparent background (depending on button type) will be used.
 
-- buttonDisabled (`.withButtonDisabled(disabledFn: (data: T[P], dataParent: T) => boolean)`): If a button is present (see `withButton`), 
+- buttonDisabled (`.withButtonDisabled(disabledFn: (data: T[P], dataParent: T, dataList: T[]) => boolean)`): If a button is present (see `withButton`), 
 use this function to switch the button between active and disabled state.
 
 - maxLines (`.withMaxLines(maxLineLength: number)`): Maximum lines of text in a cell. Note that this refers to the maximum number of lines in the cell. 
@@ -316,7 +317,7 @@ The inbuilt options are:
     + textHiddenXs (`.isTextHiddenXs(textHiddenXs: boolean)`): Default is false. Use true if you want to hide the text of the cell/button on very small screens.
     + textHiddenSm (`.isTextHiddenSm(textHiddenSm: boolean)`): Default is false. Use true if you want to hide the text of the cell/button on very small and small screens.
     
-- ngClass: (`.withNgClass(ngClassFn: (data: T[P], dataParent: T) => string | string[] | Object)`):
+- ngClass: (`.withNgClass(ngClassFn: (data: T[P], dataParent: T, dataList: T[]) => string | string[] | Object)`):
 If you want to apply a custom css class to the table cells of a column, you can add the ngClass function.
 It must return something that is parsable by the ngClass directive. For more information on ngClass [see the Angular docs](https://angular.io/api/common/NgClass).
 CSS classes of your component's css can not be applied due to Angulars component style isolation. Instead, define the css in your global stylesheet.
@@ -326,7 +327,7 @@ Currently, these attributes are `background-color` and `cursor`, which are set o
 If you need to style the children in the table cell, you can select them using the standard css features.
 Note that the classes will be applied to a `<div>` that fills the `<td>` element completely and not to the `<td>` itself.
 
-- ngStyle: (`.withNgStyle(ngStyleFn: (data: T[P], dataParent: T) => Object)`): 
+- ngStyle: (`.withNgStyle(ngStyleFn: (data: T[P], dataParent: T, dataList: T[]) => Object)`): 
 If you want to apply custom inline css to the table cells of a column, you can add the ngStyle function.
 It must return something that is parsable by the ngStyle directive. For more information on ngStyle [see the Angular docs](https://angular.io/api/common/NgStyle).
 You do not need to use !important on ngStyle. For example, you could change the background color depending on id like this even when the column is clickable: 
@@ -340,7 +341,7 @@ If no table column has a footer function, no footer will be display. If at least
 - footerNgClass: (`.withFooterNgClass(footerNgClassFn: (data: T[P][], dataParents: T[]) => string | string[] | Object)`):
 Same as ngClass, but applies to the cell in the footer row corresponding to this table column. 
 
-- footerNgStyle: (`.withFooterNgStyle(footerNgStyleFn: (data: T[P], dataParent: T) => Object)`): 
+- footerNgStyle: (`.withFooterNgStyle(footerNgStyleFn: (data: T[P], dataParent: T, dataList: T[]) => Object)`): 
 Same as ngStyle, but applies to the cell in the footer row corresponding to this table column.
 
 - colFilter: (`.withColFilter()`): When activated, displays a column filter input below the header cell of the column. 
@@ -375,7 +376,7 @@ If ngstyle/ngclass and string transformations are not enough, you can substitute
 Use this method to supply the Component Type. Use the Component Name as the parameter (e.g. `MyCustomComponent`).
 Have a look at `withNgComponentInput` to feed the component with input.
 
-- ngComponentInput `withNgComponentInput(ngComponentInput: (component: any, data: T[P], dataParent: T) => void)`:
+- ngComponentInput `withNgComponentInput(ngComponentInput: (component: any, data: T[P], dataParent: T, dataList: T[]) => void)`:
 If you want to display your own angular component in the table cells and have activated this feature through `withNgComponent`,
 then you can supply a function here to fill the input parameters of your component. The function will be passed the component instance
 as well as the data / element the cell represents. Change detection is linked to the simplemattable change detection, 
@@ -448,23 +449,23 @@ An element can not be saved until all validator functions pass.
 `FormError` is an interface that has two strings: `key` and `msg`. 
 Key is the error name that any validator you specified might add to the errors of the form control (e.g: 'required' when using Validators.required). 
 Msg is the message that will be displayed if the given key is found in the errors of the form control.
-- init (`withInit(initFn: (data: T[P], dataParent: T) => F)`): If you specify this function, it will be executed
+- init (`withInit(initFn: (data: T[P], dataParent: T, dataList: T[]) => F)`): If you specify this function, it will be executed
 when the form field is created (e.g. when the user hits the edit button on a row). 
 The function should transform the property of your model that this column describes into whatever the form field needs.
 Depending on the form field you chose, this could be for example string (text/large text input) or number (number input).
 This means that you could use e.g. a date form field even though the property on your model is not a date, as long as you use withInit  and withApply to transform the value.
-- apply (`withApply(applyFn: (value: F, data: T[P], dataParent: T) => void)`) : If you specify this function, it will be executed when the user saves a row.
+- apply (`withApply(applyFn: (value: F, data: T[P], dataParent: T, dataList: T[]) => void)`) : If you specify this function, it will be executed when the user saves a row.
 The funtion should transform the value from the form field (e.g. Date if you use a date input) 
 in a way that it can be set as the property of your model. 
 If omitted, the value is applied directly. 
 You should only omit this function if the property datatype equals the form field data type.
 - focus (`withFocus(focus: boolean)`): Default is false. If set to true, the input of this form field will be focused when the user clicks add or edit.
-- onDirectEditModelChange (`withOnDirectEditModelChange(onModelChange: (value: F, data: T[P], dataParent: T) => void)`): This callback is only available
+- onDirectEditModelChange (`withOnDirectEditModelChange(onModelChange: (value: F, data: T[P], dataParent: T, dataList: T[]) => void)`): This callback is only available
 when using directEdit. It can be used to observe, prevent or change the changes the user makes in the form field.
 When this callback is supplied and Angular calls ngModelChange, instead of updating the model directly, this callback will be called.
 Note that this means you have to change the model yourself. You can use the parameters of the callback for this,
-which include not only the new value of the form field, but also the current property value (`data`, normally this equals the old value) 
-and the whole element (`dataParent`). 
+which include not only the new value of the form field, but also the current property value (`data`, normally this equals the old value), 
+the whole element (`dataParent`) and the list of all elements (`dataList`). 
 
 Note that placeholders, hints, validators and errors will not work on checkbox form fields.
 
@@ -650,7 +651,7 @@ and forward the new settings to the paginator. Also, a new page event will be em
 All you need to do to go back to the first page, assuming you bound the pageSettings variable to the `pageSettings` input parameter of simplemattable, is:
 
 ```
-this.pageSettings = {⁣
+this.pageSettings = {
   pageIndex: 0
 };
 ```
@@ -716,6 +717,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 6.1 (10.0): Fixed cell data refresh bug. Added list of elements as third parameter. Added functionality to change page settings when using frontend pagination
 + 6.0 (10.0): Updated to angular 10
 + 5.4 (9.0): Expandable Rows
 + 5.3 (9.0): Footer Row
