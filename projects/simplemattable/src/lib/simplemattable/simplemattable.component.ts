@@ -177,12 +177,12 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    * Function to provide a style object for customization of row styling.
    * Default undefined.
    */
-  @Input() rowNgStyle: (data: T) => Object;
+  @Input() rowNgStyle: (data: T, dataList: T[]) => Object;
   /**
    * Function to provide a class string/object  for customization of row styling.
    * Default undefined.
    */
-  @Input() rowNgClass: (data: T) => string | string[] | Object;
+  @Input() rowNgClass: (data: T, dataList: T[]) => string | string[] | Object;
   /**
    * Same as rowNgStyle, but for the footer row.
    * Default undefined.
@@ -542,7 +542,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   getTableRowClass(row: T): string | string[] | Object {
     if (this.rowNgClass) {
-      let classes = this.rowNgClass(row);
+      let classes = this.rowNgClass(row, this.data);
       if (this.rowClickable) {
         classes = this.addClass(classes, 'on-click');
       }
@@ -576,7 +576,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   getTableRowStyle(row: T): Object {
     if (this.rowNgStyle) {
-      return this.rowNgStyle(row);
+      return this.rowNgStyle(row, this.data);
     } else {
       return {};
     }

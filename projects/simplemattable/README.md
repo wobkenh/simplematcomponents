@@ -175,9 +175,9 @@ If you also want to make the table rows to appear clickable via a hover effect a
 You can apply row-specific styles using the `rowNgStyle` and `rowNgClass` attributes. 
 Both are methods which get the data of the row (your model) as parameter. 
 
-`rowNgStyle: (data: T) => Object` lets you return an object that will be fed into the `ngStyle` attribute of the table row (`<tr>`).
+`rowNgStyle: (data: T, dataList: T[]) => Object` lets you return an object that will be fed into the `ngStyle` attribute of the table row (`<tr>`).
 
-`rowNgClass: (data: T) => string | string[] | Object` lets you return a string, string array or object that will be fed into the `ngClass` attribute of the row (`<tr>`).
+`rowNgClass: (data: T, dataList: T[]) => string | string[] | Object` lets you return a string, string array or object that will be fed into the `ngClass` attribute of the row (`<tr>`).
 Note that when using `rowNgClass`, the row must be in the global stylesheet due to component isolation.
 
 If you have a footer row, you may define footer-specific styles in `footerRowNgStyle: (data: T[]) => Object` and `rowNgClass: (data: T[]) => string | string[] | Object`.
