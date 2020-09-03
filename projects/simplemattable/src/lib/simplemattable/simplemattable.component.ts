@@ -817,21 +817,22 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
       } else if (this.paginator && this.matFrontendPaginator) {
         paginator = this.matFrontendPaginator;
       }
-      const previousIndex = paginator.pageIndex;
-
-      if (hasIndex) {
-        paginator.pageIndex = this.pageSettings.pageIndex;
-      }
-      if (hasSize) {
-        paginator.pageSize = this.pageSettings.pageSize;
-      }
-      if (hasIndex || hasSize) {
-        this.onPageEvent({
-          previousPageIndex: previousIndex,
-          length: paginator.length,
-          pageIndex: paginator.pageIndex,
-          pageSize: paginator.pageSize
-        });
+      if (paginator) {
+        const previousIndex = paginator.pageIndex;
+        if (hasIndex) {
+          paginator.pageIndex = this.pageSettings.pageIndex;
+        }
+        if (hasSize) {
+          paginator.pageSize = this.pageSettings.pageSize;
+        }
+        if (hasIndex || hasSize) {
+          this.onPageEvent({
+            previousPageIndex: previousIndex,
+            length: paginator.length,
+            pageIndex: paginator.pageIndex,
+            pageSize: paginator.pageSize
+          });
+        }
       }
     }
   }
