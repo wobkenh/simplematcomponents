@@ -31,7 +31,27 @@ export class CustomCssComponent implements OnInit {
 }`;
   html = `<smc-simplemattable [data]="dataCustomCss" [columns]="columnsCustomCss"></smc-simplemattable>`;
 
-  constructor() { }
+
+  // RowCss
+  dataRowCss: ComplexTestData[] = [];
+  columnsRowCss: TableColumn<any, any>[] = [];
+  typescriptColumnsRowCss = `this.columnsRowCss = [
+  new TableColumn<ComplexTestData, 'id'>('My ID - Color depends on id', 'id'),
+  new TableColumn<ComplexTestData, 'description'>('Description', 'description'),
+];`;
+  typescriptRowCssStyle = `rowNgStyle(datum: ComplexTestData) {
+  return { 'background-color': 'rgb(0, ' + datum.id * 50 + ', 0)' };
+}`;
+  rowCss = `.red-bg-cell {
+  background: #992222 !important;
+  color: white;
+}`;
+  htmlRowCss = `<smc-simplemattable [data]="dataCustomCss" [columns]="columnsRowCss"
+  [rowNgClass]="rowNgClass"></smc-simplemattable>`;
+
+
+  constructor() {
+  }
 
   ngOnInit() {
     /*
@@ -44,12 +64,20 @@ export class CustomCssComponent implements OnInit {
     ];
     this.columnsCustomCss = [
       new TableColumn<ComplexTestData, 'id'>('My ID - Color depends on id', 'id')
-        .withNgStyle((id) => ({'background-color': 'rgb(0, ' + id * 50 + ', 0)'})),
+        .withNgStyle((id) => ({ 'background-color': 'rgb(0, ' + id * 50 + ', 0)' })),
       new TableColumn<ComplexTestData, 'description'>('My Description with background image (ngStyle)', 'description')
-        .withNgStyle(() => ({'background-image': 'url(assets/smile.png)'})),
+        .withNgStyle(() => ({ 'background-image': 'url(assets/smile.png)' })),
       new TableColumn<ComplexTestData, 'description'>('My Description with background color (ngClass)', 'description')
         .withNgClass(() => 'red-bg-cell')
     ];
+    this.columnsRowCss = [
+      new TableColumn<ComplexTestData, 'id'>('My ID - Color depends on id', 'id'),
+      new TableColumn<ComplexTestData, 'description'>('Description', 'description'),
+    ];
+  }
+
+  rowNgStyle(datum: ComplexTestData) {
+    return { 'background-color': 'rgb(0, ' + datum.id * 50 + ', 0)' };
   }
 
 }
