@@ -47,7 +47,7 @@ export class CustomCssComponent implements OnInit {
   color: white;
 }`;
   htmlRowCss = `<smc-simplemattable [data]="dataCustomCss" [columns]="columnsRowCss"
-  [rowNgClass]="rowNgClass"></smc-simplemattable>`;
+  [rowNgStyle]="rowNgStyle"></smc-simplemattable>`;
 
 
   constructor() {
