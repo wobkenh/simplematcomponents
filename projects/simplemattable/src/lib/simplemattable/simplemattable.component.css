@@ -9,7 +9,8 @@
   cursor: pointer;
 }
 
-.on-click textarea {
+/* textarea is hidden in table-cell, so use ng-deep */
+.on-click ::ng-deep textarea {
   cursor: pointer;
 }
 

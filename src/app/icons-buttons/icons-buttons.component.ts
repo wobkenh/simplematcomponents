@@ -51,7 +51,8 @@ export class IconsButtonsComponent implements OnInit {
 ];`;
   typescriptColumnsClickableRows = `this.columnsRowClickable = [
   new TableColumn<ComplexTestData, 'id'>('My ID', 'id'),
-  new TableColumn<ComplexTestData, 'value'>('My Value', 'value'),
+  new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+    .withMaxLines(2),
   new TableColumn<ComplexTestData, 'description'>('My Description - Icon', 'description')
     .withIcon((description) => description === 'test1' ? 'delete' : 'wifi'),
 ];`;
@@ -98,7 +99,8 @@ export class IconsButtonsComponent implements OnInit {
     ];
     this.columnsRowClickable = [
       new TableColumn<ComplexTestData, 'id'>('My ID', 'id'),
-      new TableColumn<ComplexTestData, 'value'>('My Value', 'value'),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withMaxLines(2),
       new TableColumn<ComplexTestData, 'description'>('My Description - Icon', 'description')
         .withIcon((description) => description === 'test1' ? 'delete' : 'wifi'),
     ];
