@@ -25,6 +25,7 @@
 :host {
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .filler-div {
@@ -74,10 +75,6 @@ td {
   align-items: center;
   justify-content: flex-end;
   z-index: 99999; /* Otherwise, new items in the table will hide the loading screen  */
-}
-
-:host {
-  position: relative;
 }
 
 tr.smt-detail-row {
