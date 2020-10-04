@@ -13,19 +13,19 @@ import {
   Type,
   ViewChild
 } from '@angular/core';
-import {TableColumn} from '../model/table-column.model';
-import {Align} from '../model/align.model';
-import {AbstractControl, FormBuilder} from '@angular/forms';
-import {DataStatus} from '../model/data-status.model';
-import {Observable, Subscription} from 'rxjs';
-import {PageSettings} from '../model/page-settings.model';
-import {MatPaginator, PageEvent} from '@angular/material/paginator';
-import {MatTable, MatTableDataSource} from '@angular/material/table';
-import {MatSort, Sort} from '@angular/material/sort';
-import {Height} from '../model/height.model';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {animate, state, style, transition, trigger} from '@angular/animations';
-import {DetailRowComponent} from '../model/detail-row-component';
+import { TableColumn } from '../model/table-column.model';
+import { Align } from '../model/align.model';
+import { AbstractControl, FormBuilder } from '@angular/forms';
+import { DataStatus } from '../model/data-status.model';
+import { Observable, Subscription } from 'rxjs';
+import { PageSettings } from '../model/page-settings.model';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatSort, Sort } from '@angular/material/sort';
+import { Height } from '../model/height.model';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { DetailRowComponent } from '../model/detail-row-component';
 
 @Component({
   selector: 'smc-simplemattable',
@@ -33,8 +33,8 @@ import {DetailRowComponent} from '../model/detail-row-component';
   styleUrls: ['./simplemattable.component.css'],
   animations: [
     trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0'})),
-      state('expanded', style({height: '*'})),
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],
@@ -265,8 +265,8 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   matFrontendPaginator: MatPaginator;
   matBackendPaginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) matSort: MatSort;
-  @ViewChild(MatTable, {static: true}) matTable: MatTable<T>;
+  @ViewChild(MatSort, { static: true }) matSort: MatSort;
+  @ViewChild(MatTable, { static: true }) matTable: MatTable<T>;
   scrollContainer: ElementRef;
 
   displayedColumns: string[] = [];
@@ -292,6 +292,13 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   hasFooter: boolean = false;
 
   expandedElement: T | null;
+  /**
+   * When using expandable rows, we dont want to render all detail components at once
+   * So we remove the detail component when not expanded
+   * problem: the closing animation takes some time and we dont want the detail component to suddenly disappear before the animation is finished
+   * solution: not only display the currently open detail component, but also the one opened before that
+   */
+  lastExpandedElement: T | null;
 
   constructor(private fb: FormBuilder) {
   }
@@ -534,7 +541,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   getTableCellStyle(tcol: TableColumn<T, any>): { [p: string]: string } {
     if (tcol.width) {
-      return {'width': tcol.width.toString()};
+      return { 'width': tcol.width.toString() };
     } else {
       return {};
     }
@@ -551,7 +558,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
       }
       return classes;
     } else {
-      return {'on-click': !!this.rowClickable, 'smt-element-row': !!this.detailRowComponent};
+      return { 'on-click': !!this.rowClickable, 'smt-element-row': !!this.detailRowComponent };
     }
   }
 
@@ -637,7 +644,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     // so we can check if the id starts with the index to find all controls of that row
     const controls: { col: number, control: AbstractControl }[] = this.iteratorToArray(this.formControls.entries())
       .filter((entry) => entry[0].startsWith(rowIndex.toString()))
-      .map(entry => ({col: +(entry[0].split('_')[1]), control: entry[1]})); // need col index for later
+      .map(entry => ({ col: +(entry[0].split('_')[1]), control: entry[1] })); // need col index for later
     if (controls.some(control => !control.control.valid)) {
       return;
     }
@@ -750,7 +757,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   getTextAlign = (align: Align): string => align === Align.LEFT ? 'start' : align === Align.CENTER ? 'center' : 'end';
   isCenterAlign = (tcol: TableColumn<T, any>): boolean => tcol.align === Align.CENTER;
   hasColumnFilter = (): boolean => this.getDisplayedCols(this.columns).some(tcol => tcol.colFilter);
-  getTableHeaderStyle = (): Object => this.hasColumnFilter() ? {height: '100%'} : {};
+  getTableHeaderStyle = (): Object => this.hasColumnFilter() ? { height: '100%' } : {};
   getTableClass = (): string => (this.sticky ? 'sticky-th' : 'non-sticky-th') + (this.isChrome ? ' chrome' : '');
 
   getOuterContainerStyle() {
@@ -1098,6 +1105,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   rowClicked(row: T) {
     this.rowClick.emit(row);
+    this.lastExpandedElement = this.expandedElement;
     if (this.expandedElement === row) {
       this.expandedElement = null;
     } else {
