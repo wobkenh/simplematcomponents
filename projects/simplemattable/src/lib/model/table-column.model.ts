@@ -1,20 +1,21 @@
-import {Align} from './align.model';
-import {ButtonType} from './button-type.model';
-import {ThemePalette} from '@angular/material/core';
-import {Width} from './width.model';
-import {AbstractFormField} from './abstract-form-field.model';
-import {NumberFormField} from './number-form-field.model';
-import {TextFormField} from './text-form-field.model';
-import {DateFormField} from './date-form-field.model';
-import {SelectFormField} from './select-form-field.model';
-import {LargeTextFormField} from './large-text-form-field.model';
-import {Height} from './height.model';
-import {CheckboxFormField} from './checkbox-form-field.model';
-import {Type} from '@angular/core';
+import { Align } from './align.model';
+import { ButtonType } from './button-type.model';
+import { ThemePalette } from '@angular/material/core';
+import { Width } from './width.model';
+import { AbstractFormField } from './abstract-form-field.model';
+import { NumberFormField } from './number-form-field.model';
+import { TextFormField } from './text-form-field.model';
+import { DateFormField } from './date-form-field.model';
+import { SelectFormField } from './select-form-field.model';
+import { LargeTextFormField } from './large-text-form-field.model';
+import { Height } from './height.model';
+import { CheckboxFormField } from './checkbox-form-field.model';
+import { Type } from '@angular/core';
+import { Observable } from 'rxjs';
 
 export class TableColumn<T, P extends keyof T> {
 
-  public transform: (data: T[P], dataParent: T, dataList: T[]) => string;
+  public transform: (data: T[P], dataParent: T, dataList: T[]) => number | string | Observable<number | string>;
   public width: string;
   public heightFn: (data: T[P], dataParent: T, dataList: T[]) => Height;
   public disabledFn: (data: T[P], dataParent: T, dataList: T[]) => boolean;

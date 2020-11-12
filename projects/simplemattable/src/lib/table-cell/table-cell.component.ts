@@ -1,16 +1,17 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {TableColumn} from '../model/table-column.model';
-import {ButtonType} from '../model/button-type.model';
-import {SaveEvent} from '../model/table-cell-events.model';
-import {AbstractControl, FormBuilder} from '@angular/forms';
-import {FormError} from '../model/form-error.model';
-import {ExternalComponentWrapperComponent} from '../external-component-wrapper/external-component-wrapper.component';
-import {AbstractFormField} from '../model/abstract-form-field.model';
-import {SelectFormFieldOption} from '../model/select-form-field-option.model';
-import {FormFieldType} from '../model/form-field-type.model';
-import {LargeTextFormField} from '../model/large-text-form-field.model';
-import {SelectFormField} from '../model/select-form-field.model';
-import {UtilService} from '../util.service';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { TableColumn } from '../model/table-column.model';
+import { ButtonType } from '../model/button-type.model';
+import { SaveEvent } from '../model/table-cell-events.model';
+import { AbstractControl, FormBuilder } from '@angular/forms';
+import { FormError } from '../model/form-error.model';
+import { ExternalComponentWrapperComponent } from '../external-component-wrapper/external-component-wrapper.component';
+import { AbstractFormField } from '../model/abstract-form-field.model';
+import { SelectFormFieldOption } from '../model/select-form-field-option.model';
+import { FormFieldType } from '../model/form-field-type.model';
+import { LargeTextFormField } from '../model/large-text-form-field.model';
+import { SelectFormField } from '../model/select-form-field.model';
+import { UtilService } from '../util.service';
+import { isObservable, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'smc-table-cell',
@@ -51,7 +52,7 @@ export class TableCellComponent<T> implements OnInit {
   inputId: string = '';
   buttonDisabled: boolean = false;
   iconName: string = '';
-  stringRepresentation: string = '';
+  stringRepresentation: string | number = '';
 
   constructor(private fb: FormBuilder,
               private utilService: UtilService) {
@@ -92,7 +93,7 @@ export class TableCellComponent<T> implements OnInit {
   private updateTableColumn() {
     // Updates that only are affected by the table column
     this.cellAlign = this.utilService.getCellAlign(this.tableColumn.align);
-    this.inputCssStyle = {'text-align': this.utilService.getTextAlign(this.tableColumn.align)};
+    this.inputCssStyle = { 'text-align': this.utilService.getTextAlign(this.tableColumn.align) };
     if (this.tableColumn.formField) {
       this.inputId = this.tableColumn.formField.focus ? this.rowIndex + '-smt-focus-input' : '';
     }
@@ -104,7 +105,9 @@ export class TableCellComponent<T> implements OnInit {
       this.cellCssClass = this.getCellCssClass(this.tableColumn, this.element);
       this.cellCssStyle = this.getCellCssStyle(this.tableColumn, this.element);
       this.buttonDisabled = this.isButtonDisabled(this.tableColumn, this.element);
-      this.stringRepresentation = this.getStringRepresentation(this.tableColumn, this.element);
+      this.getStringRepresentation(this.tableColumn, this.element).subscribe(transformed => {
+        this.stringRepresentation = transformed;
+      });
       if (this.tableColumn.icon) {
         this.iconName = this.getIconName(this.tableColumn, this.element);
       }
@@ -112,7 +115,7 @@ export class TableCellComponent<T> implements OnInit {
   }
 
   getCellCssClass(tcol: TableColumn<T, any>, element: T): Object {
-    const defaultClass = {'filler-div': true, 'on-click': (tcol.onClick && !tcol.button)};
+    const defaultClass = { 'filler-div': true, 'on-click': (tcol.onClick && !tcol.button) };
     const ngClass = tcol.ngClass ? tcol.ngClass(element[tcol.property], element, this.dataList) : null;
     return this.utilService.getCellCssClass(tcol, ngClass, defaultClass);
   }
@@ -216,13 +219,18 @@ export class TableCellComponent<T> implements OnInit {
       ? tcol.disabledFn(element[tcol.property], element, this.dataList) : false;
   }
 
-  getStringRepresentation(tcol: TableColumn<T, any>, element: T): string {
+  getStringRepresentation(tcol: TableColumn<T, any>, element: T): Observable<string | number> {
     if (tcol.transform) {
-      return tcol.transform(element[tcol.property], element, this.dataList);
+      const transformed = tcol.transform(element[tcol.property], element, this.dataList);
+      if (isObservable(transformed)) {
+        return transformed;
+      } else {
+        return of(transformed);
+      }
     } else if (element[tcol.property] === null || element[tcol.property] === undefined) {
-      return '';
+      return of('');
     } else {
-      return element[tcol.property].toString();
+      return of(element[tcol.property].toString());
     }
   }
 

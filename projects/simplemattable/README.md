@@ -251,8 +251,9 @@ Use the second one only if you need to reference another property of your model 
 
 All options are accessible using a 'is'- or 'with'-function that allows you to chain the method calls. Also, you can set the properties of the table column directly. 
 
-- transform (`.withTransform(transformFn: (data: T[P], dataParent: T, dataList: T[]) => string)`): Transform is a function that returns a string representation that will be displayed for this cell. 
+- transform (`.withTransform(transformFn: (data: T[P], dataParent: T, dataList: T[]) => string | number | Observable<string, number>)`): Transform is a function that returns a string representation that will be displayed for this cell. 
 This is helpful if e.g. your model contains a Date but you do not want the standard JS string representation of date to show, but rather your preferred format. 
+Or you could load the string representation from a remote server by returning an observable obtained from an http request. Note that if an observable is supplied, the filter function wont work for this column.
 - width (`.withWidth(width: (number | Width | string))`): The width of the column. Can bei either string, number or Width:
   + Width (recommended): Width allows you to enter the width in a typesafe way. 
   You can use `Width.px(pixel: number)` to get a pixel based width or `Width.pct(percent: number)` for percent based width. 
@@ -717,6 +718,8 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 6.3 (10.0): Allow observables in transform
++ 6.2 (10.0): Only render detail component when needed
 + 6.1 (10.0): Fixed cell data refresh bug. Added list of elements as third parameter. Added functionality to change page settings when using frontend pagination
 + 6.0 (10.0): Updated to angular 10
 + 5.4 (9.0): Expandable Rows

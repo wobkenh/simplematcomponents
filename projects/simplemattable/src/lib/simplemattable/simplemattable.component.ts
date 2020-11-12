@@ -737,7 +737,9 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   getStringRepresentation(tcol: TableColumn<T, any>, element: T): string {
     if (tcol.transform) {
-      return tcol.transform(element[tcol.property], element, this.data);
+      // Sadly, we cant use observables here as the datasource's filter function (for which this is used)
+      // does not support returning observables
+      return tcol.transform(element[tcol.property], element, this.data) + '';
     } else if (element[tcol.property] === null || element[tcol.property] === undefined) {
       return '';
     } else {
