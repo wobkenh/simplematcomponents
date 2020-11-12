@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {TableColumn} from '../../../projects/simplemattable/src/lib/model/table-column.model';
-import {Observable, Subject} from 'rxjs';
-import {TestData} from '../model/test-data.model';
+import { Component, OnInit } from '@angular/core';
+import { TableColumn } from '../../../projects/simplemattable/src/lib/model/table-column.model';
+import { Observable, Subject } from 'rxjs';
+import { TestData } from '../model/test-data.model';
+import { PageSettings } from '../../../projects/simplemattable/src/lib/model/page-settings.model';
 
 @Component({
   selector: 'smc-infinite-scrolling',
@@ -13,6 +14,7 @@ export class InfiniteScrollingComponent implements OnInit {
   // Infinite Scroll
   dataInfiniteScroll: TestData[] = [];
   dataInfiniteScroll2: TestData[] = [];
+  dataInfiniteScroll3: TestData[] = [];
   columnsInfiniteScroll: TableColumn<any, any>[] = [];
   itemCount = 0;
 
@@ -53,6 +55,7 @@ export class InfiniteScrollingComponent implements OnInit {
 }`;
   html2 = `<smc-simplemattable [data]="dataInfiniteScroll2" [columns]="columnsInfiniteScroll" [infiniteScrolling]="true"
                   [getPage]="getPage"></smc-simplemattable>`;
+  pageSettings: PageSettings;
 
   constructor() {
   }
@@ -64,6 +67,7 @@ export class InfiniteScrollingComponent implements OnInit {
     */
     this.dataInfiniteScroll = [];
     this.dataInfiniteScroll2 = [];
+    this.dataInfiniteScroll3 = [];
     this.columnsInfiniteScroll = [
       new TableColumn<TestData, 'key'>('Key', 'key'),
       new TableColumn<TestData, 'value'>('Value', 'value')
@@ -91,4 +95,9 @@ export class InfiniteScrollingComponent implements OnInit {
     this.itemCount = data.length;
   }
 
+  resetData() {
+    this.pageSettings = {
+      pageIndex: 0,
+    };
+  }
 }
