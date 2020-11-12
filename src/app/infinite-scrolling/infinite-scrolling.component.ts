@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { TableColumn } from '../../../projects/simplemattable/src/lib/model/table-column.model';
 import { Observable, Subject } from 'rxjs';
 import { TestData } from '../model/test-data.model';
@@ -17,6 +17,7 @@ export class InfiniteScrollingComponent implements OnInit {
   dataInfiniteScroll3: TestData[] = [];
   columnsInfiniteScroll: TableColumn<any, any>[] = [];
   itemCount = 0;
+  itemCount3 = 0;
 
   typescriptData = `this.dataInfiniteScroll = [];`;
   typescriptColumns = `this.columnsInfiniteScroll = [
@@ -55,9 +56,40 @@ export class InfiniteScrollingComponent implements OnInit {
 }`;
   html2 = `<smc-simplemattable [data]="dataInfiniteScroll2" [columns]="columnsInfiniteScroll" [infiniteScrolling]="true"
                   [getPage]="getPage"></smc-simplemattable>`;
-  pageSettings: PageSettings;
 
-  constructor() {
+  typescriptData3 = `this.dataInfiniteScroll3 = [];`;
+  typescriptColumns3 = `this.columnsInfiniteScroll = [
+  new TableColumn<TestData, 'key'>('Key', 'key'),
+  new TableColumn<TestData, 'value'>('Value', 'value')
+];`;
+  html3 = `<button mat-raised-button (click)="resetData()">Reset data (e.g. after user clicked 'search')</button>
+<smc-simplemattable [data]="dataInfiniteScroll3" [columns]="columnsInfiniteScroll" [infiniteScrolling]="true"
+                    [filter]="true" (renderedData)="updateCount($event)"
+                    [sticky]="true" [getPage]="getPage" [pageSettings]="pageSettings"
+                    style="height: 400px; background: white"></smc-simplemattable>
+<mat-divider></mat-divider>
+<div style="display: flex; align-items: center; justify-content: flex-end; padding: 20px 20px 10px 20px">
+  Showing {{itemCount}} entries
+</div>`;
+
+  pageSettings: PageSettings;
+  typescriptReset = `resetData() {
+    this.pageSettings = {
+      pageIndex: 0, // will reset and clear all data
+    };
+    // reloading the data will trigger a rendered data update, which will in turn call the above updateCount method
+    // since the child element (simplemattable) is therefore updating the parent (itemCount variable)
+    // we need to / can add an extra change detection cycle
+    // to avoid "expression changed after it has been checked" error:
+    this.changeDetectorRef.detectChanges();
+  }`;
+  typescriptUpdate = `updateCount3(data: TestData[]) {
+  this.itemCount3 = data.length;
+}`;
+
+  constructor(
+    private changeDetectorRef: ChangeDetectorRef,
+  ) {
   }
 
   ngOnInit() {
@@ -97,7 +129,16 @@ export class InfiniteScrollingComponent implements OnInit {
 
   resetData() {
     this.pageSettings = {
-      pageIndex: 0,
+      pageIndex: 0, // will reset and clear all data
     };
+    // reloading the data will trigger a rendered data update, which will in turn call the above updateCount method
+    // since the child element (simplemattable) is therefore updating the parent (itemCount variable)
+    // we need to / can add an extra change detection cycle
+    // to avoid "expression changed after it has been checked" error:
+    this.changeDetectorRef.detectChanges();
+  }
+
+  updateCount3(data: TestData[]) {
+    this.itemCount3 = data.length;
   }
 }

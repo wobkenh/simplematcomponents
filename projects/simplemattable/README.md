@@ -668,6 +668,10 @@ You can further customize the page loading behaviour via `infiniteScrollingPageS
 
 The loading itself is done in the same way as pagination. You supply an observable in the `getPage` parameter, which will then be called on page fetch. Also, the `page` event will be fired when a new page should be loaded. For more information, see the pagination section above.
 
+If you need to reset the table content (e.g. because the user triggered a new search),
+just assign a new `pageSettings` object with a `pageIndex` of 0.
+See [the demo](#https://smc-demo.simplex24.de/infinite-scroll) for an example.
+
 ### Progress Spinner
 
 You can turn on a progress spinner by setting the input parameter `loading` to true. 
@@ -718,7 +722,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
-+ 6.3 (10.0): Allow observables in transform
++ 6.3 (10.0): Allow observables in transform; page reset feature for infinite scrolling
 + 6.2 (10.0): Only render detail component when needed
 + 6.1 (10.0): Fixed cell data refresh bug. Added list of elements as third parameter. Added functionality to change page settings when using frontend pagination
 + 6.0 (10.0): Updated to angular 10

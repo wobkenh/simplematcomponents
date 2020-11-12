@@ -300,7 +300,9 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    */
   lastExpandedElement: T | null;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+  ) {
   }
 
   ngOnInit(): void {
@@ -841,6 +843,21 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
             pageIndex: paginator.pageIndex,
             pageSize: paginator.pageSize
           });
+        }
+      } else if (this.infiniteScrolling) {
+        // A changed size property will only need to be respected in future requests...
+        if (hasSize) {
+          this.infiniteScrollingPageSize = this.pageSettings.pageSize;
+        }
+        // ...index on the other hand will trigger a complete reload:
+        if (hasIndex) {
+          this.infiniteScrollingPage = this.pageSettings.pageIndex;
+          this.data = [];
+          this.onDataChanges(); // so old data is cleared in ui
+          if (this.overflowAuto || this.sticky) {
+            this.scrollContainer.nativeElement.scrollTop = 0;
+          }
+          this.loadInfiniteScrollPage();
         }
       }
     }

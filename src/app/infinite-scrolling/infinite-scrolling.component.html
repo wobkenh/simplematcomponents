@@ -62,7 +62,8 @@
 
     <h3>Resetting on user input</h3>
     <p>
-      ...
+      If you want to reset the data of the table and trigger a new page fetch, you can set the pageSettings object.
+      This can be useful e.g. if the user changes search parameters and triggers a new search.
     </p>
     <mat-tab-group>
       <mat-tab>
@@ -73,12 +74,12 @@
         <div class="smt-container">
           <button mat-raised-button (click)="resetData()">Reset data (e.g. after user clicked 'search')</button>
           <smc-simplemattable [data]="dataInfiniteScroll3" [columns]="columnsInfiniteScroll" [infiniteScrolling]="true"
-                              [filter]="true" (renderedData)="updateCount($event)"
+                              [filter]="true" (renderedData)="updateCount3($event)"
                               [sticky]="true" [getPage]="getPage" [pageSettings]="pageSettings"
                               style="height: 400px; background: white"></smc-simplemattable>
           <mat-divider></mat-divider>
           <div style="display: flex; align-items: center; justify-content: flex-end; padding: 20px 20px 10px 20px">
-            Showing {{itemCount}} entries
+            Showing {{itemCount3}} entries
           </div>
         </div>
       </mat-tab>
@@ -90,16 +91,18 @@
         <div class="code">
           <p>Typescript - Data</p>
           <mat-divider></mat-divider>
-          <pre><code [highlight]="typescriptData"></code></pre>
+          <pre><code [highlight]="typescriptData3"></code></pre>
           <p>Typescript - Columns</p>
           <mat-divider></mat-divider>
-          <pre><code [highlight]="typescriptColumns"></code></pre>
+          <pre><code [highlight]="typescriptColumns3"></code></pre>
           <p>Typescript - getPage and reset functions</p>
           <mat-divider></mat-divider>
           <pre><code [highlight]="typescriptGetPage"></code></pre>
+          <pre><code [highlight]="typescriptReset"></code></pre>
+          <pre><code [highlight]="typescriptUpdate"></code></pre>
           <p>HTML</p>
           <mat-divider></mat-divider>
-          <pre><code [highlight]="html"></code></pre>
+          <pre><code [highlight]="html3"></code></pre>
         </div>
       </mat-tab>
     </mat-tab-group>
