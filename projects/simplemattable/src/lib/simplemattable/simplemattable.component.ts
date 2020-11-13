@@ -852,12 +852,17 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
         // ...index on the other hand will trigger a complete reload:
         if (hasIndex) {
           this.infiniteScrollingPage = this.pageSettings.pageIndex;
-          this.data = [];
-          this.onDataChanges(); // so old data is cleared in ui
-          if (this.overflowAuto || this.sticky) {
-            this.scrollContainer.nativeElement.scrollTop = 0;
+          // if the view is not yet initialized, we dont want to reload the page
+          // as the initial load will take care of this
+          if (this.scrollContainer) {
+            this.data = [];
+            this.onDataChanges(); // so old data is cleared in ui
+            // scroll container might not be set if page setting is supplied at simplemattable creation
+            if (this.overflowAuto || this.sticky) {
+              this.scrollContainer.nativeElement.scrollTop = 0;
+            }
+            this.loadInfiniteScrollPage();
           }
-          this.loadInfiniteScrollPage();
         }
       }
     }
