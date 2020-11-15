@@ -514,7 +514,8 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     });
     if (this.getPage) {
       this.loading = true;
-      this.getPage(this.infiniteScrollingPage, this.infiniteScrollingPageSize).subscribe(pageData => {
+      const subscription = this.getPage(this.infiniteScrollingPage, this.infiniteScrollingPageSize).subscribe(pageData => {
+        subscription.unsubscribe();
         if (pageData.length < this.infiniteScrollingPageSize) {
           this.infiniteScrollingHasMore = false;
         }
