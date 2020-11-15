@@ -670,7 +670,8 @@ The loading itself is done in the same way as pagination. You supply an observab
 
 If you need to reset the table content (e.g. because the user triggered a new search),
 just assign a new `pageSettings` object with a `pageIndex` of 0.
-See [the demo](#https://smc-demo.simplex24.de/infinite-scroll) for an example.
+If you need to scroll to a specific element, get a reference of simplemattable via `@ViewChild` and call the `scrollToIndex` method.
+See [the demo](#https://smc-demo.simplex24.de/infinite-scroll) for an example of both resetting and scrolling to a specific index.
 
 ### Progress Spinner
 
@@ -722,6 +723,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 6.4 (10.0): Scroll to element function for infinite scrolling
 + 6.3 (10.0): Allow observables in transform; page reset feature for infinite scrolling
 + 6.2 (10.0): Only render detail component when needed
 + 6.1 (10.0): Fixed cell data refresh bug. Added list of elements as third parameter. Added functionality to change page settings when using frontend pagination

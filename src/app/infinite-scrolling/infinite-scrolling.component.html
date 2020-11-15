@@ -72,8 +72,14 @@
           Display
         </ng-template>
         <div class="smt-container">
-          <button mat-raised-button (click)="resetData()">Reset data (e.g. after user clicked 'search')</button>
-          <smc-simplemattable [data]="dataInfiniteScroll3" [columns]="columnsInfiniteScroll" [infiniteScrolling]="true"
+          <div style="padding: 8px">
+            <button mat-raised-button (click)="resetData()" style="margin-right: 16px">
+              Reset data (e.g. after user clicked 'search')
+            </button>
+            <button mat-raised-button (click)="scrollToElement(15)">Scroll to Element No. 16 (Index = 15)</button>
+          </div>
+          <smc-simplemattable #smtInfiniteScrolling [data]="dataInfiniteScroll3" [columns]="columnsInfiniteScroll"
+                              [infiniteScrolling]="true"
                               [filter]="true" (renderedData)="updateCount3($event)"
                               [sticky]="true" [getPage]="getPage" [pageSettings]="pageSettings"
                               style="height: 400px; background: white"></smc-simplemattable>

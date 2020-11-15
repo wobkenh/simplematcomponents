@@ -1,8 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { TableColumn } from '../../../projects/simplemattable/src/lib/model/table-column.model';
 import { Observable, Subject } from 'rxjs';
 import { TestData } from '../model/test-data.model';
 import { PageSettings } from '../../../projects/simplemattable/src/lib/model/page-settings.model';
+import { SimplemattableComponent } from '../../../projects/simplemattable/src/lib/simplemattable/simplemattable.component';
 
 @Component({
   selector: 'smc-infinite-scrolling',
@@ -62,18 +63,32 @@ export class InfiniteScrollingComponent implements OnInit {
   new TableColumn<TestData, 'key'>('Key', 'key'),
   new TableColumn<TestData, 'value'>('Value', 'value')
 ];`;
-  html3 = `<button mat-raised-button (click)="resetData()">Reset data (e.g. after user clicked 'search')</button>
-<smc-simplemattable [data]="dataInfiniteScroll3" [columns]="columnsInfiniteScroll" [infiniteScrolling]="true"
-                    [filter]="true" (renderedData)="updateCount($event)"
+  html3 = `<div style="padding: 8px">
+  <button mat-raised-button (click)="resetData()" style="margin-right: 16px">
+    Reset data (e.g. after user clicked 'search')
+  </button>
+  <button mat-raised-button (click)="scrollToElement(15)">Scroll to Element No. 16 (Index = 15)</button>
+</div>
+<smc-simplemattable #smtInfiniteScrolling [data]="dataInfiniteScroll3" [columns]="columnsInfiniteScroll"
+                    [infiniteScrolling]="true"
+                    [filter]="true" (renderedData)="updateCount3($event)"
                     [sticky]="true" [getPage]="getPage" [pageSettings]="pageSettings"
                     style="height: 400px; background: white"></smc-simplemattable>
 <mat-divider></mat-divider>
 <div style="display: flex; align-items: center; justify-content: flex-end; padding: 20px 20px 10px 20px">
-  Showing {{itemCount}} entries
+  Showing {{itemCount3}} entries
 </div>`;
 
   pageSettings: PageSettings;
-  typescriptReset = `resetData() {
+  typescriptReset = `
+  @ViewChild('smtInfiniteScrolling')
+  simpleMatTable: SimplemattableComponent<any>;
+
+  scrollToElement(index: number) {
+    this.simpleMatTable.scrollToIndex = index;
+  }
+
+  resetData() {
     this.pageSettings = {
       pageIndex: 0, // will reset and clear all data
     };
@@ -86,6 +101,8 @@ export class InfiniteScrollingComponent implements OnInit {
   typescriptUpdate = `updateCount3(data: TestData[]) {
   this.itemCount3 = data.length;
 }`;
+  @ViewChild('smtInfiniteScrolling')
+  simpleMatTable: SimplemattableComponent<any>;
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
@@ -136,6 +153,10 @@ export class InfiniteScrollingComponent implements OnInit {
     // we need to / can add an extra change detection cycle
     // to avoid "expression changed after it has been checked" error:
     this.changeDetectorRef.detectChanges();
+  }
+
+  scrollToElement(index: number) {
+    this.simpleMatTable.scrollToIndex = index;
   }
 
   updateCount3(data: TestData[]) {

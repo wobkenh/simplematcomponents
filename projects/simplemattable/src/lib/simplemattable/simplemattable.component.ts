@@ -618,6 +618,33 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   }
 
   /**
+   * With infinite scrolling you can not just switch to the appropriate page if you want to show a specific item like you can with pagination.
+   * Instead, you can use this method to scroll to a specific index.
+   *
+   * The scrolling will be done so that the selected element will be the second element visible to the user.
+   *
+   * @param index index to scroll to. E.g. 50 will be the 51st row
+   */
+  set scrollToIndex(index: number) {
+    if (!this.scrollContainer) {
+      return;
+    }
+    const tablerows: HTMLCollectionOf<HTMLTableRowElement> = this.scrollContainer.nativeElement.getElementsByTagName('tr');
+    if (tablerows.length === 0) {
+      console.warn('Tried to scroll to index ', index, ' but there was no data to scroll to');
+      return;
+    }
+    // we want to scroll in a way so that the row at index is the second row
+    if (index > 0) {
+      index--;
+    }
+    if (index > tablerows.length) {
+      index = tablerows.length - 1;
+    }
+    this.scrollContainer.nativeElement.scrollTop = tablerows[index].offsetTop;
+  }
+
+  /**
    * Add a new element to the table using the supplied create method.
    * The new element will have the "added" status set to true.
    */
