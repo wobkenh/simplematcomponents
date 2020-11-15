@@ -10,6 +10,13 @@ A lot of different options like align, buttons, icons, custom css and even custo
 SimpleMatTable also allows you to enable adding, editing and deleting of elements in the table. 
 It supports different form fields like number, text, date and select inputs.
 
+---
+**NOTE**
+
+As of the upgrade to Angular 11, SimpleMatTable versioning is aligned with angular versioning.
+
+---
+
 ## Table of contents
 
 - [Prerequisites](#prerequisites)
@@ -723,6 +730,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 11.0: Updated to angular 11
 + 6.4 (10.0): Scroll to element function for infinite scrolling
 + 6.3 (10.0): Allow observables in transform; page reset feature for infinite scrolling
 + 6.2 (10.0): Only render detail component when needed
@@ -784,12 +792,12 @@ It is not planned to backport SimpleMatTable to any older Angular version.
 Simplemattable only uses peer dependencies, so for the newest version of simplemattable you need the following packages (with compatible versions) in your package.json:
 
 ```
-"@angular/common": "^10.0.0",
-"@angular/core": "^10.0.0",
-"@angular/material": "^10.0.0",
-"@angular/cdk": "^10.0.0",
-"@angular/platform-browser": "^10.0.0",
-"@angular/flex-layout": "^10.0.0-beta.32"
+"@angular/common": "^11.0.0",
+"@angular/core": "^11.0.0",
+"@angular/material": "^11.0.0",
+"@angular/cdk": "^11.0.0",
+"@angular/platform-browser": "^11.0.0",
+"@angular/flex-layout": "^11.0.0-beta.33"
 ```  
 
 
@@ -798,7 +806,8 @@ Simplemattable only uses peer dependencies, so for the newest version of simplem
 + For use with Angular >= 7.0 and < 8.0, use Version 2.5.7 of simplemattable.
 + For use with Angular >= 8.0 and < 9.0, use Version 4.0 of simplemattable.
 + For use with Angular >= 9.0 and < 10.0, use Version 5.4 of simplemattable.
-+ For use with Angular >= 10.0, use the newest version of simplemattable.
++ For use with Angular >= 10.0 and < 11.0, use Version 6.4 of simplemattable.
++ For use with Angular >= 11.0, use the newest version of simplemattable.
 
 ## Authors
 
