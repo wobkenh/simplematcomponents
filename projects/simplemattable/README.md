@@ -14,6 +14,7 @@ It supports different form fields like number, text, date and select inputs.
 **NOTE**
 
 As of the upgrade to Angular 11, SimpleMatTable versioning is aligned with angular versioning.
+If you are still on Angular 10, use version 6.4.0 of simplemattable.
 
 ---
 
