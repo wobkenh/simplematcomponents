@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {SimplemattableComponent} from './simplemattable.component';
 import {Component, ViewChild} from '@angular/core';
@@ -31,7 +31,7 @@ describe('SimplemattableComponent', () => {
   let testHostFixture: ComponentFixture<TestHostComponent>;
   let smt: SimplemattableComponent<ComplexTestData>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         CommonModule,
@@ -530,7 +530,7 @@ describe('TestcompComponent', () => {
   let testHostFixture: ComponentFixture<TestFullHostComponent>;
   let smt: SimplemattableComponent<ComplexTestData>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         CommonModule,

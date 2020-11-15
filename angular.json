@@ -46,7 +46,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -132,7 +131,7 @@
       "prefix": "smc",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
+          "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
             "tsConfig": "projects/simplemattable/tsconfig.lib.json",
             "project": "projects/simplemattable/ng-package.json"
@@ -173,7 +172,7 @@
       "prefix": "smc",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
+          "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
             "tsConfig": "projects/simplealert/tsconfig.lib.json",
             "project": "projects/simplealert/ng-package.json"

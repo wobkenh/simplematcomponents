@@ -1,4 +1,4 @@
-import {async} from '@angular/core/testing';
+import { waitForAsync } from '@angular/core/testing';
 
 import {FooterCellComponent} from './footer-cell.component';
 import {TableColumn} from '../model/table-column.model';
@@ -9,7 +9,7 @@ describe('FooterCellComponent', () => {
   let footerCell: FooterCellComponent<ComplexTestData>;
   let tableColumn: TableColumn<ComplexTestData, 'id'>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     dataSample1 = new ComplexTestData(1, new TestData('a', 1, new Date()));
     const utilService = new UtilService();
     footerCell = new FooterCellComponent(utilService);
