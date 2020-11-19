@@ -14,7 +14,7 @@ It supports different form fields like number, text, date and select inputs.
 **NOTE**
 
 As of the upgrade to Angular 11, SimpleMatTable versioning is aligned with angular versioning.
-If you are still on Angular 10, use version 6.4.0 of simplemattable.
+If you are still on Angular 10, use version 6.5.0 of simplemattable.
 
 ---
 
@@ -454,17 +454,25 @@ Here a short overview of how to use the options:
 - validators (`withValidators(validators: (ValidatorFn[] | ValidatorFn))`): One or several validator functions. 
 May be inbuilt functions like Validators.required or Validators.min or selfdefined functions.
 An element can not be saved until all validator functions pass.
+- asyncValidators (`withAsyncValidators(asyncValidators: (AsyncValidatorFn[] | AsyncValidatorFn))`): One or several async validator functions. 
+An element can not be saved until all validator functions pass.
 - errors (`withErrors(errors: FormError[])`): The error messages that can be displayed on the form fields. 
 `FormError` is an interface that has two strings: `key` and `msg`. 
 Key is the error name that any validator you specified might add to the errors of the form control (e.g: 'required' when using Validators.required). 
 Msg is the message that will be displayed if the given key is found in the errors of the form control.
+- valueChanges (`withValueChanges(valueChangesFn: (value: F, data: T[P], dataParent: T, dataList: T[]) => void)`) : 
+Listen for changes the user makes to any cell of this column.
+Under the hood, this uses the valueChanges Observable of the form control.
+The `value` passed to the `valueChangesFn` will be the new value.
+The `data` will be the last saved value of this property of the element. 
+Likewise, dataParent will be the last saved element and `dataList` will contain all data in the un-edited state.
 - init (`withInit(initFn: (data: T[P], dataParent: T, dataList: T[]) => F)`): If you specify this function, it will be executed
 when the form field is created (e.g. when the user hits the edit button on a row). 
 The function should transform the property of your model that this column describes into whatever the form field needs.
 Depending on the form field you chose, this could be for example string (text/large text input) or number (number input).
 This means that you could use e.g. a date form field even though the property on your model is not a date, as long as you use withInit  and withApply to transform the value.
 - apply (`withApply(applyFn: (value: F, data: T[P], dataParent: T, dataList: T[]) => void)`) : If you specify this function, it will be executed when the user saves a row.
-The funtion should transform the value from the form field (e.g. Date if you use a date input) 
+The function should transform the value from the form field (e.g. Date if you use a date input) 
 in a way that it can be set as the property of your model. 
 If omitted, the value is applied directly. 
 You should only omit this function if the property datatype equals the form field data type.
@@ -731,6 +739,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 6.5 (10.0) or 11.1: Async Validators and value changes listener for form fields
 + 11.0: Updated to angular 11
 + 6.4 (10.0): Scroll to element function for infinite scrolling
 + 6.3 (10.0): Allow observables in transform; page reset feature for infinite scrolling
@@ -807,7 +816,7 @@ Simplemattable only uses peer dependencies, so for the newest version of simplem
 + For use with Angular >= 7.0 and < 8.0, use Version 2.5.7 of simplemattable.
 + For use with Angular >= 8.0 and < 9.0, use Version 4.0 of simplemattable.
 + For use with Angular >= 9.0 and < 10.0, use Version 5.4 of simplemattable.
-+ For use with Angular >= 10.0 and < 11.0, use Version 6.4 of simplemattable.
++ For use with Angular >= 10.0 and < 11.0, use Version 6.5 of simplemattable.
 + For use with Angular >= 11.0, use the newest version of simplemattable.
 
 ## Authors

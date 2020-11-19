@@ -871,6 +871,11 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
             pageIndex: paginator.pageIndex,
             pageSize: paginator.pageSize
           });
+          if (this.matFrontendPaginator) {
+            // with frontend pagination, the user expects simplemattable to change the data
+            // this is the opposite of backend pagination, where the user has to fetch the data
+            this.onDataChanges();
+          }
         }
       } else if (this.infiniteScrolling) {
         // A changed size property will only need to be respected in future requests...

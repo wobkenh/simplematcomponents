@@ -28,7 +28,14 @@ formDataValCol.withFormField(formDataValCol.getTextFormField()
   .withApply((val, data) => {
     data.value = val;
     return data;
-  }));
+  })
+  .withValueChanges((val, data, dataParent, dataList) => {
+    console.log('New value: ', val);
+    console.log('Last saved value: ', data);
+    console.log('Parent element:', dataParent);
+    console.log('All data: ', dataList);
+  })
+);
 this.columnsForm = [
   formIdCol, formValueCol, formDataValCol
 ];`;
@@ -69,7 +76,8 @@ logDataForm() {
                     [addable]="true" (add)="formAdd($event)" (delete)="formDelete($event)"
                     (edit)="formEdit($event)" [create]="createFn"></smc-simplemattable>`;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
     const d1 = new Date();
@@ -98,7 +106,14 @@ logDataForm() {
       .withApply((val, data) => {
         data.value = val;
         return data;
-      }));
+      })
+      .withValueChanges((val, data, dataParent, dataList) => {
+        console.log('New value: ', val);
+        console.log('Last saved value: ', data);
+        console.log('Parent element:', dataParent);
+        console.log('All data: ', dataList);
+      })
+    );
     this.columnsForm = [
       formIdCol, formValueCol, formDataValCol
     ];

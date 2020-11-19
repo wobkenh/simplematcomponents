@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { TableColumn } from '../model/table-column.model';
 import { ButtonType } from '../model/button-type.model';
 import { SaveEvent } from '../model/table-cell-events.model';
@@ -11,14 +11,14 @@ import { FormFieldType } from '../model/form-field-type.model';
 import { LargeTextFormField } from '../model/large-text-form-field.model';
 import { SelectFormField } from '../model/select-form-field.model';
 import { UtilService } from '../util.service';
-import { isObservable, Observable, of } from 'rxjs';
+import { isObservable, Observable, of, Subscription } from 'rxjs';
 
 @Component({
   selector: 'smc-table-cell',
   templateUrl: './table-cell.component.html',
   styleUrls: ['./table-cell.component.css']
 })
-export class TableCellComponent<T> implements OnInit {
+export class TableCellComponent<T> implements OnInit, OnDestroy {
 
   // Enums
   buttonType = ButtonType;
@@ -44,6 +44,7 @@ export class TableCellComponent<T> implements OnInit {
   // State derived from inputs
   @ViewChild(ExternalComponentWrapperComponent) externalComponents: ExternalComponentWrapperComponent;
   formControl: AbstractControl;
+  valueChangesSubscription: Subscription; // for cleanup
   cellAlign: string = '';
   cellCssClass: Object = {};
   cellCssStyle: Object = {};
@@ -56,6 +57,12 @@ export class TableCellComponent<T> implements OnInit {
 
   constructor(private fb: FormBuilder,
               private utilService: UtilService) {
+  }
+
+  ngOnDestroy(): void {
+    if (this.valueChangesSubscription) {
+      this.valueChangesSubscription.unsubscribe();
+    }
   }
 
   ngOnInit() {
@@ -125,6 +132,10 @@ export class TableCellComponent<T> implements OnInit {
     if (this.tableColumn) {
       this.cellType = this.getTableCellType(this.tableColumn, this.editing);
       if (this.cellType === 'form') {
+        if (this.valueChangesSubscription) {
+          // form control will be replaced - get rid of old subscription to avoid memory leak
+          this.valueChangesSubscription.unsubscribe();
+        }
         this.formControl = this.getFormControl(this.rowIndex, this.columnIndex, this.tableColumn, this.element);
       }
     }
@@ -191,7 +202,12 @@ export class TableCellComponent<T> implements OnInit {
       return this.formControls.get(id);
     } else {
       const initialValue = tcol.formField.init ? tcol.formField.init(element[tcol.property], element, this.dataList) : element[tcol.property];
-      const control = this.fb.control(initialValue, tcol.formField.validators);
+      const control = this.fb.control(initialValue, tcol.formField.validators, tcol.formField.asyncValidators);
+      if (tcol.formField.valueChanges) {
+        this.valueChangesSubscription = control.valueChanges.subscribe(value => {
+          tcol.formField.valueChanges(value, element[tcol.property], element, this.dataList);
+        });
+      }
       this.formControls.set(id, control);
       return control;
     }

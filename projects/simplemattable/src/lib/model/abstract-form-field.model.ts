@@ -1,12 +1,14 @@
-import {FormFieldType} from './form-field-type.model';
-import {ValidatorFn} from '@angular/forms';
-import {FormError} from './form-error.model';
+import { FormFieldType } from './form-field-type.model';
+import { AsyncValidatorFn, ValidatorFn } from '@angular/forms';
+import { FormError } from './form-error.model';
 
 export class AbstractFormField<T, P extends keyof T, F> {
   formType: FormFieldType;
   validators: ValidatorFn[] = [];
+  asyncValidators: AsyncValidatorFn[] = [];
   init: (data: T[P], dataParent: T, dataList: T[]) => F;
   apply: (value: F, data: T[P], dataParent: T, dataList: T[]) => T[P];
+  valueChanges: (value: F, data: T[P], dataParent: T, dataList: T[]) => void;
   errors: FormError[] = [];
   placeholder: string = '';
   focus: boolean = false;
@@ -39,6 +41,21 @@ export class AbstractFormField<T, P extends keyof T, F> {
     return this;
   }
 
+  /**
+   * Async Validator functions that can be applied to a form control.
+   * For more information see angular docs on reactive forms validation.
+   *
+   * @param asyncValidators
+   * @returns this
+   */
+  withAsyncValidators(asyncValidators: (AsyncValidatorFn[] | AsyncValidatorFn)): this {
+    if (Array.isArray(asyncValidators)) {
+      this.asyncValidators = asyncValidators;
+    } else {
+      this.asyncValidators = [asyncValidators];
+    }
+    return this;
+  }
 
   /**
    * The init function takes the current value of the object (your model) and the object and converts it
@@ -62,6 +79,18 @@ export class AbstractFormField<T, P extends keyof T, F> {
    */
   withApply(applyFn: (value: F, data: T[P], dataParent: T, dataList: T[]) => T[P]): this {
     this.apply = applyFn;
+    return this;
+  }
+
+  /**
+   * Listen for changes on the form field.
+   * It is triggered whenever the underlying form control's "valueChanges" observable is triggered
+   *
+   * @param valueChangesFn
+   * @returns this
+   */
+  withValueChanges(valueChangesFn: (value: F, data: T[P], dataParent: T, dataList: T[]) => void): this {
+    this.valueChanges = valueChangesFn;
     return this;
   }
 

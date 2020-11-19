@@ -67,7 +67,10 @@ export class InfiniteScrollingComponent implements OnInit {
   <button mat-raised-button (click)="resetData()" style="margin-right: 16px">
     Reset data (e.g. after user clicked 'search')
   </button>
-  <button mat-raised-button (click)="scrollToElement(15)">Scroll to Element No. 16 (Index = 15)</button>
+  <button mat-raised-button (click)="scrollToElement(15)" style="margin-right: 16px">
+    Scroll to Element No. 16 (Index = 15)
+  </button>
+  <button mat-raised-button (click)="updateElement()">Update element at index 1</button>
 </div>
 <smc-simplemattable #smtInfiniteScrolling [data]="dataInfiniteScroll3" [columns]="columnsInfiniteScroll"
                     [infiniteScrolling]="true"
@@ -100,6 +103,10 @@ export class InfiniteScrollingComponent implements OnInit {
   }`;
   typescriptUpdate = `updateCount3(data: TestData[]) {
   this.itemCount3 = data.length;
+}`;
+  typescriptUpdate2 = `updateElement() {
+    this.dataInfiniteScroll3[1].value = 'updated ' + Math.random();
+    this.dataInfiniteScroll3 = this.dataInfiniteScroll3.slice(0);
 }`;
   @ViewChild('smtInfiniteScrolling')
   simpleMatTable: SimplemattableComponent<any>;
@@ -161,5 +168,10 @@ export class InfiniteScrollingComponent implements OnInit {
 
   updateCount3(data: TestData[]) {
     this.itemCount3 = data.length;
+  }
+
+  updateElement() {
+    this.dataInfiniteScroll3[1].value = 'updated ' + Math.random();
+    this.dataInfiniteScroll3 = this.dataInfiniteScroll3.slice(0);
   }
 }
