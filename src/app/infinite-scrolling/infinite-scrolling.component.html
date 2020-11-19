@@ -76,7 +76,10 @@
             <button mat-raised-button (click)="resetData()" style="margin-right: 16px">
               Reset data (e.g. after user clicked 'search')
             </button>
-            <button mat-raised-button (click)="scrollToElement(15)">Scroll to Element No. 16 (Index = 15)</button>
+            <button mat-raised-button (click)="scrollToElement(15)" style="margin-right: 16px">
+              Scroll to Element No. 16 (Index = 15)
+            </button>
+            <button mat-raised-button (click)="updateElement()">Update element at index 1</button>
           </div>
           <smc-simplemattable #smtInfiniteScrolling [data]="dataInfiniteScroll3" [columns]="columnsInfiniteScroll"
                               [infiniteScrolling]="true"
@@ -104,8 +107,12 @@
           <p>Typescript - getPage and reset functions</p>
           <mat-divider></mat-divider>
           <pre><code [highlight]="typescriptGetPage"></code></pre>
+          <p>Reset</p>
           <pre><code [highlight]="typescriptReset"></code></pre>
+          <p>Receive updates on displayed data</p>
           <pre><code [highlight]="typescriptUpdate"></code></pre>
+          <p>Change elements</p>
+          <pre><code [highlight]="typescriptUpdate2"></code></pre>
           <p>HTML</p>
           <mat-divider></mat-divider>
           <pre><code [highlight]="html3"></code></pre>
