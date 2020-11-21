@@ -16,6 +16,7 @@ import { Observable } from 'rxjs';
 export class TableColumn<T, P extends keyof T> {
 
   public transform: (data: T[P], dataParent: T, dataList: T[]) => number | string | Observable<number | string>;
+  public tooltip: (data: T[P], dataParent: T, dataList: T[]) => string;
   public width: string;
   public heightFn: (data: T[P], dataParent: T, dataList: T[]) => Height;
   public disabledFn: (data: T[P], dataParent: T, dataList: T[]) => boolean;
@@ -65,6 +66,18 @@ export class TableColumn<T, P extends keyof T> {
    */
   public withTransform(transformFn: (data: T[P], dataParent: T, dataList: T[]) => string) {
     this.transform = transformFn;
+    return this;
+  }
+
+  /**
+   * Function that returns the tooltip value of a cell.
+   * Return null or undefined if you want the tooltip to not be displayed in a specific cell.
+   *
+   * @param tooltipFn
+   * @returns this
+   */
+  public withTooltip(tooltipFn: (data: T[P], dataParent: T, dataList: T[]) => string) {
+    this.tooltip = tooltipFn;
     return this;
   }
 

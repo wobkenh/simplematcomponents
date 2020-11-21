@@ -54,6 +54,7 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
   buttonDisabled: boolean = false;
   iconName: string = '';
   stringRepresentation: string | number = '';
+  tooltip: string;
 
   constructor(private fb: FormBuilder,
               private utilService: UtilService) {
@@ -115,6 +116,7 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
       this.getStringRepresentation(this.tableColumn, this.element).subscribe(transformed => {
         this.stringRepresentation = transformed;
       });
+      this.tooltip = this.tableColumn.tooltip ? this.getTooltip(this.tableColumn, this.element) : undefined;
       if (this.tableColumn.icon) {
         this.iconName = this.getIconName(this.tableColumn, this.element);
       }
@@ -229,6 +231,7 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
   private isButtonClickable = (tcol: TableColumn<T, any>) => tcol.onClick && tcol.button;
   isEditingColumn = (tcol: TableColumn<T, any>, editing: boolean): boolean => tcol.formField && !tcol.directEdit && editing;
   getIconName = (tcol: TableColumn<T, any>, element: T) => tcol.icon(element[tcol.property], element, this.dataList);
+  getTooltip = (tcol: TableColumn<T, any>, element: T) => tcol.tooltip(element[tcol.property], element, this.dataList);
 
   isButtonDisabled(tcol: TableColumn<T, any>, element: T): boolean {
     return tcol.disabledFn
