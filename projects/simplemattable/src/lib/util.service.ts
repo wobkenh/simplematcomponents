@@ -20,9 +20,6 @@ export class UtilService {
    * @returns ngClass Object
    */
   getCellCssClass<T>(tcol: TableColumn<T, any>, ngClass: string | string[] | Object | null, defaultClass: Object): Object {
-    if (!tcol.ngClass) {
-      return defaultClass;
-    }
     if (!ngClass) {
       return defaultClass;
     }
