@@ -113,6 +113,7 @@
           <smc-external-detail-component-wrapper
             *ngIf="element === expandedElement || element === lastExpandedElement"
             [element]="element" [ngComponent]="detailRowComponent"
+            [dataList]="data"
           ></smc-external-detail-component-wrapper>
         </div>
       </td>
