@@ -222,6 +222,16 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    */
   @Output() edit: EventEmitter<T> = new EventEmitter<T>();
   /**
+   * Event emitted when a user starts editing an element.
+   * Emitted value is the current value of the element being edited.
+   */
+  @Output() startEdit: EventEmitter<T> = new EventEmitter<T>();
+  /**
+   * Event emitted when a user has canceled editing an element.
+   * Emitted value is the unedited value of the element.
+   */
+  @Output() cancelEdit: EventEmitter<T> = new EventEmitter<T>();
+  /**
    * Event emitted when a user has added an element.
    * Emitted value is the added element.
    */
@@ -706,6 +716,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     const status = this.dataStatus.has(element) ? this.dataStatus.get(element) : new DataStatus();
     status.editing = true;
     this.dataStatus.set(element, status);
+    this.startEdit.emit(element);
     this.focusInput(rowIndex);
   }
 
@@ -731,6 +742,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     } else {
       status.editing = false;
     }
+    this.cancelEdit.emit(element);
   }
 
   /**

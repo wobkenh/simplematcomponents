@@ -739,6 +739,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 11.3: startEdit / cancelEdit output events
 + 11.2: Tooltips for table cells
 + 6.5 (10.0) or 11.1: Async Validators and value changes listener for form fields
 + 11.0: Updated to angular 11
