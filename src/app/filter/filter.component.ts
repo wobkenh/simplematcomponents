@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {TableColumn} from 'projects/simplemattable/src/public_api';
-import {ComplexTestData, TestData} from '../model/test-data.model';
+import { Component, OnInit } from '@angular/core';
+import { TableColumn } from 'projects/simplemattable/src/public_api';
+import { ComplexTestData, TestData } from '../model/test-data.model';
 
 @Component({
   selector: 'smc-filter',
@@ -22,6 +22,16 @@ export class FilterComponent implements OnInit {
     .withColFilter(),
   new TableColumn<ComplexTestData, 'data'>('Nested Value with column filter', 'data')
     .withTransform(data => data.value)
+    .withColFilter(),
+  new TableColumn<ComplexTestData, 'description'>('Custom Filter will always return test1', 'description')
+    // This just listens to the search inputs of the user
+    .withSearch((searchInput) => {
+      console.log('The user searched for: ' + searchInput);
+    })
+    // This actually replaces the filter logic
+    .withFilter(((searchInput, data) => {
+      return data.includes('test1');
+    }))
     .withColFilter(),
 ];`;
   html = `<smc-simplemattable [data]="dataFilter" [columns]="columnsFilter" [filter]="true"></smc-simplemattable>`;
@@ -51,6 +61,16 @@ export class FilterComponent implements OnInit {
         .withColFilter(),
       new TableColumn<ComplexTestData, 'data'>('Nested Value with column filter', 'data')
         .withTransform(data => data.value)
+        .withColFilter(),
+      new TableColumn<ComplexTestData, 'description'>('Custom Filter will always return test1', 'description')
+        // This just listens to the search inputs of the user
+        .withSearch((searchInput) => {
+          console.log('The user searched for: ' + searchInput);
+        })
+        // This actually replaces the filter logic
+        .withFilter(((searchInput, data) => {
+          return data.includes('test1');
+        }))
         .withColFilter(),
     ];
   }

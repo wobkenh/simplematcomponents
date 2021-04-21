@@ -393,6 +393,15 @@ so changes to the table column will be reflected instantly while changes to data
 Note: to accomplish type safety, explicitly state the type of your Component when defining this function.
 The component instance is listed as "any" to avoid having to pass a third generic to the table column.
 
+- searchFn `withSearch(searchFn: (searchInput: string) => void)`:
+Function that is called when the user enters a search query into the filter input.
+If you want to handle the search yourself, use withFilter instead.
+  
+- filterFn `withFilter(filterFn: (searchInput: string, data: T[P], dataParent: T) => boolean)`:
+Specify a custom filter function to overwrite the default behaviour of the column search input.
+If you only want to listen to search inputs of the user without changing the filter behaviour, use withSearch.
+The filterFn is a function checking if the given element matches the search string. 
+It should return true if element matches and should be kept and should return false if the element does not match and should be removed.
 
 ### Edit-mode
 
@@ -739,6 +748,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 11.4: search / filter properties for customizable column filter
 + 11.3: startEdit / cancelEdit output events
 + 11.2: Tooltips for table cells
 + 6.5 (10.0) or 11.1: Async Validators and value changes listener for form fields

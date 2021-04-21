@@ -15,7 +15,7 @@ import {
 } from '@angular/core';
 import { TableColumn } from '../model/table-column.model';
 import { Align } from '../model/align.model';
-import { AbstractControl, FormBuilder } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl } from '@angular/forms';
 import { DataStatus } from '../model/data-status.model';
 import { Observable, Subscription } from 'rxjs';
 import { PageSettings } from '../model/page-settings.model';
@@ -963,6 +963,11 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
           colFilterText.applied = true;
           reapplyFilter = true;
         }
+        if (tcol.searchFn) {
+          formControl.valueChanges.subscribe(newValue => {
+            tcol.searchFn(newValue);
+          });
+        }
       });
     if (reapplyFilter) {
       this.applyColFilter();
@@ -1029,11 +1034,20 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
         const mapEntries = this.colFilterFormControls.entries();
         let entry = mapEntries.next();
         while (!entry.done) {
-          const tcol = entry.value[0];
-          const control = entry.value[1];
-          if (this.getStringRepresentation(tcol, data).toLowerCase().trim().indexOf(control.value.toString().toLowerCase().trim()) === -1) {
-            return false;
+          const tcol: TableColumn<T, any> = entry.value[0];
+          const control: FormControl = entry.value[1];
+          if (tcol.filterFn) {
+            // custom filter
+            if (!tcol.filterFn(control.value, data[tcol.property], data)) {
+              return false;
+            }
+          } else {
+            // default behaviour
+            if (this.getStringRepresentation(tcol, data).toLowerCase().trim().indexOf(control.value.toString().toLowerCase().trim()) === -1) {
+              return false;
+            }
           }
+
           entry = mapEntries.next();
         }
         return true;

@@ -44,3 +44,4 @@ Thumbs.db
 /docker-prd/
 Dockerfile
 Jenkinsfile
+/smc-demo

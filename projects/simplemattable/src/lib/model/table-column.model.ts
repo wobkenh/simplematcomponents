@@ -47,6 +47,8 @@ export class TableColumn<T, P extends keyof T> {
   public ngComponent: Type<any>;
   public ngComponentInput: (component: any, data: T[P], dataParent: T, dataList: T[]) => void;
   public footer: (data: T[P][], dataParent: T[]) => string;
+  public searchFn: (searchInput: string) => void;
+  public filterFn: (searchInput: string, data: T[P], dataParent: T) => boolean;
 
   private colFilterText: ColFilterTextHolder = {
     applied: true,
@@ -55,6 +57,28 @@ export class TableColumn<T, P extends keyof T> {
 
   constructor(public name: string,
               public property: P) {
+  }
+
+  /**
+   * Specify a custom filter function to overwrite the default behaviour of the column search input
+   * If you only want to listen to search inputs of the user without changing the filter behaviour, use withSearch
+   *
+   * @param filterFn function checking if the given element matches the search string.
+   *                 Should return true if element matches and should be kept
+   *                 and should return false if the element does not match and should be removed
+   */
+  public withFilter(filterFn: (searchInput: string, data: T[P], dataParent: T) => boolean) {
+    this.filterFn = filterFn;
+    return this;
+  }
+
+  /**
+   * Function that is called when the user enters a search query into the filter input
+   * If you want to handle the search yourself, use withFilter instead.
+   */
+  public withSearch(searchFn: (searchInput: string) => void) {
+    this.searchFn = searchFn;
+    return this;
   }
 
   /**
