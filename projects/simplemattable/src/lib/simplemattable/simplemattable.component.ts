@@ -435,10 +435,11 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    * @param tcol Clicked Column
    * @param element Clicked element
    * @param fromButton true = button; false = cell
+   * @param event mouse event
    */
-  onClick(tcol: TableColumn<T, any>, element: T, fromButton: boolean) {
+  onClick(tcol: TableColumn<T, any>, element: T, fromButton: boolean, event: MouseEvent) {
     if (fromButton ? this.isButtonClickable(tcol) : this.isCellClickable(tcol, element)) {
-      tcol.onClick(element[tcol.property], element, this.data);
+      tcol.onClick(element[tcol.property], element, this.data, event);
     }
   }
 

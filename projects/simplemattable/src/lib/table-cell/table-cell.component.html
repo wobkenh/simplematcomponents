@@ -15,7 +15,7 @@
     <ng-container *ngSwitchCase="'button'" [ngSwitch]="tableColumn.button">
       <!-- Buttoncells -->
       <button *ngSwitchCase="buttonType.BASIC" mat-button [color]="tableColumn.buttonColor"
-              (click)="onClick(tableColumn, element)" [disabled]="buttonDisabled"
+              (click)="onClick(tableColumn, element, $event)" [disabled]="buttonDisabled"
               type="button">
         <mat-icon *ngIf="tableColumn.icon">{{iconName}}</mat-icon>
         <span style="padding: 2px 0" *ngIf="stringRepresentation"
@@ -24,7 +24,7 @@
               </span>
       </button>
       <button *ngSwitchCase="buttonType.RAISED" mat-raised-button [color]="tableColumn.buttonColor"
-              (click)="onClick(tableColumn, element)" [disabled]="buttonDisabled"
+              (click)="onClick(tableColumn, element, $event)" [disabled]="buttonDisabled"
               type="button">
         <mat-icon *ngIf="tableColumn.icon">{{iconName}}</mat-icon>
         <span style="padding: 2px 0" *ngIf="stringRepresentation"
@@ -33,7 +33,7 @@
               </span>
       </button>
       <button *ngSwitchCase="buttonType.ICON" mat-icon-button [color]="tableColumn.buttonColor"
-              (click)="onClick(tableColumn, element)" [disabled]="buttonDisabled"
+              (click)="onClick(tableColumn, element, $event)" [disabled]="buttonDisabled"
               type="button">
         <mat-icon *ngIf="tableColumn.icon">{{iconName}}</mat-icon>
       </button>

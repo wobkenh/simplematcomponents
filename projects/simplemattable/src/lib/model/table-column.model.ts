@@ -25,7 +25,7 @@ export class TableColumn<T, P extends keyof T> {
   public sortTransform: (data: T[P], dataParent: T, dataList: T[]) => number | string;
   public visible: boolean = true;
   public icon: (data: T[P], dataParent: T, dataList: T[]) => string;
-  public onClick: (data: T[P], dataParent: T, dataList: T[]) => void;
+  public onClick: (data: T[P], dataParent: T, dataList: T[], event: MouseEvent) => void;
   public button: ButtonType;
   public buttonColor: ThemePalette;
   public maxLines: number;
@@ -305,7 +305,7 @@ export class TableColumn<T, P extends keyof T> {
    * @param onClickFn
    * @returns this
    */
-  public withOnClick(onClickFn: (data: T[P], dataParent: T, dataList: T[]) => void) {
+  public withOnClick(onClickFn: (data: T[P], dataParent: T, dataList: T[], event: MouseEvent) => void) {
     this.onClick = onClickFn;
     return this;
   }

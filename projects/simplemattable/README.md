@@ -294,7 +294,7 @@ If you want to only display the icon with no text, specify the transform propert
 Since icon is a function, you can decide for every row which icon you want to use, for example if you have a boolean property called 
 `checkedIn` on your model, you could do  `(checkedIn) => checkedIn ? 'check' : 'close'` for its column, which will either display a tick or a cross icon.
 
-- onClick (`.withOnClick(onClickFn: (data: T[P], dataParent: T, dataList: T[]) => void)`): OnClick enables the click listener for the table column.
+- onClick (`.withOnClick(onClickFn: (data: T[P], dataParent: T, dataList: T[]) => void, event: MouseEvent)`): OnClick enables the click listener for the table column.
 If any cell (excluding the header cell) is clicked, the function onClick will be executed.
 On hover, the background of clickable cells will turn into a half-transparent gray and the cursor will become a pointer.
 This can be used for example if you have an overview table and want to display details on click. 
@@ -748,6 +748,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 11.5: add mouse event parameter for onClick callbacks
 + 11.4: search / filter properties for customizable column filter
 + 11.3: startEdit / cancelEdit output events
 + 11.2: Tooltips for table cells

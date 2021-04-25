@@ -48,7 +48,7 @@
 
         <td mat-cell *matCellDef="let element; let rowIndex = dataIndex;"
             [fxHide.xs]="tcol.hiddenXs || tcol.hiddenSm" [fxHide.sm]="tcol.hiddenSm"
-            (click)="onClick(tcol, element, false)">
+            (click)="onClick(tcol, element, false, $event)">
           <smc-table-cell [formControls]="formControls" [dataParent]="element" [rowIndex]="rowIndex"
                           [refreshTrigger]="refreshTrigger" [dataList]="data"
                           [columnIndex]="columnIndex" [isEditing]="dataStatus.get(element)?.editing"

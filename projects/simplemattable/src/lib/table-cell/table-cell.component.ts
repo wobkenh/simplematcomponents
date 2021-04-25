@@ -222,9 +222,9 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
    * @param tcol Clicked Column
    * @param element Clicked element
    */
-  onClick(tcol: TableColumn<T, any>, element: T) {
+  onClick(tcol: TableColumn<T, any>, element: T, event: MouseEvent) {
     if (this.isButtonClickable(tcol)) {
-      tcol.onClick(element[tcol.property], element, this.dataList);
+      tcol.onClick(element[tcol.property], element, this.dataList, event);
     }
   }
 
