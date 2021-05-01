@@ -17,6 +17,7 @@ export class TableColumn<T, P extends keyof T> {
 
   public transform: (data: T[P], dataParent: T, dataList: T[]) => number | string | Observable<number | string>;
   public tooltip: (data: T[P], dataParent: T, dataList: T[]) => string;
+  public headerTooltip: string;
   public width: string;
   public heightFn: (data: T[P], dataParent: T, dataList: T[]) => Height;
   public disabledFn: (data: T[P], dataParent: T, dataList: T[]) => boolean;
@@ -106,6 +107,17 @@ export class TableColumn<T, P extends keyof T> {
    */
   public withTooltip(tooltipFn: (data: T[P], dataParent: T, dataList: T[]) => string) {
     this.tooltip = tooltipFn;
+    return this;
+  }
+
+  /**
+   * Tooltip to be displayed if the user hovers over the header cell.
+   *
+   * @param headerTooltip
+   * @returns this
+   */
+  public withHeaderTooltip(headerTooltip: string) {
+    this.headerTooltip = headerTooltip;
     return this;
   }
 

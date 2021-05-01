@@ -45,6 +45,7 @@ new ComplexTestData(2, 42, 'test2', null, 'test3')
   typescriptColumns2 = `const boolCol = new TableColumn<ComplexTestData, any>('Select to delete', '_deleteFlag')
   .withAlign(Align.CENTER).withWidth(Width.px(100))
   .isDirectEdit(true)
+  .withHeaderTooltip('Select all items')
   .withHeaderButton(ButtonType.ICON).withHeaderIcon('select_all')
   .withOnHeaderClick((dataList) => {
     dataList.forEach(datum => datum['_deleteFlag'] = true);
@@ -127,6 +128,7 @@ selectAllFiltered() {
       .withAlign(Align.CENTER).withWidth(Width.px(100))
       .isDirectEdit(true)
       .withHeaderButton(ButtonType.ICON).withHeaderIcon('select_all')
+      .withHeaderTooltip('Select all items')
       .withOnHeaderClick((dataList) => {
         dataList.forEach(datum => datum['_deleteFlag'] = true);
       });

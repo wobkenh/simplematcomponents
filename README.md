@@ -18,7 +18,7 @@ You can contribute to both using this repository.
 
 ## Demo
 
-To see the components in action, visit the [demo application site](https://simplex24.de/smc-demo/).
+To see the components in action, visit the [demo application site](https://smc-demo.simplex24.de/).
  
 Alternatively, you can alway install the demo application locally:
 - check out this repository
@@ -44,6 +44,8 @@ If you create any new classes that needs to be visible outside of simplemattable
 To run the unit tests, use `ng test simplemattable`. If you want to generate the code coverage report, use `ng test simplemattable --code-coverage --watch=false`.
 
 ## Simplealert
+
+NOTE: Simplealert is no longer maintained
 
 The sourcecode of simplealert can be found in `/projects/simplealert`.
 

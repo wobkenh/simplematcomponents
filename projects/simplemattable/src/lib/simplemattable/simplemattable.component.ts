@@ -566,11 +566,11 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   // end   ---   Scrolling Methods
 
   getTableCellStyle(tcol: TableColumn<T, any>): { [p: string]: string } {
+    const tcolStyle: { [p: string]: string } = {};
     if (tcol.width) {
-      return { 'width': tcol.width.toString() };
-    } else {
-      return {};
+      tcolStyle.width = tcol.width.toString();
     }
+    return tcolStyle;
   }
 
   getTableRowClass(row: T): string | string[] | Object {
