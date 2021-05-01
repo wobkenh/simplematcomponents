@@ -26,6 +26,7 @@ import { Height } from '../model/height.model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { DetailRowComponent } from '../model/detail-row-component';
+import { ButtonType } from '../model/button-type.model';
 
 @Component({
   selector: 'smc-simplemattable',
@@ -111,6 +112,11 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    * True allows deleting elements of the table. Default false.
    */
   @Input() deletable: boolean = false;
+  /**
+   * True allows deleting all elements of the table at once using a button in the top right corner. Default false.
+   * `deletable` needs to be set to true for this to work.
+   */
+  @Input() deleteAllButton: boolean = false;
   /**
    * Material Icon used for the edit button. Default 'edit'.
    */
@@ -217,6 +223,11 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    */
   @Output() delete: EventEmitter<T> = new EventEmitter<T>();
   /**
+   * Event emitted when a user wants to delete all elements.
+   * Emitted value is the all current data elements.
+   */
+  @Output() deleteAll: EventEmitter<T[]> = new EventEmitter<T[]>();
+  /**
    * Event emitted when a user has edited an element.
    * Emitted value is the edited element.
    */
@@ -309,6 +320,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    * solution: not only display the currently open detail component, but also the one opened before that
    */
   lastExpandedElement: T | null;
+  buttonType = ButtonType;
 
   constructor(
     private fb: FormBuilder,
@@ -753,6 +765,11 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   deleteElement(element: T) {
     this.dataStatus.get(element).loading = true;
     this.delete.emit(element);
+  }
+
+
+  deleteAllElements() {
+    this.deleteAll.emit(this.data);
   }
 
   onPageEvent(pageEvent: PageEvent) {
@@ -1200,4 +1217,5 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   sortChanged(sortEvent: Sort) {
     this.sort.emit(sortEvent);
   }
+
 }

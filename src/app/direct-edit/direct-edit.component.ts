@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {ComplexTestData} from '../model/test-data.model';
-import {TableColumn} from 'projects/simplemattable/src/public_api';
+import { Component, OnInit } from '@angular/core';
+import { ComplexTestData } from '../model/test-data.model';
+import { Align, ButtonType, TableColumn, Width } from 'projects/simplemattable/src/public_api';
 
 @Component({
   selector: 'smc-direct-edit',
@@ -42,12 +42,18 @@ this.dataDirectEdit2 = [
 new ComplexTestData(1, 40, 'test1', null, 'test2'),
 new ComplexTestData(2, 42, 'test2', null, 'test3')
 ];`;
-  typescriptColumns2 = `const boolCol = new TableColumn<ComplexTestData, any>('Select to delete', '_deleteFlag').isDirectEdit(true);
+  typescriptColumns2 = `const boolCol = new TableColumn<ComplexTestData, any>('Select to delete', '_deleteFlag')
+  .withAlign(Align.CENTER).withWidth(Width.px(100))
+  .isDirectEdit(true)
+  .withHeaderButton(ButtonType.ICON).withHeaderIcon('select_all')
+  .withOnHeaderClick((dataList) => {
+    dataList.forEach(datum => datum['_deleteFlag'] = true);
+  });
 boolCol.withFormField(boolCol.getCheckboxFormField());
 this.columnsDirectEdit2 = [
+  boolCol,
   new TableColumn<ComplexTestData, 'id'>('My ID', 'id'),
   new TableColumn<ComplexTestData, 'value'>('My Value', 'value'),
-  boolCol
 ];`;
   typescriptMethods2 = `deleteSelected() {
   this.dataDirectEdit2 = this.dataDirectEdit2.filter(datum => !datum['_deleteFlag']);
@@ -117,12 +123,18 @@ selectAllFiltered() {
       new ComplexTestData(11, 42, 'test2', null, 'test3'),
       new ComplexTestData(12, 42, 'test2', null, 'test3')
     ];
-    const boolCol = new TableColumn<ComplexTestData, any>('Select to delete', '_deleteFlag').isDirectEdit(true);
+    const boolCol = new TableColumn<ComplexTestData, any>('Select to delete', '_deleteFlag')
+      .withAlign(Align.CENTER).withWidth(Width.px(100))
+      .isDirectEdit(true)
+      .withHeaderButton(ButtonType.ICON).withHeaderIcon('select_all')
+      .withOnHeaderClick((dataList) => {
+        dataList.forEach(datum => datum['_deleteFlag'] = true);
+      });
     boolCol.withFormField(boolCol.getCheckboxFormField());
     this.columnsDirectEdit2 = [
+      boolCol,
       new TableColumn<ComplexTestData, 'id'>('My ID', 'id'),
       new TableColumn<ComplexTestData, 'value'>('My Value', 'value'),
-      boolCol
     ];
   }
 

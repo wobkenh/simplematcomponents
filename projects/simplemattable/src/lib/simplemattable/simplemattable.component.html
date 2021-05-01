@@ -21,22 +21,33 @@
             [fxHide.xs]="tcol.hiddenXs || tcol.hiddenSm" [fxHide.sm]="tcol.hiddenSm">
           <div fxLayout="row" style="height: 100%"
                [fxLayoutAlign]="tcol.colFilter ? getHeaderFilterAlign(tcol.align) : getHeaderNoFilterAlign(tcol.align)">
-            <div fxLayout="column" *ngIf="!tcol.colFilter">
+            <div fxLayout="column">
               <div [ngStyle.gt-xs]="{'padding': sorting ? isCenterAlign(tcol) ? '0 0 0 18px' : '0 0 0 5px' : '0 5px'}">
               <span mat-sort-header [disabled]="!tcol.sortable"
                     [ngClass]="{'no-sort': !(tcol.sortable && sorting), 'with-sort': tcol.sortable && sorting}">
-                {{tcol.name}}
+                <ng-container *ngIf="tcol.headerButton; else headerTextTemplate" [ngSwitch]="tcol.headerButton">
+                  <!-- Buttoncells -->
+                  <button *ngSwitchCase="buttonType.BASIC" mat-button [color]="tcol.headerButtonColor"
+                          (click)="tcol.onHeaderClick(data, $event)" type="button">
+                    <mat-icon *ngIf="tcol.headerIcon">{{tcol.headerIcon}}</mat-icon>
+                    <span style="padding: 2px 0">{{tcol.name}}</span>
+                  </button>
+                  <button *ngSwitchCase="buttonType.RAISED" mat-raised-button [color]="tcol.headerButtonColor"
+                          (click)="tcol.onHeaderClick(data, $event)" type="button">
+                    <mat-icon *ngIf="tcol.headerIcon">{{tcol.headerIcon}}</mat-icon>
+                    <span style="padding: 2px 0">{{tcol.name}}</span>
+                  </button>
+                  <button *ngSwitchCase="buttonType.ICON" mat-icon-button [color]="tcol.headerButtonColor"
+                          (click)="tcol.onHeaderClick(data, $event)" type="button">
+                    <mat-icon *ngIf="tcol.headerIcon">{{tcol.headerIcon}}</mat-icon>
+                  </button>
+                </ng-container>
+                <ng-template #headerTextTemplate>
+                  {{tcol.name}}
+                </ng-template>
               </span>
               </div>
-            </div>
-            <div fxLayout="column" *ngIf="tcol.colFilter">
-              <div [ngStyle.gt-xs]="{'padding': sorting ? isCenterAlign(tcol) ? '0 0 0 18px' : '0 0 0 5px' : '0 5px'}">
-              <span mat-sort-header [disabled]="!tcol.sortable"
-                    [ngClass]="{'no-sort': !(tcol.sortable && sorting), 'with-sort': tcol.sortable && sorting}">
-                {{tcol.name}}
-              </span>
-              </div>
-              <div style="padding: 0 5px">
+              <div style="padding: 0 5px" *ngIf="tcol.colFilter">
                 <mat-form-field [ngStyle]="{'text-align': getTextAlign(tcol.align)}">
                   <input matInput [placeholder]="tcol.colFilterLabel" [formControl]="getColFilterFormControl(tcol)"
                          (keyup)="applyColFilter()" (click)="$event.stopPropagation()">
@@ -71,6 +82,9 @@
           <button mat-icon-button *ngIf="addable" color="primary" (click)="startAddElement()"
                   [disabled]="!!addedItem">
             <mat-icon>{{addIcon ? addIcon : "add_box"}}</mat-icon>
+          </button>
+          <button mat-icon-button *ngIf="deleteAllButton" color="primary" (click)="deleteAllElements()">
+            <mat-icon>{{deleteIcon ? deleteIcon : "delete"}}</mat-icon>
           </button>
         </div>
       </th>

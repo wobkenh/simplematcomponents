@@ -17,6 +17,7 @@ export class FormsComponent implements OnInit {
   new ComplexTestData(1, 40, 'test1', new TestData('Key1', 'Value1', d1), 'test2'),
   new ComplexTestData(2, 42, 'test2', new TestData('Key2', 'Value2', d2), 'test3')
 ];`;
+  loading: boolean;
   typescriptColumns = `const formIdCol = new TableColumn<ComplexTestData, 'id'>('My ID', 'id');
 const formValueCol = new TableColumn<ComplexTestData, 'value'>('My Value', 'value');
 formValueCol.withFormField(formValueCol.getNumberFormField());
@@ -68,12 +69,21 @@ formEdit(element: ComplexTestData) {
   }, 2000);
 }
 
+formDeleteAll(data: any[]) {
+  this.loading = true;
+  setTimeout(() => {
+    this.dataForm = [];
+    this.loading = false;
+  }, 2000);
+}
+
 logDataForm() {
   console.log(this.dataForm);
 }`;
   html = `<button mat-raised-button (click)="logDataForm()" style="margin-bottom: 25px">Log Data to console</button>
 <smc-simplemattable [data]="dataForm" [columns]="columnsForm" [editable]="true" [deletable]="true"
                     [addable]="true" (add)="formAdd($event)" (delete)="formDelete($event)"
+                    [deleteAllButton]="true" (deleteAll)="formDeleteAll($event)" [loading]="loading"
                     (edit)="formEdit($event)" [create]="createFn"></smc-simplemattable>`;
 
   constructor() {
@@ -152,4 +162,11 @@ logDataForm() {
     console.log(this.dataForm);
   }
 
+  formDeleteAll(data: any[]) {
+    this.loading = true;
+    setTimeout(() => {
+      this.dataForm = [];
+      this.loading = false;
+    }, 2000);
+  }
 }

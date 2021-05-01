@@ -19,6 +19,7 @@
           <button mat-raised-button (click)="logDataForm()" style="margin-bottom: 25px">Log Data to console</button>
           <smc-simplemattable [data]="dataForm" [columns]="columnsForm" [editable]="true" [deletable]="true"
                               [addable]="true" (add)="formAdd($event)" (delete)="formDelete($event)"
+                              [deleteAllButton]="true" (deleteAll)="formDeleteAll($event)" [loading]="loading"
                               (edit)="formEdit($event)" [create]="createFn"></smc-simplemattable>
         </div>
       </mat-tab>

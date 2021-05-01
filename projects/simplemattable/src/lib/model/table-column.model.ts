@@ -28,6 +28,10 @@ export class TableColumn<T, P extends keyof T> {
   public onClick: (data: T[P], dataParent: T, dataList: T[], event: MouseEvent) => void;
   public button: ButtonType;
   public buttonColor: ThemePalette;
+  public onHeaderClick: (dataList: T[], event: MouseEvent) => void;
+  public headerButton: ButtonType;
+  public headerButtonColor: ThemePalette;
+  public headerIcon: string;
   public maxLines: number;
   public minLines: number = 1;
   public textHiddenXs: boolean = false;
@@ -307,6 +311,54 @@ export class TableColumn<T, P extends keyof T> {
    */
   public withOnClick(onClickFn: (data: T[P], dataParent: T, dataList: T[], event: MouseEvent) => void) {
     this.onClick = onClickFn;
+    return this;
+  }
+
+  /**
+   * OnHeaderClick enables the click listener for the table header cell.
+   * Use it in conjunction with the headerButton property.
+   *
+   * @param onHeaderClickFn
+   * @returns this
+   */
+  public withOnHeaderClick(onHeaderClickFn: (dataList: T[], event: MouseEvent) => void) {
+    this.onHeaderClick = onHeaderClickFn;
+    return this;
+  }
+
+  /**
+   * Set this to a material icon to display an icon the the table header cell.
+   *
+   * @param headerIcon material icon name
+   * @returns this
+   */
+  public withHeaderIcon(headerIcon: string) {
+    this.headerIcon = headerIcon;
+    return this;
+  }
+
+  /**
+   * Display a button instead of plain text/icon in your table header cell.
+   * The button will use the text and icon (or only the icon in case of ButtonType.ICON) that would normally be displayed directly in
+   * the header cell. If specified, the onHeaderClick function will be executed on a click event.
+   *
+   * @param headerButtonType
+   * @returns this
+   */
+  public withHeaderButton(headerButtonType: ButtonType) {
+    this.headerButton = headerButtonType;
+    return this;
+  }
+
+  /**
+   * If the header button type is set, headerButtonColor allows you to change the header button color. Can be either 'primary', 'warn' or 'accent'.
+   * If you leave the header button color empty, the standard white/transparent background (depending on button type) will be used.
+   *
+   * @param headerButtonColor
+   * @returns this
+   */
+  public withHeaderButtonColor(headerButtonColor: ThemePalette) {
+    this.headerButtonColor = headerButtonColor;
     return this;
   }
 
