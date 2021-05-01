@@ -91,14 +91,16 @@
       <td mat-cell *matCellDef="let element; let rowIndex = dataIndex;">
         <div style="display: flex;justify-content: flex-end; align-items: center" class="filler-div">
           <ng-container *ngIf="!isLoading(element)">
-            <button *ngIf="editable && !isEditing(element)" mat-icon-button color="primary"
-                    (click)="startEditElement(element, rowIndex)">
-              <mat-icon>{{editIcon ? editIcon : "edit"}}</mat-icon>
-            </button>
-            <button *ngIf="deletable && element !== addedItem" mat-icon-button color="primary"
-                    (click)="deleteElement(element)">
-              <mat-icon>{{deleteIcon ? deleteIcon : "delete"}}</mat-icon>
-            </button>
+            <ng-container *ngIf="!isEditing(element)">
+              <button *ngIf="editable" mat-icon-button color="primary"
+                      (click)="startEditElement(element, rowIndex)">
+                <mat-icon>{{editIcon ? editIcon : "edit"}}</mat-icon>
+              </button>
+              <button *ngIf="deletable && element !== addedItem" mat-icon-button color="primary"
+                      (click)="deleteElement(element)">
+                <mat-icon>{{deleteIcon ? deleteIcon : "delete"}}</mat-icon>
+              </button>
+            </ng-container>
             <ng-container *ngIf="(editable || addable) && isEditing(element)">
               <button mat-icon-button color="primary" (click)="saveElement(rowIndex, element)"
                       [disabled]="!isFormValid(rowIndex)">
