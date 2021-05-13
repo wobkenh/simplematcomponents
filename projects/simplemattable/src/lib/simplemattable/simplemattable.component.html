@@ -35,7 +35,7 @@
                   </button>
                   <button *ngSwitchCase="buttonType.RAISED" mat-raised-button [color]="tcol.headerButtonColor"
                           (click)="tcol.onHeaderClick(data, $event)" type="button">
-                    <mat-icon *ngIf="tcol.headerIcon">{{tcol.headerIcon}}</mat-icon>
+                    <mat-icon *ngöIf="tcol.headerIcon">{{tcol.headerIcon}}</mat-icon>
                     <span style="padding: 2px 0">{{tcol.name}}</span>
                   </button>
                   <button *ngSwitchCase="buttonType.ICON" mat-icon-button [color]="tcol.headerButtonColor"
