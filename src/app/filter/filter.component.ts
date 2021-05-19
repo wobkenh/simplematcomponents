@@ -30,6 +30,9 @@ export class FilterComponent implements OnInit {
     })
     // This actually replaces the filter logic
     .withFilter(((searchInput, data) => {
+      if (!searchInput) {
+        return true;
+      }
       return data.includes('test1');
     }))
     .withColFilter(),
@@ -69,6 +72,9 @@ export class FilterComponent implements OnInit {
         })
         // This actually replaces the filter logic
         .withFilter(((searchInput, data) => {
+          if (!searchInput) {
+            return true;
+          }
           return data.includes('test1');
         }))
         .withColFilter(),
