@@ -89,11 +89,12 @@ export class TableColumn<T, P extends keyof T> {
   /**
    * Function that returns the display value of a cell.
    * Use a function that returns empty string if you want to have nothing displayed.
+   * may return observable to retrieve an async result
    *
    * @param transformFn
    * @returns this
    */
-  public withTransform(transformFn: (data: T[P], dataParent: T, dataList: T[]) => string) {
+  public withTransform(transformFn: (data: T[P], dataParent: T, dataList: T[]) => number | string | Observable<number | string>) {
     this.transform = transformFn;
     return this;
   }
