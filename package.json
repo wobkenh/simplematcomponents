@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build-lib": "ng build --project simplemattable --prod",
+    "build-lib": "ng build --project simplemattable --configuration production",
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
