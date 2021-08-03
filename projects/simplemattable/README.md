@@ -748,6 +748,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parenthesis is required Angular Version):
++ 12.1: stop event propagation on form fields to avoid accidentally opening the detail row component 
 + 12.0: upgrade to angular 12
 + 11.6: add header tooltips, dont show delete button while editing, add delete all button, add header buttons
 + 11.5: add mouse event parameter for onClick callbacks

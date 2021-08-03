@@ -41,7 +41,8 @@
 
     <ng-container *ngSwitchCase="'form'" [ngSwitch]="tableColumn.formField.formType">
       <mat-form-field *ngSwitchCase="formFieldType.TEXT" style="width: 100%;padding: 0 5px"
-                      (keyup.enter)="save.emit({rowIndex: rowIndex, element: element})">
+                      (keyup.enter)="save.emit({rowIndex: rowIndex, element: element})"
+                      (click)="$event.stopPropagation()">
         <input matInput [formControl]="formControl" type="text"
                [placeholder]="tableColumn.formField.placeholder"
                [id]="inputId">
@@ -51,7 +52,8 @@
         <mat-hint>{{tableColumn.formField.hint}}</mat-hint>
       </mat-form-field>
       <mat-form-field *ngSwitchCase="formFieldType.NUMBER" style="width: 100%;padding: 0 5px"
-                      (keyup.enter)="save.emit({rowIndex: rowIndex, element: element})">
+                      (keyup.enter)="save.emit({rowIndex: rowIndex, element: element})"
+                      (click)="$event.stopPropagation()">
         <input matInput type="number" [formControl]="formControl"
                [placeholder]="tableColumn.formField.placeholder" [id]="inputId">
         <mat-error *ngFor="let error of getCurrentErrors(tableColumn, formControl);">
@@ -63,8 +65,10 @@
                     (keyup.enter)="save.emit({rowIndex: rowIndex, element: element})"
                     [formControl]="formControl"
                     style="padding: 0 5px"
+                    (click)="$event.stopPropagation()"
       ></mat-checkbox>
-      <mat-form-field *ngSwitchCase="formFieldType.DATE" style="width: 98%;">
+      <mat-form-field *ngSwitchCase="formFieldType.DATE" style="width: 98%;"
+                      (click)="$event.stopPropagation()">
         <!-- For whatever reason, you cant wrap the date picker input in a ng-container -->
         <input matInput [formControl]="formControl" [id]="inputId"
                [ngStyle]="inputCssStyle" [matDatepicker]="picker"
@@ -77,7 +81,8 @@
         </mat-error>
         <mat-hint>{{tableColumn.formField.hint}}</mat-hint>
       </mat-form-field>
-      <mat-form-field *ngSwitchCase="formFieldType.SELECT" style="width: 100%;padding: 0 5px">
+      <mat-form-field *ngSwitchCase="formFieldType.SELECT" style="width: 100%;padding: 0 5px"
+                      (click)="$event.stopPropagation()">
         <mat-select [formControl]="formControl"
                     [placeholder]="tableColumn.formField.placeholder" [id]="inputId">
           <!-- Options need to be accessed this way to avoid compile error -->
@@ -91,7 +96,8 @@
         </mat-error>
         <mat-hint>{{tableColumn.formField.hint}}</mat-hint>
       </mat-form-field>
-      <mat-form-field *ngSwitchCase="formFieldType.LARGE_TEXT" style="width: 100%;padding: 0 5px">
+      <mat-form-field *ngSwitchCase="formFieldType.LARGE_TEXT" style="width: 100%;padding: 0 5px"
+                      (click)="$event.stopPropagation()">
         <!-- Max/Min lines need to be accessed this way to avoid compile error -->
         <!-- Cant cast to large text form field in html, but we know it is one -->
         <textarea matInput [formControl]="formControl"
@@ -139,23 +145,25 @@
 
     <ng-container *ngSwitchCase="'directEdit'"
                   [ngSwitch]="tableColumn.formField.formType">
-      <mat-form-field *ngSwitchCase="formFieldType.TEXT" style="width: 100%;padding: 0 5px">
+      <mat-form-field *ngSwitchCase="formFieldType.TEXT" style="width: 100%;padding: 0 5px"
+                      (click)="$event.stopPropagation()">
         <input matInput type="text" [placeholder]="tableColumn.formField.placeholder"
                [ngModel]="element[tableColumn.property]"
                (ngModelChange)="directEditElementChanged(tableColumn, element, $event)" [id]="inputId">
         <mat-hint>{{tableColumn.formField.hint}}</mat-hint>
       </mat-form-field>
-      <mat-form-field *ngSwitchCase="formFieldType.NUMBER" style="width: 100%;padding: 0 5px">
+      <mat-form-field *ngSwitchCase="formFieldType.NUMBER" style="width: 100%;padding: 0 5px"
+                      (click)="$event.stopPropagation()">
         <input matInput type="number" [ngModel]="element[tableColumn.property]"
                (ngModelChange)="directEditElementChanged(tableColumn, element, $event)"
                [placeholder]="tableColumn.formField.placeholder" [id]="inputId">
         <mat-hint>{{tableColumn.formField.hint}}</mat-hint>
       </mat-form-field>
       <mat-checkbox *ngSwitchCase="formFieldType.CHECKBOX" style="padding: 0 5px"
-                    [ngModel]="element[tableColumn.property]"
+                    [ngModel]="element[tableColumn.property]" (click)="$event.stopPropagation()"
                     (ngModelChange)="directEditElementChanged(tableColumn, element, $event)"
       ></mat-checkbox>
-      <mat-form-field *ngSwitchCase="formFieldType.DATE" style="width: 98%;">
+      <mat-form-field *ngSwitchCase="formFieldType.DATE" style="width: 98%;" (click)="$event.stopPropagation()">
         <!-- For whatever reason, you cant wrap the date picker input in a ng-container -->
         <input matInput [id]="inputId" [ngModel]="element[tableColumn.property]"
                (ngModelChange)="directEditElementChanged(tableColumn, element, $event)"
@@ -165,7 +173,8 @@
         <mat-datepicker #picker></mat-datepicker>
         <mat-hint>{{tableColumn.formField.hint}}</mat-hint>
       </mat-form-field>
-      <mat-form-field *ngSwitchCase="formFieldType.SELECT" style="width: 100%;padding: 0 5px">
+      <mat-form-field *ngSwitchCase="formFieldType.SELECT" style="width: 100%;padding: 0 5px"
+                      (click)="$event.stopPropagation()">
         <mat-select [ngModel]="element[tableColumn.property]" [placeholder]="tableColumn.formField.placeholder"
                     (ngModelChange)="directEditElementChanged(tableColumn, element, $event)" [id]="inputId">
           <mat-option *ngFor="let option of getOptions(tableColumn.formField);" [value]="option.value">
@@ -174,7 +183,8 @@
         </mat-select>
         <mat-hint>{{tableColumn.formField.hint}}</mat-hint>
       </mat-form-field>
-      <mat-form-field *ngSwitchCase="formFieldType.LARGE_TEXT" style="width: 100%;padding: 0 5px">
+      <mat-form-field *ngSwitchCase="formFieldType.LARGE_TEXT" style="width: 100%;padding: 0 5px"
+                      (click)="$event.stopPropagation()">
         <textarea matInput [ngModel]="element[tableColumn.property]"
                   (ngModelChange)="directEditElementChanged(tableColumn, element, $event)"
                   style="width: 100%; padding: 2px 0;" [id]="inputId"
