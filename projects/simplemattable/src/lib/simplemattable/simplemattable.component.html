@@ -65,7 +65,9 @@
                           [refreshTrigger]="refreshTrigger" [dataList]="data"
                           [columnIndex]="columnIndex" [isEditing]="dataStatus.get(element)?.editing"
                           [tableColumnInput]="tcol"
-                          (save)="saveElement($event.rowIndex, $event.element)"></smc-table-cell>
+                          (save)="saveElement($event.rowIndex, $event.element)"
+                          (stringRepresentationChanged)="putStringRepresentation(element, tcol, $event)"
+          ></smc-table-cell>
         </td>
 
         <ng-container *ngIf="hasFooter">

@@ -322,6 +322,12 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   lastExpandedElement: T | null;
   buttonType = ButtonType;
 
+  /**
+   * Holds the current string values for the table cells
+   * Can be used to filter on the current table cell values, even if they were loaded async
+   */
+  stringRepresentationMap = new Map<T, Map<TableColumn<any, any>, string>>();
+
   constructor(
     private fb: FormBuilder,
   ) {
@@ -799,7 +805,12 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     if (tcol.transform) {
       // Sadly, we cant use observables here as the datasource's filter function (for which this is used)
       // does not support returning observables
-      return tcol.transform(element[tcol.property], element, this.data) + '';
+      const stringRepresentationObject = this.stringRepresentationMap.get(element);
+      if (stringRepresentationObject && stringRepresentationObject.get(tcol)) {
+        return stringRepresentationObject.get(tcol);
+      } else {
+        return tcol.transform(element[tcol.property], element, this.data) + '';
+      }
     } else if (element[tcol.property] === null || element[tcol.property] === undefined) {
       return '';
     } else {
@@ -1218,4 +1229,11 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     this.sort.emit(sortEvent);
   }
 
+  putStringRepresentation(element: T, tcol: TableColumn<any, any>, stringRepresentation: string) {
+    if (!this.stringRepresentationMap.has(element)) {
+      this.stringRepresentationMap.set(element, new Map());
+    }
+    // keyof T cannot be used to index an object, but we know keyof T is always a string:
+    this.stringRepresentationMap.get(element).set(tcol, stringRepresentation);
+  }
 }

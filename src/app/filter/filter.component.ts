@@ -59,25 +59,26 @@ export class FilterComponent implements OnInit {
       new ComplexTestData(2, 42, 'or for me test2', new TestData('Key2', 'Value2', d2), 'test3')
     ];
     this.columnsFilter = [
-      new TableColumn<ComplexTestData, 'id'>('My ID', 'id'),
-      new TableColumn<ComplexTestData, 'description'>('My Description with column filter', 'description')
-        .withColFilter(),
+      // new TableColumn<ComplexTestData, 'id'>('My ID', 'id'),
+      // new TableColumn<ComplexTestData, 'description'>('My Description with column filter', 'description')
+      //   .withColFilter(),
       new TableColumn<ComplexTestData, 'data'>('Nested Value with column filter', 'data')
-        .withTransform(data => data.value)
-        .withColFilter(),
-      new TableColumn<ComplexTestData, 'description'>('Custom Filter will always return test1', 'description')
-        // This just listens to the search inputs of the user
-        .withSearch((searchInput) => {
-          console.log('The user searched for: ' + searchInput);
-        })
-        // This actually replaces the filter logic
-        .withFilter(((searchInput, data) => {
-          if (!searchInput) {
-            return true;
-          }
-          return data.includes('test1');
-        }))
-        .withColFilter(),
+        .withTransform(data => data.value),
+      new TableColumn<ComplexTestData, 'data'>('Nested Value with column filter2', 'data')
+        .withTransform(data => data.key),
+      // new TableColumn<ComplexTestData, 'description'>('Custom Filter will always return test1', 'description')
+      //   // This just listens to the search inputs of the user
+      //   .withSearch((searchInput) => {
+      //     console.log('The user searched for: ' + searchInput);
+      //   })
+      //   // This actually replaces the filter logic
+      //   .withFilter(((searchInput, data) => {
+      //     if (!searchInput) {
+      //       return true;
+      //     }
+      //     return data.includes('test1');
+      //   }))
+      //   .withColFilter(),
     ];
   }
 

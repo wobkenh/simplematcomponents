@@ -40,6 +40,8 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
   // Outputs
   @Output()
   save = new EventEmitter<SaveEvent<T>>();
+  @Output()
+  stringRepresentationChanged = new EventEmitter<string>();
 
   // State derived from inputs
   @ViewChild(ExternalComponentWrapperComponent) externalComponents: ExternalComponentWrapperComponent;
@@ -115,6 +117,7 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
       this.buttonDisabled = this.isButtonDisabled(this.tableColumn, this.element);
       this.getStringRepresentation(this.tableColumn, this.element).subscribe(transformed => {
         this.stringRepresentation = transformed;
+        this.stringRepresentationChanged.emit(this.stringRepresentation?.toString());
       });
       this.tooltip = this.tableColumn.tooltip ? this.getTooltip(this.tableColumn, this.element) : undefined;
       if (this.tableColumn.icon) {
