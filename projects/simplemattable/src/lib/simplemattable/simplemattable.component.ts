@@ -789,7 +789,6 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   }
 
   onPageEvent(pageEvent: PageEvent) {
-    console.log(pageEvent);
     this.page.emit(pageEvent);
     if (this.getPage) {
       this.loading = true;
@@ -896,7 +895,6 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     if (changes.data) {
       this.onDataChanges();
     }
-    console.log(changes, changes.pageSettings);
     if (changes.pageSettings && this.pageSettings) {
       // When using pagination, the user can programmatically select a page and the page size
       // via the page settings object. The paginator selections are changed here.
