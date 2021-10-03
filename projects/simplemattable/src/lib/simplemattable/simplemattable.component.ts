@@ -345,11 +345,21 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   @ViewChild('frontendPaginator')
   set frontendPaginator(frontendPaginator: MatPaginator) {
+    if (!this.matFrontendPaginator && frontendPaginator && this.pageSettings) {
+      setTimeout(() => {
+        this.initializePaginator(frontendPaginator);
+      });
+    }
     this.matFrontendPaginator = frontendPaginator; // May be set/unset multiple times if user changes input flags;
   }
 
   @ViewChild('backendPaginator')
   set backendPaginator(backendPaginator: MatPaginator) {
+    if (!this.matBackendPaginator && backendPaginator && this.pageSettings) {
+      setTimeout(() => {
+        this.initializePaginator(backendPaginator);
+      });
+    }
     this.matBackendPaginator = backendPaginator; // May be set/unset multiple times if user changes input flags;
   }
 
@@ -779,6 +789,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   }
 
   onPageEvent(pageEvent: PageEvent) {
+    console.log(pageEvent);
     this.page.emit(pageEvent);
     if (this.getPage) {
       this.loading = true;
@@ -885,6 +896,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     if (changes.data) {
       this.onDataChanges();
     }
+    console.log(changes, changes.pageSettings);
     if (changes.pageSettings && this.pageSettings) {
       // When using pagination, the user can programmatically select a page and the page size
       // via the page settings object. The paginator selections are changed here.
@@ -939,6 +951,19 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
           }
         }
       }
+    }
+  }
+
+  initializePaginator(paginator: MatPaginator) {
+    // the page settings were set before the paginator was available ==> reapply the configuration now
+    const hasIndex = !isNaN(this.pageSettings.pageIndex);
+    const hasSize = !isNaN(this.pageSettings.pageSize);
+    if (hasIndex) {
+      paginator.pageIndex = this.pageSettings.pageIndex;
+    }
+    if (hasSize) {
+      paginator.pageSize = this.pageSettings.pageSize;
+      this.paginatorPageSize = this.pageSettings.pageSize;
     }
   }
 

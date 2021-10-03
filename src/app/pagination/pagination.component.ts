@@ -16,7 +16,10 @@ export class PaginationComponent implements OnInit {
   columnsFrontendPagination: TableColumn<any, any>[] = [];
   dataPagination: TestData[] = [];
   columnsPagination: TableColumn<any, any>[] = [];
-  pageSettings: PageSettings;
+  pageSettings: PageSettings = {
+    pageIndex: 0,
+    pageSize: 20,
+  };
   paginatorLength = 101;
   typescriptData = `this.dataSimple = []; // Initial state`;
   typescriptColumns = `this.columnsPagination = [

@@ -569,6 +569,10 @@ onAdd(element: ComplexTestData) {
     // Do sth about the error, e.g. Error above/below the table or an error dialog
   });
 }
+
+create(): ComplexTestData {
+  return new ComplexTestData(42, 'New Entry', new TestData('key', 'value'));
+}
 ```
 
 #### Editing of Elements
