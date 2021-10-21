@@ -83,10 +83,11 @@
       <th mat-header-cell *matHeaderCellDef style="width: 104px;" cdkDrag>
         <div class="filler-div" style="align-items: center; display: flex; justify-content: flex-end;">
           <button mat-icon-button *ngIf="addable" color="primary" (click)="startAddElement()"
-                  [disabled]="!!addedItem" type="button">
+                  [disabled]="!!addedItem" type="button" [matTooltip]="addTooltip">
             <mat-icon>{{addIcon ? addIcon : "add_box"}}</mat-icon>
           </button>
-          <button mat-icon-button *ngIf="deleteAllButton" color="primary" (click)="deleteAllElements()" type="button">
+          <button mat-icon-button *ngIf="deleteAllButton" color="primary" (click)="deleteAllElements()" type="button"
+                  [matTooltip]="deleteAllTooltip">
             <mat-icon>{{deleteIcon ? deleteIcon : "delete"}}</mat-icon>
           </button>
         </div>
@@ -96,20 +97,21 @@
           <ng-container *ngIf="!isLoading(element)">
             <ng-container *ngIf="!isEditing(element)">
               <button *ngIf="editable" mat-icon-button color="primary" type="button"
-                      (click)="startEditElement(element, rowIndex)">
+                      (click)="startEditElement(element, rowIndex)" [matTooltip]="editTooltip">
                 <mat-icon>{{editIcon ? editIcon : "edit"}}</mat-icon>
               </button>
               <button *ngIf="deletable && element !== addedItem" mat-icon-button color="primary"
-                      (click)="deleteElement(element)" type="button">
+                      [matTooltip]="deleteTooltip" (click)="deleteElement(element)" type="button">
                 <mat-icon>{{deleteIcon ? deleteIcon : "delete"}}</mat-icon>
               </button>
             </ng-container>
             <ng-container *ngIf="(editable || addable) && isEditing(element)">
               <button mat-icon-button color="primary" (click)="saveElement(rowIndex, element)"
-                      [disabled]="!isFormValid(rowIndex)" type="button">
+                      [disabled]="!isFormValid(rowIndex)" type="button" [matTooltip]="saveTooltip">
                 <mat-icon>{{saveIcon ? saveIcon : "save"}}</mat-icon>
               </button>
-              <button mat-icon-button color="primary" (click)="cancelEditElement(element)" type="button">
+              <button mat-icon-button color="primary" (click)="cancelEditElement(element)" type="button"
+                      [matTooltip]="cancelTooltip">
                 <mat-icon>{{cancelIcon ? cancelIcon : "cancel"}}</mat-icon>
               </button>
             </ng-container>

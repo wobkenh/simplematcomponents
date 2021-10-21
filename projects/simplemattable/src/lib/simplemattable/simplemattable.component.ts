@@ -212,6 +212,12 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    */
   @Input() detailRowComponent: Type<DetailRowComponent<T>>;
 
+  @Input() addTooltip: string;
+  @Input() deleteAllTooltip: string;
+  @Input() editTooltip: string;
+  @Input() deleteTooltip: string;
+  @Input() cancelTooltip: string;
+  @Input() saveTooltip: string;
 
   private infiniteScrollingPage: number = 0;
   private infiniteScrollingHasMore: boolean = true;
