@@ -752,6 +752,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parentheses is required Angular Version):
++ 12.5: Option to apply specific form fields for editing and adding
 + 12.4: Tooltips for action buttons (edit/delete/add)
 + 12.3: Fix initial page size via pageSettings bug
 + 12.2: Allow filter to query string representation when using transform with observables

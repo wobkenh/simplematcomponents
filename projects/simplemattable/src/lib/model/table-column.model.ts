@@ -45,6 +45,8 @@ export class TableColumn<T, P extends keyof T> {
   public ngStyle: (data: T[P], dataParent: T, dataList: T[]) => Object;
   public footerNgStyle: (data: T[P], dataParent: T[]) => Object;
   public formField: AbstractFormField<T, P, any>;
+  public editFormField: AbstractFormField<T, P, any>;
+  public addFormField: AbstractFormField<T, P, any>;
   public colFilter: boolean = false;
   public colFilterLabel: string = 'Filter';
   public sticky: boolean = false;
@@ -524,6 +526,30 @@ export class TableColumn<T, P extends keyof T> {
    */
   public withFormField(formField: AbstractFormField<T, P, any>) {
     this.formField = formField;
+    return this;
+  }
+
+  /**
+   * Same as {@link #withFormField}
+   * but only activates if an existing table row is being edited. Will not show on adding
+   * Will overwrite the formfield of {@link #withFormField}
+   *
+   * @returns textFormField
+   */
+  public withEditFormField(editFormField: AbstractFormField<T, P, any>) {
+    this.editFormField = editFormField;
+    return this;
+  }
+
+  /**
+   * Same as {@link #withFormField}
+   * but only activates if a new table row is being added. Will not show on editing existing rows
+   * Will overwrite the formfield of {@link #withFormField}
+   *
+   * @returns textFormField
+   */
+  public withAddFormField(addFormField: AbstractFormField<T, P, any>) {
+    this.addFormField = addFormField;
     return this;
   }
 

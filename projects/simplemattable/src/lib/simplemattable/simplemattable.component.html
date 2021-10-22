@@ -63,8 +63,8 @@
             (click)="onClick(tcol, element, false, $event)">
           <smc-table-cell [formControls]="formControls" [dataParent]="element" [rowIndex]="rowIndex"
                           [refreshTrigger]="refreshTrigger" [dataList]="data"
-                          [columnIndex]="columnIndex" [isEditing]="dataStatus.get(element)?.editing"
-                          [tableColumnInput]="tcol"
+                          [columnIndex]="columnIndex" [tableColumnInput]="tcol"
+                          [isAdding]="dataStatus.get(element).added" [isEditing]="dataStatus.get(element).editing"
                           (save)="saveElement($event.rowIndex, $event.element)"
                           (stringRepresentationChanged)="putStringRepresentation(element, tcol, $event)"
           ></smc-table-cell>

@@ -24,10 +24,14 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
   buttonType = ButtonType;
   formFieldType = FormFieldType;
 
-  // Inputs
+  // Internal State
   tableColumn: TableColumn<any, any>;
+  formField: AbstractFormField<any, any, any>;
   element: T;
-  editing: boolean = false;
+  editing: boolean;
+  added: boolean;
+
+  // Inputs
   @Input()
   rowIndex: number;
   @Input()
@@ -77,6 +81,7 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
     this.updateTableColumn();
     this.updateTableColumnAndData();
     this.updateTableColumnAndEditing();
+    this.updateTableColumnAndAdding();
   }
 
   @Input()
@@ -85,7 +90,14 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
     this.updateTableColumnAndData();
   }
 
-  @Input() set isEditing(editing: boolean) {
+  @Input()
+  set isAdding(added: boolean) {
+    this.added = added;
+    this.updateTableColumnAndAdding();
+  }
+
+  @Input()
+  set isEditing(editing: boolean) {
     this.editing = editing;
     this.updateTableColumnAndEditing();
   }
@@ -104,9 +116,6 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
     // Updates that only are affected by the table column
     this.cellAlign = this.utilService.getCellAlign(this.tableColumn.align);
     this.inputCssStyle = { 'text-align': this.utilService.getTextAlign(this.tableColumn.align) };
-    if (this.tableColumn.formField) {
-      this.inputId = this.tableColumn.formField.focus ? this.rowIndex + '-smt-focus-input' : '';
-    }
   }
 
   private updateTableColumnAndData() {
@@ -142,6 +151,24 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
           this.valueChangesSubscription.unsubscribe();
         }
         this.formControl = this.getFormControl(this.rowIndex, this.columnIndex, this.tableColumn, this.element);
+      }
+    }
+  }
+
+
+  private updateTableColumnAndAdding() {
+    // All updates that require table column AND adding state
+    if (this.tableColumn) {
+      // We now know if we are adding or not, so we can now decide on which form control to use
+      if (this.tableColumn.addFormField && this.added) {
+        this.formField = this.tableColumn.addFormField;
+      } else if (this.tableColumn.editFormField && !this.added) {
+        this.formField = this.tableColumn.editFormField;
+      } else {
+        this.formField = this.tableColumn.formField;
+      }
+      if (this.formField) {
+        this.inputId = this.formField.focus ? this.rowIndex + '-smt-focus-input' : '';
       }
     }
   }
@@ -183,12 +210,11 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
   /**
    * Returns all errors associated with the form control at table cell rowIndex:colIndex that are currently active.
    *
-   * @param tableColumn
    * @param formControl
    * @returns List of FormError objects that are currently active (their condition is met)
    */
-  getCurrentErrors(tableColumn: TableColumn<T, any>, formControl: AbstractControl): FormError[] {
-    return tableColumn.formField.errors.filter(error => formControl.hasError(error.key));
+  getCurrentErrors(formControl: AbstractControl): FormError[] {
+    return this.formField.errors.filter(error => formControl.hasError(error.key));
   }
 
   /**
@@ -206,17 +232,18 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
     if (this.formControls.has(id)) {
       return this.formControls.get(id);
     } else {
-      const initialValue = tcol.formField.init ? tcol.formField.init(element[tcol.property], element, this.dataList) : element[tcol.property];
-      const control = this.fb.control(initialValue, tcol.formField.validators, tcol.formField.asyncValidators);
-      if (tcol.formField.valueChanges) {
+      const initialValue = this.formField.init ? this.formField.init(element[tcol.property], element, this.dataList) : element[tcol.property];
+      const control = this.fb.control(initialValue, this.formField.validators, this.formField.asyncValidators);
+      if (this.formField.valueChanges) {
         this.valueChangesSubscription = control.valueChanges.subscribe(value => {
-          tcol.formField.valueChanges(value, element[tcol.property], element, this.dataList);
+          this.formField.valueChanges(value, element[tcol.property], element, this.dataList);
         });
       }
       this.formControls.set(id, control);
       return control;
     }
   }
+
 
   /**
    * Method used when a cell or a button is clicked.
@@ -232,7 +259,7 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
   }
 
   private isButtonClickable = (tcol: TableColumn<T, any>) => tcol.onClick && tcol.button;
-  isEditingColumn = (tcol: TableColumn<T, any>, editing: boolean): boolean => tcol.formField && !tcol.directEdit && editing;
+  isEditingColumn = (tcol: TableColumn<T, any>, editing: boolean): boolean => this.formField && !tcol.directEdit && editing;
   getIconName = (tcol: TableColumn<T, any>, element: T) => tcol.icon(element[tcol.property], element, this.dataList);
   getTooltip = (tcol: TableColumn<T, any>, element: T) => tcol.tooltip(element[tcol.property], element, this.dataList);
 
@@ -263,7 +290,7 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
     if (this.isEditingColumn(tcol, editing)) {
       return 'form';
     }
-    if (tcol.directEdit && tcol.formField) {
+    if (tcol.directEdit && tcol.formField) { // not differentiating editFormField and addFormField because direct edit is always in edit mode
       return 'directEdit';
     }
     if (tcol.ngComponent) {
