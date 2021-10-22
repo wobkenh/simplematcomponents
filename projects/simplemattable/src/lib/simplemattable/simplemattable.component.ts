@@ -724,15 +724,17 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
       return;
     }
     const element = this.deepCopy(oldElement); // Deep copy old object to not override table values
+    const isAdded = this.dataStatus.get(oldElement).added;
     controls.forEach(control => {
       const tcol: TableColumn<T, any> = this.getDisplayedCols(this.columns)[control.col];
       const val = control.control.value;
-      if (element[tcol.property] instanceof Object && !(element[tcol.property] instanceof Date) && !tcol.formField.apply) {
+      const formField = isAdded ? (tcol.addFormField || tcol.formField) : (tcol.editFormField || tcol.formField);
+      if (element[tcol.property] instanceof Object && !(element[tcol.property] instanceof Date) && !formField.apply) {
         throw Error('Could not map value "' + val + '" to property "' + tcol.property + '". ' +
           'Please consider adding the onInit and onApply functions to the FormField of the "' + tcol.name + '"-column. ' +
           'For more information on this, see the simplemattable docs on npm or github.');
       }
-      element[tcol.property] = tcol.formField.apply ? tcol.formField.apply(val, element[tcol.property], element, this.data) : val;
+      element[tcol.property] = formField.apply ? formField.apply(val, element[tcol.property], element, this.data) : val;
     });
     this.dataStatus.get(oldElement).loading = true;
     if (this.dataStatus.get(oldElement).added) {
