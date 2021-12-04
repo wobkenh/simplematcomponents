@@ -43,7 +43,7 @@
       <mat-form-field *ngSwitchCase="formFieldType.TEXT" style="width: 100%;padding: 0 5px"
                       (keyup.enter)="save.emit({rowIndex: rowIndex, element: element})"
                       (click)="$event.stopPropagation()">
-        <input matInput [formControl]="formControl" type="text"
+        <input matInput [formControl]="$any(formControl)" type="text"
                [placeholder]="formField.placeholder"
                [id]="inputId">
         <mat-error *ngFor="let error of getCurrentErrors(formControl);">
@@ -54,7 +54,7 @@
       <mat-form-field *ngSwitchCase="formFieldType.NUMBER" style="width: 100%;padding: 0 5px"
                       (keyup.enter)="save.emit({rowIndex: rowIndex, element: element})"
                       (click)="$event.stopPropagation()">
-        <input matInput type="number" [formControl]="formControl"
+        <input matInput type="number" [formControl]="$any(formControl)"
                [placeholder]="formField.placeholder" [id]="inputId">
         <mat-error *ngFor="let error of getCurrentErrors(formControl);">
           {{error.msg}}
@@ -63,14 +63,14 @@
       </mat-form-field>
       <mat-checkbox *ngSwitchCase="formFieldType.CHECKBOX"
                     (keyup.enter)="save.emit({rowIndex: rowIndex, element: element})"
-                    [formControl]="formControl"
+                    [formControl]="$any(formControl)"
                     style="padding: 0 5px"
                     (click)="$event.stopPropagation()"
       ></mat-checkbox>
       <mat-form-field *ngSwitchCase="formFieldType.DATE" style="width: 98%;"
                       (click)="$event.stopPropagation()">
         <!-- For whatever reason, you cant wrap the date picker input in a ng-container -->
-        <input matInput [formControl]="formControl" [id]="inputId"
+        <input matInput [formControl]="$any(formControl)" [id]="inputId"
                [ngStyle]="inputCssStyle" [matDatepicker]="picker"
                [placeholder]="formField.placeholder"
                (keyup.enter)="save.emit({rowIndex: rowIndex, element: element})">
@@ -83,7 +83,7 @@
       </mat-form-field>
       <mat-form-field *ngSwitchCase="formFieldType.SELECT" style="width: 100%;padding: 0 5px"
                       (click)="$event.stopPropagation()">
-        <mat-select [formControl]="formControl"
+        <mat-select [formControl]="$any(formControl)"
                     [placeholder]="formField.placeholder" [id]="inputId">
           <!-- Options need to be accessed this way to avoid compile error -->
           <!-- Cant cast to select form field in html, but we know it is one -->
@@ -100,10 +100,10 @@
                       (click)="$event.stopPropagation()">
         <!-- Max/Min lines need to be accessed this way to avoid compile error -->
         <!-- Cant cast to large text form field in html, but we know it is one -->
-        <textarea matInput [formControl]="formControl"
+        <textarea matInput [formControl]="$any(formControl)"
                   style="width: 100%; padding: 2px 0;" [id]="inputId"
-                  matTextareaAutosize [matAutosizeMaxRows]="getMaxLines(formField)"
-                  [matAutosizeMinRows]="getMinLines(formField)"
+                  cdkTextareaAutosize [cdkAutosizeMaxRows]="getMaxLines(formField)"
+                  [cdkAutosizeMinRows]="getMinLines(formField)"
                   [placeholder]="formField.placeholder"></textarea>
         <mat-error *ngFor="let error of getCurrentErrors(formControl);">
           {{error.msg}}
@@ -122,8 +122,8 @@
         <!-- Warning: Do not introduce linebreaks into the textareas content as they will be displayed -->
         <!-- Be careful when formatting -->
         <textarea *ngIf="tableColumn.maxLines && stringRepresentation"
-                  matInput matTextareaAutosize [matAutosizeMaxRows]="tableColumn.maxLines"
-                  [matAutosizeMinRows]="tableColumn.minLines" [readonly]="true"
+                  matInput cdkTextareaAutosize [cdkAutosizeMaxRows]="tableColumn.maxLines"
+                  [cdkAutosizeMinRows]="tableColumn.minLines" [readonly]="true"
                   [ngStyle]="inputCssStyle"
                   [fxHide.xs]="tableColumn.textHiddenXs || tableColumn.textHiddenSm"
                   [fxHide.sm]="tableColumn.textHiddenSm"
@@ -188,9 +188,9 @@
         <textarea matInput [ngModel]="element[tableColumn.property]"
                   (ngModelChange)="directEditElementChanged(tableColumn, element, $event)"
                   style="width: 100%; padding: 2px 0;" [id]="inputId"
-                  matTextareaAutosize
-                  [matAutosizeMaxRows]="getMaxLines(formField)"
-                  [matAutosizeMinRows]="getMinLines(formField)"
+                  cdkTextareaAutosize
+                  [cdkAutosizeMaxRows]="getMaxLines(formField)"
+                  [cdkAutosizeMinRows]="getMinLines(formField)"
                   [placeholder]="formField.placeholder"></textarea>
         <mat-hint>{{formField.hint}}</mat-hint>
       </mat-form-field>
