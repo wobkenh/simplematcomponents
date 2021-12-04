@@ -752,6 +752,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parentheses is required Angular Version):
++ 13.0: Upgrade to angular 13
 + 12.5: Option to apply specific form fields for editing and adding
 + 12.4: Tooltips for action buttons (edit/delete/add)
 + 12.3: Fix initial page size via pageSettings bug
@@ -826,12 +827,12 @@ It is not planned to backport SimpleMatTable to any older Angular version.
 Simplemattable only uses peer dependencies, so for the newest version of simplemattable you need the following packages (with compatible versions) in your package.json:
 
 ```
-"@angular/common": "^12.0.0",
-"@angular/core": "^12.0.0",
-"@angular/material": "^12.0.0",
-"@angular/cdk": "^12.0.0",
-"@angular/platform-browser": "^12.0.0",
-"@angular/flex-layout": "^12.0.0-beta.34"
+"@angular/common": "^13.0.0",
+"@angular/core": "^13.0.0",
+"@angular/material": "^13.0.0",
+"@angular/cdk": "^13.0.0",
+"@angular/platform-browser": "^13.0.0",
+"@angular/flex-layout": "^13.0.0-beta.36"
 ```  
 
 
