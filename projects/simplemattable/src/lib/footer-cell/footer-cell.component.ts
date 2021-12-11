@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { TableColumn } from '../model/table-column.model';
 import { Align } from '../model/align.model';
 import { SmcUtilService } from '../smc-util.service';
-import { isObservable, Observable, of } from 'rxjs';
+import { isObservable, Observable, of, Subscription } from 'rxjs';
 
 @Component({
   selector: 'smc-footer-cell',
@@ -17,6 +17,7 @@ export class FooterCellComponent<T> implements OnInit {
   cellCssClass: Object = {};
   cellAlign: string = '';
   stringRepresentation: string | number = '';
+  transformSubscription: Subscription;
 
   constructor(private utilService: SmcUtilService) {
   }
@@ -43,7 +44,10 @@ export class FooterCellComponent<T> implements OnInit {
       this.cellCssStyle = this.getCellCssStyle(this.tableColumn, this.elements);
       this.cellAlign = this.utilService.getCellAlign(this.tableColumn.align);
       const data = this.elements.map(element => element[this.tableColumn.property]);
-      this.getStringRepresentation(this.tableColumn, data, this.elements).subscribe(stringRepresentation => {
+      if (this.transformSubscription) {
+        this.transformSubscription.unsubscribe();
+      }
+      this.transformSubscription = this.getStringRepresentation(this.tableColumn, data, this.elements).subscribe(stringRepresentation => {
         this.stringRepresentation = stringRepresentation;
       });
     }
