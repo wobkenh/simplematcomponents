@@ -5,7 +5,7 @@ import {Align} from './model/align.model';
 @Injectable({
   providedIn: 'root'
 })
-export class UtilService {
+export class SmcUtilService {
 
   constructor() {
   }

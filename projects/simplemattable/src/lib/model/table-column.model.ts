@@ -53,7 +53,7 @@ export class TableColumn<T, P extends keyof T> {
   public stickyEnd: boolean = false;
   public ngComponent: Type<any>;
   public ngComponentInput: (component: any, data: T[P], dataParent: T, dataList: T[]) => void;
-  public footer: (data: T[P][], dataParent: T[]) => string;
+  public footer: (data: T[P][], dataParent: T[]) => number | string | Observable<number | string>;
   public searchFn: (searchInput: string) => void;
   public filterFn: (searchInput: string, data: T[P], dataParent: T) => boolean;
 
@@ -131,7 +131,7 @@ export class TableColumn<T, P extends keyof T> {
    * @param footerFn. Arguments are the values of every cell of this column.
    * @returns this
    */
-  public withFooter(footerFn: (data: T[P][], dataParent: T[]) => string) {
+  public withFooter(footerFn: (data: T[P][], dataParent: T[]) => number | string | Observable<number | string>) {
     this.footer = footerFn;
     return this;
   }

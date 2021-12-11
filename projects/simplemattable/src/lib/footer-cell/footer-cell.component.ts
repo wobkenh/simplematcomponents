@@ -1,7 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {TableColumn} from '../model/table-column.model';
-import {Align} from '../model/align.model';
-import {UtilService} from '../util.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { TableColumn } from '../model/table-column.model';
+import { Align } from '../model/align.model';
+import { SmcUtilService } from '../smc-util.service';
+import { isObservable, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'smc-footer-cell',
@@ -15,9 +16,9 @@ export class FooterCellComponent<T> implements OnInit {
   cellCssStyle: Object = {};
   cellCssClass: Object = {};
   cellAlign: string = '';
-  stringRepresentation: string = '';
+  stringRepresentation: string | number = '';
 
-  constructor(private utilService: UtilService) {
+  constructor(private utilService: SmcUtilService) {
   }
 
   ngOnInit(): void {
@@ -42,7 +43,18 @@ export class FooterCellComponent<T> implements OnInit {
       this.cellCssStyle = this.getCellCssStyle(this.tableColumn, this.elements);
       this.cellAlign = this.utilService.getCellAlign(this.tableColumn.align);
       const data = this.elements.map(element => element[this.tableColumn.property]);
-      this.stringRepresentation = this.tableColumn.footer(data, this.elements);
+      this.getStringRepresentation(this.tableColumn, data, this.elements).subscribe(stringRepresentation => {
+        this.stringRepresentation = stringRepresentation;
+      });
+    }
+  }
+
+  private getStringRepresentation(tcol: TableColumn<T, any>, data: any[], parents: T[]): Observable<string | number> {
+    const transformed = tcol.footer(data, parents);
+    if (isObservable(transformed)) {
+      return transformed;
+    } else {
+      return of(transformed);
     }
   }
 
@@ -54,7 +66,7 @@ export class FooterCellComponent<T> implements OnInit {
   }
 
   getCellCssClass(tcol: TableColumn<T, any>, elements: T[]): Object {
-    const defaultClass = {'filler-div': true};
+    const defaultClass = { 'filler-div': true };
     let ngClass = null;
     if (tcol.footerNgClass) {
       const elementValues: any = elements.map(element => element[tcol.property]);

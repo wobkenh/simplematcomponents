@@ -1,13 +1,13 @@
 import {TestBed} from '@angular/core/testing';
 
-import {UtilService} from './util.service';
+import {SmcUtilService} from './smc-util.service';
 import {Align} from './model/align.model';
 
 describe('Util.Service.TsService', () => {
-  let utilService: UtilService;
+  let utilService: SmcUtilService;
 
   beforeEach(() => {
-    utilService = new UtilService();
+    utilService = new SmcUtilService();
   });
 
   it('cell align', () => {

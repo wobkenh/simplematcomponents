@@ -24,7 +24,7 @@ import {Width} from '../model/width.model';
 import {ExternalComponentWrapperComponent} from '../external-component-wrapper/external-component-wrapper.component';
 import {TableCellComponent} from '../table-cell/table-cell.component';
 import {CdkDragDrop} from '@angular/cdk/drag-drop';
-import {UtilService} from '../util.service';
+import {SmcUtilService} from '../smc-util.service';
 
 describe('SimplemattableComponent', () => {
   let hostComponent: TestHostComponent;
@@ -313,7 +313,7 @@ describe('SimplemattableComponent', () => {
       }));
     hostComponent.columns.push(tcolFormField);
     testHostFixture.detectChanges();
-    const tableCell = new TableCellComponent(new FormBuilder(), new UtilService());
+    const tableCell = new TableCellComponent(new FormBuilder(), new SmcUtilService());
     expect(smt.isLoading(data)).toBeFalsy();
     expect(smt.isEditing(data)).toBeFalsy();
     expect(tableCell.isEditingColumn(tcolFormField, false)).toBeFalsy();
@@ -335,7 +335,7 @@ describe('SimplemattableComponent', () => {
       .withFormField(hostComponent.tcolUnused.getNumberFormField()
         .withInit(() => 420)
         .withValidators(validators));
-    const tableCell = new TableCellComponent(new FormBuilder(), new UtilService());
+    const tableCell = new TableCellComponent(new FormBuilder(), new SmcUtilService());
     tableCell.formControls = smt.formControls;
     const fc1 = tableCell.getFormControl(0, 0, tcol, hostComponent.data[0]);
     const fc2 = tableCell.getFormControl(0, 1, tcol, hostComponent.data[0]);

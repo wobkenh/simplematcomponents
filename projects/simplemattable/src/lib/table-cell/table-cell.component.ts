@@ -10,7 +10,7 @@ import { SelectFormFieldOption } from '../model/select-form-field-option.model';
 import { FormFieldType } from '../model/form-field-type.model';
 import { LargeTextFormField } from '../model/large-text-form-field.model';
 import { SelectFormField } from '../model/select-form-field.model';
-import { UtilService } from '../util.service';
+import { SmcUtilService } from '../smc-util.service';
 import { isObservable, Observable, of, Subscription } from 'rxjs';
 
 @Component({
@@ -63,7 +63,7 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
   tooltip: string;
 
   constructor(private fb: FormBuilder,
-              private utilService: UtilService) {
+              private utilService: SmcUtilService) {
   }
 
   ngOnDestroy(): void {

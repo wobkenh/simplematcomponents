@@ -2,7 +2,7 @@ import { waitForAsync } from '@angular/core/testing';
 
 import {FooterCellComponent} from './footer-cell.component';
 import {TableColumn} from '../model/table-column.model';
-import {UtilService} from '../util.service';
+import {SmcUtilService} from '../smc-util.service';
 
 describe('FooterCellComponent', () => {
   let dataSample1: ComplexTestData;
@@ -11,7 +11,7 @@ describe('FooterCellComponent', () => {
 
   beforeEach(waitForAsync(() => {
     dataSample1 = new ComplexTestData(1, new TestData('a', 1, new Date()));
-    const utilService = new UtilService();
+    const utilService = new SmcUtilService();
     footerCell = new FooterCellComponent(utilService);
     tableColumn = new TableColumn<ComplexTestData, 'id'>('ID', 'id');
   }));
