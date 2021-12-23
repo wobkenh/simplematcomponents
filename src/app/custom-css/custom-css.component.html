@@ -40,10 +40,15 @@
     </mat-tab-group>
     <h2 id="rowcss">Row Styling CSS</h2>
     <p>
-      You can easily and dynamically apply css to the rows of the table cell.
+      You can easily and dynamically apply css to the rows of the table.
       SimpleMatTable will simply forward the style-object to Angular, so everything that works with standard Angular
       ngStyle/ngClass works here too.
     </p>
+    <p>Note that the results of rowNgStyle and rowNgClass will be cached. The cache is cleared every time the data or
+      the table column changes. If some external factor changes that might influence the styling, you can call the
+      <span class="inline-code">clearCssCache()</span> method of simplemattable. If you want to disable caching
+      completely, set <span class="inline-code">disableCssCaching</span> to true
+      on the smc-simplemattable element.</p>
     <mat-tab-group>
       <mat-tab>
         <ng-template mat-tab-label>

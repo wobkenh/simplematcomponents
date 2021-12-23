@@ -218,6 +218,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   @Input() deleteTooltip: string;
   @Input() cancelTooltip: string;
   @Input() saveTooltip: string;
+  @Input() disableCssCaching: boolean = false;
 
   private infiniteScrollingPage: number = 0;
   private infiniteScrollingHasMore: boolean = true;
@@ -333,6 +334,9 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    * Can be used to filter on the current table cell values, even if they were loaded async
    */
   stringRepresentationMap = new Map<T, Map<TableColumn<any, any>, string>>();
+
+  rowStyleMap = new Map<T, Object>();
+  rowClassMap = new Map<T, string | string[] | Object>();
 
   constructor(
     private fb: FormBuilder,
@@ -596,6 +600,9 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   }
 
   getTableRowClass(row: T): string | string[] | Object {
+    if (!this.disableCssCaching && this.rowClassMap.has(row)) {
+      return this.rowClassMap.get(row);
+    }
     if (this.rowNgClass) {
       let classes = this.rowNgClass(row, this.data);
       if (this.rowClickable) {
@@ -604,9 +611,12 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
       if (this.detailRowComponent) {
         classes = this.addClass(classes, 'smt-element-row');
       }
+      this.rowClassMap.set(row, classes);
       return classes;
     } else {
-      return { 'on-click': !!this.rowClickable, 'smt-element-row': !!this.detailRowComponent };
+      const classes = { 'on-click': !!this.rowClickable, 'smt-element-row': !!this.detailRowComponent };
+      this.rowClassMap.set(row, classes);
+      return classes;
     }
   }
 
@@ -630,11 +640,12 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   }
 
   getTableRowStyle(row: T): Object {
-    if (this.rowNgStyle) {
-      return this.rowNgStyle(row, this.data);
-    } else {
-      return {};
+    if (!this.disableCssCaching && this.rowStyleMap.has(row)) {
+      return this.rowStyleMap.get(row);
     }
+    const rowStyle = this.rowNgStyle ? this.rowNgStyle(row, this.data) : {};
+    this.rowStyleMap.set(row, rowStyle);
+    return rowStyle;
   }
 
   getTableFooterRowStyle(): Object {
@@ -900,6 +911,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   // checks for data changes
   ngOnChanges(changes: SimpleChanges): void {
+    this.clearCssCache();
     if (changes.data) {
       this.onDataChanges();
     }
@@ -973,6 +985,11 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     }
   }
 
+  clearCssCache(): void {
+    this.rowClassMap.clear();
+    this.rowStyleMap.clear();
+  }
+
   private onDataChanges(): void {
     this.clearAddedEntry();
     this.recreateDataSource();
@@ -1001,6 +1018,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   // checks for column changes
   ngDoCheck(): void {
     if (this.checkForDifferences()) {
+      this.clearCssCache();
       this.clearAddedEntry();
       this.turnOffSorting(); // If columns are changed, resorting might cause bugs
       this.recreateDataSource();
@@ -1254,6 +1272,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     } else {
       this.expandedElement = row;
     }
+    this.clearCssCache();
   }
 
   sortChanged(sortEvent: Sort) {

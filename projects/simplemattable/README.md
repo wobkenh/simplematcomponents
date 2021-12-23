@@ -752,6 +752,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parentheses is required Angular Version):
++ 13.2: Cache row styles / classes
 + 13.1: Allow footer function to return an observable
 + 13.0: Upgrade to angular 13
 + 12.5: Option to apply specific form fields for editing and adding

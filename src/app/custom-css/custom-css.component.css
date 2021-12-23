@@ -1,0 +1,6 @@
+.inline-code {
+  font-family: monospace;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+  padding: 3px;
+}
