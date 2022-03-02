@@ -43,6 +43,11 @@ import { ButtonType } from '../model/button-type.model';
 export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, AfterViewInit {
 
   /**
+   * If set to true, will not remove editing-state after data was reloaded
+   * aslong as the object references stay the same
+   */
+  @Input() keepStatus: boolean = false;
+  /**
    * Input. The data for your table.
    */
   @Input() data: T[] = [];
@@ -991,7 +996,9 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   }
 
   private onDataChanges(): void {
-    this.clearAddedEntry();
+    if (!this.keepStatus) {
+      this.clearAddedEntry();
+    }
     this.recreateDataSource();
     this.cleanUpAfterDataChange();
     this.refreshTrigger++;
@@ -1005,9 +1012,23 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   }
 
   private cleanUpAfterDataChange() {
-    this.dataStatus.clear();
+    if (!this.keepStatus) {
+      this.dataStatus.clear();
+    } else if (this.addedItem) {
+      if (this.dataStatus.has(this.addedItem)) {
+        this.dataStatus.get(this.addedItem).loading = false;
+      } else {
+        this.dataStatus.set(this.addedItem, new DataStatus());
+      }
+    }
     if (this.data) {
-      this.data.forEach(data => this.dataStatus.set(data, new DataStatus()));
+      this.data.forEach(data => {
+        if (!this.keepStatus || !this.dataStatus.has(data)) {
+          this.dataStatus.set(data, new DataStatus());
+        } else {
+          this.dataStatus.get(data).loading = false;
+        }
+      });
     }
     this.formControls.clear();
     if (this.matSort && this.matSort.active) {

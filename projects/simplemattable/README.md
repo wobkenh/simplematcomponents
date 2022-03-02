@@ -634,6 +634,18 @@ You can change them by specifying the respective simplemattable input paramters
 `addIcon`, `saveIcon`, `deleteIcon`, `editIcon` and `cancelIcon`. 
 You need to specify them as a valid Material Icon string. [You can check out all supported icons here.](https://material.io/tools/icons/)
 
+#### Keeping editing status
+
+Normally, if you reassign the data after an edit to update the table state and display the newly added or edited data,
+the editing-state of the table row that was being edited will automatically be reset.
+
+In some cases, this can be unintended behaviour, e.g. if the backend notices an error in the data and wont let the user save
+the element.
+For those cases, there is an option on the simplemattable element called `keepStatus`. 
+If set to true, the editing-state of an element will not be reset, even if the data is reassigned, unless the object reference changes.
+So if you replace the element with a completely new one, the state for that row will reset, 
+but if you just do `this.data = this.data.slice(0)`, the row will stay in editing-mode.
+
 ### Pagination
 
 Simplemattable supports two kinds of pagination: Frontend-only-pagination and backend supported pagination. 
@@ -752,6 +764,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parentheses is required Angular Version):
++ 13.3: Added `keepStatus` option to keep editing status on data refresh
 + 13.2: Cache row styles / classes
 + 13.1: Allow footer function to return an observable
 + 13.0: Upgrade to angular 13
