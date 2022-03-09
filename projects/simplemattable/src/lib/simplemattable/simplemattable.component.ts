@@ -110,18 +110,43 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    */
   @Input() editable: boolean = false;
   /**
+   * True disables the edit button. Default false.
+   */
+  @Input() editDisabled: boolean = false;
+  /**
+   * True disables the save button. Default false.
+   */
+  @Input() saveDisabled: boolean = false;
+  /**
+   * True disables the cancel button. Default false.
+   */
+  @Input() cancelDisabled: boolean = false;
+  /**
    * True allows the addition of new elements to the table. Default false.
    */
   @Input() addable: boolean = false;
+  /**
+   * True disables the add button. Default false.
+   */
+  @Input() addDisabled: boolean = false;
   /**
    * True allows deleting elements of the table. Default false.
    */
   @Input() deletable: boolean = false;
   /**
+   * True disables the delete button. Default false.
+   */
+  @Input() deleteDisabled: boolean = false;
+  /**
    * True allows deleting all elements of the table at once using a button in the top right corner. Default false.
    * `deletable` needs to be set to true for this to work.
    */
   @Input() deleteAllButton: boolean = false;
+  /**
+   * True disables the delete all button. Default false.
+   * `deletable` needs to be set to true for this to work.
+   */
+  @Input() deleteAllDisabled: boolean = false;
   /**
    * Material Icon used for the edit button. Default 'edit'.
    */

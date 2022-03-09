@@ -50,7 +50,8 @@
               </div>
               <div style="padding: 0 5px" *ngIf="tcol.colFilter">
                 <mat-form-field [ngStyle]="{'text-align': getTextAlign(tcol.align)}">
-                  <input matInput [placeholder]="tcol.colFilterLabel" [formControl]="getColFilterFormControl(tcol)"
+                  <input matInput [placeholder]="tcol.colFilterLabel"
+                         [formControl]="$any(getColFilterFormControl(tcol))"
                          (keyup)="applyColFilter()" (click)="$event.stopPropagation()">
                 </mat-form-field>
               </div>
@@ -83,11 +84,11 @@
       <th mat-header-cell *matHeaderCellDef style="width: 104px;" cdkDrag>
         <div class="filler-div" style="align-items: center; display: flex; justify-content: flex-end;">
           <button mat-icon-button *ngIf="addable" color="primary" (click)="startAddElement()"
-                  [disabled]="!!addedItem" type="button" [matTooltip]="addTooltip">
+                  [disabled]="!!addedItem || addDisabled" type="button" [matTooltip]="addTooltip">
             <mat-icon>{{addIcon ? addIcon : "add_box"}}</mat-icon>
           </button>
           <button mat-icon-button *ngIf="deleteAllButton" color="primary" (click)="deleteAllElements()" type="button"
-                  [matTooltip]="deleteAllTooltip">
+                  [matTooltip]="deleteAllTooltip" [disabled]="deleteAllDisabled">
             <mat-icon>{{deleteIcon ? deleteIcon : "delete"}}</mat-icon>
           </button>
         </div>
@@ -96,22 +97,23 @@
         <div style="display: flex;justify-content: flex-end; align-items: center" class="filler-div">
           <ng-container *ngIf="!isLoading(element)">
             <ng-container *ngIf="!isEditing(element)">
-              <button *ngIf="editable" mat-icon-button color="primary" type="button"
+              <button *ngIf="editable" mat-icon-button color="primary" type="button" [disabled]="editDisabled"
                       (click)="startEditElement(element, rowIndex)" [matTooltip]="editTooltip">
                 <mat-icon>{{editIcon ? editIcon : "edit"}}</mat-icon>
               </button>
               <button *ngIf="deletable && element !== addedItem" mat-icon-button color="primary"
+                      [disabled]="deleteDisabled"
                       [matTooltip]="deleteTooltip" (click)="deleteElement(element)" type="button">
                 <mat-icon>{{deleteIcon ? deleteIcon : "delete"}}</mat-icon>
               </button>
             </ng-container>
             <ng-container *ngIf="(editable || addable) && isEditing(element)">
               <button mat-icon-button color="primary" (click)="saveElement(rowIndex, element)"
-                      [disabled]="!isFormValid(rowIndex)" type="button" [matTooltip]="saveTooltip">
+                      [disabled]="!isFormValid(rowIndex) || saveDisabled" type="button" [matTooltip]="saveTooltip">
                 <mat-icon>{{saveIcon ? saveIcon : "save"}}</mat-icon>
               </button>
               <button mat-icon-button color="primary" (click)="cancelEditElement(element)" type="button"
-                      [matTooltip]="cancelTooltip">
+                      [matTooltip]="cancelTooltip" [disabled]="cancelDisabled">
                 <mat-icon>{{cancelIcon ? cancelIcon : "cancel"}}</mat-icon>
               </button>
             </ng-container>

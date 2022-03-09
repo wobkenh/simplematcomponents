@@ -764,6 +764,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parentheses is required Angular Version):
++ 13.4: Added properties to disable the edit/save/add/delete buttons
 + 13.3: Added `keepStatus` option to keep editing status on data refresh
 + 13.2: Cache row styles / classes
 + 13.1: Allow footer function to return an observable
