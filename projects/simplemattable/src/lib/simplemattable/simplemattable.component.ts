@@ -368,6 +368,13 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   rowStyleMap = new Map<T, Object>();
   rowClassMap = new Map<T, string | string[] | Object>();
 
+  /**
+   * NgDoCheck is directly called after every ngOnChanges
+   * This flag allows us to know in ngDoCheck if a data change
+   * was already done in ngOnChanges to avoid duplicate processing
+   */
+  onChangesDetectedDataChange: boolean = false;
+
   constructor(
     private fb: FormBuilder,
   ) {
@@ -945,6 +952,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     if (changes.data) {
       this.onDataChanges();
     }
+    this.onChangesDetectedDataChange = !!changes.data;
     if (changes.pageSettings && this.pageSettings) {
       // When using pagination, the user can programmatically select a page and the page size
       // via the page settings object. The paginator selections are changed here.
@@ -1067,9 +1075,16 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
       this.clearCssCache();
       this.clearAddedEntry();
       this.turnOffSorting(); // If columns are changed, resorting might cause bugs
-      this.recreateDataSource();
+      // data might have been updated after data change in ngOnChanges
+      // and that call included the changed table columns already
+      if (!this.onChangesDetectedDataChange) {
+        this.recreateDataSource();
+      }
       this.cleanUpAfterColChange();
       this.recreateColFilters();
+    }
+    if (this.onChangesDetectedDataChange) {
+      this.onChangesDetectedDataChange = false;
     }
   }
 
@@ -1130,11 +1145,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   private recreateDataSource() {
     if (this.columns && this.data) {
-      const tmpData = this.data.slice();
-      if (this.addedItem) {
-        tmpData.unshift(this.addedItem);
-      }
-      this.dataSource = new MatTableDataSource(tmpData);
+      this.dataSource = new MatTableDataSource() as MatTableDataSource<T>;
 
       // Listen to data changes
       if (this.renderedDataSubscription) {
@@ -1211,6 +1222,23 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
           }
           return data[tcol.property];
         };
+      }
+
+      const tmpData = this.data.slice();
+      if (this.addedItem) {
+        tmpData.unshift(this.addedItem);
+      }
+
+      if (this.paginator && !this.matFrontendPaginator && !this.matBackendPaginator) {
+        // Paginator might not be assigned yet
+        // If that is the case, we need to move setting the data to a point
+        // where the paginator is set on the datasource (usually after view init)
+        // see also https://stackoverflow.com/questions/50283659/angular-6-mattable-performance-in-1000-rows
+        setTimeout(() => {
+          this.dataSource.data = tmpData;
+        });
+      } else {
+        this.dataSource.data = tmpData;
       }
 
       // Filter columns to display and footer-detection
