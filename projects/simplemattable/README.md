@@ -10,14 +10,6 @@ A lot of different options like align, buttons, icons, custom css and even custo
 SimpleMatTable also allows you to enable adding, editing and deleting of elements in the table. 
 It supports different form fields like number, text, date and select inputs.
 
----
-**NOTE**
-
-As of the upgrade to Angular 11, SimpleMatTable versioning is aligned with angular versioning.
-If you are still on Angular 10, use version 6.5.0 of simplemattable.
-
----
-
 ## Table of contents
 
 - [Prerequisites](#prerequisites)
@@ -764,6 +756,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parentheses is required Angular Version):
++ 13.5: Avoid initial data load before paginator initialization
 + 13.4: Added properties to disable the edit/save/add/delete buttons
 + 13.3: Added `keepStatus` option to keep editing status on data refresh
 + 13.2: Cache row styles / classes
@@ -858,7 +851,7 @@ Simplemattable only uses peer dependencies, so for the newest version of simplem
 + For use with Angular >= 8.0 and < 9.0, use Version 4.0 of simplemattable.
 + For use with Angular >= 9.0 and < 10.0, use Version 5.4 of simplemattable.
 + For use with Angular >= 10.0 and < 11.0, use Version 6.5 of simplemattable.
-+ For use with Angular >= 11.0, use the newest version of simplemattable.
++ For use with Angular >= 11.0, use the newest version of simplemattable for your respective Angular version.
 
 ## Authors
 
