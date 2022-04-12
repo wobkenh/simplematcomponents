@@ -1235,7 +1235,10 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
         // where the paginator is set on the datasource (usually after view init)
         // see also https://stackoverflow.com/questions/50283659/angular-6-mattable-performance-in-1000-rows
         setTimeout(() => {
-          this.dataSource.data = tmpData;
+          // only set if not already set (might happen if data was initialized with [] and then updated after api request)
+          if (!this.dataSource.data || this.dataSource.data.length === 0) {
+            this.dataSource.data = tmpData;
+          }
         });
       } else {
         this.dataSource.data = tmpData;
