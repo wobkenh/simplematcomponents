@@ -14,12 +14,12 @@ export class ExternalDetailComponentWrapperComponent<T> implements OnChanges {
 
   private componentRef: ComponentRef<DetailRowComponent<T>>;
 
-  constructor(private resolver: ComponentFactoryResolver, private viewContainerRef: ViewContainerRef) {
+  constructor(private viewContainerRef: ViewContainerRef) {
   }
 
   ngOnChanges() {
     this.viewContainerRef.clear();
-    this.componentRef = this.viewContainerRef.createComponent(this.resolver.resolveComponentFactory(this.ngComponent));
+    this.componentRef = this.viewContainerRef.createComponent(this.ngComponent);
     this.componentRef.instance.onInput(this.element, this.dataList);
   }
 
