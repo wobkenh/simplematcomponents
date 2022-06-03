@@ -18,7 +18,7 @@
       <ng-container matColumnDef="{{columnIndex.toString() + '_' + tcol.property.toString()}}"
                     [sticky]="tcol.sticky" [stickyEnd]="tcol.stickyEnd">
         <th mat-header-cell *matHeaderCellDef [ngStyle]="getTableCellStyle(tcol)" cdkDrag
-            [matTooltip]="tcol.headerTooltip"
+            [matTooltip]="tcol.headerTooltip" [matTooltipPosition]="tcol.headerTooltipPosition"
             [fxHide.xs]="tcol.hiddenXs || tcol.hiddenSm" [fxHide.sm]="tcol.hiddenSm">
           <div fxLayout="row" style="height: 100%"
                [fxLayoutAlign]="tcol.colFilter ? getHeaderFilterAlign(tcol.align) : getHeaderNoFilterAlign(tcol.align)">

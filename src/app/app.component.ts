@@ -46,6 +46,9 @@ export class AppComponent implements OnInit {
       link: '/multiline',
       text: 'Multiline'
     }, {
+      link: '/tooltips',
+      text: 'Tooltips'
+    }, {
       link: '/footer',
       text: 'Footer Row'
     }, {

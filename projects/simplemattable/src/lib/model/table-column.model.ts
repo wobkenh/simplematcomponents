@@ -12,12 +12,15 @@ import { Height } from './height.model';
 import { CheckboxFormField } from './checkbox-form-field.model';
 import { Type } from '@angular/core';
 import { Observable } from 'rxjs';
+import { TooltipPosition } from '@angular/material/tooltip';
 
 export class TableColumn<T, P extends keyof T> {
 
   public transform: (data: T[P], dataParent: T, dataList: T[]) => number | string | Observable<number | string>;
   public tooltip: (data: T[P], dataParent: T, dataList: T[]) => string;
+  public tooltipPosition: TooltipPosition = 'below';
   public headerTooltip: string;
+  public headerTooltipPosition: TooltipPosition = 'below';
   public width: string;
   public heightFn: (data: T[P], dataParent: T, dataList: T[]) => Height;
   public disabledFn: (data: T[P], dataParent: T, dataList: T[]) => boolean;
@@ -114,6 +117,17 @@ export class TableColumn<T, P extends keyof T> {
   }
 
   /**
+   * Position of the tooltip displayed when hovering over data cells
+   *
+   * @param tooltipPosition
+   * @returns this
+   */
+  public withTooltipPosition(tooltipPosition: TooltipPosition) {
+    this.tooltipPosition = tooltipPosition;
+    return this;
+  }
+
+  /**
    * Tooltip to be displayed if the user hovers over the header cell.
    *
    * @param headerTooltip
@@ -121,6 +135,17 @@ export class TableColumn<T, P extends keyof T> {
    */
   public withHeaderTooltip(headerTooltip: string) {
     this.headerTooltip = headerTooltip;
+    return this;
+  }
+
+  /**
+   * Position of the Tooltip to be displayed if the user hovers over the header cell.
+   *
+   * @param headerTooltipPosition
+   * @returns this
+   */
+  public withHeaderTooltipPosition(headerTooltipPosition: TooltipPosition) {
+    this.headerTooltipPosition = headerTooltipPosition;
     return this;
   }
 

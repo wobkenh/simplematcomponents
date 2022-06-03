@@ -1,4 +1,4 @@
-import {Component, ComponentFactoryResolver, ComponentRef, Input, OnChanges, Type, ViewContainerRef} from '@angular/core';
+import { Component, ComponentRef, Input, OnChanges, Type, ViewContainerRef } from '@angular/core';
 
 @Component({
   selector: 'smc-external-component-wrapper',
@@ -15,12 +15,12 @@ export class ExternalComponentWrapperComponent implements OnChanges {
 
   private componentRef: ComponentRef<any>;
 
-  constructor(private resolver: ComponentFactoryResolver, private viewContainerRef: ViewContainerRef) {
+  constructor(private viewContainerRef: ViewContainerRef) {
   }
 
   ngOnChanges() {
     this.viewContainerRef.clear();
-    this.componentRef = this.viewContainerRef.createComponent(this.resolver.resolveComponentFactory(this.ngComponent));
+    this.componentRef = this.viewContainerRef.createComponent(this.ngComponent);
     if (this.ngComponentInput) {
       this.ngComponentInput(this.componentRef.instance, this.dataParent[this.tcolProperty], this.dataParent, this.dataList);
     }
