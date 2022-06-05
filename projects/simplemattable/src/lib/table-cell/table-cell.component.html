@@ -1,7 +1,5 @@
-<div
-  fxLayout="row" [fxLayoutAlign]="cellAlign"
-  [ngClass]="cellCssClass"
-  [ngStyle]="cellCssStyle" [matTooltip]="tooltip" [matTooltipPosition]="tableColumn.tooltipPosition">
+<div [ngClass]="cellCssClass" [ngStyle]="cellCssStyle" [matTooltip]="tooltip"
+     [matTooltipPosition]="tableColumn.tooltipPosition" class="table-cell-container">
 
 
   <!--            Explanation for the hierarchy:-->
@@ -19,7 +17,7 @@
               type="button">
         <mat-icon *ngIf="tableColumn.icon">{{iconName}}</mat-icon>
         <span style="padding: 2px 0" *ngIf="stringRepresentation"
-              [fxHide.xs]="tableColumn.textHiddenXs || tableColumn.textHiddenSm" [fxHide.sm]="tableColumn.textHiddenSm">
+              [ngClass]="{'hidden': ((bpService.xs$ | async) && textHiddenXs) || (bpService.sm$ | async) && textHiddenSm}">
                 {{stringRepresentation}}
               </span>
       </button>
@@ -28,7 +26,7 @@
               type="button">
         <mat-icon *ngIf="tableColumn.icon">{{iconName}}</mat-icon>
         <span style="padding: 2px 0" *ngIf="stringRepresentation"
-              [fxHide.xs]="tableColumn.textHiddenXs || tableColumn.textHiddenSm" [fxHide.sm]="tableColumn.textHiddenSm">
+              [ngClass]="{'hidden': ((bpService.xs$ | async) && textHiddenXs) || (bpService.sm$ | async) && textHiddenSm}">
                 {{stringRepresentation}}
               </span>
       </button>
@@ -40,7 +38,7 @@
     </ng-container>
 
     <ng-container *ngSwitchCase="'form'" [ngSwitch]="formField.formType">
-      <mat-form-field *ngSwitchCase="formFieldType.TEXT" style="width: 100%;padding: 0 5px"
+      <mat-form-field *ngSwitchCase="formFieldType.TEXT" class="form-field"
                       (keyup.enter)="save.emit({rowIndex: rowIndex, element: element})"
                       (click)="$event.stopPropagation()">
         <input matInput [formControl]="$any(formControl)" type="text"
@@ -51,7 +49,7 @@
         </mat-error>
         <mat-hint>{{formField.hint}}</mat-hint>
       </mat-form-field>
-      <mat-form-field *ngSwitchCase="formFieldType.NUMBER" style="width: 100%;padding: 0 5px"
+      <mat-form-field *ngSwitchCase="formFieldType.NUMBER" class="form-field"
                       (keyup.enter)="save.emit({rowIndex: rowIndex, element: element})"
                       (click)="$event.stopPropagation()">
         <input matInput type="number" [formControl]="$any(formControl)"
@@ -81,7 +79,7 @@
         </mat-error>
         <mat-hint>{{formField.hint}}</mat-hint>
       </mat-form-field>
-      <mat-form-field *ngSwitchCase="formFieldType.SELECT" style="width: 100%;padding: 0 5px"
+      <mat-form-field *ngSwitchCase="formFieldType.SELECT" class="form-field"
                       (click)="$event.stopPropagation()">
         <mat-select [formControl]="$any(formControl)"
                     [placeholder]="formField.placeholder" [id]="inputId">
@@ -96,7 +94,7 @@
         </mat-error>
         <mat-hint>{{formField.hint}}</mat-hint>
       </mat-form-field>
-      <mat-form-field *ngSwitchCase="formFieldType.LARGE_TEXT" style="width: 100%;padding: 0 5px"
+      <mat-form-field *ngSwitchCase="formFieldType.LARGE_TEXT" class="form-field"
                       (click)="$event.stopPropagation()">
         <!-- Max/Min lines need to be accessed this way to avoid compile error -->
         <!-- Cant cast to large text form field in html, but we know it is one -->
@@ -115,9 +113,8 @@
 
     <ng-container *ngSwitchCase="'text'">
       <!-- Standardcell: Icon + (Textarea or Span) -->
-      <div fxLayout="row" fxLayoutGap="5px"
-           [fxLayoutAlign]="cellAlign" [ngStyle.gt-xs]="{'padding':'0 5px'}"
-           style="width: 100%;">
+      <div class="text-cell" [ngClass]="{'horizontal-padding': !(bpService.xs$ | async)}"
+           [ngStyle]="tableColumnCellCssStyle">
         <mat-icon *ngIf="tableColumn.icon">{{iconName}}</mat-icon>
         <!-- Warning: Do not introduce linebreaks into the textareas content as they will be displayed -->
         <!-- Be careful when formatting -->
@@ -125,11 +122,10 @@
                   matInput cdkTextareaAutosize [cdkAutosizeMaxRows]="tableColumn.maxLines"
                   [cdkAutosizeMinRows]="tableColumn.minLines" [readonly]="true"
                   [ngStyle]="inputCssStyle"
-                  [fxHide.xs]="tableColumn.textHiddenXs || tableColumn.textHiddenSm"
-                  [fxHide.sm]="tableColumn.textHiddenSm"
+                  [ngClass]="{'hidden': ((bpService.xs$ | async) && textHiddenXs) || (bpService.sm$ | async) && textHiddenSm}"
                   style="width: 100%; padding: 2px 0;">{{stringRepresentation}}</textarea>
-        <span style="padding: 2px 0" [fxHide.xs]="tableColumn.textHiddenXs || tableColumn.textHiddenSm"
-              [fxHide.sm]="tableColumn.textHiddenSm"
+        <span style="padding: 2px 0"
+              [ngClass]="{'hidden': ((bpService.xs$ | async) && textHiddenXs) || (bpService.sm$ | async) && textHiddenSm}"
               *ngIf="!tableColumn.maxLines && stringRepresentation">
                       {{stringRepresentation}}
                     </span>
@@ -145,14 +141,14 @@
 
     <ng-container *ngSwitchCase="'directEdit'"
                   [ngSwitch]="formField.formType">
-      <mat-form-field *ngSwitchCase="formFieldType.TEXT" style="width: 100%;padding: 0 5px"
+      <mat-form-field *ngSwitchCase="formFieldType.TEXT" class="form-field"
                       (click)="$event.stopPropagation()">
         <input matInput type="text" [placeholder]="formField.placeholder"
                [ngModel]="element[tableColumn.property]"
                (ngModelChange)="directEditElementChanged(tableColumn, element, $event)" [id]="inputId">
         <mat-hint>{{formField.hint}}</mat-hint>
       </mat-form-field>
-      <mat-form-field *ngSwitchCase="formFieldType.NUMBER" style="width: 100%;padding: 0 5px"
+      <mat-form-field *ngSwitchCase="formFieldType.NUMBER" class="form-field"
                       (click)="$event.stopPropagation()">
         <input matInput type="number" [ngModel]="element[tableColumn.property]"
                (ngModelChange)="directEditElementChanged(tableColumn, element, $event)"
@@ -173,7 +169,7 @@
         <mat-datepicker #picker></mat-datepicker>
         <mat-hint>{{formField.hint}}</mat-hint>
       </mat-form-field>
-      <mat-form-field *ngSwitchCase="formFieldType.SELECT" style="width: 100%;padding: 0 5px"
+      <mat-form-field *ngSwitchCase="formFieldType.SELECT" class="form-field"
                       (click)="$event.stopPropagation()">
         <mat-select [ngModel]="element[tableColumn.property]" [placeholder]="formField.placeholder"
                     (ngModelChange)="directEditElementChanged(tableColumn, element, $event)" [id]="inputId">
@@ -183,7 +179,7 @@
         </mat-select>
         <mat-hint>{{formField.hint}}</mat-hint>
       </mat-form-field>
-      <mat-form-field *ngSwitchCase="formFieldType.LARGE_TEXT" style="width: 100%;padding: 0 5px"
+      <mat-form-field *ngSwitchCase="formFieldType.LARGE_TEXT" class="form-field"
                       (click)="$event.stopPropagation()">
         <textarea matInput [ngModel]="element[tableColumn.property]"
                   (ngModelChange)="directEditElementChanged(tableColumn, element, $event)"

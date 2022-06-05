@@ -99,3 +99,9 @@ tr.smt-element-row:hover {
 tr.smt-element-row:active {
   background: #efefef;
 }
+
+.table-header {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+}

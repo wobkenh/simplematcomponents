@@ -176,7 +176,7 @@ export class TableColumn<T, P extends keyof T> {
   /**
    * Determines the width (flex value) to be used for the column.<br>
    *     number: pixel width of the column, results in 0 0 (number)px
-   *     string: value will be passed to fxFlex as is
+   *     string: value will be passed to flex as is
    *     Width: see Width class documentation
    *     Default is '1 1 0px'
    *

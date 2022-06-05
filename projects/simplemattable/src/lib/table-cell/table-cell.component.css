@@ -20,3 +20,32 @@
 .filler-div {
   height: 100%;
 }
+
+.form-field {
+  width: 100%;
+  padding: 0 5px;
+}
+
+.text-cell {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.text-cell > *:not(:last-child) {
+  margin-right: 5px;
+}
+
+.hidden {
+  display: none;
+}
+
+.table-cell-container {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.horizontal-padding {
+  padding: 0 5px;
+}

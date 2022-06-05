@@ -42,7 +42,7 @@ export class FooterCellComponent<T> implements OnInit {
     if (this.tableColumn && this.elements) {
       this.cellCssClass = this.getCellCssClass(this.tableColumn, this.elements);
       this.cellCssStyle = this.getCellCssStyle(this.tableColumn, this.elements);
-      this.cellAlign = this.utilService.getCellAlign(this.tableColumn.align);
+      this.cellCssStyle['justifyContent'] = this.utilService.getCellAlign(this.tableColumn.align);
       const data = this.elements.map(element => element[this.tableColumn.property]);
       if (this.transformSubscription) {
         this.transformSubscription.unsubscribe();

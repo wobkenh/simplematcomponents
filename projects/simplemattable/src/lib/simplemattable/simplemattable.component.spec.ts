@@ -1,30 +1,32 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import {SimplemattableComponent} from './simplemattable.component';
-import {Component, ViewChild} from '@angular/core';
-import {TableColumn} from '../model/table-column.model';
-import {MatButtonModule} from '@angular/material/button';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatCommonModule, MatNativeDateModule} from '@angular/material/core';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatIconModule} from '@angular/material/icon';
-import {MatInputModule} from '@angular/material/input';
-import {MatPaginatorModule} from '@angular/material/paginator';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSelectModule} from '@angular/material/select';
-import {MatSortModule} from '@angular/material/sort';
-import {MatTableModule} from '@angular/material/table';
-import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {FlexLayoutModule} from '@angular/flex-layout';
-import {CommonModule} from '@angular/common';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {Align} from '../model/align.model';
-import {ButtonType} from '../model/button-type.model';
-import {Width} from '../model/width.model';
-import {ExternalComponentWrapperComponent} from '../external-component-wrapper/external-component-wrapper.component';
-import {TableCellComponent} from '../table-cell/table-cell.component';
-import {CdkDragDrop} from '@angular/cdk/drag-drop';
-import {SmcUtilService} from '../smc-util.service';
+import { SimplemattableComponent } from './simplemattable.component';
+import { Component, EventEmitter, ViewChild } from '@angular/core';
+import { TableColumn } from '../model/table-column.model';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCommonModule, MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Align } from '../model/align.model';
+import { ButtonType } from '../model/button-type.model';
+import { Width } from '../model/width.model';
+import { ExternalComponentWrapperComponent } from '../external-component-wrapper/external-component-wrapper.component';
+import { TableCellComponent } from '../table-cell/table-cell.component';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { SmcUtilService } from '../smc-util.service';
+import { SmcBreakpointService } from '../smc-breakpoint.service';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 describe('SimplemattableComponent', () => {
   let hostComponent: TestHostComponent;
@@ -111,9 +113,9 @@ describe('SimplemattableComponent', () => {
       .withButton(ButtonType.BASIC);
     const data = hostComponent.data[0];
     spyOn(tcolButtonClickable, 'onClick');
-    smt.onClick(tcolButtonClickable, data, false);
+    smt.onClick(tcolButtonClickable, data, false, null);
     expect(tcolButtonClickable.onClick).toHaveBeenCalledTimes(0);
-    smt.onClick(tcolButtonClickable, data, true);
+    smt.onClick(tcolButtonClickable, data, true, null);
     expect(tcolButtonClickable.onClick).toHaveBeenCalled();
   });
   it('should call onClick no button clickable', () => {
@@ -122,14 +124,14 @@ describe('SimplemattableComponent', () => {
       });
     const data = hostComponent.data[0];
     spyOn(tcolNoButtonClickable, 'onClick');
-    smt.onClick(tcolNoButtonClickable, data, true);
+    smt.onClick(tcolNoButtonClickable, data, true, null);
     expect(tcolNoButtonClickable.onClick).toHaveBeenCalledTimes(0);
     // Should not be clickable if currently editing:
     smt.startEditElement(data, 1);
-    smt.onClick(tcolNoButtonClickable, data, false);
+    smt.onClick(tcolNoButtonClickable, data, false, null);
     expect(tcolNoButtonClickable.onClick).toHaveBeenCalledTimes(0);
     smt.cancelEditElement(data);
-    smt.onClick(tcolNoButtonClickable, data, false);
+    smt.onClick(tcolNoButtonClickable, data, false, null);
     expect(tcolNoButtonClickable.onClick).toHaveBeenCalledTimes(1);
   });
 
@@ -282,14 +284,11 @@ describe('SimplemattableComponent', () => {
     tcol.isVisible(false);
     expect(smt.getDisplayedCols([tcol])).toEqual([]);
   });
-  it('fxflex and align', () => {
+  it('flex and align', () => {
     const tcol = hostComponent.tcolPlain;
-    expect(smt.getHeaderFilterAlign(Align.LEFT)).toBe('start end');
-    expect(smt.getHeaderFilterAlign(Align.CENTER)).toBe('center end');
-    expect(smt.getHeaderFilterAlign(Align.RIGHT)).toBe('end end');
-    expect(smt.getHeaderNoFilterAlign(Align.LEFT)).toBe('start center');
-    expect(smt.getHeaderNoFilterAlign(Align.CENTER)).toBe('center center');
-    expect(smt.getHeaderNoFilterAlign(Align.RIGHT)).toBe('end center');
+    expect(smt.getHeaderFilterAlign(Align.LEFT)).toBe('flex-start');
+    expect(smt.getHeaderFilterAlign(Align.CENTER)).toBe('center');
+    expect(smt.getHeaderFilterAlign(Align.RIGHT)).toBe('flex-end');
     expect(smt.getTextAlign(Align.LEFT)).toBe('start');
     expect(smt.getTextAlign(Align.CENTER)).toBe('center');
     expect(smt.getTextAlign(Align.RIGHT)).toBe('end');
@@ -313,7 +312,7 @@ describe('SimplemattableComponent', () => {
       }));
     hostComponent.columns.push(tcolFormField);
     testHostFixture.detectChanges();
-    const tableCell = new TableCellComponent(new FormBuilder(), new SmcUtilService());
+    const tableCell = new TableCellComponent(new FormBuilder(), new SmcUtilService(), null); // TODO: Mock
     expect(smt.isLoading(data)).toBeFalsy();
     expect(smt.isEditing(data)).toBeFalsy();
     expect(tableCell.isEditingColumn(tcolFormField, false)).toBeFalsy();
@@ -335,7 +334,7 @@ describe('SimplemattableComponent', () => {
       .withFormField(hostComponent.tcolUnused.getNumberFormField()
         .withInit(() => 420)
         .withValidators(validators));
-    const tableCell = new TableCellComponent(new FormBuilder(), new SmcUtilService());
+    const tableCell = new TableCellComponent(new FormBuilder(), new SmcUtilService(), null); // TODO: Mock
     tableCell.formControls = smt.formControls;
     const fc1 = tableCell.getFormControl(0, 0, tcol, hostComponent.data[0]);
     const fc2 = tableCell.getFormControl(0, 1, tcol, hostComponent.data[0]);
@@ -362,7 +361,7 @@ describe('SimplemattableComponent', () => {
     expect(smt.deepCopy('test')).toEqual('test');
     const date = new Date();
     expect(smt.deepCopy(date)).toEqual(date);
-    const obj = {date: date, testData: {testData: new TestData('test', 42, new Date()), arr: ['test', 'another test']}};
+    const obj = { date: date, testData: { testData: new TestData('test', 42, new Date()), arr: ['test', 'another test'] } };
     const deepCopy = smt.deepCopy(obj);
     expect(deepCopy).toEqual(obj);
     expect(deepCopy).not.toBe(obj);
@@ -412,15 +411,15 @@ describe('SimplemattableComponent', () => {
   it('get table cell style', () => {
     const tcol = hostComponent.tcolUnused;
     tcol.withWidth(Width.px(50));
-    expect(smt.getTableCellStyle(tcol)).toEqual({'width': '50px'});
+    expect(smt.getTableCellStyle(tcol)).toEqual({ 'width': '50px' });
     tcol.withWidth(Width.pct(50));
-    expect(smt.getTableCellStyle(tcol)).toEqual({'width': '50%'});
+    expect(smt.getTableCellStyle(tcol)).toEqual({ 'width': '50%' });
   });
   it('get table header style col filter', () => {
     expect(smt.getTableHeaderStyle()).toEqual({});
     hostComponent.tcolPlain
       .withColFilter();
-    expect(smt.getTableHeaderStyle()).toEqual({'height': '100%'});
+    expect(smt.getTableHeaderStyle()).toEqual({ 'height': '100%' });
   });
   it('drag and drop columns simple', () => {
     const firstColumn = new TableColumn<ComplexTestData, 'testData'>('TestData', 'testData');
@@ -501,7 +500,8 @@ describe('SimplemattableComponent', () => {
       distance: null,
       isPointerOverContainer: false,
       item: null,
-      previousContainer: null
+      previousContainer: null,
+      dropPoint: null,
     };
   }
 
@@ -512,7 +512,7 @@ describe('SimplemattableComponent', () => {
       <smc-simplemattable [data]="data" [columns]="columns"></smc-simplemattable>`
   })
   class TestHostComponent {
-    @ViewChild(SimplemattableComponent, {static: true}) simplemattable: SimplemattableComponent<ComplexTestData>;
+    @ViewChild(SimplemattableComponent, { static: true }) simplemattable: SimplemattableComponent<ComplexTestData>;
     tcolPlain = new TableColumn<ComplexTestData, 'id'>('ID', 'id');
     tcolUnused = new TableColumn<ComplexTestData, 'id'>('ID', 'id');
     columns: TableColumn<ComplexTestData, any>[] = [
@@ -577,7 +577,7 @@ describe('TestcompComponent', () => {
                           [addable]="true" [editable]="true" [deletable]="true" [create]="createFn"></smc-simplemattable>`
   })
   class TestFullHostComponent {
-    @ViewChild(SimplemattableComponent, {static: true}) simplemattable: SimplemattableComponent<ComplexTestData>;
+    @ViewChild(SimplemattableComponent, { static: true }) simplemattable: SimplemattableComponent<ComplexTestData>;
     tcolPlain = new TableColumn<ComplexTestData, 'id'>('ID', 'id');
     columns: TableColumn<ComplexTestData, any>[] = [
       this.tcolPlain
@@ -636,7 +636,7 @@ describe('TestcompComponent', () => {
       <smc-simplemattable [data]="data" [columns]="columns" [addable]="true"></smc-simplemattable>`
   })
   class TestErrorHostComponent {
-    @ViewChild(SimplemattableComponent, {static: true}) simplemattable: SimplemattableComponent<ComplexTestData>;
+    @ViewChild(SimplemattableComponent, { static: true }) simplemattable: SimplemattableComponent<ComplexTestData>;
     tcolPlain = new TableColumn<ComplexTestData, 'id'>('ID', 'id');
     columns: TableColumn<ComplexTestData, any>[] = [
       this.tcolPlain

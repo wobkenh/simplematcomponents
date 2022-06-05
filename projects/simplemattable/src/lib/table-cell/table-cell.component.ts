@@ -12,6 +12,7 @@ import { LargeTextFormField } from '../model/large-text-form-field.model';
 import { SelectFormField } from '../model/select-form-field.model';
 import { SmcUtilService } from '../smc-util.service';
 import { isObservable, Observable, of, Subscription } from 'rxjs';
+import { SmcBreakpointService } from '../smc-breakpoint.service';
 
 @Component({
   selector: 'smc-table-cell',
@@ -51,9 +52,9 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
   @ViewChild(ExternalComponentWrapperComponent) externalComponents: ExternalComponentWrapperComponent;
   formControl: AbstractControl;
   valueChangesSubscription: Subscription; // for cleanup
-  cellAlign: string = '';
   cellCssClass: Object = {};
-  cellCssStyle: Object = {};
+  tableColumnCellCssStyle: Object = {}; // css generated from table column
+  cellCssStyle: Object = {}; // css generated from table column and data
   cellType: TableColumnDisplayType = 'text';
   inputCssStyle: Object = {};
   inputId: string = '';
@@ -61,9 +62,14 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
   iconName: string = '';
   stringRepresentation: string | number = '';
   tooltip: string;
+  textHiddenXs: boolean;
+  textHiddenSm: boolean;
 
-  constructor(private fb: FormBuilder,
-              private utilService: SmcUtilService) {
+  constructor(
+    private fb: FormBuilder,
+    private utilService: SmcUtilService,
+    public bpService: SmcBreakpointService,
+  ) {
   }
 
   ngOnDestroy(): void {
@@ -114,8 +120,10 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
 
   private updateTableColumn() {
     // Updates that only are affected by the table column
-    this.cellAlign = this.utilService.getCellAlign(this.tableColumn.align);
     this.inputCssStyle = { 'text-align': this.utilService.getTextAlign(this.tableColumn.align) };
+    this.tableColumnCellCssStyle['justifyContent'] = this.utilService.getCellAlign(this.tableColumn.align);
+    this.textHiddenXs = this.tableColumn.textHiddenXs || this.tableColumn.textHiddenSm;
+    this.textHiddenSm = this.tableColumn.textHiddenSm;
   }
 
   private updateTableColumnAndData() {
@@ -123,6 +131,7 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
     if (this.tableColumn && this.element) {
       this.cellCssClass = this.getCellCssClass(this.tableColumn, this.element);
       this.cellCssStyle = this.getCellCssStyle(this.tableColumn, this.element);
+      this.cellCssStyle['justifyContent'] = this.tableColumnCellCssStyle['justifyContent'];
       this.buttonDisabled = this.isButtonDisabled(this.tableColumn, this.element);
       this.getStringRepresentation(this.tableColumn, this.element).subscribe(transformed => {
         this.stringRepresentation = transformed;

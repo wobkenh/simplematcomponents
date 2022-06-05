@@ -1,4 +1,4 @@
-<div *ngIf="filter" fxFlex="0 0 auto">
+<div *ngIf="filter" style="flex: 0 0 auto">
   <mat-form-field style="width: 100%; padding: 0 15px; box-sizing: border-box">
     <input matInput (keyup)="applyFilter($event.target.value)" [placeholder]="filterLabel">
   </mat-form-field>
@@ -8,7 +8,7 @@
     <mat-progress-spinner mode="indeterminate" color="primary"></mat-progress-spinner>
   </div>
 </div>
-<div fxFlex [ngStyle]="getOuterContainerStyle()" (scroll)="onScrollComponent($event)" #scrollContainer
+<div [ngStyle]="getOuterContainerStyle()" (scroll)="onScrollComponent($event)" #scrollContainer
      id="smtScrollContainer">
   <table mat-table [dataSource]="dataSource" matSort [matSortDisabled]="!sorting" style="width: 100%"
          [cdkDropListDisabled]="!columnDragAndDrop" multiTemplateDataRows
@@ -19,10 +19,10 @@
                     [sticky]="tcol.sticky" [stickyEnd]="tcol.stickyEnd">
         <th mat-header-cell *matHeaderCellDef [ngStyle]="getTableCellStyle(tcol)" cdkDrag
             [matTooltip]="tcol.headerTooltip" [matTooltipPosition]="tcol.headerTooltipPosition"
-            [fxHide.xs]="tcol.hiddenXs || tcol.hiddenSm" [fxHide.sm]="tcol.hiddenSm">
-          <div fxLayout="row" style="height: 100%"
-               [fxLayoutAlign]="tcol.colFilter ? getHeaderFilterAlign(tcol.align) : getHeaderNoFilterAlign(tcol.align)">
-            <div fxLayout="column">
+            [ngClass]="{'hidden': ((bpService.xs$ | async) && (tcol.hiddenXs || tcol.hiddenSm)) || (bpService.sm$ | async) && tcol.hiddenSm}">
+          <div class="table-header"
+               [ngStyle]="{justifyContent: getHeaderFilterAlign(tcol.align), alignItems: tcol.colFilter ? 'flex-end' : 'center'}">
+            <div style="display: flex; flex-direction: column">
               <div [ngStyle.gt-xs]="{'padding': sorting ? isCenterAlign(tcol) ? '0 0 0 18px' : '0 0 0 5px' : '0 5px'}">
               <span mat-sort-header [disabled]="!tcol.sortable"
                     [ngClass]="{'no-sort': !(tcol.sortable && sorting), 'with-sort': tcol.sortable && sorting}">
@@ -60,7 +60,7 @@
         </th>
 
         <td mat-cell *matCellDef="let element; let rowIndex = dataIndex;"
-            [fxHide.xs]="tcol.hiddenXs || tcol.hiddenSm" [fxHide.sm]="tcol.hiddenSm"
+            [ngClass]="{'hidden': ((bpService.xs$ | async) && (tcol.hiddenXs || tcol.hiddenSm)) || (bpService.sm$ | async) && tcol.hiddenSm}"
             (click)="onClick(tcol, element, false, $event)">
           <smc-table-cell [formControls]="formControls" [dataParent]="element" [rowIndex]="rowIndex"
                           [refreshTrigger]="refreshTrigger" [dataList]="data"
@@ -166,7 +166,7 @@
 </div>
 
 <ng-container *ngIf="paginator">
-  <mat-paginator *ngIf="backendPagination; else frontendPaginatorTemplate" style="margin-top: 10px" fxFlex="0 0 auto"
+  <mat-paginator *ngIf="backendPagination; else frontendPaginatorTemplate" style="margin-top: 10px; flex: 0 0 auto"
                  #backendPaginator
                  [length]="paginatorLength"
                  [pageSize]="paginatorPageSize"
@@ -176,7 +176,7 @@
   >
   </mat-paginator>
   <ng-template #frontendPaginatorTemplate>
-    <mat-paginator style="margin-top: 10px" fxFlex="0 0 auto"
+    <mat-paginator style="margin-top: 10px; flex: 0 0 auto"
                    #frontendPaginator
                    [pageSize]="paginatorPageSize"
                    [pageSizeOptions]="paginatorPageSizeOptions"

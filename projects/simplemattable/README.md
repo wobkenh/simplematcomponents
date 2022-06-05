@@ -756,6 +756,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parentheses is required Angular Version):
++ 14.0: Remove @angular/flex-layout due to inactivity; upgrade to Angular 14
 + 13.6: Add tooltip position and header tooltip position
 + 13.5: Avoid initial data load before paginator initialization
 + 13.4: Added properties to disable the edit/save/add/delete buttons
@@ -841,8 +842,7 @@ Simplemattable only uses peer dependencies, so for the newest version of simplem
 "@angular/core": "^13.0.0",
 "@angular/material": "^13.0.0",
 "@angular/cdk": "^13.0.0",
-"@angular/platform-browser": "^13.0.0",
-"@angular/flex-layout": "^13.0.0-beta.36"
+"@angular/platform-browser": "^13.0.0"
 ```  
 
 

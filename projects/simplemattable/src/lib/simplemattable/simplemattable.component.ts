@@ -27,6 +27,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { DetailRowComponent } from '../model/detail-row-component';
 import { ButtonType } from '../model/button-type.model';
+import { SmcBreakpointService } from '../smc-breakpoint.service';
 
 @Component({
   selector: 'smc-simplemattable',
@@ -377,6 +378,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   constructor(
     private fb: FormBuilder,
+    public bpService: SmcBreakpointService,
   ) {
   }
 
@@ -890,8 +892,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   isLoading = (element: T): boolean => this.dataStatus.get(element).loading;
   isEditing = (element: T): boolean => this.dataStatus.get(element).editing;
   getDisplayedCols = (cols: TableColumn<T, any>[]): TableColumn<T, any>[] => cols.filter(col => col.visible);
-  getHeaderFilterAlign = (align: Align): string => align === Align.LEFT ? 'start end' : align === Align.CENTER ? 'center end' : 'end end';
-  getHeaderNoFilterAlign = (align: Align): string => align === Align.LEFT ? 'start center' : align === Align.CENTER ? 'center center' : 'end center';
+  getHeaderFilterAlign = (align: Align): string => align === Align.LEFT ? 'flex-start' : align === Align.CENTER ? 'center' : 'flex-end';
 
   getTextAlign = (align: Align): string => align === Align.LEFT ? 'start' : align === Align.CENTER ? 'center' : 'end';
   isCenterAlign = (tcol: TableColumn<T, any>): boolean => tcol.align === Align.CENTER;
