@@ -11,7 +11,6 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatSortModule} from '@angular/material/sort';
 import {MatTableModule} from '@angular/material/table';
 import {MatInputModule} from '@angular/material/input';
-import {FlexLayoutModule} from '@angular/flex-layout';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ExternalComponentWrapperComponent} from './external-component-wrapper/external-component-wrapper.component';
@@ -24,7 +23,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 @NgModule({
   imports: [
     CommonModule,
-    FlexLayoutModule,
     MatCommonModule,
     FormsModule,
     MatDatepickerModule,

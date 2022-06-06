@@ -1,8 +1,7 @@
-<div style="padding: 15px;" [ngStyle.xs]="{'padding': '10px'}" [@info-slide-in]="isOpenState">
-  <div class="mat-elevation-z1"
-       [ngClass]="getAlertType() + '-box'"
-       style="overflow: hidden" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="25px" fxLayoutGap.xs="0">
-    <div fxFlex="0 0 auto" fxHide.xs>
+<div class="smc-simplealert-container" [@info-slide-in]="isOpenState">
+  <div class="mat-elevation-z1 smc-simplealert"
+       [ngClass]="getAlertType() + '-box'">
+    <div style="flex: 0 0 auto" class="hidden-xs">
       <ng-container [ngSwitch]="getAlertType()">
         <mat-icon *ngSwitchCase="'info'">info</mat-icon>
         <mat-icon *ngSwitchCase="'error'">error</mat-icon>
@@ -10,10 +9,10 @@
         <mat-icon *ngSwitchCase="'success'">done</mat-icon>
       </ng-container>
     </div>
-    <div fxFlex="1 1 auto">
+    <div style="flex: 1 1 auto">
       <ng-content></ng-content>
     </div>
-    <button mat-icon-button fxFlex="0 0 auto" (click)="isOpen=false">
+    <button mat-icon-button style="flex: 0 0 auto" (click)="isOpen=false">
       <mat-icon>close</mat-icon>
     </button>
   </div>

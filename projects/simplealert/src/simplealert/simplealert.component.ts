@@ -9,7 +9,7 @@ import {AlertType, AlertTypeString} from './alert-type.model';
   animations: [
     trigger('info-slide-in', [
       state('true', style({display: 'block', opacity: 1, height: '*'})),
-      state('false', style({display: 'none', opacity: 0, height: 0})),
+      state('false', style({opacity: 0, height: 0, padding: 0, overflow: 'hidden'})),
       transition('false => true', [
         animate('700ms ease')
       ]),

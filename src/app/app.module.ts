@@ -37,7 +37,6 @@ import { InternationalizationComponent } from './internationalization/internatio
 import { PlaygroundComponent } from './playground/playground.component';
 import { DragNDropColumnsComponent } from './drag-n-drop-columns/drag-n-drop-columns.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { HIGHLIGHT_OPTIONS, HighlightModule } from 'ngx-highlightjs';
 import { FooterComponent } from './footer/footer.component';
 import { ExpandableRowsComponent } from './expandable-rows/expandable-rows.component';
@@ -104,7 +103,6 @@ export function getHighlightLanguages() {
     MatListModule,
     MatIconModule,
     MatToolbarModule,
-    FlexLayoutModule,
     HighlightModule
   ],
   entryComponents: [CustomTableCellComponent],

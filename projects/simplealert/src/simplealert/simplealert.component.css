@@ -25,3 +25,31 @@
   border: 1px solid #d0e9c6;
   padding: 10px;
 }
+
+.smc-simplealert {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+@media (min-width: 599px) {
+  .smc-simplealert > *:not(:last-child) {
+    margin-right: 25px;
+  }
+
+  .smc-simplealert-container {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 599px) {
+  .hidden-xs {
+    display: none;
+  }
+
+  .smc-simplealert-container {
+    padding: 10px;
+  }
+}
+

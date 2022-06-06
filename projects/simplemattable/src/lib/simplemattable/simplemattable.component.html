@@ -23,7 +23,7 @@
           <div class="table-header"
                [ngStyle]="{justifyContent: getHeaderFilterAlign(tcol.align), alignItems: tcol.colFilter ? 'flex-end' : 'center'}">
             <div style="display: flex; flex-direction: column">
-              <div [ngStyle.gt-xs]="{'padding': sorting ? isCenterAlign(tcol) ? '0 0 0 18px' : '0 0 0 5px' : '0 5px'}">
+              <div [ngStyle]="{'padding': (bpService.xs$ | async) ? '0' : sorting ? isCenterAlign(tcol) ? '0 0 0 18px' : '0 0 0 5px' : '0 5px'}">
               <span mat-sort-header [disabled]="!tcol.sortable"
                     [ngClass]="{'no-sort': !(tcol.sortable && sorting), 'with-sort': tcol.sortable && sorting}">
                 <ng-container *ngIf="tcol.headerButton; else headerTextTemplate" [ngSwitch]="tcol.headerButton">
