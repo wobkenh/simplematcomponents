@@ -838,11 +838,11 @@ It is not planned to backport SimpleMatTable to any older Angular version.
 Simplemattable only uses peer dependencies, so for the newest version of simplemattable you need the following packages (with compatible versions) in your package.json:
 
 ```
-"@angular/common": "^13.0.0",
-"@angular/core": "^13.0.0",
-"@angular/material": "^13.0.0",
-"@angular/cdk": "^13.0.0",
-"@angular/platform-browser": "^13.0.0"
+"@angular/common": "^14.0.0",
+"@angular/core": "^14.0.0",
+"@angular/material": "^14.0.0",
+"@angular/cdk": "^14.0.0",
+"@angular/platform-browser": "^14.0.0"
 ```  
 
 
