@@ -127,9 +127,9 @@
           },
           "configurations": {
             "production": {
-              "project": "projects/simplemattable/ng-package.prod.json"
-            ,              "tsConfig": "projects/simplemattable/tsconfig.lib.prod.json"
-},
+              "project": "projects/simplemattable/ng-package.prod.json",
+              "tsConfig": "projects/simplemattable/tsconfig.lib.prod.json"
+            },
             "development": {}
           },
           "defaultConfiguration": "production"
@@ -158,9 +158,9 @@
           },
           "configurations": {
             "production": {
-              "project": "projects/simplealert/ng-package.prod.json"
-            ,              "tsConfig": "projects/simplealert/tsconfig.lib.prod.json"
-},
+              "project": "projects/simplealert/ng-package.prod.json",
+              "tsConfig": "projects/simplealert/tsconfig.lib.prod.json"
+            },
             "development": {}
           },
           "defaultConfiguration": "production"
@@ -175,6 +175,5 @@
         }
       }
     }
-  },
-  "defaultProject": "simplematcomponents"
+  }
 }

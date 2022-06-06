@@ -14,7 +14,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -312,7 +312,7 @@ describe('SimplemattableComponent', () => {
       }));
     hostComponent.columns.push(tcolFormField);
     testHostFixture.detectChanges();
-    const tableCell = new TableCellComponent(new FormBuilder(), new SmcUtilService(), null); // TODO: Mock
+    const tableCell = new TableCellComponent(new UntypedFormBuilder(), new SmcUtilService(), null); // TODO: Mock
     expect(smt.isLoading(data)).toBeFalsy();
     expect(smt.isEditing(data)).toBeFalsy();
     expect(tableCell.isEditingColumn(tcolFormField, false)).toBeFalsy();
@@ -334,7 +334,7 @@ describe('SimplemattableComponent', () => {
       .withFormField(hostComponent.tcolUnused.getNumberFormField()
         .withInit(() => 420)
         .withValidators(validators));
-    const tableCell = new TableCellComponent(new FormBuilder(), new SmcUtilService(), null); // TODO: Mock
+    const tableCell = new TableCellComponent(new UntypedFormBuilder(), new SmcUtilService(), null); // TODO: Mock
     tableCell.formControls = smt.formControls;
     const fc1 = tableCell.getFormControl(0, 0, tcol, hostComponent.data[0]);
     const fc2 = tableCell.getFormControl(0, 1, tcol, hostComponent.data[0]);

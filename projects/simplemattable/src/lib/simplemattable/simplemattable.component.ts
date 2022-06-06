@@ -15,7 +15,7 @@ import {
 } from '@angular/core';
 import { TableColumn } from '../model/table-column.model';
 import { Align } from '../model/align.model';
-import { AbstractControl, FormBuilder, FormControl } from '@angular/forms';
+import { AbstractControl, UntypedFormBuilder, UntypedFormControl } from '@angular/forms';
 import { DataStatus } from '../model/data-status.model';
 import { Observable, Subscription } from 'rxjs';
 import { PageSettings } from '../model/page-settings.model';
@@ -377,7 +377,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   onChangesDetectedDataChange: boolean = false;
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     public bpService: SmcBreakpointService,
   ) {
   }
@@ -1171,7 +1171,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
         let entry = mapEntries.next();
         while (!entry.done) {
           const tcol: TableColumn<T, any> = entry.value[0];
-          const control: FormControl = entry.value[1];
+          const control: UntypedFormControl = entry.value[1];
           if (tcol.filterFn) {
             // custom filter
             if (!tcol.filterFn(control.value, data[tcol.property], data)) {

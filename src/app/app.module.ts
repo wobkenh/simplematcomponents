@@ -105,7 +105,6 @@ export function getHighlightLanguages() {
     MatToolbarModule,
     HighlightModule
   ],
-  entryComponents: [CustomTableCellComponent],
   providers: [
     {
       provide: HIGHLIGHT_OPTIONS,

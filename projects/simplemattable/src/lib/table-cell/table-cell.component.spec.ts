@@ -1,6 +1,6 @@
 import {ButtonType} from '../model/button-type.model';
 import {Height} from '../model/height.model';
-import {FormBuilder, Validators} from '@angular/forms';
+import {UntypedFormBuilder, Validators} from '@angular/forms';
 import { waitForAsync } from '@angular/core/testing';
 import {TableColumn} from '../model/table-column.model';
 import {TableCellComponent} from './table-cell.component';
@@ -14,7 +14,7 @@ describe('TableCellComponent', () => {
   beforeEach(waitForAsync(() => {
     dataSample1 = new ComplexTestData(1, new TestData('a', 1, new Date()));
     const utilService = new SmcUtilService();
-    tableCell = new TableCellComponent(new FormBuilder(), utilService);
+    tableCell = new TableCellComponent(new UntypedFormBuilder(), utilService);
     tableColumn = new TableColumn<ComplexTestData, 'id'>('ID', 'id');
   }));
 

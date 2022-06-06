@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } 
 import { TableColumn } from '../model/table-column.model';
 import { ButtonType } from '../model/button-type.model';
 import { SaveEvent } from '../model/table-cell-events.model';
-import { AbstractControl, FormBuilder } from '@angular/forms';
+import { AbstractControl, UntypedFormBuilder } from '@angular/forms';
 import { FormError } from '../model/form-error.model';
 import { ExternalComponentWrapperComponent } from '../external-component-wrapper/external-component-wrapper.component';
 import { AbstractFormField } from '../model/abstract-form-field.model';
@@ -66,7 +66,7 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
   textHiddenSm: boolean;
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private utilService: SmcUtilService,
     public bpService: SmcBreakpointService,
   ) {
