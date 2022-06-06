@@ -99,7 +99,7 @@ openError() {{"{"}}&#x2063;
           Display
         </ng-template>
         <div class="smt-container">
-          <button (click)="openError()" mat-raised-button>open warn</button>
+          <button (click)="openWarn()" mat-raised-button>open warn</button>
           <smc-simplealert [(isOpen)]="isWarnOpen" [type]="alertType.WARN">This is a warn alert!</smc-simplealert>
         </div>
       </mat-tab>
@@ -137,8 +137,8 @@ openWarn() {{"{"}}&#x2063;
           Display
         </ng-template>
         <div class="smt-container">
-          <button (click)="openError()" mat-raised-button>open success</button>
-          <smc-simplealert [(isOpen)]="isWarnOpen" [type]="alertType.SUCCESS">This is a success alert!
+          <button (click)="openSuccess()" mat-raised-button>open success</button>
+          <smc-simplealert [(isOpen)]="isSuccessOpen" [type]="alertType.SUCCESS">This is a success alert!
           </smc-simplealert>
         </div>
       </mat-tab>
