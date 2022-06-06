@@ -38,7 +38,7 @@ It supports different form fields like number, text, date and select inputs.
 ## Prerequisites
 
 Simplemattable is for use with Angular Material Design only. As of the first version, 
-it requires at least Angular Material 6.0. Some features are only available in versions which require a higher Angular version. Using the latest Angular version means you can make use of the newest version of simplemattable. Also make sure to add @angular/flex-layout to your list of dependencies.
+it requires at least Angular Material 6.0. Some features are only available in versions which require a higher Angular version. Using the latest Angular version means you can make use of the newest version of simplemattable.
 
 For a detailed list of neccessary dependencies, see [section Dependencies](#dependencies).
 

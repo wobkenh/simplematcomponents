@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { SimplemattableComponent } from './simplemattable.component';
-import { Component, EventEmitter, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { TableColumn } from '../model/table-column.model';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -14,8 +14,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-import { UntypedFormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Align } from '../model/align.model';
@@ -25,8 +24,6 @@ import { ExternalComponentWrapperComponent } from '../external-component-wrapper
 import { TableCellComponent } from '../table-cell/table-cell.component';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { SmcUtilService } from '../smc-util.service';
-import { SmcBreakpointService } from '../smc-breakpoint.service';
-import { BreakpointObserver } from '@angular/cdk/layout';
 
 describe('SimplemattableComponent', () => {
   let hostComponent: TestHostComponent;
@@ -37,7 +34,6 @@ describe('SimplemattableComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         CommonModule,
-        FlexLayoutModule,
         MatCommonModule,
         FormsModule,
         MatDatepickerModule,
@@ -502,6 +498,7 @@ describe('SimplemattableComponent', () => {
       item: null,
       previousContainer: null,
       dropPoint: null,
+      event: null,
     };
   }
 
@@ -534,7 +531,6 @@ describe('TestcompComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         CommonModule,
-        FlexLayoutModule,
         MatCommonModule,
         FormsModule,
         MatDatepickerModule,
@@ -602,7 +598,6 @@ describe('TestcompComponent', () => {
       TestBed.configureTestingModule({
         imports: [
           CommonModule,
-          FlexLayoutModule,
           MatCommonModule,
           FormsModule,
           MatDatepickerModule,

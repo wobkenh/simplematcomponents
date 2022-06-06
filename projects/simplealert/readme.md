@@ -76,10 +76,11 @@ You can find my email address in the [authors section](#authors). You can also o
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in paranthesis is required Angular Version):
-+ 0.0 (6.0): First Version
-+ 1.0 (6.0): Danger + Success alert, AlertTypeString
-+ 1.1 (6.0): Improved responsiveness on very small screens (xs)
++ 14.0: Updated to Angular 14 / Removed @angular/flex-layout
 + 1.2 (7.0): Updated to Angular 7
++ 1.1 (6.0): Improved responsiveness on very small screens (xs)
++ 1.0 (6.0): Danger + Success alert, AlertTypeString
++ 0.0 (6.0): First Version
 
 ## Upcoming Features
 + None, but feel free to contribute if you have any ideas :)
@@ -89,12 +90,11 @@ History (Version in paranthesis is required Angular Version):
 Simplealert only uses peer dependencies, so you need the following packages (with compatible versions) in your package.json:
 
 ```
-"@angular/common": "^7.0.0",
-"@angular/core": "^7.0.0",
-"@angular/material": "^7.0.0",
-"@angular/cdk": "^7.0.0",
-"@angular/platform-browser": "^7.0.0",
-"@angular/flex-layout": "^7.0.0-beta.19"
+"@angular/common": "^14.0.0",
+"@angular/core": "^14.0.0",
+"@angular/material": "^14.0.0",
+"@angular/cdk": "^14.0.0",
+"@angular/platform-browser": "^14.0.0",
 ```  
 
 ## Authors
