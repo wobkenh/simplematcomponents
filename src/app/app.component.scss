@@ -2,11 +2,11 @@ mat-sidenav {
   background: rgb(245, 247, 249);
 }
 
-.mat-list {
+.mat-mdc-list {
   padding-left: 35px;
 }
 
-.mat-list-item {
+.mat-mdc-list-item {
   height: 32px !important;
 }
 
@@ -16,7 +16,7 @@ mat-sidenav {
 }
 
 .nav-list-item {
-  cursor: pointer;
+  cursor: pointer!important;
   text-decoration: none;
   padding: 0 32px 0 16px;
   outline: none;
@@ -43,10 +43,13 @@ mat-sidenav {
   border-width: 1px 0 1px 6px;
   border-color: rgba(0, 0, 0, 0.2);
   border-radius: 2px;
-  color: #673ab7;
   font-weight: bold!important;
   box-sizing: border-box;
   box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),0px 2px 2px 0px rgba(0, 0, 0, 0.14),0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+
+  div {
+    color: #673ab7;
+  }
 }
 
 .repo-links {
