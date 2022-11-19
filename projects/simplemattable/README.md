@@ -400,15 +400,18 @@ It should return true if element matches and should be kept and should return fa
 Edit-mode is a major feature of SimpleMatTable. It allows you to enable the add/edit/delete functionality.
 I will explain this feature using the ComplexTestData example from [the complex model section](#complex-model).
 
-INFO: If you have problems with form fields staying at 180px,
-try overriding the width property of the css class `.mat-form-field-infix` in your global style. This means putting the following code into your global style.css:
-```
-smc-simplemattable .mat-form-field-infix {
-  width: 100%!important;
-}
-``` 
-`.mat-form-field-infix` is a css class provided and used by Angular Material Design and not by simplemattable, 
-so it is your choice whether or not to touch it. 
+<details> 
+  <summary>Klick here if you have problems with the form field size on older versions (<=14.0) of simplemattable</summary>
+   INFO: If you have problems with form fields staying at 180px,
+    try overriding the width property of the css class .mat-form-field-infix in your global style. This means putting the following code into your global style.css:
+    <pre>
+    smc-simplemattable .mat-form-field-infix {
+      width: 100%!important;
+    }
+    </pre>
+    .mat-form-field-infix is a css class provided and used by Angular Material Design and not by simplemattable, 
+    so it is your choice whether or not to touch it.  
+</details>
 
 #### Enabling form fields for a column
 
@@ -756,6 +759,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parentheses is required Angular Version):
++ 15.0: upgrade to Angular 15, bugfix regarding default page size
 + 14.0: Remove @angular/flex-layout due to inactivity; upgrade to Angular 14
 + 13.6: Add tooltip position and header tooltip position
 + 13.5: Avoid initial data load before paginator initialization
@@ -838,11 +842,11 @@ It is not planned to backport SimpleMatTable to any older Angular version.
 Simplemattable only uses peer dependencies, so for the newest version of simplemattable you need the following packages (with compatible versions) in your package.json:
 
 ```
-"@angular/common": "^14.0.0",
-"@angular/core": "^14.0.0",
-"@angular/material": "^14.0.0",
-"@angular/cdk": "^14.0.0",
-"@angular/platform-browser": "^14.0.0"
+"@angular/common": "^15.0.0",
+"@angular/core": "^15.0.0",
+"@angular/material": "^15.0.0",
+"@angular/cdk": "^15.0.0",
+"@angular/platform-browser": "^15.0.0"
 ```  
 
 
