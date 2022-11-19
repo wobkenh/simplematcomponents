@@ -6,20 +6,13 @@
   color: white;
 }
 
-smc-simplemattable .mat-form-field-infix {
-  width: 100% !important;
-}
 
 smc-simplemattable {
-  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),0px 5px 8px 0px rgba(0, 0, 0, 0.14),0px 1px 14px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 5px 8px 0px rgba(0, 0, 0, 0.14), 0px 1px 14px 0px rgba(0, 0, 0, 0.12);
 }
 
 .smt-container {
   padding: 50px 25px 25px 25px;
-}
-
-.mat-tab-label-content mat-icon {
-  margin-right: 15px;
 }
 
 html {
@@ -30,10 +23,10 @@ body {
   height: calc(100% - 64px);
   margin: 0;
   background: white;
-  font-family: Roboto,Helvetica Neue Light,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+  font-family: Roboto, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
 }
 
-@media(max-width: 600px) {
+@media (max-width: 600px) {
   body {
     height: calc(100% - 56px);
   }
@@ -44,15 +37,11 @@ html, body {
   scrollbar-color: #673ab7 rgba(0, 0, 0, 0.1);
 }
 
-.mat-tab-body-content > .mat-raised-button {
-  margin-bottom: 10px;
-}
-
 mat-tab-group {
   background: rgb(245, 247, 249);
   border-radius: 10px;
   margin: 40px 0 15px 0;
-  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),0px 2px 2px 0px rgba(0, 0, 0, 0.14),0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
 }
 
 mat-tab-header {
@@ -65,7 +54,7 @@ mat-tab-header {
   padding: 15px;
   background: white;
   border-radius: 0 0 4px 4px;
-  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),0px 1px 1px 0px rgba(0, 0, 0, 0.14),0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
 }
 
 .code p {
@@ -78,7 +67,7 @@ mat-tab-header {
   padding: 15px;
   border-radius: 15px;
   overflow: auto;
-  border: 1px solid rgba(0, 0, 0,0.12);
+  border: 1px solid rgba(0, 0, 0, 0.12);
 }
 
 p > code {
@@ -100,7 +89,7 @@ p > code {
   flex-direction: column;
 }
 
-@media(max-width: 1250px) {
+@media (max-width: 1250px) {
   .display > div {
     padding: 20px 10px;
   }
@@ -114,8 +103,8 @@ p > code {
 /* Scrollbar Fun */
 
 ::-webkit-scrollbar {
- width: 12px; /* for vertical scrollbars */
- height: 12px; /* for horizontal scrollbars */
+  width: 12px; /* for vertical scrollbars */
+  height: 12px; /* for horizontal scrollbars */
 }
 
 ::-webkit-scrollbar-track {
@@ -124,4 +113,24 @@ p > code {
 
 ::-webkit-scrollbar-thumb {
   background: #673ab7;
+}
+
+/* dunno why mat table label does not center anymore */
+
+.mdc-tab__text-label {
+  display: flex !important;
+  align-items: center;
+}
+
+.mdc-tab__text-label mat-icon {
+  margin-right: 12px;
+}
+
+/* needed for footer demo page */
+
+.my-footer {
+}
+
+.my-footer div {
+  font-weight: bold !important;
 }

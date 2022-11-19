@@ -960,6 +960,14 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
       const hasIndex = !isNaN(this.pageSettings.pageIndex);
       const hasSize = !isNaN(this.pageSettings.pageSize);
 
+      // if user binds the pageSettings to an object that is initialized at the initialization of this component,
+      // this method is called at the very beginning
+      // the paginator might not exist yet, but the page size might be set differently than the default in the page settings
+      // so to avoid the paginator getting initialized with the default (10), we overwrite the page size
+      if (this.paginatorPageSize === 10 && this.pageSettings?.pageSize) {
+        this.paginatorPageSize = this.pageSettings.pageSize;
+      }
+
       let paginator: MatPaginator;
       if (this.backendPagination && this.matBackendPaginator) {
         paginator = this.matBackendPaginator;

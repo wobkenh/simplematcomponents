@@ -1,23 +1,29 @@
 /* on click needed for clickable rows */
 
-.on-click:hover {
+tr.on-click:hover {
   background-color: rgba(200, 200, 200, 0.4);
 }
 
-.on-click {
+tr.on-click {
   background-color: transparent;
   cursor: pointer;
 }
 
 /* textarea is hidden in table-cell, so use ng-deep */
-.on-click ::ng-deep textarea {
+tr.on-click ::ng-deep textarea {
   cursor: pointer;
 }
 
-.on-click:active {
-  background-color: rgba(150, 150, 150, 0.4);
+tr.on-click:active {
+  background-color: rgba(150, 150, 150, 0.4)!important;
 }
 
+/* New Material Components removed the bottom border from the last row */
+/* While that might be more mdc-style-conformal, it looks stupid, so we revert that for all simplemattables */
+.mdc-data-table__row:last-child .mdc-data-table__cell {
+  border-bottom: 1px solid;
+  border-bottom-color: rgba(0, 0, 0, 0.12);
+}
 
 .no-sort ::ng-deep .mat-sort-header-arrow {
   display: none;
@@ -104,4 +110,8 @@ tr.smt-element-row:active {
   height: 100%;
   display: flex;
   flex-direction: row;
+}
+
+.hidden {
+  display: none;
 }

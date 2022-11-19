@@ -14,7 +14,7 @@
         </ng-template>
         <div class="smt-container">
           <smc-simplemattable [data]="dataFooter" [columns]="columnsFooter"
-                              [footerRowNgStyle]="getFooterRowStyle"></smc-simplemattable>
+                              [footerRowNgClass]="getFooterRowClass"></smc-simplemattable>
         </div>
       </mat-tab>
       <mat-tab>
@@ -38,6 +38,9 @@
           <p>HTML</p>
           <mat-divider></mat-divider>
           <pre><code [highlight]="html"></code></pre>
+          <p>CSS</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="css"></code></pre>
         </div>
       </mat-tab>
     </mat-tab-group>

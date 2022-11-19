@@ -19,6 +19,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import {FooterCellComponent} from './footer-cell/footer-cell.component';
 import {ExternalDetailComponentWrapperComponent} from './external-detail-component-wrapper/external-detail-component-wrapper.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   imports: [
@@ -38,7 +39,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatPaginatorModule,
     MatCheckboxModule,
     DragDropModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatDividerModule
   ],
   declarations: [
     SimplemattableComponent,

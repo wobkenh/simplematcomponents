@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {TableColumn} from '../../../projects/simplemattable/src/lib/model/table-column.model';
-import {Align} from '../../../projects/simplemattable/src/lib/model/align.model';
+import { Component, OnInit } from '@angular/core';
+import { TableColumn } from '../../../projects/simplemattable/src/lib/model/table-column.model';
+import { Align } from '../../../projects/simplemattable/src/lib/model/align.model';
 
 @Component({
   selector: 'smc-footer',
@@ -40,10 +40,14 @@ export class FooterComponent implements OnInit {
     .withFooter((values) => values.reduce((acc, value) => acc + value, 0) + ' €')
     .withFooterNgStyle(() => ({background: 'rgba(0,0,0,.125)', borderRadius: '10px 10px 0 0'})),
 ];`;
-  typescriptMethods = `getFooterRowStyle() {
-  return {
-    fontWeight: 'bold'
-  };
+  typescriptMethods = `getFooterRowClass() {
+  return "my-footer";
+}`;
+  css = `.my-footer {
+}
+
+.my-footer div {
+  font-weight: bold !important;
 }`;
   html = `<smc-simplemattable [data]="dataFooter" [columns]="columnsFooter"
                     [footerRowNgStyle]="getFooterRowStyle"></smc-simplemattable>`;
@@ -74,14 +78,12 @@ export class FooterComponent implements OnInit {
         .withAlign(Align.RIGHT)
         .withTransform((value) => value + ' €')
         .withFooter((values) => values.reduce((acc, value) => acc + value, 0) + ' €')
-        .withFooterNgStyle(() => ({background: 'rgba(0,0,0,.125)', borderRadius: '10px 10px 0 0'})),
+        .withFooterNgStyle(() => ({ background: 'rgba(0,0,0,.125)', borderRadius: '10px 10px 0 0' })),
     ];
   }
 
-  getFooterRowStyle() {
-    return {
-      fontWeight: 'bold'
-    };
+  getFooterRowClass() {
+    return 'my-footer';
   }
 
 }
