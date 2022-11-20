@@ -133,7 +133,8 @@
 
     <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
     <ng-container matColumnDef="expandedDetail" *ngIf="detailRowComponent">
-      <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+      <!-- border-bottom-width: 0 to avoid duplicate border at the bottom -->
+      <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length" style="border-bottom-width: 0">
         <div
           [@detailExpand]="element === expandedElement ? 'expanded' : 'collapsed'"
           class="smt-element-detail">
