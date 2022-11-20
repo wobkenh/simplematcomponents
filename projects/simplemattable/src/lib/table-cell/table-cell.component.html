@@ -119,9 +119,9 @@
         <!-- Warning: Do not introduce linebreaks into the textareas content as they will be displayed -->
         <!-- Be careful when formatting -->
         <textarea *ngIf="tableColumn.maxLines && stringRepresentation"
-                  matInput cdkTextareaAutosize [cdkAutosizeMaxRows]="tableColumn.maxLines"
+                  cdkTextareaAutosize [cdkAutosizeMaxRows]="tableColumn.maxLines"
                   [cdkAutosizeMinRows]="tableColumn.minLines" [readonly]="true"
-                  [ngStyle]="inputCssStyle"
+                  [ngStyle]="inputCssStyle" class="empty-textarea"
                   [ngClass]="{'hidden': ((bpService.xs$ | async) && textHiddenXs) || (bpService.sm$ | async) && textHiddenSm}"
                   style="width: 100%; padding: 2px 0;">{{stringRepresentation}}</textarea>
         <span style="padding: 2px 0"

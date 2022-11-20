@@ -49,3 +49,15 @@
 .horizontal-padding {
   padding: 0 5px;
 }
+
+/* cdkAutosize can only be used with textarea */
+/* so when we want to use it on a non-input-field to display multiline text, */
+/* we use a textarea and remove all styling from it */
+.empty-textarea {
+  border: none;
+  background-color: transparent;
+  resize: none;
+  outline: none;
+  font-family: inherit;
+  font-size: inherit;
+}
