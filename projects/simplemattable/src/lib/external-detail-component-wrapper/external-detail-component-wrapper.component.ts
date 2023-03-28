@@ -18,9 +18,11 @@ export class ExternalDetailComponentWrapperComponent<T> implements OnChanges {
   }
 
   ngOnChanges() {
-    this.viewContainerRef.clear();
-    this.componentRef = this.viewContainerRef.createComponent(this.ngComponent);
-    this.componentRef.instance.onInput(this.element, this.dataList);
+    if (this.ngComponent) {
+      this.viewContainerRef.clear();
+      this.componentRef = this.viewContainerRef.createComponent(this.ngComponent);
+      this.componentRef.instance.onInput(this.element, this.dataList);
+    }
   }
 
 }
