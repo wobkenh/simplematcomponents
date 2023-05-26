@@ -1,4 +1,4 @@
-import {Component, ComponentFactoryResolver, ComponentRef, Input, OnChanges, Type, ViewContainerRef} from '@angular/core';
+import {Component, ComponentRef, Input, OnChanges, Type, ViewContainerRef} from '@angular/core';
 import {DetailRowComponent} from '../model/detail-row-component';
 
 @Component({
