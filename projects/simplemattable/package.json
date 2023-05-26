@@ -1,6 +1,6 @@
 {
   "name": "simplemattable",
-  "version": "15.2.2",
+  "version": "16.0.0",
   "description": "A simplified, declarative table-library using @angular/material's MatTable with form capabilities for adding/editing/deleting data",
   "author": "Henning Wobken",
   "license": "MIT",
@@ -29,14 +29,15 @@
     "angular 13",
     "angular 14",
     "angular 15",
+    "angular 16",
     "material",
     "form"
   ],
   "peerDependencies": {
-    "@angular/common": "^15.0.0",
-    "@angular/core": "^15.0.0",
-    "@angular/material": "^15.0.0",
-    "@angular/cdk": "^15.0.0",
-    "@angular/platform-browser": "^15.0.0"
+    "@angular/common": "^16.0.0",
+    "@angular/core": "^16.0.0",
+    "@angular/material": "^16.0.0",
+    "@angular/cdk": "^16.0.0",
+    "@angular/platform-browser": "^16.0.0"
   }
 }
