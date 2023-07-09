@@ -759,6 +759,8 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parentheses is required Angular Version):
++ 16.1: use string representation for sorting
++ 16.0: upgrade to angular 16
 + 15.2: remove recycle rows directive because it causes bugs with expandable rows
 + 15.1: fix textarea display bug
 + 15.0: upgrade to Angular 15, bugfix regarding default page size

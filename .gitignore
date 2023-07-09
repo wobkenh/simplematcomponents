@@ -46,3 +46,4 @@ Thumbs.db
 Dockerfile
 Jenkinsfile
 /smc-demo
+/deploy
