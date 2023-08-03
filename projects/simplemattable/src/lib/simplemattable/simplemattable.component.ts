@@ -65,6 +65,11 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    */
   @Input() filterLabel: string = 'Filter';
   /**
+   * Allow columns to be resized by the browser - if supported
+   * default true
+   */
+  @Input() resizableColumns: boolean = true;
+  /**
    * Input. True disables the simplemattable filter algorithm and forwards searches to
    * the search output parameter so you can do filtering yourself. Default false.
    */
@@ -634,6 +639,9 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     const tcolStyle: { [p: string]: string } = {};
     if (tcol.width) {
       tcolStyle.width = tcol.width.toString();
+    }
+    if (this.resizableColumns) {
+      tcolStyle.resize = 'horizontal';
     }
     return tcolStyle;
   }
