@@ -1080,7 +1080,9 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
         }
       });
     }
-    this.formControls.clear();
+    if (!this.keepStatus) {
+      this.formControls.clear(); // to keep form state
+    }
     if (this.matSort && this.matSort.active) {
       this.dataSource.data = this.dataSource.sortData(this.dataSource.data, this.matSort);
     }
