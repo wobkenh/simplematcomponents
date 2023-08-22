@@ -760,8 +760,21 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     status.added = true;
     status.editing = true;
     this.dataStatus.set(ele, status);
+    this.shiftFormControlMapItems(1);
     // added item will be the first row, so row index = 0
     this.focusInput(0);
+  }
+
+  private shiftFormControlMapItems(shift: number) {
+    // When a form control row is added or removed by add element function,
+    // the row index changes for all other controls
+    const map = new Map<string, AbstractControl>();
+    this.formControls.forEach((control, index) => {
+      const underscoreIndex = index.indexOf('_');
+      const shiftedRowIndex = +index.substring(0, underscoreIndex) + shift;
+      map.set(shiftedRowIndex.toString() + index.substring(underscoreIndex), control);
+    });
+    this.formControls = map;
   }
 
   /**
@@ -808,6 +821,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    * @param rowIndex for focus purposes
    */
   startEditElement(element: T, rowIndex: number) {
+    console.log(element, rowIndex);
     const status = this.dataStatus.has(element) ? this.dataStatus.get(element) : new DataStatus();
     status.editing = true;
     this.dataStatus.set(element, status);
@@ -1056,6 +1070,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   clearAddedEntry() {
     if (this.addedItem) {
+      this.shiftFormControlMapItems(-1);
       this.dataStatus.delete(this.addedItem);
       this.addedItem = null;
     }
