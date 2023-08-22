@@ -1054,7 +1054,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     this.refreshTrigger++;
   }
 
-  private clearAddedEntry() {
+  clearAddedEntry() {
     if (this.addedItem) {
       this.dataStatus.delete(this.addedItem);
       this.addedItem = null;
