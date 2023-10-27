@@ -425,12 +425,12 @@ describe('SimplemattableComponent', () => {
     ];
     testHostFixture.detectChanges();
     expect(smt.displayedColumns).toEqual(['0_testData', '1_id']);
-    smt.dropColumn(createDropEvent(0, 1));
+    smt.dropItem(createDropEvent(0, 1));
     expect(smt.displayedColumns).toEqual(['0_id', '1_testData']);
-    smt.dropColumn(createDropEvent(1, 0));
+    smt.dropItem(createDropEvent(1, 0));
     expect(smt.displayedColumns).toEqual(['0_testData', '1_id']);
-    smt.dropColumn(createDropEvent(0, 0));
-    smt.dropColumn(createDropEvent(1, 1));
+    smt.dropItem(createDropEvent(0, 0));
+    smt.dropItem(createDropEvent(1, 1));
     expect(smt.displayedColumns).toEqual(['0_testData', '1_id']);
   });
   it('drag and drop columns with actions', () => {
@@ -444,46 +444,46 @@ describe('SimplemattableComponent', () => {
     expect(smt.displayedColumns).toEqual(['0_testData', '1_id', 'actions']);
     expect(smt.actionIndex).toEqual(2);
 
-    smt.dropColumn(createDropEvent(0, 1));
+    smt.dropItem(createDropEvent(0, 1));
     expect(smt.displayedColumns).toEqual(['0_id', '1_testData', 'actions']);
     expect(smt.actionIndex).toEqual(2);
 
-    smt.dropColumn(createDropEvent(1, 0));
+    smt.dropItem(createDropEvent(1, 0));
     expect(smt.displayedColumns).toEqual(['0_testData', '1_id', 'actions']);
     expect(smt.actionIndex).toEqual(2);
 
-    smt.dropColumn(createDropEvent(0, 0));
-    smt.dropColumn(createDropEvent(1, 1));
-    smt.dropColumn(createDropEvent(2, 2));
+    smt.dropItem(createDropEvent(0, 0));
+    smt.dropItem(createDropEvent(1, 1));
+    smt.dropItem(createDropEvent(2, 2));
     expect(smt.displayedColumns).toEqual(['0_testData', '1_id', 'actions']);
     expect(smt.actionIndex).toEqual(2);
 
-    smt.dropColumn(createDropEvent(0, 2));
+    smt.dropItem(createDropEvent(0, 2));
     expect(smt.displayedColumns).toEqual(['0_id', 'actions', '1_testData']);
     expect(smt.actionIndex).toEqual(1);
 
-    smt.dropColumn(createDropEvent(0, 1));
+    smt.dropItem(createDropEvent(0, 1));
     expect(smt.displayedColumns).toEqual(['actions', '0_id', '1_testData']);
     expect(smt.actionIndex).toEqual(0);
 
     // previous index is bugged, see #dropColumn
-    smt.dropColumn(createDropEvent(1, 0));
+    smt.dropItem(createDropEvent(1, 0));
     expect(smt.displayedColumns).toEqual(['0_testData', 'actions', '1_id']);
     expect(smt.actionIndex).toEqual(1);
 
-    smt.dropColumn(createDropEvent(1, 1));
+    smt.dropItem(createDropEvent(1, 1));
     expect(smt.displayedColumns).toEqual(['0_testData', '1_id', 'actions']);
     expect(smt.actionIndex).toEqual(2);
 
-    smt.dropColumn(createDropEvent(2, 0));
+    smt.dropItem(createDropEvent(2, 0));
     expect(smt.displayedColumns).toEqual(['actions', '0_testData', '1_id']);
     expect(smt.actionIndex).toEqual(0);
 
-    smt.dropColumn(createDropEvent(2, 1));
+    smt.dropItem(createDropEvent(2, 1));
     expect(smt.displayedColumns).toEqual(['0_testData', 'actions', '1_id']);
     expect(smt.actionIndex).toEqual(1);
 
-    smt.dropColumn(createDropEvent(2, 2));
+    smt.dropItem(createDropEvent(2, 2));
     expect(smt.displayedColumns).toEqual(['0_testData', '1_id', 'actions']);
     expect(smt.actionIndex).toEqual(2);
   });

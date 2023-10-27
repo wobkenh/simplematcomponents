@@ -160,6 +160,13 @@ If you want to stick the button column to the end of the table, use the `stickyB
 To enable the user to reorder the columns by dragging and dropping the table headers, set the `columnDragAndDrop` flag of simplemattable to true. 
 Default ist false.
 
+#### Column Reordering / Drag and Drop
+To enable the user to reorder the rows by dragging and dropping the table rows, set the `rowDragAndDrop` flag of simplemattable to true. 
+Default ist false.
+
+The reordering of the data is not done by simplemattable. Instead, listen to the output parameter `rowDrop` and use 
+e.g. `moveItemInArray` on your data using the indices of the event to change the order. 
+
 #### Editing
 If you want to enable adding/editing/deleting of elements in the table, have a look at [the section about edit-mode](#edit-mode).
 
@@ -759,6 +766,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parentheses is required Angular Version):
++ 16.3: add drag and drop for rows
 + 16.2: add resizable headers
 + 16.1: use string representation for sorting
 + 16.0: upgrade to angular 16
@@ -847,11 +855,11 @@ It is not planned to backport SimpleMatTable to any older Angular version.
 Simplemattable only uses peer dependencies, so for the newest version of simplemattable you need the following packages (with compatible versions) in your package.json:
 
 ```
-"@angular/common": "^15.0.0",
-"@angular/core": "^15.0.0",
-"@angular/material": "^15.0.0",
-"@angular/cdk": "^15.0.0",
-"@angular/platform-browser": "^15.0.0"
+"@angular/common": "^16.0.0",
+"@angular/core": "^16.0.0",
+"@angular/material": "^16.0.0",
+"@angular/cdk": "^16.0.0",
+"@angular/platform-browser": "^16.0.0"
 ```  
 
 

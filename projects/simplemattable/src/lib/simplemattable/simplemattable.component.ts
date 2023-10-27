@@ -240,6 +240,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    * Default false;
    */
   @Input() columnDragAndDrop: boolean = false;
+  @Input() rowDragAndDrop: boolean = false;
   /**
    * Component Type to be used for a detail row.
    * Will activate the detail row feature,
@@ -326,6 +327,11 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    * Emitted value is the new sort setting.
    */
   @Output() sort: EventEmitter<Sort> = new EventEmitter<Sort>();
+  /**
+   * Event emitted when the user has changed the order of the rows.
+   * Simplemattable leaves the row unchanged. Reorder the table rows yourself
+   */
+  @Output() rowDrop: EventEmitter<CdkDragDrop<T>> = new EventEmitter<CdkDragDrop<T>>();
 
   matFrontendPaginator: MatPaginator;
   matBackendPaginator: MatPaginator;
@@ -426,7 +432,16 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    * Called when user changes order of columns
    * @param event
    */
-  dropColumn(event: CdkDragDrop<string[]>) {
+  dropItem(event: CdkDragDrop<any>) {
+    // will either be CdkDragDrop<string[]> (column) or CdkDragDrop<T> (row)
+    if (this.columnDragAndDrop) {
+      this.dropColumn(event);
+    } else {
+      this.dropRow(event);
+    }
+  }
+
+  private dropColumn(event: CdkDragDrop<string[]>) {
     const hasActions = this.displayedColumns.includes('actions');
     // For explanation of actual previous index see comment below
     let actualPreviousIndex;
@@ -472,6 +487,20 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
       moveItemInArray(this.columns, draggedColumnIndex, replacedColumnIndex);
       this.recreateDataSource();
     }
+  }
+
+  private dropRow(event: CdkDragDrop<T>) {
+    // row index is not equal data index
+    // there is a cdkDrag on every column, so the indices have to be reduced by the number of columns
+    // we do that for the user to avoid confusion
+    // but don't change anything on the event object directly, that leads to an infinite loop
+    const eventCopy: CdkDragDrop<T> = {
+      ...event,
+      currentIndex: event.currentIndex - this.columns.length,
+      previousIndex: event.previousIndex - this.columns.length,
+    };
+    // up to the user to do sth
+    this.rowDrop.emit(eventCopy);
   }
 
 
@@ -1390,4 +1419,5 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     // keyof T cannot be used to index an object, but we know keyof T is always a string:
     this.stringRepresentationMap.get(element).set(tcol, stringRepresentation);
   }
+
 }

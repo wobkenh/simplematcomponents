@@ -36,5 +36,45 @@
         </div>
       </mat-tab>
     </mat-tab-group>
+
+    <h2>Reordering rows by drag and drop</h2>
+    <div style="line-height: 1.5">Allows the user to reorder the rows by dragging the table headers around. Activate
+      this by setting the
+      <pre style="display: inline">rowDragAndDrop</pre>
+      flag.
+    </div>
+
+    <mat-tab-group>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>visibility</mat-icon>
+          Display
+        </ng-template>
+        <div class="smt-container">
+          <smc-simplemattable [data]="dataRow" [columns]="columnsRow"
+                              [rowDragAndDrop]="true" (rowDrop)="onRowDrop($event)"></smc-simplemattable>
+        </div>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>code</mat-icon>
+          Code
+        </ng-template>
+        <div class="code">
+          <p>Typescript - Data</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="typescriptColumsRow"></code></pre>
+          <p>Typescript - Columns</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="typescriptDataRow"></code></pre>
+          <p>HTML</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="htmlRow"></code></pre>
+          <p>TS</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="tsRow"></code></pre>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
   </div>
 </div>

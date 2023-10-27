@@ -11,19 +11,22 @@
 <div [ngStyle]="getOuterContainerStyle()" (scroll)="onScrollComponent($event)" #scrollContainer
      id="smtScrollContainer">
   <table mat-table [dataSource]="dataSource" matSort [matSortDisabled]="!sorting" style="width: 100%"
-         [cdkDropListDisabled]="!columnDragAndDrop" multiTemplateDataRows
+         [cdkDropListDisabled]="!columnDragAndDrop && !rowDragAndDrop" multiTemplateDataRows
          (matSortChange)="sortChanged($event)" [ngClass]="getTableClass()" cdkDropList
-         cdkDropListOrientation="horizontal" (cdkDropListDropped)="dropColumn($event)">
+         [cdkDropListOrientation]="columnDragAndDrop ? 'horizontal' : 'vertical'"
+         (cdkDropListDropped)="dropItem($event)">
     <ng-container *ngFor="let tcol of getDisplayedCols(columns); let columnIndex = index">
       <ng-container matColumnDef="{{columnIndex.toString() + '_' + tcol.property.toString()}}"
                     [sticky]="tcol.sticky" [stickyEnd]="tcol.stickyEnd">
         <th mat-header-cell *matHeaderCellDef [ngStyle]="getTableCellStyle(tcol)" cdkDrag
+            [cdkDragDisabled]="!columnDragAndDrop"
             [matTooltip]="tcol.headerTooltip" [matTooltipPosition]="tcol.headerTooltipPosition"
             [ngClass]="{'hidden': ((bpService.xs$ | async) && (tcol.hiddenXs || tcol.hiddenSm)) || (bpService.sm$ | async) && tcol.hiddenSm}">
           <div class="table-header"
                [ngStyle]="{justifyContent: getHeaderFilterAlign(tcol.align), alignItems: tcol.colFilter ? 'flex-end' : 'center'}">
             <div style="display: flex; flex-direction: column">
-              <div [ngStyle]="{'padding': (bpService.xs$ | async) ? '0' : sorting ? isCenterAlign(tcol) ? '0 0 0 18px' : '0 0 0 5px' : '0 5px'}">
+              <div
+                [ngStyle]="{'padding': (bpService.xs$ | async) ? '0' : sorting ? isCenterAlign(tcol) ? '0 0 0 18px' : '0 0 0 5px' : '0 5px'}">
               <span mat-sort-header [disabled]="!tcol.sortable"
                     [ngClass]="{'no-sort': !(tcol.sortable && sorting), 'with-sort': tcol.sortable && sorting}">
                 <ng-container *ngIf="tcol.headerButton; else headerTextTemplate" [ngSwitch]="tcol.headerButton">
@@ -147,7 +150,9 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: sticky" [ngStyle]="getTableHeaderStyle()"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="getTableRowClass(row)"
+    <tr cdkDrag [cdkDragData]="row" [cdkDragDisabled]="!rowDragAndDrop" mat-row
+        *matRowDef="let row; columns: displayedColumns;"
+        [ngClass]="getTableRowClass(row)"
         (click)="rowClicked(row)" [ngStyle]="getTableRowStyle(row)"></tr>
     <ng-container *ngIf="detailRowComponent">
       <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="smt-detail-row"></tr>
