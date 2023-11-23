@@ -766,6 +766,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parentheses is required Angular Version):
++ 17.0: upgrade to angular 17
 + 16.3: add drag and drop for rows
 + 16.2: add resizable headers
 + 16.1: use string representation for sorting
@@ -855,11 +856,11 @@ It is not planned to backport SimpleMatTable to any older Angular version.
 Simplemattable only uses peer dependencies, so for the newest version of simplemattable you need the following packages (with compatible versions) in your package.json:
 
 ```
-"@angular/common": "^16.0.0",
-"@angular/core": "^16.0.0",
-"@angular/material": "^16.0.0",
-"@angular/cdk": "^16.0.0",
-"@angular/platform-browser": "^16.0.0"
+"@angular/common": "^17.0.0",
+"@angular/core": "^17.0.0",
+"@angular/material": "^17.0.0",
+"@angular/cdk": "^17.0.0",
+"@angular/platform-browser": "^17.0.0"
 ```  
 
 
