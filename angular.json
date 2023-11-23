@@ -66,10 +66,10 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "simplematcomponents:build:production"
+              "buildTarget": "simplematcomponents:build:production"
             },
             "development": {
-              "browserTarget": "simplematcomponents:build:development"
+              "buildTarget": "simplematcomponents:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -77,7 +77,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "simplematcomponents:build"
+            "buildTarget": "simplematcomponents:build"
           }
         },
         "test": {

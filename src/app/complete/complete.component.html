@@ -69,8 +69,8 @@ const completeDesCol = new TableColumn&lt;ComplexTestData, 'description'&gt;('De
       'background-size': 'contain',
       'background-repeat': 'repeat',
       // 'height': '150px'
-    };
-  })
+    &#125;;
+  &#125;)
   .isHiddenSm(true);
 completeDesCol.withFormField(completeDesCol
   .getCheckboxFormField()
@@ -82,25 +82,25 @@ const completeValueCol = new TableColumn&lt;ComplexTestData, 'value'&gt;('Number
 
 completeValueCol.withFormField(completeValueCol.getSelectFormField&lt;number&gt;()
   .withOptions([
-            {{"{"}}&#x2063;display: '39', value: 39},
-            {{"{"}}&#x2063;display: '40', value: 40},
-            {{"{"}}&#x2063;display: '41', value: 41},
-            {{"{"}}&#x2063;display: 'eine lustige Zahl', value: 420}
+            {{"{"}}&#x2063;display: '39', value: 39&#125;,
+            {{"{"}}&#x2063;display: '40', value: 40&#125;,
+            {{"{"}}&#x2063;display: '41', value: 41&#125;,
+            {{"{"}}&#x2063;display: 'eine lustige Zahl', value: 420&#125;
   ])
 .withValidators([Validators.required, Validators.min(25)])
   .withErrors([
-            {{"{"}}&#x2063;key: 'required', msg: 'Value is required!'},
-            {{"{"}}&#x2063;key: 'min', msg: 'Value should be at least 25!'}
+            {{"{"}}&#x2063;key: 'required', msg: 'Value is required!'&#125;,
+            {{"{"}}&#x2063;key: 'min', msg: 'Value should be at least 25!'&#125;
   ]));
 const completeTestErrorCol = new TableColumn&lt;ComplexTestData, 'data'&gt;('Nested Value Select', 'data')
 .withTransform(data =&gt; data.value)
 .withAlign(Align.CENTER);
 completeTestErrorCol.withFormField(completeTestErrorCol.getSelectFormField&lt;string&gt;()
   .withOptions([
-            {{"{"}}&#x2063;display: 'Manatee', value: 'Manatee'},
-            {{"{"}}&#x2063;display: 'Dog', value: 'Dog'},
-            {{"{"}}&#x2063;display: 'Natalie Dormer', value: 'Natalie Dormer'},
-            {{"{"}}&#x2063;display: 'A Muffin', value: 'A Hotdog'},
+            {{"{"}}&#x2063;display: 'Manatee', value: 'Manatee'&#125;,
+            {{"{"}}&#x2063;display: 'Dog', value: 'Dog'&#125;,
+            {{"{"}}&#x2063;display: 'Natalie Dormer', value: 'Natalie Dormer'&#125;,
+            {{"{"}}&#x2063;display: 'A Muffin', value: 'A Hotdog'&#125;,
   ]).withPlaceholder('Sexiest Thing alive'));
 const completeDes2Col = new TableColumn&lt;ComplexTestData, 'description'&gt;('Description2', 'description')
   .isVisible(false)
@@ -119,7 +119,7 @@ completeKeyCol.withFormField(completeKeyCol.getTextFormField()
   .withApply((id, data) =&gt; {{"{"}}&#x2063;
     data.key = id;
     return data;
-  }))
+  &#125;))
   .withAlign(Align.RIGHT);
 const completeValCol = new TableColumn&lt;ComplexTestData, 'data'&gt;('Value with icon', 'data')
   .isHiddenXs(true)
@@ -136,15 +136,15 @@ completeDateCol.withFormField(completeDateCol.getDateFormField()
   .withHint('Only past dates.')
   .withPlaceholder('Date')
   .withErrors([
-            {{"{"}}&#x2063;key: 'required', msg: 'Date is required!'},
-            {{"{"}}&#x2063;key: 'pastDate', msg: 'Date needs to be in the past!'}
+            {{"{"}}&#x2063;key: 'required', msg: 'Date is required!'&#125;,
+            {{"{"}}&#x2063;key: 'pastDate', msg: 'Date needs to be in the past!'&#125;
   ])
   .withValidators([Validators.required, this.pastDateValidator])
   .withInit(data =&gt; data.date)
   .withApply((val, data) =&gt; {{"{"}}&#x2063;
     data.date = val;
     return data;
-  }));
+  &#125;));
 const completeMultilineCol = new TableColumn&lt;ComplexTestData, 'notes'&gt;('This header will take multiple lines to display the header', 'notes')
   .withColFilter();
 this.columnsComplete = [completeIdCol, completeTestErrorCol, completeDesCol, completeDes2Col, completeValueCol, completeKeyCol, completeValCol, completeDateCol, completeMultilineCol];
