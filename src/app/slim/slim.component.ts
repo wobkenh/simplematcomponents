@@ -14,15 +14,21 @@ export class SlimComponent {
   columnsSimple: TableColumn<any, any>[] = [];
 
   // Code
-  typescriptData = 'this.dataSimple = [\n' +
-    '  new ComplexTestData(1, 40, \'test1\', null, \'test2\'),\n' +
-    '  new ComplexTestData(2, 42, \'test2\', null, \'test3\')\n' +
-    '];';
+  typescriptData = '  dataSimple: ComplexTestData[] = [];\n\n' +
+    '  ngOnInit() {\n' +
+    '    this.dataSimple = [];\n' +
+    '    for (let i = 0; i < 10000; i++) {\n' +
+    '      this.dataSimple.push(new ComplexTestData(1 + i, 40 + i, \'test\' + i, null, \'test2\'));\n' +
+    '    }\n' +
+    '  }';
   typescriptColumns = 'this.columnsSimple = [\n' +
     '  new TableColumn<ComplexTestData, \'id\'>(\'My ID\', \'id\'),\n' +
-    '  new TableColumn<ComplexTestData, \'value\'>(\'My Value\', \'value\')\n' +
+    '  new TableColumn<ComplexTestData, \'value\'>(\'My Value\', \'value\'),\n' +
+    '  new TableColumn<ComplexTestData, \'description\'>(\'My Text\', \'description\')\n' +
     '];';
-  html = '<smc-simplemattable [data]="dataSimple" [columns]="columnsSimple"></smc-simplemattable>';
+  html = '<smc-simplemattable-slim [data]="dataSimple" [columns]="columnsSimple" style="height: 500px"\n' +
+    '                         [selectable]="true" (selectionChange)="selectionChange($event)"\n' +
+    '                         [detailRowComponent]="detailRowComponent"></smc-simplemattable-slim>';
 
   detailRowComponent = ExpandableRowDetailComponent;
 

@@ -1,7 +1,24 @@
 <div class="display">
   <div>
-    <h2 id="simple">Simple</h2>
-    <p>Create your data, declare your tables, feed both to simplemattable and you're good to go!</p>
+    <h2 id="slim">Slim (Virtual Scroll)</h2>
+    <p>If you have a lot of data you need to display at once because people are screaming at you that they do not like
+      pagination, you can use smc-simplemattable-slim as an alternative to smc-simplemattable. It uses virtual scrolling
+      from the cdk package to only render data visible in the current viewport. smc-simplemattable-slim can easily
+      handle 10000 rows or more at once. The interface of both simplemattables is mostly identical, so it often can be
+      used as a drop in replacement, but some features are not supported and some things need to be noticed when using
+      the slim version:</p>
+    <ul>
+      <li>simplemattable-slim always needs to get a height assigned from the outside. This can be a fixed height or e.g.
+        a container with flex that uses e.g. the window height to fill available space
+      </li>
+      <li>Pagination is not supported (for obvious reasons)</li>
+      <li>Sorting is always enabled</li>
+      <li>Each row, including the header row, must always have the same height. Variable height rows are not
+        supported. You can control the height using the itemSize parameter and control the item buffer using the
+        pageSize parameter. One exception is the detail row component for expandable rows, which is supported and may
+        take a variable amount of space
+      </li>
+    </ul>
 
     <mat-tab-group>
       <mat-tab>

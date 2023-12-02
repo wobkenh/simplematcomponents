@@ -3,8 +3,9 @@
   justify-content: stretch;
 }
 
-.smt-data-row {
-  height: 30px;
+.smt-element-row td {
+  border-bottom-width: 0;
+  cursor: pointer;
 }
 
 .smt-data-row:hover {
@@ -16,7 +17,10 @@ tr.mat-mdc-header-row {
   height: 30px;
 }
 
-
+/**
+  Turns off the translate that material uses for moving elements
+  we instead use a placeholder row (see ts)
+ */
 ::ng-deep .cdk-virtual-scroll-content-wrapper {
   transform: translateY(0px) !important;
 }

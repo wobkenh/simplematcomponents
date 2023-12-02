@@ -27,11 +27,13 @@ export class GridTableDatasource<T> extends DataSource<T> {
       const start = Math.floor(ev.currentTarget.scrollTop / this.itemSize);
       const prevExtraData = start > 5 ? 5 : 0;
       // const prevExtraData = 0;
+      const startIndex = start - prevExtraData;
+      const endIndex = start + (this.pageSize - prevExtraData);
       const slicedData = this._data.slice(
-        start - prevExtraData,
-        start + (this.pageSize - prevExtraData)
+        startIndex,
+        endIndex
       );
-      this.offset = this.itemSize * (start - prevExtraData);
+      this.offset = this.itemSize * startIndex;
       this.viewport.setRenderedContentOffset(this.offset);
       this.offsetChange.next(this.offset);
       this.visibleData.next(slicedData);
@@ -46,7 +48,7 @@ export class GridTableDatasource<T> extends DataSource<T> {
   set data(data: any[]) {
     this._data = data;
     this.viewport.scrollToOffset(0);
-    this.viewport.setTotalContentSize(this.itemSize * (data.length + 1)); // + 1 for header
+    this.viewport.setTotalContentSize(this.itemSize * (data.length + 5)); // + 1 for header, + 4 for buffer at the end for easier scrolling
     this.visibleData.next(this._data.slice(0, this.pageSize));
   }
 

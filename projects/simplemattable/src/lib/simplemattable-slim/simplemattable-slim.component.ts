@@ -55,7 +55,7 @@ export class SimplemattableSlimComponent<T> implements DoCheck, OnChanges {
   /**
    * How many items to load at a time
    */
-  @Input() pageSize: number = 20;
+  @Input() pageSize: number = 40;
   /**
    * Additional sort to be performed if two elements equal
    */
@@ -91,6 +91,7 @@ export class SimplemattableSlimComponent<T> implements DoCheck, OnChanges {
   dataSource: GridTableDatasource<T>;
   stateService: SmcStateService<T> = new SmcStateService<T>();
   selectionFormControls: Map<T, FormControl<boolean>> = new Map<T, FormControl<boolean>>();
+  rowClass: string = 'smt-data-row';
 
   // view childs
   @ViewChild(MatSort, {static: true})
@@ -115,6 +116,7 @@ export class SimplemattableSlimComponent<T> implements DoCheck, OnChanges {
       }
       this.turnOffSorting(); // If columns are changed, resorting might cause bugs
       this.cleanUpAfterColChange();
+      this.setRowClass();
     }
   }
 
@@ -212,5 +214,12 @@ export class SimplemattableSlimComponent<T> implements DoCheck, OnChanges {
     this.rowClick.emit(row);
     this.stateService.setExpandedElement(row);
     this.changeDetectorRef.detectChanges();
+  }
+
+  private setRowClass() {
+    this.rowClass = 'smt-data-row';
+    if (this.detailRowComponent) {
+      this.rowClass = this.rowClass + ' smt-element-row';
+    }
   }
 }
