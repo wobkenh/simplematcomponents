@@ -1,0 +1,53 @@
+<cdk-virtual-scroll-viewport style="flex: 1 1 auto">
+  <table class="table" mat-table #table matSort [dataSource]="dataSource" [multiTemplateDataRows]="true"
+         (matSortChange)="sortChanged($event)">
+
+    <ng-container *ngIf="selectable" matColumnDef="selection">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element;">
+        <div style="display: flex; align-items: center; justify-content: center; overflow: hidden; height: 30px">
+          <mat-checkbox [formControl]="selectionFormControls.get(element)"
+                        (click)="$event.stopPropagation()"></mat-checkbox>
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container *ngFor="let col of columns; let columnIndex = index"
+                  [matColumnDef]="columnIndex + '_' + col.property">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>{{col.name}}</th>
+      <td mat-cell *matCellDef="let element; let rowIndex = dataIndex;">
+        <smc-table-cell
+          [stateService]="stateService" [dataParent]="element" [rowIndex]="rowIndex"
+          [minHeight]="itemSize"
+          [refreshTrigger]="refreshTrigger" [dataList]="data"
+          [columnIndex]="columnIndex" [tableColumnInput]="col"
+        ></smc-table-cell>
+      </td>
+    </ng-container>
+
+    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+    <ng-container matColumnDef="expandedDetail" *ngIf="detailRowComponent">
+      <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumnKeys.length">
+        <div
+          [@detailExpand]="element === stateService.expandedElement ? 'expanded' : 'collapsed'"
+          class="smt-element-detail">
+          <smc-external-detail-component-wrapper
+            *ngIf="element === stateService.expandedElement || element === stateService.lastExpandedElement"
+            [element]="element" [ngComponent]="detailRowComponent"
+            [dataList]="data"
+          ></smc-external-detail-component-wrapper>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumnKeys; sticky: true"></tr>
+    <!-- cdkVirtualScrollViewport uses transform: translateY to correct for all elements that are removed.
+    We will use a placeholder row in the table instead because the translate causes problems with the sticky header -->
+    <tr [style.height.px]="placeholderHeight" mat-row
+        *matRowDef="let row; let index = index; columns: []; when: placeholderWhen"></tr>
+    <tr mat-row (click)="rowClicked(row)" *matRowDef="let row; columns: displayedColumnKeys" class="smt-data-row"></tr>
+    <ng-container *ngIf="detailRowComponent">
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="smt-detail-row"></tr>
+    </ng-container>
+  </table>
+</cdk-virtual-scroll-viewport>

@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {map, shareReplay} from 'rxjs/operators';
 import {Observable} from 'rxjs';
@@ -24,6 +24,9 @@ export class AppComponent implements OnInit {
     {
       link: '/simple',
       text: 'Simple'
+    }, {
+      link: '/slim',
+      text: 'Slim'
     }, {
       link: '/transform',
       text: 'Transform'

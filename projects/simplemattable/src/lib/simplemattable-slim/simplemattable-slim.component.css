@@ -1,0 +1,30 @@
+:host {
+  display: flex;
+  justify-content: stretch;
+}
+
+.smt-data-row {
+  height: 30px;
+}
+
+.smt-data-row:hover {
+  background-color: rgba(200, 200, 200, 0.4);
+  cursor: pointer;
+}
+
+tr.mat-mdc-header-row {
+  height: 30px;
+}
+
+
+::ng-deep .cdk-virtual-scroll-content-wrapper {
+  transform: translateY(0px) !important;
+}
+
+.smt-element-detail {
+  overflow: hidden;
+}
+
+tr.smt-detail-row {
+  height: 0;
+}

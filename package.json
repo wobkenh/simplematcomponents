@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --port 4201",
     "build-lib-table": "ng build --project simplemattable --configuration production",
     "build-lib-alert": "ng build --project simplealert --configuration production",
     "build": "ng build",

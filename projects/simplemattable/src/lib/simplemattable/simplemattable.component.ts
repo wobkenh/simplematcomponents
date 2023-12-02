@@ -28,6 +28,8 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 import {DetailRowComponent} from '../model/detail-row-component';
 import {ButtonType} from '../model/button-type.model';
 import {SmcBreakpointService} from '../smc-breakpoint.service';
+import {SmcTableService} from '../smc-table.service';
+import {SmcStateService} from '../smc-state.service';
 
 @Component({
   selector: 'smc-simplemattable',
@@ -361,21 +363,9 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   actionIndex: number = -1;
   hasFooter: boolean = false;
 
-  expandedElement: T | null;
-  /**
-   * When using expandable rows, we dont want to render all detail components at once
-   * So we remove the detail component when not expanded
-   * problem: the closing animation takes some time and we dont want the detail component to suddenly disappear before the animation is finished
-   * solution: not only display the currently open detail component, but also the one opened before that
-   */
-  lastExpandedElement: T | null;
   buttonType = ButtonType;
 
-  /**
-   * Holds the current string values for the table cells
-   * Can be used to filter on the current table cell values, even if they were loaded async
-   */
-  stringRepresentationMap = new Map<T, Map<TableColumn<any, any>, string>>();
+  stateService: SmcStateService<T> = new SmcStateService<T>();
 
   rowStyleMap = new Map<T, Object>();
   rowClassMap = new Map<T, string | string[] | Object>();
@@ -390,6 +380,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   constructor(
     private fb: UntypedFormBuilder,
     public bpService: SmcBreakpointService,
+    public smcTableService: SmcTableService<T>,
   ) {
   }
 
@@ -826,7 +817,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     const element = this.deepCopy(oldElement); // Deep copy old object to not override table values
     const isAdded = this.dataStatus.get(oldElement).added;
     controls.forEach(control => {
-      const tcol: TableColumn<T, any> = this.getDisplayedCols(this.columns)[control.col];
+      const tcol: TableColumn<T, any> = this.smcTableService.getDisplayedCols(this.columns)[control.col];
       const val = control.control.value;
       const formField = isAdded ? (tcol.addFormField || tcol.formField) : (tcol.editFormField || tcol.formField);
       if (element[tcol.property] instanceof Object && !(element[tcol.property] instanceof Date) && !formField.apply) {
@@ -920,34 +911,16 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
    */
 
-  getStringRepresentation(tcol: TableColumn<T, any>, element: T): string {
-    if (tcol.transform) {
-      // Sadly, we cant use observables here as the datasource's filter function (for which this is used)
-      // does not support returning observables
-      const stringRepresentationObject = this.stringRepresentationMap.get(element);
-      if (stringRepresentationObject && stringRepresentationObject.get(tcol)) {
-        return stringRepresentationObject.get(tcol);
-      } else {
-        return tcol.transform(element[tcol.property], element, this.data) + '';
-      }
-    } else if (element[tcol.property] === null || element[tcol.property] === undefined) {
-      return '';
-    } else {
-      return element[tcol.property].toString();
-    }
-  }
-
   private isButtonClickable = (tcol: TableColumn<T, any>) => tcol.onClick && tcol.button;
   private isCellClickable = (tcol: TableColumn<T, any>, element: T) => tcol.onClick && !tcol.button && !this.isEditing(element);
 
   isLoading = (element: T): boolean => this.dataStatus.get(element).loading;
   isEditing = (element: T): boolean => this.dataStatus.get(element).editing;
-  getDisplayedCols = (cols: TableColumn<T, any>[]): TableColumn<T, any>[] => cols.filter(col => col.visible);
   getHeaderFilterAlign = (align: Align): string => align === Align.LEFT ? 'flex-start' : align === Align.CENTER ? 'center' : 'flex-end';
 
   getTextAlign = (align: Align): string => align === Align.LEFT ? 'start' : align === Align.CENTER ? 'center' : 'end';
   isCenterAlign = (tcol: TableColumn<T, any>): boolean => tcol.align === Align.CENTER;
-  hasColumnFilter = (): boolean => this.getDisplayedCols(this.columns).some(tcol => tcol.colFilter);
+  hasColumnFilter = (): boolean => this.smcTableService.getDisplayedCols(this.columns).some(tcol => tcol.colFilter);
   getTableHeaderStyle = (): Object => this.hasColumnFilter() ? {height: '100%'} : {};
   getTableClass = (): string => (this.sticky ? 'sticky-th' : 'non-sticky-th') + (this.isChrome ? ' chrome' : '');
 
@@ -1134,7 +1107,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   // checks for column changes
   ngDoCheck(): void {
-    if (this.checkForDifferences()) {
+    if (this.smcTableService.checkForDifferences(this.oldColumns, this.columns)) {
       this.clearCssCache();
       this.clearAddedEntry();
       this.turnOffSorting(); // If columns are changed, resorting might cause bugs
@@ -1154,7 +1127,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   private recreateColFilters() {
     this.colFilterFormControls.clear();
     let reapplyFilter = false;
-    this.getDisplayedCols(this.columns)
+    this.smcTableService.getDisplayedCols(this.columns)
       .filter(tcol => tcol.colFilter)
       .forEach(tcol => {
         const formControl = this.fb.control('');
@@ -1192,20 +1165,6 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     }
   }
 
-  // only checks for column differences
-  private checkForDifferences(): boolean {
-    if (this.oldColumns.length !== this.columns.length) {
-      return true;
-    }
-    return this.oldColumns.some((col, i) => {
-      for (const key in col) {
-        if (col[key] !== this.columns[i][key]) {
-          return true;
-        }
-      }
-    });
-  }
-
   private recreateDataSource() {
     if (this.columns && this.data) {
       this.dataSource = new MatTableDataSource() as MatTableDataSource<T>;
@@ -1222,7 +1181,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
       // Filter
       this.dataSource.filterPredicate = (data: T, filter: string) => {
         const filterWords = filter.toLowerCase().trim().split(' ');
-        const allString = this.columns.reduce((str, col) => str + this.getStringRepresentation(col, data).toLowerCase().trim(), '');
+        const allString = this.columns.reduce((str, col) => str + this.getStringRepresentation(col, data).toString().toLowerCase().trim(), '');
         const allFilterOk = filterWords.every(word => allString.indexOf(word) > -1);
         if (!this.hasColumnFilter() || !allFilterOk) {
           return allFilterOk;
@@ -1241,7 +1200,8 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
             }
           } else {
             // default behaviour
-            if (this.getStringRepresentation(tcol, data).toLowerCase().trim().indexOf(control.value.toString().toLowerCase().trim()) === -1) {
+            const stringRepresentation = this.getStringRepresentation(tcol, data).toString().toLowerCase().trim();
+            if (stringRepresentation.indexOf(control.value.toString().toLowerCase().trim()) === -1) {
               return false;
             }
           }
@@ -1304,7 +1264,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
       this.columnIds.clear();
       let hasFooter = false; // we only want to display the footer if a visible column has the footer function
       // Dont assign displayedColumns directly as view gets updated when reference changes
-      const displayedColumns = this.getDisplayedCols(this.columns).map((col, i) => {
+      const displayedColumns = this.smcTableService.getDisplayedCols(this.columns).map((col, i) => {
         if (col.footer) {
           hasFooter = true;
         }
@@ -1399,12 +1359,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   rowClicked(row: T) {
     this.rowClick.emit(row);
-    this.lastExpandedElement = this.expandedElement;
-    if (this.expandedElement === row) {
-      this.expandedElement = null;
-    } else {
-      this.expandedElement = row;
-    }
+    this.stateService.setExpandedElement(row);
     this.clearCssCache();
   }
 
@@ -1412,12 +1367,8 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     this.sort.emit(sortEvent);
   }
 
-  putStringRepresentation(element: T, tcol: TableColumn<any, any>, stringRepresentation: string) {
-    if (!this.stringRepresentationMap.has(element)) {
-      this.stringRepresentationMap.set(element, new Map());
-    }
-    // keyof T cannot be used to index an object, but we know keyof T is always a string:
-    this.stringRepresentationMap.get(element).set(tcol, stringRepresentation);
+  private getStringRepresentation(tcol: TableColumn<T, any>, data: T) {
+    return this.stateService.getStringRepresentation(tcol, data, this.data);
   }
 
 }

@@ -1,18 +1,19 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { TableColumn } from '../model/table-column.model';
-import { ButtonType } from '../model/button-type.model';
-import { SaveEvent } from '../model/table-cell-events.model';
-import { AbstractControl, UntypedFormBuilder } from '@angular/forms';
-import { FormError } from '../model/form-error.model';
-import { ExternalComponentWrapperComponent } from '../external-component-wrapper/external-component-wrapper.component';
-import { AbstractFormField } from '../model/abstract-form-field.model';
-import { SelectFormFieldOption } from '../model/select-form-field-option.model';
-import { FormFieldType } from '../model/form-field-type.model';
-import { LargeTextFormField } from '../model/large-text-form-field.model';
-import { SelectFormField } from '../model/select-form-field.model';
-import { SmcUtilService } from '../smc-util.service';
-import { isObservable, Observable, of, Subscription } from 'rxjs';
-import { SmcBreakpointService } from '../smc-breakpoint.service';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
+import {TableColumn} from '../model/table-column.model';
+import {ButtonType} from '../model/button-type.model';
+import {SaveEvent} from '../model/table-cell-events.model';
+import {AbstractControl, UntypedFormBuilder} from '@angular/forms';
+import {FormError} from '../model/form-error.model';
+import {ExternalComponentWrapperComponent} from '../external-component-wrapper/external-component-wrapper.component';
+import {AbstractFormField} from '../model/abstract-form-field.model';
+import {SelectFormFieldOption} from '../model/select-form-field-option.model';
+import {FormFieldType} from '../model/form-field-type.model';
+import {LargeTextFormField} from '../model/large-text-form-field.model';
+import {SelectFormField} from '../model/select-form-field.model';
+import {SmcUtilService} from '../smc-util.service';
+import {isObservable, Observable, of, Subscription} from 'rxjs';
+import {SmcBreakpointService} from '../smc-breakpoint.service';
+import {SmcStateService} from '../smc-state.service';
 
 @Component({
   selector: 'smc-table-cell',
@@ -41,12 +42,12 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
   formControls: Map<string, AbstractControl>;
   @Input()
   dataList: T[];
+  @Input()
+  stateService: SmcStateService<T>;
 
   // Outputs
   @Output()
   save = new EventEmitter<SaveEvent<T>>();
-  @Output()
-  stringRepresentationChanged = new EventEmitter<string>();
 
   // State derived from inputs
   @ViewChild(ExternalComponentWrapperComponent) externalComponents: ExternalComponentWrapperComponent;
@@ -64,6 +65,9 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
   tooltip: string;
   textHiddenXs: boolean;
   textHiddenSm: boolean;
+
+  @Input()
+  minHeight: number = 48;
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -120,7 +124,7 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
 
   private updateTableColumn() {
     // Updates that only are affected by the table column
-    this.inputCssStyle = { 'text-align': this.utilService.getTextAlign(this.tableColumn.align) };
+    this.inputCssStyle = {'text-align': this.utilService.getTextAlign(this.tableColumn.align)};
     this.tableColumnCellCssStyle['justifyContent'] = this.utilService.getCellAlign(this.tableColumn.align);
     this.textHiddenXs = this.tableColumn.textHiddenXs || this.tableColumn.textHiddenSm;
     this.textHiddenSm = this.tableColumn.textHiddenSm;
@@ -135,7 +139,7 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
       this.buttonDisabled = this.isButtonDisabled(this.tableColumn, this.element);
       this.getStringRepresentation(this.tableColumn, this.element).subscribe(transformed => {
         this.stringRepresentation = transformed;
-        this.stringRepresentationChanged.emit(this.stringRepresentation?.toString());
+        this.stateService.putStringRepresentation(this.element, this.tableColumn, this.stringRepresentation);
       });
       this.tooltip = this.tableColumn.tooltip ? this.getTooltip(this.tableColumn, this.element) : undefined;
       if (this.tableColumn.icon) {
@@ -145,7 +149,7 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
   }
 
   getCellCssClass(tcol: TableColumn<T, any>, element: T): Object {
-    const defaultClass = { 'filler-div': true, 'on-click': (tcol.onClick && !tcol.button) };
+    const defaultClass = {'filler-div': true, 'on-click': (tcol.onClick && !tcol.button)};
     const ngClass = tcol.ngClass ? tcol.ngClass(element[tcol.property], element, this.dataList) : null;
     return this.utilService.getCellCssClass(tcol, ngClass, defaultClass);
   }
@@ -288,7 +292,12 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
     } else if (element[tcol.property] === null || element[tcol.property] === undefined) {
       return of('');
     } else {
-      return of(element[tcol.property].toString());
+      const value = element[tcol.property];
+      if (typeof value === 'number') {
+        return of(element[tcol.property]);
+      } else {
+        return of(element[tcol.property].toString());
+      }
     }
   }
 
@@ -326,7 +335,7 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
         baseValue['height'] = height.toString();
       }
     } else {
-      baseValue['minHeight'] = '48px';
+      baseValue['minHeight'] = this.minHeight + 'px';
     }
     return baseValue;
   }

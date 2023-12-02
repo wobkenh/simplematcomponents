@@ -1,0 +1,37 @@
+<div class="display">
+  <div>
+    <h2 id="simple">Simple</h2>
+    <p>Create your data, declare your tables, feed both to simplemattable and you're good to go!</p>
+
+    <mat-tab-group>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>visibility</mat-icon>
+          Display
+        </ng-template>
+        <div class="smt-container">
+          <smc-simplemattable-slim [data]="dataSimple" [columns]="columnsSimple" style="height: 500px"
+                                   [selectable]="true" (selectionChange)="selectionChange($event)"
+                                   [detailRowComponent]="detailRowComponent"></smc-simplemattable-slim>
+        </div>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>code</mat-icon>
+          Code
+        </ng-template>
+        <div class="code">
+          <p>Typescript - Data</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="typescriptData"></code></pre>
+          <p>Typescript - Columns</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="typescriptColumns"></code></pre>
+          <p>HTML</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="html"></code></pre>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

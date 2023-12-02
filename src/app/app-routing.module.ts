@@ -26,11 +26,13 @@ import {DragNDropColumnsComponent} from './drag-n-drop-columns/drag-n-drop-colum
 import {FooterComponent} from './footer/footer.component';
 import {ExpandableRowsComponent} from './expandable-rows/expandable-rows.component';
 import { TooltipComponent } from './tooltip/tooltip.component';
+import {SlimComponent} from './slim/slim.component';
 
 
 const routes: Routes = [
   {path: 'infinite-scroll', component: InfiniteScrollingComponent},
   {path: 'simple', component: SimpleComponent},
+  {path: 'slim', component: SlimComponent},
   {path: 'transform', component: TransformComponent},
   {path: 'width-height', component: WidthHeightComponent},
   {path: 'align', component: AlignComponent},

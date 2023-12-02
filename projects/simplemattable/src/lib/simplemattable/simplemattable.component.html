@@ -15,7 +15,7 @@
          (matSortChange)="sortChanged($event)" [ngClass]="getTableClass()" cdkDropList
          [cdkDropListOrientation]="columnDragAndDrop ? 'horizontal' : 'vertical'"
          (cdkDropListDropped)="dropItem($event)">
-    <ng-container *ngFor="let tcol of getDisplayedCols(columns); let columnIndex = index">
+    <ng-container *ngFor="let tcol of smcTableService.getDisplayedCols(columns); let columnIndex = index">
       <ng-container matColumnDef="{{columnIndex.toString() + '_' + tcol.property.toString()}}"
                     [sticky]="tcol.sticky" [stickyEnd]="tcol.stickyEnd">
         <th mat-header-cell *matHeaderCellDef [ngStyle]="getTableCellStyle(tcol)" cdkDrag
@@ -65,12 +65,12 @@
         <td mat-cell *matCellDef="let element; let rowIndex = dataIndex;"
             [ngClass]="{'hidden': ((bpService.xs$ | async) && (tcol.hiddenXs || tcol.hiddenSm)) || (bpService.sm$ | async) && tcol.hiddenSm}"
             (click)="onClick(tcol, element, false, $event)">
-          <smc-table-cell [formControls]="formControls" [dataParent]="element" [rowIndex]="rowIndex"
+          <smc-table-cell [stateService]="stateService" [formControls]="formControls" [dataParent]="element"
+                          [rowIndex]="rowIndex"
                           [refreshTrigger]="refreshTrigger" [dataList]="data"
                           [columnIndex]="columnIndex" [tableColumnInput]="tcol"
                           [isAdding]="dataStatus.get(element).added" [isEditing]="dataStatus.get(element).editing"
                           (save)="saveElement($event.rowIndex, $event.element)"
-                          (stringRepresentationChanged)="putStringRepresentation(element, tcol, $event)"
           ></smc-table-cell>
         </td>
 
@@ -138,10 +138,10 @@
     <ng-container matColumnDef="expandedDetail" *ngIf="detailRowComponent">
       <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
         <div
-          [@detailExpand]="element === expandedElement ? 'expanded' : 'collapsed'"
+          [@detailExpand]="element === stateService.expandedElement ? 'expanded' : 'collapsed'"
           class="smt-element-detail">
           <smc-external-detail-component-wrapper
-            *ngIf="element === expandedElement || element === lastExpandedElement"
+            *ngIf="element === stateService.expandedElement || element === stateService.lastExpandedElement"
             [element]="element" [ngComponent]="detailRowComponent"
             [dataList]="data"
           ></smc-external-detail-component-wrapper>
