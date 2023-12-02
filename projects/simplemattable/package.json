@@ -32,7 +32,8 @@
     "angular 16",
     "angular 17",
     "material",
-    "form"
+    "form",
+    "virtual scroll"
   ],
   "peerDependencies": {
     "@angular/common": "^17.0.0",
