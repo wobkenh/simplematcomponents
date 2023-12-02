@@ -41,7 +41,11 @@ export class SlimComponent {
      */
     this.dataSimple = [];
     for (let i = 0; i < 10000; i++) {
-      this.dataSimple.push(new ComplexTestData(1 + i, 40 + i, 'test' + i, null, 'test2'));
+      this.dataSimple.push(new ComplexTestData(
+        1 + i, 40 + i,
+        'test' + i + ' this text is quite long, but will not break by default (white-space: nowrap)',
+        null, 'test2'
+      ));
     }
     this.columnsSimple = [
       new TableColumn<ComplexTestData, 'id'>('My ID', 'id'),

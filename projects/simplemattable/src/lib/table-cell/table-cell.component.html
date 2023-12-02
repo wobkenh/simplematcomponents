@@ -113,7 +113,7 @@
 
     <ng-container *ngSwitchCase="'text'">
       <!-- Standardcell: Icon + (Textarea or Span) -->
-      <div class="text-cell" [ngClass]="{'horizontal-padding': !(bpService.xs$ | async)}"
+      <div class="text-cell"
            [ngStyle]="tableColumnCellCssStyle">
         <mat-icon *ngIf="tableColumn.icon">{{iconName}}</mat-icon>
         <!-- Warning: Do not introduce linebreaks into the textareas content as they will be displayed -->
