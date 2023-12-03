@@ -14,6 +14,11 @@ export class SmcTableService<T> {
         return cols.filter(col => col.visible);
     }
 
+
+    public hasFooter(displayedColumns: TableColumn<T, any>[]) {
+        return displayedColumns.some(col => col.footer);
+    }
+
     public getColumnKey(col: TableColumn<T, any>, i: number) {
         return i.toString() + '_' + col.property;
     }

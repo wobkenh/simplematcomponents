@@ -92,6 +92,7 @@ export class SimplemattableSlimComponent<T> implements DoCheck, OnChanges {
   stateService: SmcStateService<T> = new SmcStateService<T>();
   selectionFormControls: Map<T, FormControl<boolean>> = new Map<T, FormControl<boolean>>();
   rowClass: string = 'smt-data-row';
+  hasFooter: boolean = false;
 
   // view childs
   @ViewChild(MatSort, {static: true})
@@ -110,6 +111,7 @@ export class SimplemattableSlimComponent<T> implements DoCheck, OnChanges {
   ngDoCheck(): void {
     if (this.tableService.checkForDifferences(this.oldColumns, this.columns)) {
       this.displayedColumns = this.tableService.getDisplayedCols(this.columns);
+      this.hasFooter = this.tableService.hasFooter(this.displayedColumns);
       this.displayedColumnKeys = this.displayedColumns.map(this.tableService.getColumnKey);
       if (this.selectable) {
         this.displayedColumnKeys = ['selection', ...this.displayedColumnKeys];
@@ -221,5 +223,24 @@ export class SimplemattableSlimComponent<T> implements DoCheck, OnChanges {
     if (this.detailRowComponent) {
       this.rowClass = this.rowClass + ' smt-element-row';
     }
+  }
+
+  selectAll() {
+    let newValue = true;
+    if (this.allSelected()) {
+      newValue = false;
+    }
+    for (const control of this.selectionFormControls.values()) {
+      control.patchValue(newValue);
+    }
+  }
+
+  private allSelected(): boolean {
+    for (const control of this.selectionFormControls.values()) {
+      if (!control.value) {
+        return false;
+      }
+    }
+    return true;
   }
 }

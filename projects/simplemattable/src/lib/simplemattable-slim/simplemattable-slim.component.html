@@ -3,14 +3,23 @@
          (matSortChange)="sortChanged($event)">
 
     <ng-container *ngIf="selectable" matColumnDef="selection">
-      <th mat-header-cell *matHeaderCellDef></th>
+      <th mat-header-cell *matHeaderCellDef>
+        <div class="overflow-container" [style.height]="itemSize + 'px'">
+          <button mat-icon-button (click)="selectAll()">
+            <mat-icon>select_all</mat-icon>
+          </button>
+        </div>
+      </th>
       <td mat-cell *matCellDef="let element;">
-        <div style="display: flex; align-items: center; justify-content: center; overflow: hidden;"
-             [style.height]="itemSize + 'px'">
+        <div class="overflow-container" [style.height]="itemSize + 'px'">
           <mat-checkbox [formControl]="selectionFormControls.get(element)"
                         (click)="$event.stopPropagation()"></mat-checkbox>
         </div>
       </td>
+      <ng-container *ngIf="hasFooter">
+        <!-- When footer row is activated, mat table will throw errors without footer cells in every column -->
+        <td mat-footer-cell *matFooterCellDef class="smt-footer-cell"></td>
+      </ng-container>
     </ng-container>
 
     <ng-container *ngFor="let col of columns; let columnIndex = index"
@@ -24,6 +33,11 @@
           [columnIndex]="columnIndex" [tableColumnInput]="col"
         ></smc-table-cell>
       </td>
+      <ng-container *ngIf="hasFooter">
+        <td mat-footer-cell *matFooterCellDef class="smt-footer-cell">
+          <smc-footer-cell *ngIf="col.footer" [tableColumnInput]="col" [dataParent]="data"></smc-footer-cell>
+        </td>
+      </ng-container>
     </ng-container>
 
     <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
@@ -50,6 +64,9 @@
         [style.height]="itemSize + 'px'" [ngClass]="rowClass"></tr>
     <ng-container *ngIf="detailRowComponent">
       <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="smt-detail-row"></tr>
+    </ng-container>
+    <ng-container *ngIf="hasFooter">
+      <tr mat-footer-row *matFooterRowDef="displayedColumnKeys" [style.height]="itemSize + 'px'"></tr>
     </ng-container>
   </table>
 </cdk-virtual-scroll-viewport>

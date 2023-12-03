@@ -70,7 +70,7 @@ export class FooterCellComponent<T> implements OnInit {
   }
 
   getCellCssClass(tcol: TableColumn<T, any>, elements: T[]): Object {
-    const defaultClass = { 'filler-div': true };
+    const defaultClass = { };
     let ngClass = null;
     if (tcol.footerNgClass) {
       const elementValues: any = elements.map(element => element[tcol.property]);

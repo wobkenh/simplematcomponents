@@ -48,9 +48,11 @@ export class SlimComponent {
       ));
     }
     this.columnsSimple = [
-      new TableColumn<ComplexTestData, 'id'>('My ID', 'id'),
+      new TableColumn<ComplexTestData, 'id'>('My ID', 'id')
+        .withFooter(ids => ids.reduce((acc, id) => acc + id, 0)),
       new TableColumn<ComplexTestData, 'value'>('My Value', 'value'),
       new TableColumn<ComplexTestData, 'description'>('My Text', 'description')
+        .withFooter(() => 'some footer text')
     ];
   }
 

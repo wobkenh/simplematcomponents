@@ -65,3 +65,16 @@ th:last-of-type {
 tr.smt-detail-row {
   height: 0;
 }
+
+.overflow-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.smt-footer-cell {
+  border-top-width: 1px;
+  border-top-color: var(--mat-table-row-item-outline-color, rgba(0, 0, 0, 0.12));
+  border-top-style: solid;
+}
