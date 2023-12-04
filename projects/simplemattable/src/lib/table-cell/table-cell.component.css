@@ -32,6 +32,11 @@
   width: 100%;
 }
 
+.text-span {
+  overflow: hidden;
+  text-overflow: ellipsis
+}
+
 .text-cell > *:not(:last-child) {
   margin-right: 5px;
 }

@@ -1,14 +1,14 @@
 <div class="display">
   <div>
-    <h2 id="slim">Slim (Virtual Scroll)</h2>
+    <h2 id="slim">Plain table with Virtual Scroll</h2>
     <p>If you have a lot of data you need to display at once because people are screaming at you that they do not like
-      pagination, you can use smc-simplemattable-slim as an alternative to smc-simplemattable. It uses virtual scrolling
-      from the cdk package to only render data visible in the current viewport. smc-simplemattable-slim can easily
+      pagination, you can use smc-simpletable as an alternative to smc-simplemattable. It uses virtual scrolling
+      from the cdk package to only render data visible in the current viewport. smc-simpletable can easily
       handle 10000 rows or more at once. The interface of both simplemattables is mostly identical, so it often can be
       used as a drop in replacement, but some features are not supported and some things need to be noticed when using
       the slim version:</p>
     <ul>
-      <li>simplemattable-slim always needs to get a height assigned from the outside. This can be a fixed height or e.g.
+      <li>simpletable always needs to get a height assigned from the outside. This can be a fixed height or e.g.
         a container with flex that uses e.g. the window height to fill available space
       </li>
       <li>Pagination is not supported (for obvious reasons)</li>
@@ -29,9 +29,9 @@
           Display
         </ng-template>
         <div class="smt-container">
-          <smc-simplemattable-slim [data]="dataSimple" [columns]="columnsSimple" style="height: 500px"
+          <smc-simpletable [data]="dataSimple" [columns]="columnsSimple" style="height: 500px"
                                    [selectable]="true" (selectionChange)="selectionChange($event)"
-                                   [detailRowComponent]="detailRowComponent"></smc-simplemattable-slim>
+                                   [detailRowComponent]="detailRowComponent"></smc-simpletable>
         </div>
       </mat-tab>
       <mat-tab>

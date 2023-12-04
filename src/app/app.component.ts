@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
       text: 'Simple'
     }, {
       link: '/slim',
-      text: 'Slim (Virtual Scrolling)'
+      text: 'Virtual Scrolling'
     }, {
       link: '/transform',
       text: 'Transform'

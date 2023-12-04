@@ -1,0 +1,69 @@
+<cdk-virtual-scroll-viewport style="flex: 1 1 auto" [itemSize]="itemSize + 1">
+  <table>
+    <thead>
+    <tr [style.height]="itemSize + 'px'">
+      <th [style.top]="inverseOfTranslation" *ngIf="selectable" style="z-index: 9999">
+        <div class="overflow-container" [style.height]="itemSize + 'px'">
+          <button mat-icon-button (click)="selectAll()">
+            <mat-icon>select_all</mat-icon>
+          </button>
+        </div>
+      </th>
+      <th [style.top]="inverseOfTranslation" *ngFor="let col of displayedColumns"
+          (click)="sortColumn(col)">
+        <div class="header-cell-container">
+          {{col.name}}
+          <ng-container *ngIf="currentSortColumn === col">
+            <mat-icon *ngIf="currentSortOrder === 'asc'">arrow_upward</mat-icon>
+            <mat-icon *ngIf="currentSortOrder === 'desc'">arrow_downward</mat-icon>
+          </ng-container>
+        </div>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-container *cdkVirtualFor="let element of data; let rowIndex = index">
+      <tr [ngClass]="rowClass" (click)="rowClicked(element)"
+          [style.height]="itemSize + 'px'">
+        <td *ngIf="selectable">
+          <div class="overflow-container" [style.height]="itemSize + 'px'">
+            <mat-checkbox [formControl]="selectionFormControls.get(element)"
+                          (click)="$event.stopPropagation()"></mat-checkbox>
+          </div>
+        </td>
+        <td *ngFor="let col of displayedColumns; let columnIndex = index">
+          <smc-table-cell
+            [stateService]="stateService" [dataParent]="element" [rowIndex]="rowIndex"
+            [minHeight]="itemSize"
+            [refreshTrigger]="refreshTrigger" [dataList]="data"
+            [columnIndex]="columnIndex" [tableColumnInput]="col"
+          ></smc-table-cell>
+        </td>
+      </tr>
+      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+      <tr class="smt-detail-row" *ngIf="detailRowComponent">
+        <td [colSpan]="columnCount">
+          <div
+            [@detailExpand]="element === stateService.expandedElement ? 'expanded' : 'collapsed'"
+            class="smt-element-detail">
+            <smc-external-detail-component-wrapper
+              *ngIf="element === stateService.expandedElement || element === stateService.lastExpandedElement"
+              [element]="element" [ngComponent]="detailRowComponent"
+              [dataList]="data"
+            ></smc-external-detail-component-wrapper>
+          </div>
+        </td>
+      </tr>
+    </ng-container>
+    </tbody>
+    <tfoot *ngIf="hasFooter">
+    <tr>
+      <td *ngIf="selectable"></td>
+      <td *ngFor="let col of displayedColumns; let columnIndex = index"
+          [style.height]="itemSize + 'px'">
+        <smc-footer-cell *ngIf="col.footer" [tableColumnInput]="col" [dataParent]="data"></smc-footer-cell>
+      </td>
+    </tr>
+    </tfoot>
+  </table>
+</cdk-virtual-scroll-viewport>

@@ -1,0 +1,112 @@
+:host {
+  display: flex;
+  justify-content: stretch;
+}
+
+.smt-data-row:hover {
+  background-color: rgba(200, 200, 200, 0.4);
+  cursor: pointer;
+}
+
+.smt-data-row td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+/* avoid line breaks in slim table because they change height */
+tr:not(.smt-detail-row) {
+  white-space: nowrap;
+}
+
+th {
+  background: white;
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 14px;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  position: sticky;
+  cursor: pointer;
+}
+
+/*
+  Default material padding is quite large.
+  We keep the padding at the start & end, but half the padding between the cells
+ */
+td:not(:first-of-type):not(:last-of-type) {
+  padding: 0 8px;
+}
+
+th:not(:first-of-type):not(:last-of-type) {
+  padding: 0 8px;
+}
+
+td:first-of-type {
+  padding: 0 8px 0 16px;
+}
+
+td:last-of-type {
+  padding: 0 16px 0 8px;
+}
+
+th:not(:first-of-type):not(:last-of-type) {
+  padding: 0 8px;
+}
+
+th:first-of-type {
+  padding: 0 8px 0 16px;
+}
+
+th:last-of-type {
+  padding: 0 16px 0 8px;
+}
+
+/*!***/
+/*  Turns off the translate that material uses for moving elements*/
+/*  we instead use a placeholder row (see ts)*/
+/* *!*/
+/*::ng-deep .cdk-virtual-scroll-content-wrapper {*/
+/*  transform: translateY(0px) !important;*/
+/*}*/
+
+.smt-element-detail {
+  overflow: hidden;
+}
+
+.smt-element-row td {
+  border-bottom-width: 0;
+}
+
+tr.smt-detail-row {
+  height: 0;
+}
+
+.smt-detail-row td {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.overflow-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.smt-footer-cell {
+  border-top-width: 1px;
+  border-top-color: var(--mat-table-row-item-outline-color, rgba(0, 0, 0, 0.12));
+  border-top-style: solid;
+}
+
+table {
+  border-collapse: separate;
+  background: white;
+  border-spacing: 0;
+}
+
+.header-cell-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

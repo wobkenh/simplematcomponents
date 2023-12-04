@@ -1,39 +1,17 @@
 import {ChangeDetectorRef, Component, DoCheck, EventEmitter, Input, OnChanges, Output, SimpleChanges, Type, ViewChild} from '@angular/core';
-import {SmcTableService} from '../smc-table.service';
 import {TableColumn} from '../model/table-column.model';
-import {MatSort, Sort} from '@angular/material/sort';
-import {CdkVirtualScrollViewport, FixedSizeVirtualScrollStrategy, VIRTUAL_SCROLL_STRATEGY} from '@angular/cdk/scrolling';
-import {GridTableDatasource} from '../grid-table.datasource';
-import {SmcStateService} from '../smc-state.service';
 import {DetailRowComponent} from '../model/detail-row-component';
-import {animate, state, style, transition, trigger} from '@angular/animations';
+import {SmcStateService} from '../smc-state.service';
 import {FormBuilder, FormControl} from '@angular/forms';
-
-const ROW_HEIGHT = 30;
-
-/**
- * Virtual Scroll Strategy
- */
-export class CustomVirtualScrollStrategy extends FixedSizeVirtualScrollStrategy {
-  constructor() {
-    super(ROW_HEIGHT, 0, 5000);
-  }
-
-  attach(viewport: CdkVirtualScrollViewport): void {
-    this.onDataLengthChanged();
-  }
-}
+import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
+import {SmcTableService} from '../smc-table.service';
+import {animate, state, style, transition, trigger} from '@angular/animations';
 
 @Component({
-  selector: 'smc-simplemattable-slim',
-  templateUrl: './simplemattable-slim.component.html',
-  styleUrl: './simplemattable-slim.component.css',
-  providers: [
-    {
-      provide: VIRTUAL_SCROLL_STRATEGY,
-      useClass: CustomVirtualScrollStrategy,
-    }
-  ], animations: [
+  selector: 'smc-simpletable',
+  templateUrl: './simpletable.component.html',
+  styleUrl: './simpletable.component.css',
+  animations: [
     trigger('detailExpand', [
       state('collapsed', style({height: '0px', minHeight: '0'})),
       state('expanded', style({height: '*'})),
@@ -41,8 +19,8 @@ export class CustomVirtualScrollStrategy extends FixedSizeVirtualScrollStrategy 
     ]),
   ],
 })
-export class SimplemattableSlimComponent<T> implements DoCheck, OnChanges {
-  // input
+export class SimpletableComponent<T> implements DoCheck, OnChanges {
+// input
   /**
    * Input. The data for your table.
    */
@@ -87,19 +65,17 @@ export class SimplemattableSlimComponent<T> implements DoCheck, OnChanges {
 
   // state
   displayedColumns: TableColumn<T, any>[];
-  displayedColumnKeys: string[];
+  columnCount: number = 0;
   private oldColumns: TableColumn<T, any>[] = []; // For dirty-checking
-  placeholderHeight = 0;
   refreshTrigger: number = 0;
-  dataSource: GridTableDatasource<T>;
   stateService: SmcStateService<T> = new SmcStateService<T>();
   selectionFormControls: Map<T, FormControl<boolean>> = new Map<T, FormControl<boolean>>();
   rowClass: string = 'smt-data-row';
   hasFooter: boolean = false;
+  currentSortColumn: TableColumn<T, any>;
+  currentSortOrder: 'asc' | 'desc';
 
   // view childs
-  @ViewChild(MatSort, {static: true})
-  matSort: MatSort;
   @ViewChild(CdkVirtualScrollViewport, {static: true})
   viewport: CdkVirtualScrollViewport;
 
@@ -110,15 +86,24 @@ export class SimplemattableSlimComponent<T> implements DoCheck, OnChanges {
   ) {
   }
 
+  public get inverseOfTranslation(): string {
+    if (!this.viewport) {
+      return '-0px';
+    }
+    const offset = this.viewport.getOffsetToRenderedContentStart();
+
+    return `-${offset}px`;
+  }
+
   // checks for column changes
   ngDoCheck(): void {
     if (this.tableService.checkForDifferences(this.oldColumns, this.columns)) {
       this.displayedColumns = this.tableService.getDisplayedCols(this.columns);
-      this.hasFooter = this.tableService.hasFooter(this.displayedColumns);
-      this.displayedColumnKeys = this.displayedColumns.map(this.tableService.getColumnKey);
+      this.columnCount = this.displayedColumns.length;
       if (this.selectable) {
-        this.displayedColumnKeys = ['selection', ...this.displayedColumnKeys];
+        this.columnCount++;
       }
+      this.hasFooter = this.tableService.hasFooter(this.displayedColumns);
       this.turnOffSorting(); // If columns are changed, resorting might cause bugs
       this.cleanUpAfterColChange();
       this.setRowClass();
@@ -127,7 +112,7 @@ export class SimplemattableSlimComponent<T> implements DoCheck, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.data) {
-      this.recreateDataSource();
+      this.recreateFormControls();
       this.refreshTrigger++;
     }
   }
@@ -137,26 +122,14 @@ export class SimplemattableSlimComponent<T> implements DoCheck, OnChanges {
   }
 
   private turnOffSorting() {
-    if (this.matSort.active) {
-      this.matSort.direction = '';
-      this.matSort.active = '';
-    }
+    delete this.currentSortOrder;
+    delete this.currentSortColumn;
   }
 
-  private recreateDataSource() {
-    this.dataSource = new GridTableDatasource(
-      this.data,
-      this.viewport,
-      this.itemSize,
-      this.pageSize,
-    );
-    this.dataSource.offsetChange.subscribe(offset => {
-      this.placeholderHeight = offset;
-    });
-    this.dataSource.data = this.data;
+  private recreateFormControls() {
     // selection
-    this.selectionFormControls.clear();
     if (this.selectable) {
+      this.selectionFormControls.clear();
       for (const datum of this.data) {
         this.selectionFormControls.set(datum, this.fb.control(false));
       }
@@ -172,30 +145,6 @@ export class SimplemattableSlimComponent<T> implements DoCheck, OnChanges {
         });
       }
     }
-  }
-
-
-  placeholderWhen(index: number, _: any) {
-    return index === 0;
-  }
-
-  sortChanged(sort: Sort) {
-    const index = sort.active.split('_')[0];
-    const col = this.displayedColumns[index];
-    this.data.sort((a, b) => {
-      const aText: string | number = this.getSortStringRepresentation(col, a);
-      const bText: string | number = this.getSortStringRepresentation(col, b);
-      if (aText > bText) {
-        return sort.direction === 'asc' ? 1 : -1;
-      } else if (bText > aText) {
-        return sort.direction === 'asc' ? -1 : 1;
-      }
-      if (this.sortFn) {
-        return this.sortFn(a, b);
-      }
-      return 0;
-    });
-    this.recreateDataSource();
   }
 
   private getSortStringRepresentation(col: TableColumn<T, any>, a: T): string | number {
@@ -245,5 +194,31 @@ export class SimplemattableSlimComponent<T> implements DoCheck, OnChanges {
       }
     }
     return true;
+  }
+
+  sortColumn(col: TableColumn<T, any>) {
+    if (this.currentSortColumn !== col) {
+      delete this.currentSortOrder;
+      this.currentSortColumn = col;
+    }
+    let direction: 'asc' | 'desc' = 'asc';
+    if (this.currentSortOrder === 'asc') {
+      direction = 'desc';
+    }
+    this.currentSortOrder = direction;
+    this.data.sort((a, b) => {
+      const aText: string | number = this.getSortStringRepresentation(col, a);
+      const bText: string | number = this.getSortStringRepresentation(col, b);
+      if (aText > bText) {
+        return direction === 'asc' ? 1 : -1;
+      } else if (bText > aText) {
+        return direction === 'asc' ? -1 : 1;
+      }
+      if (this.sortFn) {
+        return this.sortFn(a, b);
+      }
+      return 0;
+    });
+    this.data = this.data.slice(0);
   }
 }

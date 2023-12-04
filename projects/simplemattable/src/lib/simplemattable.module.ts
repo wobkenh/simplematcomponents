@@ -22,6 +22,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatDividerModule} from '@angular/material/divider';
 import {CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
 import {SimplemattableSlimComponent} from './simplemattable-slim/simplemattable-slim.component';
+import {SimpletableComponent} from './simpletable/simpletable.component';
 
 @NgModule({
     imports: [
@@ -54,8 +55,9 @@ import {SimplemattableSlimComponent} from './simplemattable-slim/simplemattable-
         FooterCellComponent,
         ExternalDetailComponentWrapperComponent,
         SimplemattableSlimComponent,
+        SimpletableComponent,
     ],
-    exports: [SimplemattableComponent, SimplemattableSlimComponent]
+    exports: [SimplemattableComponent, SimplemattableSlimComponent, SimpletableComponent]
 })
 export class SimplemattableModule {
 }

@@ -51,6 +51,40 @@ export class SlimComponent {
       new TableColumn<ComplexTestData, 'id'>('My ID', 'id')
         .withFooter(ids => ids.reduce((acc, id) => acc + id, 0)),
       new TableColumn<ComplexTestData, 'value'>('My Value', 'value'),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen((value / 10) % 20 + 10))
+        .withNgStyle(() => ({width: '200px'})),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen(20 - (value / 10) % 20 + 10))
+        .withNgStyle(() => ({width: '200px'})),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen((value / 10) % 20 + 10))
+        .withNgStyle(() => ({width: '200px'})),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen((value / 10) % 20 + 10))
+        .withNgStyle(() => ({width: '200px'})),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen((value / 10) % 20 + 10))
+        .withNgStyle(() => ({width: '200px'})),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen(20 - (value / 10) % 20 + 10)),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen((value / 10) % 20 + 10)),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen(20 - (value / 10) % 20 + 10)),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen((value / 10) % 20 + 10)),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen(20 - (value / 10) % 20 + 10)),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen((value / 10) % 20 + 10)),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen((value / 10) % 20 + 10)),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen((value / 10) % 20 + 10)),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen(20 - (value / 10) % 20 + 10)),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value'),
       new TableColumn<ComplexTestData, 'description'>('My Text', 'description')
         .withFooter(() => 'some footer text')
     ];
@@ -58,5 +92,13 @@ export class SlimComponent {
 
   selectionChange($event: any[]) {
     console.log('changed', $event);
+  }
+
+  private gen(number: number) {
+    let str = '';
+    for (let i = 0; i < number; i++) {
+      str += 'a';
+    }
+    return str;
   }
 }

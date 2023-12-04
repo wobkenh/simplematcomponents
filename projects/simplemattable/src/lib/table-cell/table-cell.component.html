@@ -124,9 +124,8 @@
                   [ngStyle]="inputCssStyle" class="empty-textarea"
                   [ngClass]="{'hidden': ((bpService.xs$ | async) && textHiddenXs) || (bpService.sm$ | async) && textHiddenSm}"
                   style="width: 100%; padding: 2px 0;">{{stringRepresentation}}</textarea>
-        <span style="padding: 2px 0"
-              [ngClass]="{'hidden': ((bpService.xs$ | async) && textHiddenXs) || (bpService.sm$ | async) && textHiddenSm}"
-              *ngIf="!tableColumn.maxLines && stringRepresentation">
+        <span [ngClass]="{'hidden': ((bpService.xs$ | async) && textHiddenXs) || (bpService.sm$ | async) && textHiddenSm}"
+              *ngIf="!tableColumn.maxLines && stringRepresentation" class="text-span">
                       {{stringRepresentation}}
                     </span>
       </div>
