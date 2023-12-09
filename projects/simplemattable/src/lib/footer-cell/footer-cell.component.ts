@@ -15,7 +15,6 @@ export class FooterCellComponent<T> implements OnInit {
   elements: T[];
   cellCssStyle: Object = {};
   cellCssClass: Object = {};
-  cellAlign: string = '';
   stringRepresentation: string | number = '';
   transformSubscription: Subscription;
 

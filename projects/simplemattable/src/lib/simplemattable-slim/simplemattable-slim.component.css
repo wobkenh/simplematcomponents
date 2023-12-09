@@ -8,6 +8,11 @@
   cursor: pointer;
 }
 
+.smt-data-row {
+  font-size: 14px;
+}
+
+
 .smt-data-row:hover {
   background-color: rgba(200, 200, 200, 0.4);
   cursor: pointer;

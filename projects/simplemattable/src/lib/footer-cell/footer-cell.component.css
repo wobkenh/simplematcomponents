@@ -1,16 +1,6 @@
-.filler-div {
-  height: 100%;
-  padding: 0 5px;
-}
-
-@media screen and (max-width: 599px) {
-  .filler-div {
-    padding: 0;
-  }
-}
-
 .footer {
   display: flex;
   flex-direction: row;
   align-items: center;
+  height: 100%;
 }
