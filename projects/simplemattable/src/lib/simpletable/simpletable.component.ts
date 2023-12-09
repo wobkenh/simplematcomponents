@@ -221,4 +221,18 @@ export class SimpletableComponent<T> implements DoCheck, OnChanges {
     });
     this.data = this.data.slice(0);
   }
+
+  /**
+   * Method used when a cell or a button is clicked.
+   * Executes the onClick function of the TableColumn.
+   *
+   * @param tcol Clicked Column
+   * @param element Clicked element
+   * @param event mouse event
+   */
+  onClick(tcol: TableColumn<T, any>, element: T, event: MouseEvent) {
+    if (tcol.onClick) {
+      tcol.onClick(element[tcol.property], element, this.data, event);
+    }
+  }
 }

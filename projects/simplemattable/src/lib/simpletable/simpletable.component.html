@@ -12,7 +12,7 @@
       <th [style.top]="inverseOfTranslation" *ngFor="let col of displayedColumns"
           (click)="sortColumn(col)">
         <div class="header-cell-container">
-          {{col.name}}
+          {{ col.name }}
           <ng-container *ngIf="currentSortColumn === col">
             <mat-icon *ngIf="currentSortOrder === 'asc'">arrow_upward</mat-icon>
             <mat-icon *ngIf="currentSortOrder === 'desc'">arrow_downward</mat-icon>
@@ -31,7 +31,8 @@
                           (click)="$event.stopPropagation()"></mat-checkbox>
           </div>
         </td>
-        <td *ngFor="let col of displayedColumns; let columnIndex = index">
+        <td *ngFor="let col of displayedColumns; let columnIndex = index"
+            (click)="onClick(col, element, $event)">
           <smc-table-cell
             [stateService]="stateService" [dataParent]="element" [rowIndex]="rowIndex"
             [minHeight]="itemSize"
