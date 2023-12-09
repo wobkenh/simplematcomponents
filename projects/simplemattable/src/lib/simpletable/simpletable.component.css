@@ -30,6 +30,10 @@ th {
   cursor: pointer;
 }
 
+td {
+  font-size: 14px;
+}
+
 /*
   Default material padding is quite large.
   We keep the padding at the start & end, but half the padding between the cells
@@ -108,5 +112,5 @@ table {
 .header-cell-container {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
