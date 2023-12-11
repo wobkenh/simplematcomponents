@@ -1,4 +1,18 @@
-import {ChangeDetectorRef, Component, DoCheck, EventEmitter, Input, OnChanges, Output, SimpleChanges, Type, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  DoCheck,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  Output,
+  SimpleChanges,
+  Type,
+  ViewChild
+} from '@angular/core';
 import {TableColumn} from '../model/table-column.model';
 import {DetailRowComponent} from '../model/detail-row-component';
 import {SmcStateService} from '../smc-state.service';
@@ -19,7 +33,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
     ]),
   ],
 })
-export class SimpletableComponent<T> implements DoCheck, OnChanges {
+export class SimpletableComponent<T> implements DoCheck, OnChanges, AfterViewInit, OnDestroy {
 // input
   /**
    * Input. The data for your table.
@@ -78,21 +92,30 @@ export class SimpletableComponent<T> implements DoCheck, OnChanges {
   // view childs
   @ViewChild(CdkVirtualScrollViewport, {static: true})
   viewport: CdkVirtualScrollViewport;
+  resizeObserver: ResizeObserver; // to refresh virtual scroll element
 
   constructor(
     private tableService: SmcTableService<T>,
     private changeDetectorRef: ChangeDetectorRef,
     private fb: FormBuilder,
+    private elementRef: ElementRef,
   ) {
   }
 
-  public get inverseOfTranslation(): string {
-    if (!this.viewport) {
-      return '-0px';
-    }
-    const offset = this.viewport.getOffsetToRenderedContentStart();
+  ngAfterViewInit(): void {
+    this.resizeObserver = new ResizeObserver(() => {
+      // cdk virtual scroll does not react to resize events of the element
+      // this can lead to problems, e.g. when using tabs and switching between tabs, which might change the
+      // height of the hidden tabs or restore the size of the visible tab
+      this.viewport.checkViewportSize();
+    });
+    this.resizeObserver.observe(this.elementRef.nativeElement);
+  }
 
-    return `-${offset}px`;
+  ngOnDestroy(): void {
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
   }
 
   // checks for column changes
@@ -115,6 +138,15 @@ export class SimpletableComponent<T> implements DoCheck, OnChanges {
       this.recreateFormControls();
       this.refreshTrigger++;
     }
+  }
+
+  public get inverseOfTranslation(): string {
+    if (!this.viewport) {
+      return '-0px';
+    }
+    const offset = this.viewport.getOffsetToRenderedContentStart();
+
+    return `-${offset}px`;
   }
 
   private cleanUpAfterColChange() {
