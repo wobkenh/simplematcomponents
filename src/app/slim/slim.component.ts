@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {ComplexTestData} from '../model/test-data.model';
 import {TableColumn} from '../../../projects/simplemattable/src/lib/model/table-column.model';
 import {ExpandableRowDetailComponent} from '../expandable-row-detail/expandable-row-detail.component';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'smc-slim',
@@ -28,11 +29,14 @@ export class SlimComponent {
     '];';
   html = '<smc-simplemattable-slim [data]="dataSimple" [columns]="columnsSimple" style="height: 500px"\n' +
     '                         [selectable]="true" (selectionChange)="selectionChange($event)"\n' +
+    '                         [footerRowClickable]="true" (footerRowClick)="click($event)"\n' +
     '                         [detailRowComponent]="detailRowComponent"></smc-simplemattable-slim>';
 
   detailRowComponent = ExpandableRowDetailComponent;
 
-  constructor() {
+  constructor(
+    private snackBar: MatSnackBar,
+  ) {
   }
 
   ngOnInit() {
@@ -100,5 +104,9 @@ export class SlimComponent {
       str += 'a';
     }
     return str;
+  }
+
+  click($event: any[]) {
+    this.snackBar.open('Footer was clicked!', 'Got it!');
   }
 }

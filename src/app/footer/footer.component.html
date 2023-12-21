@@ -4,7 +4,8 @@
     <h2 id="align">Footer row</h2>
     <p>Use the <code>withFooter</code> method on any TableColumn and a footer row will appear. Further customize the
       styling of your footer row using <code>footerRowNgStyle</code> and <code>footerRowNgClass</code> on simplemattable
-      and customize the styling of single footer cells using <code>withFooterNgStyle</code> and <code>withFooterNgClass</code>
+      and customize the styling of single footer cells using <code>withFooterNgStyle</code> and
+      <code>withFooterNgClass</code>
       on a table column.</p>
     <mat-tab-group>
       <mat-tab>
@@ -38,6 +39,52 @@
           <p>HTML</p>
           <mat-divider></mat-divider>
           <pre><code [highlight]="html"></code></pre>
+          <p>CSS</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="css"></code></pre>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
+<div class="display">
+  <div>
+    <h2>Clickable footer</h2>
+    <p>Use the <code>footerRowClickable</code> flag to make the footer appear clickable.
+      React to the <code>footerRowClick</code> output event to handle the click.</p>
+    <mat-tab-group>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>visibility</mat-icon>
+          Display
+        </ng-template>
+        <div class="smt-container">
+          <smc-simplemattable [data]="dataFooter" [columns]="columnsFooter" [footerRowClickable]="true"
+                              (footerRowClick)="click($event)"
+                              [footerRowNgClass]="getFooterRowClass"></smc-simplemattable>
+        </div>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>code</mat-icon>
+          Code
+        </ng-template>
+        <div class="code">
+          <p>Typescript - Type Definition</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="typescriptModelType"></code></pre>
+          <p>Typescript - Data</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="typescriptData"></code></pre>
+          <p>Typescript - Columns</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="typescriptColumns"></code></pre>
+          <p>Typescript - Methods</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="typescriptMethods"></code></pre>
+          <p>HTML</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="html2"></code></pre>
           <p>CSS</p>
           <mat-divider></mat-divider>
           <pre><code [highlight]="css"></code></pre>

@@ -58,7 +58,7 @@
     </ng-container>
     </tbody>
     <tfoot *ngIf="hasFooter">
-    <tr>
+    <tr (click)="footerRowClicked()" [ngStyle]="footerRowStyle" [ngClass]="footerRowClass">
       <td *ngIf="selectable"></td>
       <td *ngFor="let col of displayedColumns; let columnIndex = index"
           [style.height]="itemSize + 'px'">

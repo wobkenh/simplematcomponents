@@ -35,4 +35,15 @@ export class SmcTableService<T> {
     });
   }
 
+  public addClass(classes: string | string[] | Object, newClass: string): string | string[] | Object {
+    if (typeof classes === 'string') {
+      classes += ' ' + newClass;
+    } else if (Array.isArray(classes)) {
+      classes.push(newClass);
+    } else if (typeof classes === 'object') {
+      classes[newClass] = true;
+    }
+    return classes;
+  }
+
 }

@@ -766,6 +766,7 @@ You can find my email address in the [authors section](#authors).
 There will be new versions when new features are added or a new Angular version releases.
 
 History (Version in parentheses is required Angular Version):
++ 17.2: Clickable footer row
 + 17.1: added smc-simpletable for virtual scrolling support without material. Switched angular peer dependencies to >= instead of ^ for easier upgrading
 + 17.0: upgrade to angular 17
 + 16.3: add drag and drop for rows

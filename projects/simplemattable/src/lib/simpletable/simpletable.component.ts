@@ -76,6 +76,23 @@ export class SimpletableComponent<T> implements DoCheck, OnChanges, AfterViewIni
    * The emitted value is the model of the row that has been clicked.
    */
   @Output() rowClick: EventEmitter<T> = new EventEmitter<T>();
+  /**
+   * Event emitted when the user clicks the footer row.
+   * It is recommended to turn on the input parameter footerRowClickable for appropriate clickable styling.
+   * The emitted value is the data of the table.
+   */
+  @Output() footerRowClick: EventEmitter<T[]> = new EventEmitter<T[]>();
+  @Input() footerRowClickable: boolean = false;
+  /**
+   * Same as rowNgClass, but for the footer row.
+   * Default undefined.
+   */
+  @Input() footerRowNgClass: (data: T[]) => string | string[] | Object;
+  /**
+   * Same as rowNgStyle, but for the footer row.
+   * Default undefined.
+   */
+  @Input() footerRowNgStyle: (data: T[]) => Object;
 
   // state
   displayedColumns: TableColumn<T, any>[];
@@ -88,6 +105,8 @@ export class SimpletableComponent<T> implements DoCheck, OnChanges, AfterViewIni
   hasFooter: boolean = false;
   currentSortColumn: TableColumn<T, any>;
   currentSortOrder: 'asc' | 'desc';
+  footerRowClass: string | string[] | Object;
+  footerRowStyle: Object;
 
   // view childs
   @ViewChild(CdkVirtualScrollViewport, {static: true})
@@ -130,12 +149,16 @@ export class SimpletableComponent<T> implements DoCheck, OnChanges, AfterViewIni
       this.turnOffSorting(); // If columns are changed, resorting might cause bugs
       this.cleanUpAfterColChange();
       this.setRowClass();
+      this.footerRowClass = this.getFooterRowClass();
+      this.footerRowStyle = this.getFooterRowStyle();
     }
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.data) {
       this.recreateFormControls();
+      this.footerRowClass = this.getFooterRowClass();
+      this.footerRowStyle = this.getFooterRowStyle();
       this.refreshTrigger++;
     }
   }
@@ -200,6 +223,10 @@ export class SimpletableComponent<T> implements DoCheck, OnChanges, AfterViewIni
     this.rowClick.emit(row);
     this.stateService.setExpandedElement(row);
     this.changeDetectorRef.detectChanges();
+  }
+
+  footerRowClicked() {
+    this.footerRowClick.emit(this.data);
   }
 
   private setRowClass() {
@@ -267,4 +294,27 @@ export class SimpletableComponent<T> implements DoCheck, OnChanges, AfterViewIni
       tcol.onClick(element[tcol.property], element, this.data, event);
     }
   }
+
+  private getFooterRowClass(): string | string[] | Object {
+    if (this.footerRowNgClass) {
+      let classes = this.footerRowNgClass(this.data);
+      if (this.footerRowClickable) {
+        classes = this.tableService.addClass(classes, 'on-click');
+      }
+      return classes;
+    } else {
+      return {
+        'on-click': !!this.footerRowClickable,
+      };
+    }
+  }
+
+  private getFooterRowStyle(): string | string[] | Object {
+    if (this.footerRowNgStyle) {
+      return this.footerRowNgStyle(this.data);
+    } else {
+      return {};
+    }
+  }
+
 }

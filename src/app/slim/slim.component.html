@@ -30,8 +30,9 @@
         </ng-template>
         <div class="smt-container">
           <smc-simpletable [data]="dataSimple" [columns]="columnsSimple" style="height: 500px"
-                                   [selectable]="true" (selectionChange)="selectionChange($event)"
-                                   [detailRowComponent]="detailRowComponent"></smc-simpletable>
+                           [selectable]="true" (selectionChange)="selectionChange($event)"
+                           [footerRowClickable]="true" (footerRowClick)="click($event)"
+                           [detailRowComponent]="detailRowComponent"></smc-simpletable>
         </div>
       </mat-tab>
       <mat-tab>

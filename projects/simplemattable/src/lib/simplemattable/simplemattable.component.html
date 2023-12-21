@@ -159,7 +159,7 @@
     </ng-container>
     <ng-container *ngIf="hasFooter">
       <tr mat-footer-row *matFooterRowDef="displayedColumns" [ngClass]="getTableFooterRowClass()"
-          [ngStyle]="getTableFooterRowStyle()"></tr>
+          [ngStyle]="getTableFooterRowStyle()" (click)="footerRowClicked()"></tr>
     </ng-container>
   </table>
 

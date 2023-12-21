@@ -8,6 +8,11 @@
   cursor: pointer;
 }
 
+.on-click:hover {
+  background-color: rgba(200, 200, 200, 0.4);
+  cursor: pointer;
+}
+
 .smt-data-row td {
   overflow: hidden;
   text-overflow: ellipsis;

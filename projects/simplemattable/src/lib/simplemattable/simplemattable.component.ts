@@ -217,6 +217,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    * Default false.
    */
   @Input() rowClickable: boolean = false;
+  @Input() footerRowClickable: boolean = false;
   /**
    * Function to provide a style object for customization of row styling.
    * Default undefined.
@@ -324,6 +325,12 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    * The emitted value is the model of the row that has been clicked.
    */
   @Output() rowClick: EventEmitter<T> = new EventEmitter<T>();
+  /**
+   * Event emitted when the user clicks the footer row.
+   * It is recommended to turn on the input parameter footerRowClickable for appropriate clickable styling.
+   * The emitted value is the data of the table.
+   */
+  @Output() footerRowClick: EventEmitter<T[]> = new EventEmitter<T[]>();
   /**
    * Event emitted when the user has changed the sorting.
    * Emitted value is the new sort setting.
@@ -673,10 +680,10 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     if (this.rowNgClass) {
       let classes = this.rowNgClass(row, this.data);
       if (this.rowClickable) {
-        classes = this.addClass(classes, 'on-click');
+        classes = this.smcTableService.addClass(classes, 'on-click');
       }
       if (this.detailRowComponent) {
-        classes = this.addClass(classes, 'smt-element-row');
+        classes = this.smcTableService.addClass(classes, 'smt-element-row');
       }
       this.rowClassMap.set(row, classes);
       return classes;
@@ -687,22 +694,17 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     }
   }
 
-  private addClass(classes: string | string[] | Object, newClass: string): string | string[] | Object {
-    if (typeof classes === 'string') {
-      classes += ' ' + newClass;
-    } else if (Array.isArray(classes)) {
-      classes.push(newClass);
-    } else if (typeof classes === 'object') {
-      classes[newClass] = true;
-    }
-    return classes;
-  }
-
   getTableFooterRowClass(): string | string[] | Object {
     if (this.footerRowNgClass) {
-      return this.footerRowNgClass(this.data);
+      let classes = this.footerRowNgClass(this.data);
+      if (this.footerRowClickable) {
+        classes = this.smcTableService.addClass(classes, 'on-click');
+      }
+      return classes;
     } else {
-      return {};
+      return {
+        'on-click': !!this.footerRowClickable,
+      };
     }
   }
 
@@ -1361,6 +1363,10 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     this.rowClick.emit(row);
     this.stateService.setExpandedElement(row);
     this.clearCssCache();
+  }
+
+  footerRowClicked() {
+    this.footerRowClick.emit(this.data);
   }
 
   sortChanged(sortEvent: Sort) {

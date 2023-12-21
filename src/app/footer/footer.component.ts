@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { TableColumn } from '../../../projects/simplemattable/src/lib/model/table-column.model';
-import { Align } from '../../../projects/simplemattable/src/lib/model/align.model';
+import {Component, OnInit} from '@angular/core';
+import {TableColumn} from '../../../projects/simplemattable/src/lib/model/table-column.model';
+import {Align} from '../../../projects/simplemattable/src/lib/model/align.model';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'smc-footer',
@@ -51,8 +52,12 @@ export class FooterComponent implements OnInit {
 }`;
   html = `<smc-simplemattable [data]="dataFooter" [columns]="columnsFooter"
                     [footerRowNgStyle]="getFooterRowStyle"></smc-simplemattable>`;
+  html2 = `<smc-simplemattable [data]="dataFooter" [columns]="columnsFooter" [footerRowClickable]="true"
+                    [footerRowNgStyle]="getFooterRowStyle" (footerRowClick)="click($event)"></smc-simplemattable>`;
 
-  constructor() {
+  constructor(
+    private snackBar: MatSnackBar,
+  ) {
   }
 
   ngOnInit() {
@@ -78,7 +83,7 @@ export class FooterComponent implements OnInit {
         .withAlign(Align.RIGHT)
         .withTransform((value) => value + ' €')
         .withFooter((values) => values.reduce((acc, value) => acc + value, 0) + ' €')
-        .withFooterNgStyle(() => ({ background: 'rgba(0,0,0,.125)', borderRadius: '10px 10px 0 0' })),
+        .withFooterNgStyle(() => ({background: 'rgba(0,0,0,.125)', borderRadius: '10px 10px 0 0'})),
     ];
   }
 
@@ -86,6 +91,10 @@ export class FooterComponent implements OnInit {
     return 'my-footer';
   }
 
+  click($event: any[]) {
+    console.log('Data of table', $event);
+    this.snackBar.open('Footer was clicked!', 'Got it!');
+  }
 }
 
 export interface Product {
