@@ -333,7 +333,8 @@ export class SimpletableComponent<T> implements DoCheck, OnChanges, AfterViewIni
    * @param event mouse event
    */
   onClick(tcol: TableColumn<T, any>, element: T, event: MouseEvent) {
-    if (tcol.onClick) {
+    // button click will be handles by table cell
+    if (!tcol.button && tcol.onClick) {
       tcol.onClick(element[tcol.property], element, this.data, event);
     }
   }
