@@ -119,3 +119,24 @@ table {
   align-items: center;
   justify-content: flex-start;
 }
+
+/* the drag handle */
+.resizer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 5px;
+  height: 1000px;
+  cursor: col-resize;
+  user-select: none;
+}
+
+.resizer:hover,
+.resizing {
+  /* uses default material primary color */
+  border-right: 4px solid var(--mdc-filled-text-field-caret-color);
+}
+.resizable-table {
+  table-layout: fixed;
+  width: 100%;
+}

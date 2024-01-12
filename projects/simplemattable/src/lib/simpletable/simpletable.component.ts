@@ -93,6 +93,12 @@ export class SimpletableComponent<T> implements DoCheck, OnChanges, AfterViewIni
    * Default undefined.
    */
   @Input() footerRowNgStyle: (data: T[]) => Object;
+  /**
+   * true will turn the table into a table with fixed table layout
+   * This means columns will be fully resizable,
+   * but to get a decent default column width, you need to set the width on the table column
+   */
+  @Input() resizableColumns: boolean;
 
   // state
   displayedColumns: TableColumn<T, any>[];
@@ -113,6 +119,8 @@ export class SimpletableComponent<T> implements DoCheck, OnChanges, AfterViewIni
   viewport: CdkVirtualScrollViewport;
   resizeObserver: ResizeObserver; // to refresh virtual scroll element
 
+  resizing: boolean;
+
   constructor(
     private tableService: SmcTableService<T>,
     private changeDetectorRef: ChangeDetectorRef,
@@ -129,6 +137,37 @@ export class SimpletableComponent<T> implements DoCheck, OnChanges, AfterViewIni
       this.viewport.checkViewportSize();
     });
     this.resizeObserver.observe(this.elementRef.nativeElement);
+  }
+
+  addResizeMouseHandler(resizer: HTMLDivElement, th: HTMLTableCellElement, e: MouseEvent) {
+    // resizing works by applying a mousemove listener to the resizer div (drag handle)
+    // and then setting the width of the col on every mouse move
+    // mouseup (= user letting go of the handle) removes the listener
+    this.resizing = true;
+    const x = e.clientX;
+    const styles = window.getComputedStyle(th);
+    const w = parseInt(styles.width, 10);
+    const mouseMoveHandler = (e: MouseEvent) => {
+      const dx = e.clientX - x;
+      th.style.width = `${w + dx}px`;
+    };
+
+    const mouseUpHandler = () => {
+      resizer.classList.remove('resizing');
+      document.removeEventListener('mousemove', mouseMoveHandler);
+      document.removeEventListener('mouseup', mouseUpHandler);
+      setTimeout(() => {
+        // timeout because the click event from the sort header fires after
+        // this mouse up event, so if we want to block the click
+        // we need to keep the resize state a short while longer
+        this.resizing = false;
+      }, 100);
+    };
+
+    document.addEventListener('mousemove', mouseMoveHandler);
+    document.addEventListener('mouseup', mouseUpHandler);
+
+    resizer.classList.add('resizing');
   }
 
   ngOnDestroy(): void {
@@ -256,6 +295,10 @@ export class SimpletableComponent<T> implements DoCheck, OnChanges, AfterViewIni
   }
 
   sortColumn(col: TableColumn<T, any>) {
+    console.log('checked');
+    if (this.resizing) {
+      return;
+    }
     if (this.currentSortColumn !== col) {
       delete this.currentSortOrder;
       this.currentSortColumn = col;

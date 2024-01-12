@@ -3,6 +3,7 @@ import {ComplexTestData} from '../model/test-data.model';
 import {TableColumn} from '../../../projects/simplemattable/src/lib/model/table-column.model';
 import {ExpandableRowDetailComponent} from '../expandable-row-detail/expandable-row-detail.component';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {Width} from '../../../projects/simplemattable/src/lib/model/width.model';
 
 @Component({
   selector: 'smc-slim',
@@ -13,6 +14,7 @@ export class SlimComponent {
 // Simple Table
   dataSimple: ComplexTestData[] = [];
   columnsSimple: TableColumn<any, any>[] = [];
+  columnsSimple2: TableColumn<any, any>[] = [];
 
   // Code
   typescriptData = '  dataSimple: ComplexTestData[] = [];\n\n' +
@@ -22,15 +24,63 @@ export class SlimComponent {
     '      this.dataSimple.push(new ComplexTestData(1 + i, 40 + i, \'test\' + i, null, \'test2\'));\n' +
     '    }\n' +
     '  }';
-  typescriptColumns = 'this.columnsSimple = [\n' +
-    '  new TableColumn<ComplexTestData, \'id\'>(\'My ID\', \'id\'),\n' +
-    '  new TableColumn<ComplexTestData, \'value\'>(\'My Value\', \'value\'),\n' +
-    '  new TableColumn<ComplexTestData, \'description\'>(\'My Text\', \'description\')\n' +
-    '];';
+  typescriptColumns = `this.columnsSimple = [
+      new TableColumn<ComplexTestData, 'id'>('My ID', 'id')
+        .withFooter(ids => ids.reduce((acc, id) => acc + id, 0)),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value'),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen((value / 10) % 20 + 10))
+        .withNgStyle(() => ({width: '200px'})),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen(20 - (value / 10) % 20 + 10))
+        .withNgStyle(() => ({width: '200px'})),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen((value / 10) % 20 + 10))
+        .withNgStyle(() => ({width: '200px'})),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen((value / 10) % 20 + 10))
+        .withNgStyle(() => ({width: '200px'})),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen((value / 10) % 20 + 10))
+        .withNgStyle(() => ({width: '200px'})),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen(20 - (value / 10) % 20 + 10)),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen((value / 10) % 20 + 10)),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen(20 - (value / 10) % 20 + 10)),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen((value / 10) % 20 + 10)),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen(20 - (value / 10) % 20 + 10)),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen((value / 10) % 20 + 10)),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen((value / 10) % 20 + 10)),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen((value / 10) % 20 + 10)),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen(20 - (value / 10) % 20 + 10)),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value'),
+      new TableColumn<ComplexTestData, 'description'>('My Text', 'description')
+        .withFooter(() => 'some footer text')
+    ];`;
   html = '<smc-simplemattable-slim [data]="dataSimple" [columns]="columnsSimple" style="height: 500px"\n' +
     '                         [selectable]="true" (selectionChange)="selectionChange($event)"\n' +
     '                         [footerRowClickable]="true" (footerRowClick)="click($event)"\n' +
     '                         [detailRowComponent]="detailRowComponent"></smc-simplemattable-slim>';
+  html2 = `<smc-simpletable [data]="dataSimple" [columns]="columnsSimple2" style="height: 500px"
+                           [selectable]="true" (selectionChange)="selectionChange($event)"
+                           [resizableColumns]="true"
+                           [footerRowClickable]="true" (footerRowClick)="click($event)"></smc-simpletable>`;
+  typescriptColumns2 = `this.columnsSimple2 = [
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen((value / 10) % 20 + 10))
+        .withWidth(Width.px(200)),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen((value / 10) % 20 + 10)),
+    ];`;
+
 
   detailRowComponent = ExpandableRowDetailComponent;
 
@@ -51,6 +101,13 @@ export class SlimComponent {
         null, 'test2'
       ));
     }
+    this.columnsSimple2 = [
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen((value / 10) % 20 + 10))
+        .withWidth(Width.px(200)),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withTransform((value) => this.gen((value / 10) % 20 + 10)),
+    ];
     this.columnsSimple = [
       new TableColumn<ComplexTestData, 'id'>('My ID', 'id')
         .withFooter(ids => ids.reduce((acc, id) => acc + id, 0)),

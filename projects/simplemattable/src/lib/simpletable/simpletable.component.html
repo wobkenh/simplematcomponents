@@ -1,15 +1,15 @@
 <cdk-virtual-scroll-viewport style="flex: 1 1 auto" [itemSize]="itemSize + 1">
-  <table>
+  <table [ngClass]="resizableColumns ? 'resizable-table' : ''">
     <thead>
     <tr [style.height]="itemSize + 'px'">
-      <th [style.top]="inverseOfTranslation" *ngIf="selectable" style="z-index: 9999">
+      <th [style.top]="inverseOfTranslation" *ngIf="selectable" style="z-index: 9999; width: 40px">
         <div class="overflow-container" [style.height]="itemSize + 'px'">
           <button mat-icon-button (click)="selectAll()">
             <mat-icon>select_all</mat-icon>
           </button>
         </div>
       </th>
-      <th [style.top]="inverseOfTranslation" *ngFor="let col of displayedColumns"
+      <th #th [style.top]="inverseOfTranslation" [style.width]="col.width" *ngFor="let col of displayedColumns"
           (click)="sortColumn(col)">
         <div class="header-cell-container">
           {{ col.name }}
@@ -17,6 +17,8 @@
             <mat-icon *ngIf="currentSortOrder === 'asc'">arrow_upward</mat-icon>
             <mat-icon *ngIf="currentSortOrder === 'desc'">arrow_downward</mat-icon>
           </ng-container>
+          <div #resizer *ngIf="resizableColumns" class="resizer"
+               (mousedown)="addResizeMouseHandler(resizer, th, $event)"></div>
         </div>
       </th>
     </tr>

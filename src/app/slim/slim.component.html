@@ -55,3 +55,50 @@
     </mat-tab-group>
   </div>
 </div>
+
+<div class="display">
+  <div>
+    <h2 id="slim2">Resizable Plain Table with Virtual Scroll</h2>
+    <p>If even with the virtual scroll people are still screaming at you because they cannot resize the table colums
+      the same way they could in their windows 98 application they used for the last 25 years, you can set the
+      [resizeableColumn] parameter to true. This will set the table layout to fixed and make every column resizable
+      using
+      a handle bar on the right side of each cell. In contrast to table layout auto, table layout fixed will not
+      calculate
+      the column widths according to the content. So if you want anything but an equal distribution of the column
+      widths,
+      you need to set them yourself.</p>
+
+    <mat-tab-group>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>visibility</mat-icon>
+          Display
+        </ng-template>
+        <div class="smt-container">
+          <smc-simpletable [data]="dataSimple" [columns]="columnsSimple2" style="height: 500px"
+                           [selectable]="true" (selectionChange)="selectionChange($event)"
+                           [resizableColumns]="true"
+                           [footerRowClickable]="true" (footerRowClick)="click($event)"></smc-simpletable>
+        </div>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>code</mat-icon>
+          Code
+        </ng-template>
+        <div class="code">
+          <p>Typescript - Data</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="typescriptData"></code></pre>
+          <p>Typescript - Columns</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="typescriptColumns2"></code></pre>
+          <p>HTML</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="html2"></code></pre>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
