@@ -33,6 +33,7 @@
                            [selectable]="true" (selectionChange)="selectionChange($event)"
                            [footerRowClickable]="true" (footerRowClick)="click($event)"
                            [detailRowComponent]="detailRowComponent"></smc-simpletable>
+          <button mat-button (click)="resetData()">REMOVE FIRST ROW</button>
         </div>
       </mat-tab>
       <mat-tab>
@@ -47,6 +48,9 @@
           <p>Typescript - Columns</p>
           <mat-divider></mat-divider>
           <pre><code [highlight]="typescriptColumns"></code></pre>
+          <p>Typescript - Button</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="typescriptButton"></code></pre>
           <p>HTML</p>
           <mat-divider></mat-divider>
           <pre><code [highlight]="html"></code></pre>

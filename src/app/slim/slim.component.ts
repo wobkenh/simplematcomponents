@@ -65,10 +65,15 @@ export class SlimComponent {
       new TableColumn<ComplexTestData, 'description'>('My Text', 'description')
         .withFooter(() => 'some footer text')
     ];`;
+  typescriptButton = `  resetData() {
+    this.dataSimple.splice(0, 1);
+    this.dataSimple = this.dataSimple.slice(0);
+  }`;
   html = '<smc-simplemattable-slim [data]="dataSimple" [columns]="columnsSimple" style="height: 500px"\n' +
     '                         [selectable]="true" (selectionChange)="selectionChange($event)"\n' +
     '                         [footerRowClickable]="true" (footerRowClick)="click($event)"\n' +
-    '                         [detailRowComponent]="detailRowComponent"></smc-simplemattable-slim>';
+    '                         [detailRowComponent]="detailRowComponent"></smc-simplemattable-slim>\n' +
+    '<button mat-button (click)="resetData()">REMOVE FIRST ROW</button>';
   html2 = `<smc-simpletable [data]="dataSimple" [columns]="columnsSimple2" style="height: 500px"
                            [selectable]="true" (selectionChange)="selectionChange($event)"
                            [resizableColumns]="true"
@@ -165,5 +170,10 @@ export class SlimComponent {
 
   click($event: any[]) {
     this.snackBar.open('Footer was clicked!', 'Got it!');
+  }
+
+  resetData() {
+    this.dataSimple.splice(0, 1);
+    this.dataSimple = this.dataSimple.slice(0);
   }
 }

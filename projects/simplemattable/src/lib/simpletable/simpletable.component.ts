@@ -223,22 +223,37 @@ export class SimpletableComponent<T> implements DoCheck, OnChanges, AfterViewIni
   private recreateFormControls() {
     // selection
     if (this.selectable) {
-      this.selectionFormControls.clear();
+      // keep controls of datums that existed previously and still exist
+      // create controls for new datums
+      // remove (= do not carry over) controls for datums that were cleared
+      const newFormControlsMap = new Map<T, FormControl<boolean>>();
       for (const datum of this.data) {
-        this.selectionFormControls.set(datum, this.fb.control(false));
-      }
-      for (const control of this.selectionFormControls.values()) {
-        control.valueChanges.subscribe(() => {
-          const selectedElements: T[] = [];
-          this.selectionFormControls.forEach((c, element) => {
-            if (c.value) {
-              selectedElements.push(element);
-            }
+        const oldControl = this.selectionFormControls.get(datum);
+        if (oldControl) {
+          newFormControlsMap.set(datum, oldControl);
+        } else {
+          const newControl = this.fb.control(false);
+          newFormControlsMap.set(datum, newControl);
+          // only subscribe for new controls to avoid duplicate subscriptions
+          newControl.valueChanges.subscribe(() => {
+            this.emitSelected();
           });
-          this.selectionChange.emit(selectedElements);
-        });
+        }
       }
+      this.selectionFormControls = newFormControlsMap;
+      // old selected entries might have been removed. User needs to know this, so emit selected event
+      this.emitSelected();
     }
+  }
+
+  private emitSelected() {
+    const selectedElements: T[] = [];
+    this.selectionFormControls.forEach((c, element) => {
+      if (c.value) {
+        selectedElements.push(element);
+      }
+    });
+    this.selectionChange.emit(selectedElements);
   }
 
   private getSortStringRepresentation(col: TableColumn<T, any>, a: T): string | number {
