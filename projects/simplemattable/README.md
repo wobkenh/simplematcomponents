@@ -776,6 +776,7 @@ There will be new versions when new features are added or a new Angular version 
 
 History (Version in parentheses is required Angular Version):
 
++ 17.5: Add header tooltip to simpletable
 + 17.4: After a data update in virtual scroll simpletable, checked items that were not removed now stay checked instead of resetting
 + 17.3: Resizable columns in virtual scroll simpletable
 + 17.2: Clickable footer row

@@ -10,7 +10,7 @@
         </div>
       </th>
       <th #th [style.top]="inverseOfTranslation" [style.width]="col.width" *ngFor="let col of displayedColumns"
-          (click)="sortColumn(col)">
+          (click)="sortColumn(col)" [matTooltip]="col.headerTooltip" [matTooltipPosition]="col.headerTooltipPosition">
         <div class="header-cell-container">
           {{ col.name }}
           <ng-container *ngIf="currentSortColumn === col">
