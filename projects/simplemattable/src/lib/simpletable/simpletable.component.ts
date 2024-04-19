@@ -99,6 +99,11 @@ export class SimpletableComponent<T> implements DoCheck, OnChanges, AfterViewIni
    * but to get a decent default column width, you need to set the width on the table column
    */
   @Input() resizableColumns: boolean;
+  /**
+   * If true, a click on a row will select the row (= toggle the selection checkbox value)
+   * If false, only a click on the checkbox will select the row
+   */
+  @Input() selectOnRowClick: boolean;
 
   // state
   displayedColumns: TableColumn<T, any>[];
@@ -275,6 +280,9 @@ export class SimpletableComponent<T> implements DoCheck, OnChanges, AfterViewIni
 
   rowClicked(row: T) {
     this.rowClick.emit(row);
+    if (this.selectOnRowClick) {
+      this.selectionFormControls.get(row).patchValue(!this.selectionFormControls.get(row).value);
+    }
     this.stateService.setExpandedElement(row);
     this.changeDetectorRef.detectChanges();
   }
