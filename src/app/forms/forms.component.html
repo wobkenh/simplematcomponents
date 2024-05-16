@@ -19,6 +19,7 @@
           <button mat-raised-button (click)="logDataForm()" style="margin-bottom: 25px">Log Data to console</button>
           <smc-simplemattable [data]="dataForm" [columns]="columnsForm" [editable]="true" [deletable]="true"
                               [addable]="true" (add)="formAdd($event)" (delete)="formDelete($event)"
+                              [rowEditDisabledFn]="rowEditDisabled"
                               addTooltip="Adds a new Cell" saveTooltip="Save this row"
                               [deleteAllButton]="true" (deleteAll)="formDeleteAll($event)" [loading]="loading"
                               (edit)="formEdit($event)" [create]="createFn"></smc-simplemattable>
@@ -44,6 +45,43 @@
           <p>HTML</p>
           <mat-divider></mat-divider>
           <pre><code [highlight]="html"></code></pre>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+    <h2>Disable editing / deleting of certain rows</h2>
+    <p>
+      You can turn disable the editing and deleting of rows on a per row basis.
+      Use the rowEditDisabledFn and rowDeleteDisabledFn for that.
+    </p>
+    <mat-tab-group>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>visibility</mat-icon>
+          Display
+        </ng-template>
+        <div class="smt-container">
+          <smc-simplemattable [data]="dataForm" [columns]="columnsForm" [editable]="true" [deletable]="true"
+                              [addable]="true" (add)="formAdd($event)" (delete)="formDelete($event)"
+                              [rowEditDisabledFn]="rowEditDisabled"
+                              [rowDeleteDisabledFn]="rowDeleteDisabled"
+                              addTooltip="Adds a new Cell" saveTooltip="Save this row"
+                              [deleteAllButton]="true" (deleteAll)="formDeleteAll($event)" [loading]="loading"
+                              (edit)="formEdit($event)" [create]="createFn"></smc-simplemattable>
+        </div>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>code</mat-icon>
+          Code
+        </ng-template>
+        <div class="code">
+          <p>Typescript - Functions</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="typescriptFunctions"></code></pre>
+
+          <p>HTML</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="htmlRow"></code></pre>
         </div>
       </mat-tab>
     </mat-tab-group>

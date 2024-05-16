@@ -33,21 +33,21 @@
                   <!-- Buttoncells -->
                   <button *ngSwitchCase="buttonType.BASIC" mat-button [color]="tcol.headerButtonColor"
                           (click)="tcol.onHeaderClick(data, $event)" type="button">
-                    <mat-icon *ngIf="tcol.headerIcon">{{tcol.headerIcon}}</mat-icon>
-                    <span style="padding: 2px 0">{{tcol.name}}</span>
+                    <mat-icon *ngIf="tcol.headerIcon">{{ tcol.headerIcon }}</mat-icon>
+                    <span style="padding: 2px 0">{{ tcol.name }}</span>
                   </button>
                   <button *ngSwitchCase="buttonType.RAISED" mat-raised-button [color]="tcol.headerButtonColor"
                           (click)="tcol.onHeaderClick(data, $event)" type="button">
-                    <mat-icon *ngIf="tcol.headerIcon">{{tcol.headerIcon}}</mat-icon>
-                    <span style="padding: 2px 0">{{tcol.name}}</span>
+                    <mat-icon *ngIf="tcol.headerIcon">{{ tcol.headerIcon }}</mat-icon>
+                    <span style="padding: 2px 0">{{ tcol.name }}</span>
                   </button>
                   <button *ngSwitchCase="buttonType.ICON" mat-icon-button [color]="tcol.headerButtonColor"
                           (click)="tcol.onHeaderClick(data, $event)" type="button">
-                    <mat-icon *ngIf="tcol.headerIcon">{{tcol.headerIcon}}</mat-icon>
+                    <mat-icon *ngIf="tcol.headerIcon">{{ tcol.headerIcon }}</mat-icon>
                   </button>
                 </ng-container>
                 <ng-template #headerTextTemplate>
-                  {{tcol.name}}
+                  {{ tcol.name }}
                 </ng-template>
               </span>
               </div>
@@ -88,12 +88,12 @@
         <div class="filler-div" style="align-items: center; display: flex; justify-content: flex-end;">
           <button mat-icon-button *ngIf="addable" color="primary" (click)="startAddElement(); $event.stopPropagation()"
                   [disabled]="!!addedItem || addDisabled" type="button" [matTooltip]="addTooltip">
-            <mat-icon>{{addIcon ? addIcon : "add_box"}}</mat-icon>
+            <mat-icon>{{ addIcon ? addIcon : "add_box" }}</mat-icon>
           </button>
           <button mat-icon-button *ngIf="deleteAllButton" color="primary"
                   (click)="deleteAllElements(); $event.stopPropagation()" type="button"
                   [matTooltip]="deleteAllTooltip" [disabled]="deleteAllDisabled">
-            <mat-icon>{{deleteIcon ? deleteIcon : "delete"}}</mat-icon>
+            <mat-icon>{{ deleteIcon ? deleteIcon : "delete" }}</mat-icon>
           </button>
         </div>
       </th>
@@ -101,27 +101,27 @@
         <div style="display: flex;justify-content: flex-end; align-items: center" class="filler-div">
           <ng-container *ngIf="!isLoading(element)">
             <ng-container *ngIf="!isEditing(element)">
-              <button *ngIf="editable" mat-icon-button color="primary" type="button" [disabled]="editDisabled"
+              <button *ngIf="editable" mat-icon-button color="primary" type="button" [disabled]="rowEditDisabled(element)"
                       (click)="startEditElement(element, rowIndex); $event.stopPropagation()"
                       [matTooltip]="editTooltip">
-                <mat-icon>{{editIcon ? editIcon : "edit"}}</mat-icon>
+                <mat-icon>{{ editIcon ? editIcon : "edit" }}</mat-icon>
               </button>
               <button *ngIf="deletable && element !== addedItem" mat-icon-button color="primary"
-                      [disabled]="deleteDisabled"
+                      [disabled]="rowDeleteDisabled(element)"
                       [matTooltip]="deleteTooltip" (click)="deleteElement(element); $event.stopPropagation()"
                       type="button">
-                <mat-icon>{{deleteIcon ? deleteIcon : "delete"}}</mat-icon>
+                <mat-icon>{{ deleteIcon ? deleteIcon : "delete" }}</mat-icon>
               </button>
             </ng-container>
             <ng-container *ngIf="(editable || addable) && isEditing(element)">
               <button mat-icon-button color="primary" (click)="saveElement(rowIndex, element); $event.stopPropagation()"
                       [disabled]="!isFormValid(rowIndex) || saveDisabled" type="button" [matTooltip]="saveTooltip">
-                <mat-icon>{{saveIcon ? saveIcon : "save"}}</mat-icon>
+                <mat-icon>{{ saveIcon ? saveIcon : "save" }}</mat-icon>
               </button>
               <button mat-icon-button color="primary" (click)="cancelEditElement(element); $event.stopPropagation()"
                       type="button"
                       [matTooltip]="cancelTooltip" [disabled]="cancelDisabled">
-                <mat-icon>{{cancelIcon ? cancelIcon : "cancel"}}</mat-icon>
+                <mat-icon>{{ cancelIcon ? cancelIcon : "cancel" }}</mat-icon>
               </button>
             </ng-container>
           </ng-container>

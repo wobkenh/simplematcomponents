@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { ComplexTestData, TestData } from '../model/test-data.model';
-import { TableColumn } from 'projects/simplemattable/src/public_api';
+import {Component, OnInit} from '@angular/core';
+import {ComplexTestData, TestData} from '../model/test-data.model';
+import {TableColumn} from 'projects/simplemattable/src/public_api';
 
 @Component({
   selector: 'smc-forms',
@@ -80,11 +80,30 @@ formDeleteAll(data: any[]) {
 logDataForm() {
   console.log(this.dataForm);
 }`;
+
+  typescriptFunctions = `
+  rowEditDisabled: (element: ComplexTestData, data: any[]) => boolean = (element) => element.id < 2;
+  rowDeleteDisabled: (element: ComplexTestData, data: any[]) => boolean = (element) => element.id > 1;
+  `;
+
   html = `<button mat-raised-button (click)="logDataForm()" style="margin-bottom: 25px">Log Data to console</button>
 <smc-simplemattable [data]="dataForm" [columns]="columnsForm" [editable]="true" [deletable]="true"
                     [addable]="true" (add)="formAdd($event)" (delete)="formDelete($event)"
                     [deleteAllButton]="true" (deleteAll)="formDeleteAll($event)" [loading]="loading"
                     (edit)="formEdit($event)" [create]="createFn"></smc-simplemattable>`;
+
+  htmlRow = `
+  <smc-simplemattable [data]="dataForm" [columns]="columnsForm" [editable]="true" [deletable]="true"
+                    [addable]="true" (add)="formAdd($event)" (delete)="formDelete($event)"
+                    [rowEditDisabledFn]="rowEditDisabled"
+                    [rowDeleteDisabledFn]="rowDeleteDisabled"
+                    addTooltip="Adds a new Cell" saveTooltip="Save this row"
+                    [deleteAllButton]="true" (deleteAll)="formDeleteAll($event)" [loading]="loading"
+                    (edit)="formEdit($event)" [create]="createFn"></smc-simplemattable>
+`;
+
+  rowEditDisabled: (element: ComplexTestData, data: any[]) => boolean = (element) => element.id < 2;
+  rowDeleteDisabled: (element: ComplexTestData, data: any[]) => boolean = (element) => element.id > 1;
 
   constructor() {
   }

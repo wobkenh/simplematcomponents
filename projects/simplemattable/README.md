@@ -776,6 +776,7 @@ There will be new versions when new features are added or a new Angular version 
 
 History (Version in parentheses is required Angular Version):
 
++ 17.7: Add rowEditDisabledFn and rowDeleteDisabledFn to disable edit or delete on certain rows
 + 17.6: Add selectOnRowClick input to simpletable to allow selecting the row via click on any cell of the row
 + 17.5: Add header tooltip to simpletable
 + 17.4: After a data update in virtual scroll simpletable, checked items that were not removed now stay checked instead of resetting

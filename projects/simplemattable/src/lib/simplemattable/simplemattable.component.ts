@@ -122,6 +122,14 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    */
   @Input() editDisabled: boolean = false;
   /**
+   * Optional. Function to determine if a row is editable
+   */
+  @Input() rowEditDisabledFn: (element: T, data: T[]) => boolean;
+  /**
+   * Optional. Function to determine if a row is deletable
+   */
+  @Input() rowDeleteDisabledFn: (element: T, data: T[]) => boolean;
+  /**
    * True disables the save button. Default false.
    */
   @Input() saveDisabled: boolean = false;
@@ -351,6 +359,8 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   displayedColumns: string[] = [];
   dataSource: MatTableDataSource<T>;
   dataStatus: Map<T, DataStatus> = new Map<T, DataStatus>(); // to know whether or not a row is being edited
+  private editDisabledMap: Map<T, boolean> = new Map<T, boolean>(); // cache for edit-decision
+  private deleteDisabledMap: Map<T, boolean> = new Map<T, boolean>(); // cache for delete-decision
   private oldColumns: TableColumn<T, any>[] = []; // For dirty-checking
   addedItem: T = null;
   // There may only be one form control per cell
@@ -1377,4 +1387,33 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     return this.stateService.getStringRepresentation(tcol, data, this.data);
   }
 
+  rowEditDisabled(element: T) {
+    if (this.editDisabled) {
+      return true;
+    }
+    if (!this.rowEditDisabledFn) {
+      return false;
+    }
+    if (this.editDisabledMap.has(element)) {
+      return this.editDisabledMap.get(element);
+    }
+    const isDisabled = this.rowEditDisabledFn(element, this.data);
+    this.editDisabledMap.set(element, isDisabled);
+    return isDisabled;
+  }
+
+  rowDeleteDisabled(element: T) {
+    if (this.deleteDisabled) {
+      return true;
+    }
+    if (!this.rowDeleteDisabledFn) {
+      return false;
+    }
+    if (this.deleteDisabledMap.has(element)) {
+      return this.deleteDisabledMap.get(element);
+    }
+    const isDisabled = this.rowDeleteDisabledFn(element, this.data);
+    this.deleteDisabledMap.set(element, isDisabled);
+    return isDisabled;
+  }
 }
