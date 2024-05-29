@@ -1,9 +1,9 @@
 {
   "name": "simplealert",
   "license": "MIT",
-  "description": "A simple info/error/warn/success alert component for Angular 6+ using @angular/material",
+  "description": "A simple info/error/warn/success alert component for Angular using @angular/material",
   "author": "Henning Wobken",
-  "version": "17.0.0",
+  "version": "18.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/wobkenh/simplematcomponents"
@@ -22,12 +22,13 @@
     "Angular 14",
     "Angular 15",
     "Angular 16",
-    "Angular 17"
+    "Angular 17",
+    "Angular 18"
   ],
   "peerDependencies": {
-    "@angular/common": "^17.0.0",
-    "@angular/core": "^17.0.0",
-    "@angular/material": "^17.0.0",
-    "@angular/platform-browser": "^17.0.0"
+    "@angular/common": "^18.0.0",
+    "@angular/core": "^18.0.0",
+    "@angular/material": "^18.0.0",
+    "@angular/platform-browser": "^18.0.0"
   }
 }
