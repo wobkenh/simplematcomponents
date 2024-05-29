@@ -19,7 +19,6 @@
           <button mat-raised-button (click)="logDataForm()" style="margin-bottom: 25px">Log Data to console</button>
           <smc-simplemattable [data]="dataForm" [columns]="columnsForm" [editable]="true" [deletable]="true"
                               [addable]="true" (add)="formAdd($event)" (delete)="formDelete($event)"
-                              [rowEditDisabledFn]="rowEditDisabled"
                               addTooltip="Adds a new Cell" saveTooltip="Save this row"
                               [deleteAllButton]="true" (deleteAll)="formDeleteAll($event)" [loading]="loading"
                               (edit)="formEdit($event)" [create]="createFn"></smc-simplemattable>
@@ -33,18 +32,18 @@
         <div class="code">
           <p>Typescript - Data</p>
           <mat-divider></mat-divider>
-          <pre><code [highlight]="typescriptData"></code></pre>
+          <pre><code [highlight]="typescriptData" language="typescript"></code></pre>
           <p>Typescript - Columns</p>
           <mat-divider></mat-divider>
-          <pre><code [highlight]="typescriptColumns"></code></pre>
+          <pre><code [highlight]="typescriptColumns" language="typescript"></code></pre>
 
           <p>Typescript - Functions</p>
           <mat-divider></mat-divider>
-          <pre><code [highlight]="typescriptMethods"></code></pre>
+          <pre><code [highlight]="typescriptMethods" language="typescript"></code></pre>
 
           <p>HTML</p>
           <mat-divider></mat-divider>
-          <pre><code [highlight]="html"></code></pre>
+          <pre><code [highlight]="html" language="html"></code></pre>
         </div>
       </mat-tab>
     </mat-tab-group>
@@ -77,11 +76,11 @@
         <div class="code">
           <p>Typescript - Functions</p>
           <mat-divider></mat-divider>
-          <pre><code [highlight]="typescriptFunctions"></code></pre>
+          <pre><code [highlight]="typescriptFunctions" language="typescript"></code></pre>
 
           <p>HTML</p>
           <mat-divider></mat-divider>
-          <pre><code [highlight]="htmlRow"></code></pre>
+          <pre><code [highlight]="htmlRow" language="html"></code></pre>
         </div>
       </mat-tab>
     </mat-tab-group>

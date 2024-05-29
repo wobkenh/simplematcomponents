@@ -776,6 +776,7 @@ There will be new versions when new features are added or a new Angular version 
 
 History (Version in parentheses is required Angular Version):
 
++ 18.0: Upgrade to Angular 18
 + 17.7: Add rowEditDisabledFn and rowDeleteDisabledFn to disable edit or delete on certain rows
 + 17.6: Add selectOnRowClick input to simpletable to allow selecting the row via click on any cell of the row
 + 17.5: Add header tooltip to simpletable
@@ -873,11 +874,11 @@ History (Version in parentheses is required Angular Version):
 Simplemattable only uses peer dependencies, so for the newest version of simplemattable you need the following packages (with compatible versions) in your package.json:
 
 ```
-"@angular/common": "^17.0.0",
-"@angular/core": "^17.0.0",
-"@angular/material": "^17.0.0",
-"@angular/cdk": "^17.0.0",
-"@angular/platform-browser": "^17.0.0"
+"@angular/common": "^18.0.0",
+"@angular/core": "^18.0.0",
+"@angular/material": "^18.0.0",
+"@angular/cdk": "^18.0.0",
+"@angular/platform-browser": "^18.0.0"
 ```  
 
 + For use with Angular >= 6.0 and < 6.1.8, use Version 1.2 of simplemattable.
