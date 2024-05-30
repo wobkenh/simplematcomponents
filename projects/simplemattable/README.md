@@ -776,6 +776,7 @@ There will be new versions when new features are added or a new Angular version 
 
 History (Version in parentheses is required Angular Version):
 
++ 18.1: Add `onMouseEnter` and `onMouseLeave` to table column
 + 18.0: Upgrade to Angular 18
 + 17.7: Add rowEditDisabledFn and rowDeleteDisabledFn to disable edit or delete on certain rows
 + 17.6: Add selectOnRowClick input to simpletable to allow selecting the row via click on any cell of the row

@@ -59,6 +59,8 @@ export class TableColumn<T, P extends keyof T> {
   public footer: (data: T[P][], dataParent: T[]) => number | string | Observable<number | string>;
   public searchFn: (searchInput: string) => void;
   public filterFn: (searchInput: string, data: T[P], dataParent: T) => boolean;
+  public onMouseEnter: (data: T[P], dataParent: T, dataList: T[], event: MouseEvent) => void;
+  public onMouseLeave: (data: T[P], dataParent: T, dataList: T[], event: MouseEvent) => void;
 
   private colFilterText: ColFilterTextHolder = {
     applied: true,
@@ -351,6 +353,30 @@ export class TableColumn<T, P extends keyof T> {
    */
   public withOnClick(onClickFn: (data: T[P], dataParent: T, dataList: T[], event: MouseEvent) => void) {
     this.onClick = onClickFn;
+    return this;
+  }
+
+  /**
+   * OnMouseEnter enables the mouse listener for the table column. If the user moves the mouse into any cell of this column
+   * (excluding the header cell), the function onMouseEnter will be executed.
+   *
+   * @param onMouseEnterFn
+   * @returns this
+   */
+  public withOnMouseEnter(onMouseEnterFn: (data: T[P], dataParent: T, dataList: T[], event: MouseEvent) => void) {
+    this.onMouseEnter = onMouseEnterFn;
+    return this;
+  }
+
+  /**
+   * OnMouseLeave enables the mouse listener for the table column. If the user moves the mouse out of any cell of this column
+   * (excluding the header cell), the function onMouseLeave will be executed.
+   *
+   * @param onMouseLeaveFn
+   * @returns this
+   */
+  public withOnMouseLeave(onMouseLeaveFn: (data: T[P], dataParent: T, dataList: T[], event: MouseEvent) => void) {
+    this.onMouseLeave = onMouseLeaveFn;
     return this;
   }
 

@@ -340,6 +340,17 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
     return baseValue;
   }
 
+  onMouseEnter($event: MouseEvent) {
+    if (this.tableColumn.onMouseEnter) {
+      this.tableColumn.onMouseEnter(this.element[this.tableColumn.property], this.element, this.dataList, $event);
+    }
+  }
+
+  onMouseLeave($event: MouseEvent) {
+    if (this.tableColumn.onMouseLeave) {
+      this.tableColumn.onMouseLeave(this.element[this.tableColumn.property], this.element, this.dataList, $event);
+    }
+  }
 }
 
 type TableColumnDisplayType = 'text' | 'button' | 'directEdit' | 'form' | 'component';

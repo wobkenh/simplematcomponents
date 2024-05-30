@@ -46,6 +46,9 @@ export class AppComponent implements OnInit {
       link: '/icons-buttons',
       text: 'Icons and Buttons'
     }, {
+      link: '/hover',
+      text: 'Mouse Hover'
+    }, {
       link: '/multiline',
       text: 'Multiline'
     }, {

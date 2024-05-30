@@ -1,4 +1,5 @@
 <div [ngClass]="cellCssClass" [ngStyle]="cellCssStyle" [matTooltip]="tooltip"
+     (mouseenter)="onMouseEnter($event)" (mouseleave)="onMouseLeave($event)"
      [matTooltipPosition]="tableColumn.tooltipPosition" class="table-cell-container">
 
 

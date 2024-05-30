@@ -25,8 +25,9 @@ import {PlaygroundComponent} from './playground/playground.component';
 import {DragNDropColumnsComponent} from './drag-n-drop-columns/drag-n-drop-columns.component';
 import {FooterComponent} from './footer/footer.component';
 import {ExpandableRowsComponent} from './expandable-rows/expandable-rows.component';
-import { TooltipComponent } from './tooltip/tooltip.component';
+import {TooltipComponent} from './tooltip/tooltip.component';
 import {SlimComponent} from './slim/slim.component';
+import {HoverComponent} from './hover/hover.component';
 
 
 const routes: Routes = [
@@ -42,6 +43,7 @@ const routes: Routes = [
   {path: 'expandable-rows', component: ExpandableRowsComponent},
   {path: 'visibility', component: VisibilityComponent},
   {path: 'icons-buttons', component: IconsButtonsComponent},
+  {path: 'hover', component: HoverComponent},
   {path: 'multiline', component: MultilineComponent},
   {path: 'custom-css', component: CustomCssComponent},
   {path: 'tooltips', component: TooltipComponent},
