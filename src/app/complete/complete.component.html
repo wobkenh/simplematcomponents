@@ -133,6 +133,18 @@ const completeDateCol = new TableColumn&lt;ComplexTestData, 'data'&gt;('Date rig
   .withAlign(Align.RIGHT)
   .withColFilter();
 completeDateCol.withFormField(completeDateCol.getDateFormField()
+  .withDateFilterFn((date: Date) => {{"{"}}
+    if (!date) {{"{"}}
+      return false;
+    &#125;
+    if (date.getDate() === 15) {{"{"}}
+      return false;
+    &#125;
+    if (date.getTime() > new Date().getTime()) {{"{"}}
+      return false;
+    &#125;
+    return true;
+  &#125;)
   .withHint('Only past dates.')
   .withPlaceholder('Date')
   .withErrors([
