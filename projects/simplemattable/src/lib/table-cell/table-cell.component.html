@@ -70,7 +70,7 @@
                       (click)="$event.stopPropagation()">
         <!-- For whatever reason, you cant wrap the date picker input in a ng-container -->
         <input matInput [formControl]="$any(formControl)" [id]="inputId"
-               [ngStyle]="inputCssStyle" [matDatepicker]="picker"
+               [ngStyle]="inputCssStyle" [matDatepicker]="picker" [matDatepickerFilter]="$any(formField).dateFilterFn"
                [placeholder]="formField.placeholder"
                (keyup.enter)="save.emit({rowIndex: rowIndex, element: element})">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -163,7 +163,7 @@
         <!-- For whatever reason, you cant wrap the date picker input in a ng-container -->
         <input matInput [id]="inputId" [ngModel]="element[tableColumn.property]"
                (ngModelChange)="directEditElementChanged(tableColumn, element, $event)"
-               [ngStyle]="inputCssStyle" [matDatepicker]="picker"
+               [ngStyle]="inputCssStyle" [matDatepicker]="picker" [matDatepickerFilter]="$any(formField).dateFilterFn"
                [placeholder]="formField.placeholder">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>

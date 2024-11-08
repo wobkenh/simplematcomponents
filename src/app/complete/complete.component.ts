@@ -138,7 +138,19 @@ export class CompleteComponent implements OnInit {
       .withAlign(Align.RIGHT)
       .withColFilter();
     completeDateCol.withFormField(completeDateCol.getDateFormField()
-      .withHint('Only past dates.')
+      .withDateFilterFn((date: Date) => {
+        if (!date) {
+          return false;
+        }
+        if (date.getDate() === 15) {
+          return false;
+        }
+        if (date.getTime() > new Date().getTime()) {
+          return false;
+        }
+        return true;
+      })
+      .withHint('Only past dates and not the 15th.')
       .withPlaceholder('Date')
       .withErrors([
         {key: 'required', msg: 'Date is required!'},
@@ -153,7 +165,10 @@ export class CompleteComponent implements OnInit {
     );
     const completeMultilineCol = new TableColumn<ComplexTestData, 'notes'>('This header will take multiple lines to display the header', 'notes')
       .withColFilter();
-    this.columnsComplete = [completeIdCol, completeTestErrorCol, completeDesCol, completeDes2Col, completeValueCol, completeKeyCol, completeValCol, completeDateCol, completeMultilineCol];
+    this.columnsComplete = [
+      completeIdCol, completeTestErrorCol, completeDesCol, completeDes2Col, completeValueCol,
+      completeKeyCol, completeValCol, completeDateCol, completeMultilineCol
+    ];
 
   }
 
