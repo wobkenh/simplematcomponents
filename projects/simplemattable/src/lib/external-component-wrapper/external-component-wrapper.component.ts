@@ -3,7 +3,8 @@ import { Component, ComponentRef, Input, OnChanges, Type, ViewContainerRef } fro
 @Component({
   selector: 'smc-external-component-wrapper',
   templateUrl: './external-component-wrapper.component.html',
-  styleUrls: ['./external-component-wrapper.component.css']
+  styleUrls: ['./external-component-wrapper.component.css'],
+  standalone: false
 })
 export class ExternalComponentWrapperComponent implements OnChanges {
 

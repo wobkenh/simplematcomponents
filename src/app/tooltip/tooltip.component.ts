@@ -5,7 +5,8 @@ import { TableColumn } from '../../../projects/simplemattable/src/lib/model/tabl
 @Component({
   selector: 'smc-tooltip',
   templateUrl: './tooltip.component.html',
-  styleUrls: ['./tooltip.component.css']
+  styleUrls: ['./tooltip.component.css'],
+  standalone: false
 })
 export class TooltipComponent implements OnInit {
 

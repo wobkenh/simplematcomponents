@@ -1,15 +1,14 @@
-import {Component} from '@angular/core';
-import {MatDivider} from '@angular/material/divider';
-import {MatIcon} from '@angular/material/icon';
-import {MatTab, MatTabGroup, MatTabLabel} from '@angular/material/tabs';
-import {SimplemattableModule} from '../../../projects/simplemattable/src/lib/simplemattable.module';
-import {ComplexTestData} from '../model/test-data.model';
-import {TableColumn} from '../../../projects/simplemattable/src/lib/model/table-column.model';
-import {Highlight} from 'ngx-highlightjs';
+import { Component } from '@angular/core';
+import { MatDivider } from '@angular/material/divider';
+import { MatIcon } from '@angular/material/icon';
+import { MatTab, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
+import { SimplemattableModule } from '../../../projects/simplemattable/src/lib/simplemattable.module';
+import { ComplexTestData } from '../model/test-data.model';
+import { TableColumn } from '../../../projects/simplemattable/src/lib/model/table-column.model';
+import { Highlight } from 'ngx-highlightjs';
 
 @Component({
   selector: 'smc-hover',
-  standalone: true,
   imports: [
     MatDivider,
     MatIcon,
@@ -67,7 +66,7 @@ export class HoverComponent {
     this.columnsHover = [
       new TableColumn<ComplexTestData, 'id'>('My ID', 'id'),
       new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
-        .withNgStyle((value) => this.hoveredValue === value ? ({background: 'lightblue'}) : ({}))
+        .withNgStyle((value) => this.hoveredValue === value ? ({ background: 'lightblue' }) : ({}))
         .withOnMouseEnter((value, element, dataList, event) => {
           this.hoveredValue = value;
           this.dataHover = this.dataHover.slice(0);

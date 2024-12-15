@@ -13,13 +13,13 @@ import {
   Type,
   ViewChild
 } from '@angular/core';
-import {TableColumn} from '../model/table-column.model';
-import {DetailRowComponent} from '../model/detail-row-component';
-import {SmcStateService} from '../smc-state.service';
-import {FormBuilder, FormControl} from '@angular/forms';
-import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
-import {SmcTableService} from '../smc-table.service';
-import {animate, state, style, transition, trigger} from '@angular/animations';
+import { TableColumn } from '../model/table-column.model';
+import { DetailRowComponent } from '../model/detail-row-component';
+import { SmcStateService } from '../smc-state.service';
+import { FormBuilder, FormControl } from '@angular/forms';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { SmcTableService } from '../smc-table.service';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'smc-simpletable',
@@ -27,11 +27,12 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
   styleUrl: './simpletable.component.css',
   animations: [
     trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0'})),
-      state('expanded', style({height: '*'})),
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],
+  standalone: false
 })
 export class SimpletableComponent<T> implements DoCheck, OnChanges, AfterViewInit, OnDestroy {
 // input
@@ -120,7 +121,7 @@ export class SimpletableComponent<T> implements DoCheck, OnChanges, AfterViewIni
   footerRowStyle: Object;
 
   // view childs
-  @ViewChild(CdkVirtualScrollViewport, {static: true})
+  @ViewChild(CdkVirtualScrollViewport, { static: true })
   viewport: CdkVirtualScrollViewport;
   resizeObserver: ResizeObserver; // to refresh virtual scroll element
 

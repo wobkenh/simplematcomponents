@@ -1,6 +1,6 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {animate, state, style, transition, trigger} from '@angular/animations';
-import {AlertType, AlertTypeString} from './alert-type.model';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { AlertType, AlertTypeString } from './alert-type.model';
 
 @Component({
   selector: 'smc-simplealert',
@@ -8,8 +8,8 @@ import {AlertType, AlertTypeString} from './alert-type.model';
   styleUrls: ['./simplealert.component.css'],
   animations: [
     trigger('info-slide-in', [
-      state('true', style({display: 'block', opacity: 1, height: '*'})),
-      state('false', style({opacity: 0, height: 0, padding: 0, overflow: 'hidden'})),
+      state('true', style({ display: 'block', opacity: 1, height: '*' })),
+      state('false', style({ opacity: 0, height: 0, padding: 0, overflow: 'hidden' })),
       transition('false => true', [
         animate('700ms ease')
       ]),
@@ -17,7 +17,8 @@ import {AlertType, AlertTypeString} from './alert-type.model';
         animate('700ms ease-in'),
       ]),
     ]),
-  ]
+  ],
+  standalone: false
 })
 export class SimplealertComponent implements OnInit {
 

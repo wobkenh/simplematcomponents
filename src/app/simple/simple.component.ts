@@ -1,11 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {ComplexTestData} from '../model/test-data.model';
-import {TableColumn} from 'projects/simplemattable/src/public_api';
+import { Component, OnInit } from '@angular/core';
+import { ComplexTestData } from '../model/test-data.model';
+import { TableColumn } from 'projects/simplemattable/src/public_api';
 
 @Component({
   selector: 'smc-simple',
   templateUrl: './simple.component.html',
-  styleUrls: ['./simple.component.css']
+  styleUrls: ['./simple.component.css'],
+  standalone: false
 })
 export class SimpleComponent implements OnInit {
   // Simple Table

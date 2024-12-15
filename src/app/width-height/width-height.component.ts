@@ -1,11 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {TableColumn, Width, Height} from 'projects/simplemattable/src/public_api';
-import {ComplexTestData} from '../model/test-data.model';
+import { Component, OnInit } from '@angular/core';
+import { Height, TableColumn, Width } from 'projects/simplemattable/src/public_api';
+import { ComplexTestData } from '../model/test-data.model';
 
 @Component({
   selector: 'smc-width-height',
   templateUrl: './width-height.component.html',
-  styleUrls: ['./width-height.component.css']
+  styleUrls: ['./width-height.component.css'],
+  standalone: false
 })
 export class WidthHeightComponent implements OnInit {
 

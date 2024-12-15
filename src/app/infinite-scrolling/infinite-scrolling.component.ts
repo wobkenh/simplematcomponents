@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { TableColumn } from '../../../projects/simplemattable/src/lib/model/table-column.model';
 import { Observable, Subject } from 'rxjs';
 import { TestData } from '../model/test-data.model';
@@ -8,7 +8,8 @@ import { SimplemattableComponent } from '../../../projects/simplemattable/src/li
 @Component({
   selector: 'smc-infinite-scrolling',
   templateUrl: './infinite-scrolling.component.html',
-  styleUrls: ['./infinite-scrolling.component.css']
+  styleUrls: ['./infinite-scrolling.component.css'],
+  standalone: false
 })
 export class InfiniteScrollingComponent implements OnInit {
 

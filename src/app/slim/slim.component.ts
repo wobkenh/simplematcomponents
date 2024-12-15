@@ -1,14 +1,15 @@
-import {Component} from '@angular/core';
-import {ComplexTestData} from '../model/test-data.model';
-import {TableColumn} from '../../../projects/simplemattable/src/lib/model/table-column.model';
-import {ExpandableRowDetailComponent} from '../expandable-row-detail/expandable-row-detail.component';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {Width} from '../../../projects/simplemattable/src/lib/model/width.model';
+import { Component } from '@angular/core';
+import { ComplexTestData } from '../model/test-data.model';
+import { TableColumn } from '../../../projects/simplemattable/src/lib/model/table-column.model';
+import { ExpandableRowDetailComponent } from '../expandable-row-detail/expandable-row-detail.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Width } from '../../../projects/simplemattable/src/lib/model/width.model';
 
 @Component({
   selector: 'smc-slim',
   templateUrl: './slim.component.html',
-  styleUrl: './slim.component.css'
+  styleUrl: './slim.component.css',
+  standalone: false
 })
 export class SlimComponent {
 // Simple Table
@@ -119,19 +120,19 @@ export class SlimComponent {
       new TableColumn<ComplexTestData, 'value'>('My Value', 'value'),
       new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
         .withTransform((value) => this.gen((value / 10) % 20 + 10))
-        .withNgStyle(() => ({width: '200px'})),
+        .withNgStyle(() => ({ width: '200px' })),
       new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
         .withTransform((value) => this.gen(20 - (value / 10) % 20 + 10))
-        .withNgStyle(() => ({width: '200px'})),
+        .withNgStyle(() => ({ width: '200px' })),
       new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
         .withTransform((value) => this.gen((value / 10) % 20 + 10))
-        .withNgStyle(() => ({width: '200px'})),
+        .withNgStyle(() => ({ width: '200px' })),
       new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
         .withTransform((value) => this.gen((value / 10) % 20 + 10))
-        .withNgStyle(() => ({width: '200px'})),
+        .withNgStyle(() => ({ width: '200px' })),
       new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
         .withTransform((value) => this.gen((value / 10) % 20 + 10))
-        .withNgStyle(() => ({width: '200px'})),
+        .withNgStyle(() => ({ width: '200px' })),
       new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
         .withTransform((value) => this.gen(20 - (value / 10) % 20 + 10)),
       new TableColumn<ComplexTestData, 'value'>('My Value', 'value')

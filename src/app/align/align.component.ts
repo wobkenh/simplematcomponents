@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { TableColumn, Width, Align } from 'projects/simplemattable/src/public_api';
+import { Align, TableColumn, Width } from 'projects/simplemattable/src/public_api';
 import { ComplexTestData } from '../model/test-data.model';
 
 @Component({
   selector: 'smc-align',
   templateUrl: './align.component.html',
-  styleUrls: ['./align.component.css']
+  styleUrls: ['./align.component.css'],
+  standalone: false
 })
 export class AlignComponent implements OnInit {
 
@@ -30,7 +31,8 @@ export class AlignComponent implements OnInit {
     '];';
   html = '<smc-simplemattable [data]="dataAlign" [columns]="columnsAlign"></smc-simplemattable>';
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
     /*

@@ -4,7 +4,8 @@ import { AlertType } from 'projects/simplealert/src/public_api';
 @Component({
   selector: 'smc-alert',
   templateUrl: './alert.component.html',
-  styleUrls: ['./alert.component.css']
+  styleUrls: ['./alert.component.css'],
+  standalone: false
 })
 export class AlertComponent implements OnInit {
 
@@ -30,7 +31,8 @@ export class AlertComponent implements OnInit {
     this.isSuccessOpen = true;
   }
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }

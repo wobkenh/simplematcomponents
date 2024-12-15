@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { TestData, ComplexTestData } from '../model/test-data.model';
-import { TableColumn, ButtonType, Width, Height, Align } from 'projects/simplemattable/src/public_api';
-import { Validators, AbstractControl } from '@angular/forms';
+import { ComplexTestData, TestData } from '../model/test-data.model';
+import { Align, ButtonType, Height, TableColumn, Width } from 'projects/simplemattable/src/public_api';
+import { AbstractControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'smc-complete',
   templateUrl: './complete.component.html',
-  styleUrls: ['./complete.component.css']
+  styleUrls: ['./complete.component.css'],
+  standalone: false
 })
 export class CompleteComponent implements OnInit {
 
@@ -15,7 +16,8 @@ export class CompleteComponent implements OnInit {
   columnsComplete: TableColumn<any, any>[] = [];
   private id = 42;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
     const d1 = new Date();
@@ -82,25 +84,25 @@ export class CompleteComponent implements OnInit {
 
     completeValueCol.withFormField(completeValueCol.getSelectFormField<number>()
       .withOptions([
-        {display: '39', value: 39},
-        {display: '40', value: 40},
-        {display: '41', value: 41},
-        {display: 'eine lustige Zahl', value: 420}
+        { display: '39', value: 39 },
+        { display: '40', value: 40 },
+        { display: '41', value: 41 },
+        { display: 'eine lustige Zahl', value: 420 }
       ])
       .withValidators([Validators.required, Validators.min(25)])
       .withErrors([
-        {key: 'required', msg: 'Value is required!'},
-        {key: 'min', msg: 'Value should be at least 25!'}
+        { key: 'required', msg: 'Value is required!' },
+        { key: 'min', msg: 'Value should be at least 25!' }
       ]));
     const completeTestErrorCol = new TableColumn<ComplexTestData, 'data'>('Nested Value Select', 'data')
       .withTransform(data => data.value)
       .withAlign(Align.CENTER);
     completeTestErrorCol.withFormField(completeTestErrorCol.getSelectFormField<string>()
       .withOptions([
-        {display: 'Manatee', value: 'Manatee'},
-        {display: 'Dog', value: 'Dog'},
-        {display: 'Natalie Dormer', value: 'Natalie Dormer'},
-        {display: 'A Muffin', value: 'A Hotdog'},
+        { display: 'Manatee', value: 'Manatee' },
+        { display: 'Dog', value: 'Dog' },
+        { display: 'Natalie Dormer', value: 'Natalie Dormer' },
+        { display: 'A Muffin', value: 'A Hotdog' },
       ]).withPlaceholder('Sexiest Thing alive')
       .withInit(data => data.value)
       .withApply((value, data) => {
@@ -153,8 +155,8 @@ export class CompleteComponent implements OnInit {
       .withHint('Only past dates and not the 15th.')
       .withPlaceholder('Date')
       .withErrors([
-        {key: 'required', msg: 'Date is required!'},
-        {key: 'pastDate', msg: 'Date needs to be in the past!'}
+        { key: 'required', msg: 'Date is required!' },
+        { key: 'pastDate', msg: 'Date needs to be in the past!' }
       ])
       .withValidators([Validators.required, this.pastDateValidator])
       .withInit(data => data.date)
@@ -201,7 +203,7 @@ export class CompleteComponent implements OnInit {
     }, 2000);
   }
 
-  pastDateValidator = (control: AbstractControl) => control.value < new Date() ? null : {'pastDate': true};
+  pastDateValidator = (control: AbstractControl) => control.value < new Date() ? null : { 'pastDate': true };
 
   getDateStr = (date: Date) => (date.getDate() < 10 ? ('0' + date.getDate()) : date.getDate()) + '.' +
     (date.getMonth() < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)) + '.' + date.getFullYear();

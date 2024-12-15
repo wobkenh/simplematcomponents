@@ -1,10 +1,11 @@
-import {Component, ComponentRef, Input, OnChanges, Type, ViewContainerRef} from '@angular/core';
-import {DetailRowComponent} from '../model/detail-row-component';
+import { Component, ComponentRef, Input, OnChanges, Type, ViewContainerRef } from '@angular/core';
+import { DetailRowComponent } from '../model/detail-row-component';
 
 @Component({
   selector: 'smc-external-detail-component-wrapper',
   templateUrl: './external-detail-component-wrapper.component.html',
-  styleUrls: ['./external-detail-component-wrapper.component.css']
+  styleUrls: ['./external-detail-component-wrapper.component.css'],
+  standalone: false
 })
 export class ExternalDetailComponentWrapperComponent<T> implements OnChanges {
 

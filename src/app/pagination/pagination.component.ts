@@ -1,13 +1,14 @@
-import {Component, OnInit} from '@angular/core';
-import {PageSettings} from 'projects/simplemattable/src/lib/model/page-settings.model';
-import {TableColumn} from 'projects/simplemattable/src/public_api';
-import {TestData} from '../model/test-data.model';
-import {Observable, Subject} from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { PageSettings } from 'projects/simplemattable/src/lib/model/page-settings.model';
+import { TableColumn } from 'projects/simplemattable/src/public_api';
+import { TestData } from '../model/test-data.model';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'smc-pagination',
   templateUrl: './pagination.component.html',
-  styleUrls: ['./pagination.component.css']
+  styleUrls: ['./pagination.component.css'],
+  standalone: false
 })
 export class PaginationComponent implements OnInit {
 

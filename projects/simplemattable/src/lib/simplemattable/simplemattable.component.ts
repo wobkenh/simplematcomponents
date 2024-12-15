@@ -13,23 +13,23 @@ import {
   Type,
   ViewChild
 } from '@angular/core';
-import {TableColumn} from '../model/table-column.model';
-import {Align} from '../model/align.model';
-import {AbstractControl, UntypedFormBuilder, UntypedFormControl} from '@angular/forms';
-import {DataStatus} from '../model/data-status.model';
-import {Observable, Subscription} from 'rxjs';
-import {PageSettings} from '../model/page-settings.model';
-import {MatPaginator, PageEvent} from '@angular/material/paginator';
-import {MatTable, MatTableDataSource} from '@angular/material/table';
-import {MatSort, Sort} from '@angular/material/sort';
-import {Height} from '../model/height.model';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {animate, state, style, transition, trigger} from '@angular/animations';
-import {DetailRowComponent} from '../model/detail-row-component';
-import {ButtonType} from '../model/button-type.model';
-import {SmcBreakpointService} from '../smc-breakpoint.service';
-import {SmcTableService} from '../smc-table.service';
-import {SmcStateService} from '../smc-state.service';
+import { TableColumn } from '../model/table-column.model';
+import { Align } from '../model/align.model';
+import { AbstractControl, UntypedFormBuilder, UntypedFormControl } from '@angular/forms';
+import { DataStatus } from '../model/data-status.model';
+import { Observable, Subscription } from 'rxjs';
+import { PageSettings } from '../model/page-settings.model';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatSort, Sort } from '@angular/material/sort';
+import { Height } from '../model/height.model';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { DetailRowComponent } from '../model/detail-row-component';
+import { ButtonType } from '../model/button-type.model';
+import { SmcBreakpointService } from '../smc-breakpoint.service';
+import { SmcTableService } from '../smc-table.service';
+import { SmcStateService } from '../smc-state.service';
 
 @Component({
   selector: 'smc-simplemattable',
@@ -37,11 +37,12 @@ import {SmcStateService} from '../smc-state.service';
   styleUrls: ['./simplemattable.component.css'],
   animations: [
     trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0'})),
-      state('expanded', style({height: '*'})),
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],
+  standalone: false
 })
 export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, AfterViewInit {
 
@@ -352,8 +353,8 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
 
   matFrontendPaginator: MatPaginator;
   matBackendPaginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) matSort: MatSort;
-  @ViewChild(MatTable, {static: true}) matTable: MatTable<T>;
+  @ViewChild(MatSort, { static: true }) matSort: MatSort;
+  @ViewChild(MatTable, { static: true }) matTable: MatTable<T>;
   scrollContainer: ElementRef;
 
   displayedColumns: string[] = [];
@@ -698,7 +699,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
       this.rowClassMap.set(row, classes);
       return classes;
     } else {
-      const classes = {'on-click': !!this.rowClickable, 'smt-element-row': !!this.detailRowComponent};
+      const classes = { 'on-click': !!this.rowClickable, 'smt-element-row': !!this.detailRowComponent };
       this.rowClassMap.set(row, classes);
       return classes;
     }
@@ -822,7 +823,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     // so we can check if the id starts with the index to find all controls of that row
     const controls: { col: number, control: AbstractControl }[] = this.iteratorToArray(this.formControls.entries())
       .filter((entry) => entry[0].startsWith(rowIndex.toString()))
-      .map(entry => ({col: +(entry[0].split('_')[1]), control: entry[1]})); // need col index for later
+      .map(entry => ({ col: +(entry[0].split('_')[1]), control: entry[1] })); // need col index for later
     if (controls.some(control => !control.control.valid)) {
       return;
     }
@@ -933,7 +934,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
   getTextAlign = (align: Align): string => align === Align.LEFT ? 'start' : align === Align.CENTER ? 'center' : 'end';
   isCenterAlign = (tcol: TableColumn<T, any>): boolean => tcol.align === Align.CENTER;
   hasColumnFilter = (): boolean => this.smcTableService.getDisplayedCols(this.columns).some(tcol => tcol.colFilter);
-  getTableHeaderStyle = (): Object => this.hasColumnFilter() ? {height: '100%'} : {};
+  getTableHeaderStyle = (): Object => this.hasColumnFilter() ? { height: '100%' } : {};
   getTableClass = (): string => (this.sticky ? 'sticky-th' : 'non-sticky-th') + (this.isChrome ? ' chrome' : '');
 
   getOuterContainerStyle() {

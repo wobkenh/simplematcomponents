@@ -1,12 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {ComplexTestData} from '../model/test-data.model';
-import {TableColumn} from '../../../projects/simplemattable/src/lib/model/table-column.model';
-import {CustomTableCellComponent} from '../custom-table-cell/custom-table-cell.component';
+import { Component, OnInit } from '@angular/core';
+import { ComplexTestData } from '../model/test-data.model';
+import { TableColumn } from '../../../projects/simplemattable/src/lib/model/table-column.model';
+import { CustomTableCellComponent } from '../custom-table-cell/custom-table-cell.component';
 
 @Component({
   selector: 'smc-component-injection',
   templateUrl: './component-injection.component.html',
-  styleUrls: ['./component-injection.component.css']
+  styleUrls: ['./component-injection.component.css'],
+  standalone: false
 })
 export class ComponentInjectionComponent implements OnInit {
 

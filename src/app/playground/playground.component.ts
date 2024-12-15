@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {TableColumn} from '../../../projects/simplemattable/src/lib/model/table-column.model';
+import { Component, OnInit } from '@angular/core';
+import { TableColumn } from '../../../projects/simplemattable/src/lib/model/table-column.model';
 
 @Component({
   selector: 'smc-playground',
   templateUrl: './playground.component.html',
-  styleUrls: ['./playground.component.css']
+  styleUrls: ['./playground.component.css'],
+  standalone: false
 })
 export class PlaygroundComponent implements OnInit {
 
@@ -20,7 +21,7 @@ export class PlaygroundComponent implements OnInit {
     }
     this.columns = this.columns.slice(0);
     for (let i = 0; i < 20; i++) {
-      this.viewData.push({test: 'test' + i});
+      this.viewData.push({ test: 'test' + i });
     }
     this.viewData = this.viewData.slice(0);
   }

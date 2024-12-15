@@ -1,12 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {TableColumn} from '../../../projects/simplemattable/src/lib/model/table-column.model';
-import {Align} from '../../../projects/simplemattable/src/lib/model/align.model';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import { Component, OnInit } from '@angular/core';
+import { TableColumn } from '../../../projects/simplemattable/src/lib/model/table-column.model';
+import { Align } from '../../../projects/simplemattable/src/lib/model/align.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'smc-footer',
   templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.css']
+  styleUrls: ['./footer.component.css'],
+  standalone: false
 })
 export class FooterComponent implements OnInit {
 
@@ -83,7 +84,7 @@ export class FooterComponent implements OnInit {
         .withAlign(Align.RIGHT)
         .withTransform((value) => value + ' €')
         .withFooter((values) => values.reduce((acc, value) => acc + value, 0) + ' €')
-        .withFooterNgStyle(() => ({background: 'rgba(0,0,0,.125)', borderRadius: '10px 10px 0 0'})),
+        .withFooterNgStyle(() => ({ background: 'rgba(0,0,0,.125)', borderRadius: '10px 10px 0 0' })),
     ];
   }
 

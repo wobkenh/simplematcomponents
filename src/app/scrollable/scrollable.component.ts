@@ -5,7 +5,8 @@ import { ComplexTestData } from '../model/test-data.model';
 @Component({
   selector: 'smc-scrollable',
   templateUrl: './scrollable.component.html',
-  styleUrls: ['./scrollable.component.css']
+  styleUrls: ['./scrollable.component.css'],
+  standalone: false
 })
 export class ScrollableComponent implements OnInit {
 
@@ -36,7 +37,8 @@ export class ScrollableComponent implements OnInit {
   html = `<smc-simplemattable [data]="dataScrollable" [columns]="columnsScrollable"
                     [sticky]="true" style="height: 300px"></smc-simplemattable>`;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
     /*

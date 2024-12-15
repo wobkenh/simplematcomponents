@@ -7,7 +7,8 @@ import { isObservable, Observable, of, Subscription } from 'rxjs';
 @Component({
   selector: 'smc-footer-cell',
   templateUrl: './footer-cell.component.html',
-  styleUrls: ['./footer-cell.component.css']
+  styleUrls: ['./footer-cell.component.css'],
+  standalone: false
 })
 export class FooterCellComponent<T> implements OnInit {
 
@@ -69,7 +70,7 @@ export class FooterCellComponent<T> implements OnInit {
   }
 
   getCellCssClass(tcol: TableColumn<T, any>, elements: T[]): Object {
-    const defaultClass = { };
+    const defaultClass = {};
     let ngClass = null;
     if (tcol.footerNgClass) {
       const elementValues: any = elements.map(element => element[tcol.property]);

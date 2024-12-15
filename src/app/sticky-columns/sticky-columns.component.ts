@@ -1,11 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {ComplexTestData} from '../model/test-data.model';
-import {TableColumn} from '../../../projects/simplemattable/src/lib/model/table-column.model';
+import { Component, OnInit } from '@angular/core';
+import { ComplexTestData } from '../model/test-data.model';
+import { TableColumn } from '../../../projects/simplemattable/src/lib/model/table-column.model';
 
 @Component({
   selector: 'smc-sticky-columns',
   templateUrl: './sticky-columns.component.html',
-  styleUrls: ['./sticky-columns.component.css']
+  styleUrls: ['./sticky-columns.component.css'],
+  standalone: false
 })
 export class StickyColumnsComponent implements OnInit {
 

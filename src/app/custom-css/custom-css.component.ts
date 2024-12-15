@@ -5,7 +5,8 @@ import { ComplexTestData } from '../model/test-data.model';
 @Component({
   selector: 'smc-custom-css',
   templateUrl: './custom-css.component.html',
-  styleUrls: ['./custom-css.component.css']
+  styleUrls: ['./custom-css.component.css'],
+  standalone: false
 })
 export class CustomCssComponent implements OnInit {
 

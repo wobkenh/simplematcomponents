@@ -1,24 +1,25 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
-import {TableColumn} from '../model/table-column.model';
-import {ButtonType} from '../model/button-type.model';
-import {SaveEvent} from '../model/table-cell-events.model';
-import {AbstractControl, UntypedFormBuilder} from '@angular/forms';
-import {FormError} from '../model/form-error.model';
-import {ExternalComponentWrapperComponent} from '../external-component-wrapper/external-component-wrapper.component';
-import {AbstractFormField} from '../model/abstract-form-field.model';
-import {SelectFormFieldOption} from '../model/select-form-field-option.model';
-import {FormFieldType} from '../model/form-field-type.model';
-import {LargeTextFormField} from '../model/large-text-form-field.model';
-import {SelectFormField} from '../model/select-form-field.model';
-import {SmcUtilService} from '../smc-util.service';
-import {isObservable, Observable, of, Subscription} from 'rxjs';
-import {SmcBreakpointService} from '../smc-breakpoint.service';
-import {SmcStateService} from '../smc-state.service';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { TableColumn } from '../model/table-column.model';
+import { ButtonType } from '../model/button-type.model';
+import { SaveEvent } from '../model/table-cell-events.model';
+import { AbstractControl, UntypedFormBuilder } from '@angular/forms';
+import { FormError } from '../model/form-error.model';
+import { ExternalComponentWrapperComponent } from '../external-component-wrapper/external-component-wrapper.component';
+import { AbstractFormField } from '../model/abstract-form-field.model';
+import { SelectFormFieldOption } from '../model/select-form-field-option.model';
+import { FormFieldType } from '../model/form-field-type.model';
+import { LargeTextFormField } from '../model/large-text-form-field.model';
+import { SelectFormField } from '../model/select-form-field.model';
+import { SmcUtilService } from '../smc-util.service';
+import { isObservable, Observable, of, Subscription } from 'rxjs';
+import { SmcBreakpointService } from '../smc-breakpoint.service';
+import { SmcStateService } from '../smc-state.service';
 
 @Component({
   selector: 'smc-table-cell',
   templateUrl: './table-cell.component.html',
-  styleUrls: ['./table-cell.component.css']
+  styleUrls: ['./table-cell.component.css'],
+  standalone: false
 })
 export class TableCellComponent<T> implements OnInit, OnDestroy {
 
@@ -124,7 +125,7 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
 
   private updateTableColumn() {
     // Updates that only are affected by the table column
-    this.inputCssStyle = {'text-align': this.utilService.getTextAlign(this.tableColumn.align)};
+    this.inputCssStyle = { 'text-align': this.utilService.getTextAlign(this.tableColumn.align) };
     this.tableColumnCellCssStyle['justifyContent'] = this.utilService.getCellAlign(this.tableColumn.align);
     this.textHiddenXs = this.tableColumn.textHiddenXs || this.tableColumn.textHiddenSm;
     this.textHiddenSm = this.tableColumn.textHiddenSm;
@@ -149,7 +150,7 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
   }
 
   getCellCssClass(tcol: TableColumn<T, any>, element: T): Object {
-    const defaultClass = {'filler-div': true, 'on-click': (tcol.onClick && !tcol.button)};
+    const defaultClass = { 'filler-div': true, 'on-click': (tcol.onClick && !tcol.button) };
     const ngClass = tcol.ngClass ? tcol.ngClass(element[tcol.property], element, this.dataList) : null;
     return this.utilService.getCellCssClass(tcol, ngClass, defaultClass);
   }

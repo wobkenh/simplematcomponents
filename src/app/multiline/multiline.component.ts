@@ -5,7 +5,8 @@ import { ComplexTestData } from '../model/test-data.model';
 @Component({
   selector: 'smc-multiline',
   templateUrl: './multiline.component.html',
-  styleUrls: ['./multiline.component.css']
+  styleUrls: ['./multiline.component.css'],
+  standalone: false
 })
 export class MultilineComponent implements OnInit {
 
@@ -29,7 +30,8 @@ export class MultilineComponent implements OnInit {
 ];`;
   html = `<smc-simplemattable [data]="dataMultiline" [columns]="columnsMultiline"></smc-simplemattable>`;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
     /*

@@ -1,11 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {ComplexTestData, TestData} from '../model/test-data.model';
-import {TableColumn} from 'projects/simplemattable/src/public_api';
+import { Component, OnInit } from '@angular/core';
+import { ComplexTestData, TestData } from '../model/test-data.model';
+import { TableColumn } from 'projects/simplemattable/src/public_api';
 
 @Component({
   selector: 'smc-transform',
   templateUrl: './transform.component.html',
-  styleUrls: ['./transform.component.css']
+  styleUrls: ['./transform.component.css'],
+  standalone: false
 })
 export class TransformComponent implements OnInit {
 

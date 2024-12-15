@@ -1,11 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {ButtonType, TableColumn} from 'projects/simplemattable/src/public_api';
-import {ComplexTestData, TestData} from '../model/test-data.model';
+import { Component, OnInit } from '@angular/core';
+import { ButtonType, TableColumn } from 'projects/simplemattable/src/public_api';
+import { ComplexTestData, TestData } from '../model/test-data.model';
 
 @Component({
   selector: 'smc-icons-buttons',
   templateUrl: './icons-buttons.component.html',
-  styleUrls: ['./icons-buttons.component.css']
+  styleUrls: ['./icons-buttons.component.css'],
+  standalone: false
 })
 export class IconsButtonsComponent implements OnInit {
 

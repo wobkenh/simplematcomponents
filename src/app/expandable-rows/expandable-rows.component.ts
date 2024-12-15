@@ -1,12 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {ComplexTestData} from '../model/test-data.model';
-import {TableColumn} from '../../../projects/simplemattable/src/lib/model/table-column.model';
-import {ExpandableRowDetailComponent} from '../expandable-row-detail/expandable-row-detail.component';
+import { Component, OnInit } from '@angular/core';
+import { ComplexTestData } from '../model/test-data.model';
+import { TableColumn } from '../../../projects/simplemattable/src/lib/model/table-column.model';
+import { ExpandableRowDetailComponent } from '../expandable-row-detail/expandable-row-detail.component';
 
 @Component({
   selector: 'smc-expandable-rows',
   templateUrl: './expandable-rows.component.html',
-  styleUrls: ['./expandable-rows.component.css']
+  styleUrls: ['./expandable-rows.component.css'],
+  standalone: false
 })
 export class ExpandableRowsComponent implements OnInit {
 

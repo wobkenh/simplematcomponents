@@ -5,7 +5,8 @@ import { TableColumn } from 'projects/simplemattable/src/public_api';
 @Component({
   selector: 'smc-sortable',
   templateUrl: './sortable.component.html',
-  styleUrls: ['./sortable.component.css']
+  styleUrls: ['./sortable.component.css'],
+  standalone: false
 })
 export class SortableComponent implements OnInit {
 
@@ -38,7 +39,8 @@ this.dataSortable = [
 ];`;
   html = `<smc-simplemattable [data]="dataSortable" [columns]="columnsSortable" [sorting]="true"></smc-simplemattable>`;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
     const d1 = new Date();

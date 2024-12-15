@@ -5,7 +5,8 @@ import { ComplexTestData, TestData } from '../model/test-data.model';
 @Component({
   selector: 'smc-filter',
   templateUrl: './filter.component.html',
-  styleUrls: ['./filter.component.css']
+  styleUrls: ['./filter.component.css'],
+  standalone: false
 })
 export class FilterComponent implements OnInit {
 

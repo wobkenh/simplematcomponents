@@ -5,7 +5,8 @@ import { Align, ButtonType, TableColumn, Width } from 'projects/simplemattable/s
 @Component({
   selector: 'smc-direct-edit',
   templateUrl: './direct-edit.component.html',
-  styleUrls: ['./direct-edit.component.css']
+  styleUrls: ['./direct-edit.component.css'],
+  standalone: false
 })
 export class DirectEditComponent implements OnInit {
 

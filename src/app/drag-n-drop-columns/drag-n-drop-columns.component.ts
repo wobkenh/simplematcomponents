@@ -1,12 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {ComplexTestData} from '../model/test-data.model';
-import {TableColumn} from '../../../projects/simplemattable/src/lib/model/table-column.model';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import { Component, OnInit } from '@angular/core';
+import { ComplexTestData } from '../model/test-data.model';
+import { TableColumn } from '../../../projects/simplemattable/src/lib/model/table-column.model';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'smc-drag-n-drop-columns',
   templateUrl: './drag-n-drop-columns.component.html',
-  styleUrls: ['./drag-n-drop-columns.component.css']
+  styleUrls: ['./drag-n-drop-columns.component.css'],
+  standalone: false
 })
 export class DragNDropColumnsComponent implements OnInit {
 

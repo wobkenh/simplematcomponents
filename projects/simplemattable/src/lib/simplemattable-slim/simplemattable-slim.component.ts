@@ -1,13 +1,13 @@
-import {ChangeDetectorRef, Component, DoCheck, EventEmitter, Input, OnChanges, Output, SimpleChanges, Type, ViewChild} from '@angular/core';
-import {SmcTableService} from '../smc-table.service';
-import {TableColumn} from '../model/table-column.model';
-import {MatSort, Sort} from '@angular/material/sort';
-import {CdkVirtualScrollViewport, FixedSizeVirtualScrollStrategy, VIRTUAL_SCROLL_STRATEGY} from '@angular/cdk/scrolling';
-import {GridTableDatasource} from '../grid-table.datasource';
-import {SmcStateService} from '../smc-state.service';
-import {DetailRowComponent} from '../model/detail-row-component';
-import {animate, state, style, transition, trigger} from '@angular/animations';
-import {FormBuilder, FormControl} from '@angular/forms';
+import { ChangeDetectorRef, Component, DoCheck, EventEmitter, Input, OnChanges, Output, SimpleChanges, Type, ViewChild } from '@angular/core';
+import { SmcTableService } from '../smc-table.service';
+import { TableColumn } from '../model/table-column.model';
+import { MatSort, Sort } from '@angular/material/sort';
+import { CdkVirtualScrollViewport, FixedSizeVirtualScrollStrategy, VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
+import { GridTableDatasource } from '../grid-table.datasource';
+import { SmcStateService } from '../smc-state.service';
+import { DetailRowComponent } from '../model/detail-row-component';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { FormBuilder, FormControl } from '@angular/forms';
 
 const ROW_HEIGHT = 30;
 
@@ -35,11 +35,12 @@ export class CustomVirtualScrollStrategy extends FixedSizeVirtualScrollStrategy 
     }
   ], animations: [
     trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0'})),
-      state('expanded', style({height: '*'})),
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],
+  standalone: false
 })
 export class SimplemattableSlimComponent<T> implements DoCheck, OnChanges {
   // input
@@ -98,9 +99,9 @@ export class SimplemattableSlimComponent<T> implements DoCheck, OnChanges {
   hasFooter: boolean = false;
 
   // view childs
-  @ViewChild(MatSort, {static: true})
+  @ViewChild(MatSort, { static: true })
   matSort: MatSort;
-  @ViewChild(CdkVirtualScrollViewport, {static: true})
+  @ViewChild(CdkVirtualScrollViewport, { static: true })
   viewport: CdkVirtualScrollViewport;
 
   constructor(
