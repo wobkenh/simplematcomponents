@@ -204,6 +204,10 @@ export class SimpletableComponent<T> implements DoCheck, OnChanges, AfterViewIni
       this.footerRowClass = this.getFooterRowClass();
       this.footerRowStyle = this.getFooterRowStyle();
       this.refreshTrigger++;
+      if (this.currentSortColumn) {
+        // reapply sort
+        this.sortData(this.currentSortColumn, this.currentSortOrder);
+      }
     }
   }
 
@@ -318,7 +322,6 @@ export class SimpletableComponent<T> implements DoCheck, OnChanges, AfterViewIni
   }
 
   sortColumn(col: TableColumn<T, any>) {
-    console.log('checked');
     if (this.resizing) {
       return;
     }
@@ -331,6 +334,10 @@ export class SimpletableComponent<T> implements DoCheck, OnChanges, AfterViewIni
       direction = 'desc';
     }
     this.currentSortOrder = direction;
+    this.sortData(col, direction);
+  }
+
+  private sortData(col: TableColumn<T, any>, direction: 'asc' | 'desc') {
     this.data.sort((a, b) => {
       const aText: string | number = this.getSortStringRepresentation(col, a);
       const bText: string | number = this.getSortStringRepresentation(col, b);
