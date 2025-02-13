@@ -776,7 +776,7 @@ There will be new versions when new features are added or a new Angular version 
 
 History (Version in parentheses is required Angular Version):
 
-+ 19.1: Add MDC3 classes for buttons
++ 19.1: Add classes for buttons
 + 19.0: Upgrade to Angular 19
 + 18.2: Add `dateFilterFn` to date form field
 + 18.1: Add `onMouseEnter` and `onMouseLeave` to table column
