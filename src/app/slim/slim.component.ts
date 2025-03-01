@@ -14,6 +14,7 @@ import { Width } from '../../../projects/simplemattable/src/lib/model/width.mode
 export class SlimComponent {
 // Simple Table
   dataSimple: ComplexTestData[] = [];
+  dataSimple3: ComplexTestData[] = [];
   columnsSimple: TableColumn<any, any>[] = [];
   columnsSimple2: TableColumn<any, any>[] = [];
 
@@ -107,6 +108,14 @@ export class SlimComponent {
         null, 'test2'
       ));
     }
+    this.dataSimple3 = [];
+    for (let i = 0; i < 5; i++) {
+      this.dataSimple3.push(new ComplexTestData(
+        1 + i, 40 + i,
+        'test' + i + ' this text is quite long, but will not break by default (white-space: nowrap)',
+        null, 'test2'
+      ));
+    }
     this.columnsSimple2 = [
       new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
         .withTransform((value) => this.gen((value / 10) % 20 + 10))
@@ -176,5 +185,16 @@ export class SlimComponent {
   resetData() {
     this.dataSimple.splice(0, 1);
     this.dataSimple = this.dataSimple.slice(0);
+  }
+
+  addMoreRows() {
+    for (let i = 0; i < 5; i++) {
+      this.dataSimple3.push(new ComplexTestData(
+        1 + i, 40 + i,
+        'test' + i + ' this text is quite long, but will not break by default (white-space: nowrap)',
+        null, 'test2'
+      ));
+    }
+    this.dataSimple3 = this.dataSimple3.slice(0);
   }
 }

@@ -53,6 +53,15 @@ export class SimpletableComponent<T> implements DoCheck, OnChanges, AfterViewIni
    */
   @Input() pageSize: number = 40;
   /**
+   * If set to true, simpletable will try to change its height to a value appropriate for its content
+   * when data is set
+   */
+  @Input() autosize: boolean = false;
+  /**
+   * When autosize is activated, this caps the max size of the table
+   */
+  @Input() autosizeMaxHeight: number = 600;
+  /**
    * Additional sort to be performed if two elements equal
    */
   @Input() sortFn: (a: T, b: T) => number;
@@ -119,6 +128,7 @@ export class SimpletableComponent<T> implements DoCheck, OnChanges, AfterViewIni
   currentSortOrder: 'asc' | 'desc';
   footerRowClass: string | string[] | Object;
   footerRowStyle: Object;
+  autosizeHeight: number; // the height of the table that is appropriate for its content if autosize is activated
 
   // view childs
   @ViewChild(CdkVirtualScrollViewport, { static: true })
@@ -153,8 +163,8 @@ export class SimpletableComponent<T> implements DoCheck, OnChanges, AfterViewIni
     const x = e.clientX;
     const styles = window.getComputedStyle(th);
     const w = parseInt(styles.width, 10);
-    const mouseMoveHandler = (e: MouseEvent) => {
-      const dx = e.clientX - x;
+    const mouseMoveHandler = (eMove: MouseEvent) => {
+      const dx = eMove.clientX - x;
       th.style.width = `${w + dx}px`;
     };
 
@@ -196,6 +206,7 @@ export class SimpletableComponent<T> implements DoCheck, OnChanges, AfterViewIni
       this.setRowClass();
       this.footerRowClass = this.getFooterRowClass();
       this.footerRowStyle = this.getFooterRowStyle();
+      this.setAutosizeHeight(this.data?.length);
     }
   }
 
@@ -208,6 +219,11 @@ export class SimpletableComponent<T> implements DoCheck, OnChanges, AfterViewIni
       if (this.currentSortColumn) {
         // reapply sort
         this.sortData(this.currentSortColumn, this.currentSortOrder);
+      }
+      if (this.columnCount) {
+        // ngOnChanges happens before ngDoCheck.
+        // We need to react to data changes, but only after the first time the columns were initialized and the footer was checked
+        this.setAutosizeHeight(changes.data.currentValue?.length || 0);
       }
     }
   }
@@ -392,4 +408,16 @@ export class SimpletableComponent<T> implements DoCheck, OnChanges, AfterViewIni
     }
   }
 
+  private setAutosizeHeight(itemCount: number) {
+    if (!this.autosize) {
+      delete this.autosizeHeight;
+      return;
+    }
+    // +1 due to divider between rows
+    let height = this.itemSize + 1 + (itemCount || 0) * (this.itemSize + 1);
+    if (this.hasFooter) {
+      height += this.pageSize + 1;
+    }
+    this.autosizeHeight = Math.min(height, this.autosizeMaxHeight);
+  }
 }

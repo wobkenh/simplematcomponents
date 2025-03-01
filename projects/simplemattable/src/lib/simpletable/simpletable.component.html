@@ -1,4 +1,6 @@
-<cdk-virtual-scroll-viewport style="flex: 1 1 auto" [itemSize]="itemSize + 1">
+<cdk-virtual-scroll-viewport style="flex: 1 1 auto;"
+                             [ngStyle]="{height: autosizeHeight ? autosizeHeight + 'px' : undefined }"
+                             [itemSize]="itemSize + 1">
   <table [ngClass]="resizableColumns ? 'resizable-table' : ''">
     <thead>
     <tr [style.height]="itemSize + 'px'">

@@ -776,6 +776,7 @@ There will be new versions when new features are added or a new Angular version 
 
 History (Version in parentheses is required Angular Version):
 
++ 19.2: Add autosize for simpletable
 + 19.1: Add classes for buttons
 + 19.0: Upgrade to Angular 19
 + 18.2: Add `dateFilterFn` to date form field

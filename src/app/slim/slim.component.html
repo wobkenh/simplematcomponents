@@ -106,3 +106,48 @@
     </mat-tab-group>
   </div>
 </div>
+
+<div class="display">
+  <div>
+    <h2 id="slim3">Autosize Plain Table with Virtual Scroll</h2>
+    <p>Sometimes, there is no fitting height you can apply to the table, but you want the table to expand with the
+      content. For this, simpletable provides an autosize feature</p>
+
+    <mat-tab-group>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>visibility</mat-icon>
+          Display
+        </ng-template>
+        <div class="smt-container">
+          <p>This table autosizes up to 600px. Add more rows to see the max size.</p>
+          <button mat-raised-button (click)="addMoreRows()" style="margin-bottom: 12px">
+            <mat-icon>add</mat-icon>
+            ADD MORE ROWS
+          </button>
+          <smc-simpletable [data]="dataSimple3" [columns]="columnsSimple"
+                           [selectable]="true" (selectionChange)="selectionChange($event)"
+                           [autosize]="true" [autosizeMaxHeight]="600"
+                           [footerRowClickable]="true" (footerRowClick)="click($event)"></smc-simpletable>
+        </div>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>code</mat-icon>
+          Code
+        </ng-template>
+        <div class="code">
+          <p>Typescript - Data</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="typescriptData" language="typescript"></code></pre>
+          <p>Typescript - Columns</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="typescriptColumns2" language="typescript"></code></pre>
+          <p>HTML</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="html2" language="html"></code></pre>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
