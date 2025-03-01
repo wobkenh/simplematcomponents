@@ -1,5 +1,5 @@
 <cdk-virtual-scroll-viewport style="flex: 1 1 auto;"
-                             [ngStyle]="{height: autosizeHeight ? autosizeHeight + 'px' : undefined }"
+                             [ngStyle]="{height: autosizeHeight ? autosizeHeight + 'px' : undefined, minHeight: loading ? '180px' : undefined }"
                              [itemSize]="itemSize + 1">
   <table [ngClass]="resizableColumns ? 'resizable-table' : ''">
     <thead>
@@ -71,4 +71,16 @@
     </tr>
     </tfoot>
   </table>
+  @if (loading) {
+    <!-- Placeholder div with regular position within the virtual scolling content to fill enough space for the loading spinner: -->
+    @if (autosizeHeight > 0 && autosizeHeight < 180) {
+      <div [ngStyle]="{height: (180 - autosizeHeight) + 'px'}"></div>
+    }
+
+    <!-- Overlay containing the scrollbar which will span over both the table and the placeholder -->
+    <div class="loading-container">
+      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </div>
+  }
+
 </cdk-virtual-scroll-viewport>

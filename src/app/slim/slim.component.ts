@@ -17,6 +17,7 @@ export class SlimComponent {
   dataSimple3: ComplexTestData[] = [];
   columnsSimple: TableColumn<any, any>[] = [];
   columnsSimple2: TableColumn<any, any>[] = [];
+  loading = true;
 
   // Code
   typescriptData = '  dataSimple: ComplexTestData[] = [];\n\n' +
@@ -26,6 +27,21 @@ export class SlimComponent {
     '      this.dataSimple.push(new ComplexTestData(1 + i, 40 + i, \'test\' + i, null, \'test2\'));\n' +
     '    }\n' +
     '  }';
+  typescriptData3 = '  dataSimple3: ComplexTestData[] = [];\n\n' +
+    '  ngOnInit() {\n' +
+    '    this.dataSimple3 = [];\n' +
+    '  }\n' +
+    '  addMoreRows() {\n' +
+    '    for (let i = 0; i < 5; i++) {\n' +
+    '      this.dataSimple3.push(new ComplexTestData(\n' +
+    '        1 + i, 40 + i,\n' +
+    '        \'test\' + i + \' this text is quite long, but will not break by default (white-space: nowrap)\',\n' +
+    '        null, \'test2\'\n' +
+    '      ));\n' +
+    '    }\n' +
+    '    this.dataSimple3 = this.dataSimple3.slice(0);\n' +
+    '  }';
+  typescriptData4 = 'loading = true;';
   typescriptColumns = `this.columnsSimple = [
       new TableColumn<ComplexTestData, 'id'>('My ID', 'id')
         .withFooter(ids => ids.reduce((acc, id) => acc + id, 0)),
@@ -80,6 +96,22 @@ export class SlimComponent {
                            [selectable]="true" (selectionChange)="selectionChange($event)"
                            [resizableColumns]="true"
                            [footerRowClickable]="true" (footerRowClick)="click($event)"></smc-simpletable>`;
+  html3 = `          <button mat-raised-button (click)="addMoreRows()" style="margin-bottom: 12px">
+            <mat-icon>add</mat-icon>
+            ADD MORE ROWS
+          </button>
+          <smc-simpletable [data]="dataSimple3" [columns]="columnsSimple"
+                           [selectable]="true" (selectionChange)="selectionChange($event)"
+                           [autosize]="true" [autosizeMaxHeight]="600"
+                           [footerRowClickable]="true" (footerRowClick)="click($event)"></smc-simpletable>`;
+  html4 = `          <button mat-raised-button (click)="loading=!loading" style="margin-bottom: 12px">
+            <mat-icon>sync</mat-icon>
+            TOGGLE LOADING
+          </button>
+          <smc-simpletable [data]="[]" [columns]="columnsSimple" [loading]="loading"
+                           [selectable]="true" (selectionChange)="selectionChange($event)"
+                           [autosize]="true" [autosizeMaxHeight]="600"
+                           [footerRowClickable]="true" (footerRowClick)="click($event)"></smc-simpletable>`;
   typescriptColumns2 = `this.columnsSimple2 = [
       new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
         .withTransform((value) => this.gen((value / 10) % 20 + 10))
@@ -109,13 +141,6 @@ export class SlimComponent {
       ));
     }
     this.dataSimple3 = [];
-    for (let i = 0; i < 5; i++) {
-      this.dataSimple3.push(new ComplexTestData(
-        1 + i, 40 + i,
-        'test' + i + ' this text is quite long, but will not break by default (white-space: nowrap)',
-        null, 'test2'
-      ));
-    }
     this.columnsSimple2 = [
       new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
         .withTransform((value) => this.gen((value / 10) % 20 + 10))

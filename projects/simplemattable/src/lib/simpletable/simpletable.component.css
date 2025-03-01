@@ -140,3 +140,14 @@ table {
   table-layout: fixed;
   width: 100%;
 }
+
+.loading-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255,255,255,0.7);
+  z-index: 9999;
+  padding: 32px;
+}

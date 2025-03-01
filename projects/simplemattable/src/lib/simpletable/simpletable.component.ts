@@ -115,6 +115,11 @@ export class SimpletableComponent<T> implements DoCheck, OnChanges, AfterViewIni
    */
   @Input() selectOnRowClick: boolean;
 
+  /**
+   * When activated, will show a loading spinner over the table
+   */
+  @Input() loading: boolean;
+
   // state
   displayedColumns: TableColumn<T, any>[];
   columnCount: number = 0;

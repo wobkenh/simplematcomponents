@@ -139,13 +139,58 @@
         <div class="code">
           <p>Typescript - Data</p>
           <mat-divider></mat-divider>
-          <pre><code [highlight]="typescriptData" language="typescript"></code></pre>
+          <pre><code [highlight]="typescriptData3" language="typescript"></code></pre>
           <p>Typescript - Columns</p>
           <mat-divider></mat-divider>
-          <pre><code [highlight]="typescriptColumns2" language="typescript"></code></pre>
+          <pre><code [highlight]="typescriptColumns" language="typescript"></code></pre>
           <p>HTML</p>
           <mat-divider></mat-divider>
-          <pre><code [highlight]="html2" language="html"></code></pre>
+          <pre><code [highlight]="html3" language="html"></code></pre>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
+
+<div class="display">
+  <div>
+    <h2 id="slim4">Loading</h2>
+    <p>When set, the loading flag will display a loading spinner over the table. If in autosize the table is too small
+      to display the loading spinner, the table will expand by the necessary amount.</p>
+
+    <mat-tab-group>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>visibility</mat-icon>
+          Display
+        </ng-template>
+        <div class="smt-container">
+          <p>Click the button to toggle the loading state</p>
+          <button mat-raised-button (click)="loading=!loading" style="margin-bottom: 12px">
+            <mat-icon>sync</mat-icon>
+            TOGGLE LOADING
+          </button>
+          <smc-simpletable [data]="[]" [columns]="columnsSimple" [loading]="loading"
+                           [selectable]="true" (selectionChange)="selectionChange($event)"
+                           [autosize]="true" [autosizeMaxHeight]="600"
+                           [footerRowClickable]="true" (footerRowClick)="click($event)"></smc-simpletable>
+        </div>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon>code</mat-icon>
+          Code
+        </ng-template>
+        <div class="code">
+          <p>Typescript - Data</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="typescriptData4" language="typescript"></code></pre>
+          <p>Typescript - Columns</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="typescriptColumns" language="typescript"></code></pre>
+          <p>HTML</p>
+          <mat-divider></mat-divider>
+          <pre><code [highlight]="html4" language="html"></code></pre>
         </div>
       </mat-tab>
     </mat-tab-group>
