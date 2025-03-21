@@ -17,6 +17,14 @@
   background-color: rgba(150, 150, 150, 0.4);
 }
 
+.on-row-click {
+  cursor: pointer;
+}
+
+.on-row-click textarea {
+  cursor: pointer;
+}
+
 .filler-div {
   height: 100%;
 }

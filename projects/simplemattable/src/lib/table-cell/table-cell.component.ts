@@ -45,6 +45,8 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
   dataList: T[];
   @Input()
   stateService: SmcStateService<T>;
+  @Input()
+  rowClickable: boolean = false;
 
   // Outputs
   @Output()
@@ -150,7 +152,7 @@ export class TableCellComponent<T> implements OnInit, OnDestroy {
   }
 
   getCellCssClass(tcol: TableColumn<T, any>, element: T): Object {
-    const defaultClass = { 'filler-div': true, 'on-click': (tcol.onClick && !tcol.button) };
+    const defaultClass = { 'filler-div': true, 'on-click': (tcol.onClick && !tcol.button), 'on-row-click': this.rowClickable };
     const ngClass = tcol.ngClass ? tcol.ngClass(element[tcol.property], element, this.dataList) : null;
     return this.utilService.getCellCssClass(tcol, ngClass, defaultClass);
   }

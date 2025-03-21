@@ -39,7 +39,7 @@
             (click)="onClick(col, element, $event)">
           <smc-table-cell
             [stateService]="stateService" [dataParent]="element" [rowIndex]="rowIndex"
-            [minHeight]="itemSize"
+            [minHeight]="itemSize" [rowClickable]="true"
             [refreshTrigger]="refreshTrigger" [dataList]="data"
             [columnIndex]="columnIndex" [tableColumnInput]="col"
           ></smc-table-cell>
