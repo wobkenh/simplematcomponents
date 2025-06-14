@@ -1,13 +1,21 @@
 <div class="smc-simplealert-container" [@info-slide-in]="isOpenState">
   <div class="mat-elevation-z1 smc-simplealert"
-       [ngClass]="getAlertType() + '-box'">
+    [ngClass]="getAlertType() + '-box'">
     <div style="flex: 0 0 auto" class="hidden-xs">
-      <ng-container [ngSwitch]="getAlertType()">
-        <mat-icon *ngSwitchCase="'info'">info</mat-icon>
-        <mat-icon *ngSwitchCase="'error'">error</mat-icon>
-        <mat-icon *ngSwitchCase="'warn'">warning</mat-icon>
-        <mat-icon *ngSwitchCase="'success'">done</mat-icon>
-      </ng-container>
+      @switch (getAlertType()) {
+        @case ('info') {
+          <mat-icon>info</mat-icon>
+        }
+        @case ('error') {
+          <mat-icon>error</mat-icon>
+        }
+        @case ('warn') {
+          <mat-icon>warning</mat-icon>
+        }
+        @case ('success') {
+          <mat-icon>done</mat-icon>
+        }
+      }
     </div>
     <div style="flex: 1 1 auto">
       <ng-content></ng-content>

@@ -1,72 +1,81 @@
 <cdk-virtual-scroll-viewport style="flex: 1 1 auto">
   <table class="table" mat-table #table matSort [dataSource]="dataSource" [multiTemplateDataRows]="true"
-         (matSortChange)="sortChanged($event)">
+    (matSortChange)="sortChanged($event)">
 
-    <ng-container *ngIf="selectable" matColumnDef="selection">
-      <th mat-header-cell *matHeaderCellDef>
-        <div class="overflow-container" [style.height]="itemSize + 'px'">
-          <button mat-icon-button (click)="selectAll()">
-            <mat-icon>select_all</mat-icon>
-          </button>
-        </div>
-      </th>
-      <td mat-cell *matCellDef="let element;">
-        <div class="overflow-container" [style.height]="itemSize + 'px'">
-          <mat-checkbox [formControl]="selectionFormControls.get(element)"
-                        (click)="$event.stopPropagation()"></mat-checkbox>
-        </div>
-      </td>
-      <ng-container *ngIf="hasFooter">
-        <!-- When footer row is activated, mat table will throw errors without footer cells in every column -->
-        <td mat-footer-cell *matFooterCellDef class="smt-footer-cell"></td>
-      </ng-container>
-    </ng-container>
-
-    <ng-container *ngFor="let col of columns; let columnIndex = index"
-                  [matColumnDef]="columnIndex + '_' + col.property">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>{{col.name}}</th>
-      <td mat-cell *matCellDef="let element; let rowIndex = dataIndex;">
-        <smc-table-cell
-          [stateService]="stateService" [dataParent]="element" [rowIndex]="rowIndex"
-          [minHeight]="itemSize"
-          [refreshTrigger]="refreshTrigger" [dataList]="data"
-          [columnIndex]="columnIndex" [tableColumnInput]="col"
-        ></smc-table-cell>
-      </td>
-      <ng-container *ngIf="hasFooter">
-        <td mat-footer-cell *matFooterCellDef class="smt-footer-cell">
-          <smc-footer-cell *ngIf="col.footer" [tableColumnInput]="col" [dataParent]="data"></smc-footer-cell>
+    @if (selectable) {
+      <ng-container matColumnDef="selection">
+        <th mat-header-cell *matHeaderCellDef>
+          <div class="overflow-container" [style.height]="itemSize + 'px'">
+            <button mat-icon-button (click)="selectAll()">
+              <mat-icon>select_all</mat-icon>
+            </button>
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let element;">
+          <div class="overflow-container" [style.height]="itemSize + 'px'">
+            <mat-checkbox [formControl]="selectionFormControls.get(element)"
+            (click)="$event.stopPropagation()"></mat-checkbox>
+          </div>
         </td>
+        @if (hasFooter) {
+          <!-- When footer row is activated, mat table will throw errors without footer cells in every column -->
+          <td mat-footer-cell *matFooterCellDef class="smt-footer-cell"></td>
+        }
       </ng-container>
-    </ng-container>
+    }
+
+    @for (col of columns; track col; let columnIndex = $index) {
+      <ng-container
+        [matColumnDef]="columnIndex + '_' + col.property">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>{{col.name}}</th>
+        <td mat-cell *matCellDef="let element; let rowIndex = dataIndex;">
+          <smc-table-cell
+            [stateService]="stateService" [dataParent]="element" [rowIndex]="rowIndex"
+            [minHeight]="itemSize"
+            [refreshTrigger]="refreshTrigger" [dataList]="data"
+            [columnIndex]="columnIndex" [tableColumnInput]="col"
+          ></smc-table-cell>
+        </td>
+        @if (hasFooter) {
+          <td mat-footer-cell *matFooterCellDef class="smt-footer-cell">
+            @if (col.footer) {
+              <smc-footer-cell [tableColumnInput]="col" [dataParent]="data"></smc-footer-cell>
+            }
+          </td>
+        }
+      </ng-container>
+    }
 
     <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-    <ng-container matColumnDef="expandedDetail" *ngIf="detailRowComponent">
-      <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumnKeys.length">
-        <div
-          [@detailExpand]="element === stateService.expandedElement ? 'expanded' : 'collapsed'"
-          class="smt-element-detail">
-          <smc-external-detail-component-wrapper
-            *ngIf="element === stateService.expandedElement || element === stateService.lastExpandedElement"
-            [element]="element" [ngComponent]="detailRowComponent"
-            [dataList]="data"
-          ></smc-external-detail-component-wrapper>
-        </div>
-      </td>
-    </ng-container>
+    @if (detailRowComponent) {
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumnKeys.length">
+          <div
+            [@detailExpand]="element === stateService.expandedElement ? 'expanded' : 'collapsed'"
+            class="smt-element-detail">
+            @if (element === stateService.expandedElement || element === stateService.lastExpandedElement) {
+              <smc-external-detail-component-wrapper
+                [element]="element" [ngComponent]="detailRowComponent"
+                [dataList]="data"
+              ></smc-external-detail-component-wrapper>
+            }
+          </div>
+        </td>
+      </ng-container>
+    }
 
     <tr mat-header-row *matHeaderRowDef="displayedColumnKeys; sticky: true" [style.height]="itemSize + 'px'"></tr>
     <!-- cdkVirtualScrollViewport uses transform: translateY to correct for all elements that are removed.
     We will use a placeholder row in the table instead because the translate causes problems with the sticky header -->
     <tr [style.height.px]="placeholderHeight" mat-row
-        *matRowDef="let row; let index = index; columns: []; when: placeholderWhen"></tr>
+    *matRowDef="let row; let index = index; columns: []; when: placeholderWhen"></tr>
     <tr mat-row (click)="rowClicked(row)" *matRowDef="let row; columns: displayedColumnKeys"
-        [style.height]="itemSize + 'px'" [ngClass]="rowClass"></tr>
-    <ng-container *ngIf="detailRowComponent">
+    [style.height]="itemSize + 'px'" [ngClass]="rowClass"></tr>
+    @if (detailRowComponent) {
       <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="smt-detail-row"></tr>
-    </ng-container>
-    <ng-container *ngIf="hasFooter">
+    }
+    @if (hasFooter) {
       <tr mat-footer-row *matFooterRowDef="displayedColumnKeys" [style.height]="itemSize + 'px'"></tr>
-    </ng-container>
+    }
   </table>
 </cdk-virtual-scroll-viewport>

@@ -1,33 +1,35 @@
 <mat-toolbar color="primary" class="mat-elevation-z5 toolbar">
-  <button
-    type="button"
-    aria-label="Toggle sidenav"
-    mat-icon-button
-    (click)="drawer.toggle()"
-    *ngIf="isHandset$ | async">
-    <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-  </button>
+  @if (isHandset$ | async) {
+    <button
+      type="button"
+      aria-label="Toggle sidenav"
+      mat-icon-button
+      (click)="drawer.toggle()"
+      >
+      <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+    </button>
+  }
   <span class="hide-lt-md" style="flex: 0 0 auto; font-weight: bold; cursor: pointer" routerLink="/">Simple Material Components Demo</span>
   <span style="flex: 1 1 auto"></span>
   <span class="hide-lt-md" style="flex: 0 0 auto; font-weight: bold; margin-right: 15px">View on:</span>
   <a class="repo-links" href="https://github.com/wobkenh/simplematcomponents" target="_blank"><img
-    src="assets/github_logo_white.png" style="height: 40px"></a>
+  src="assets/github_logo_white.png" style="height: 40px"></a>
   <a class="repo-links" href="https://www.npmjs.com/package/simplemattable" target="_blank"><img
-    src="assets/npm_logo.svg" style="height: 25px"></a>
+  src="assets/npm_logo.svg" style="height: 25px"></a>
 </mat-toolbar>
 <mat-sidenav-container class="sidenav-container" [style.marginTop.px]="(isHandset$ | async) ? 56 : 64">
 
   <mat-sidenav #drawer fixedInViewport [fixedTopGap]="(isHandset$ | async) ? 56 : 64"
-               [mode]="(isHandset$ | async) ? 'over' : 'side'"
-               [opened]="(isHandset$ | async) === false">
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false">
     <mat-list>
       <h3 mat-subheader style="margin-top: 0">SimpleMatTable</h3>
 
-      <ng-container *ngFor="let item of simpleMatTableItems">
+      @for (item of simpleMatTableItems; track item) {
         <a mat-list-item class="nav-list-item" [routerLink]="item.link" routerLinkActive="active-link">
           <div mat-line style="margin-right: 20px">{{item.text}}</div>
         </a>
-      </ng-container>
+      }
       <mat-divider style="margin-top: 15px"></mat-divider>
       <h3 mat-subheader>SimpleAlert</h3>
       <a mat-list-item class="nav-list-item" routerLink="/alert" routerLinkActive="active-link">

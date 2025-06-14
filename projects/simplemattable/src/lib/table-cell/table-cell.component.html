@@ -1,6 +1,6 @@
 <div [ngClass]="cellCssClass" [ngStyle]="cellCssStyle" [matTooltip]="tooltip"
-     (mouseenter)="onMouseEnter($event)" (mouseleave)="onMouseLeave($event)"
-     [matTooltipPosition]="tableColumn.tooltipPosition" class="table-cell-container">
+  (mouseenter)="onMouseEnter($event)" (mouseleave)="onMouseLeave($event)"
+  [matTooltipPosition]="tableColumn.tooltipPosition" class="table-cell-container">
 
 
   <!--            Explanation for the hierarchy:-->
@@ -9,187 +9,246 @@
   <!--            3. Check if the cell is directly edited (= constantly editing). If yes, display as form field with ngModel-->
   <!--            4. Check if the cell is an external component. If yes, display as external component -->
   <!--            5. If previous checks failed, display as text/textarea-->
-  <ng-container [ngSwitch]="cellType">
-
-    <ng-container *ngSwitchCase="'button'" [ngSwitch]="tableColumn.button">
-      <!-- Buttoncells -->
-      <button *ngSwitchCase="buttonType.BASIC" mat-button [color]="tableColumn.buttonColor"
-              (click)="onClick(tableColumn, element, $event)" [disabled]="buttonDisabled"
-              type="button">
-        <mat-icon *ngIf="tableColumn.icon">{{iconName}}</mat-icon>
-        <span style="padding: 2px 0" *ngIf="stringRepresentation"
-              [ngClass]="{'hidden': ((bpService.xs$ | async) && textHiddenXs) || (bpService.sm$ | async) && textHiddenSm}">
+  @switch (cellType) {
+    @case ('button') {
+      @switch (tableColumn.button) {
+        <!-- Buttoncells -->
+        @case (buttonType.BASIC) {
+          <button mat-button [color]="tableColumn.buttonColor"
+            (click)="onClick(tableColumn, element, $event)" [disabled]="buttonDisabled"
+            type="button">
+            @if (tableColumn.icon) {
+              <mat-icon>{{iconName}}</mat-icon>
+            }
+            @if (stringRepresentation) {
+              <span style="padding: 2px 0"
+                [ngClass]="{'hidden': ((bpService.xs$ | async) && textHiddenXs) || (bpService.sm$ | async) && textHiddenSm}">
                 {{stringRepresentation}}
               </span>
-      </button>
-      <button *ngSwitchCase="buttonType.RAISED" mat-raised-button [color]="tableColumn.buttonColor"
-              (click)="onClick(tableColumn, element, $event)" [disabled]="buttonDisabled"
-              type="button">
-        <mat-icon *ngIf="tableColumn.icon">{{iconName}}</mat-icon>
-        <span style="padding: 2px 0" *ngIf="stringRepresentation"
-              [ngClass]="{'hidden': ((bpService.xs$ | async) && textHiddenXs) || (bpService.sm$ | async) && textHiddenSm}">
+            }
+          </button>
+        }
+        @case (buttonType.RAISED) {
+          <button mat-raised-button [color]="tableColumn.buttonColor"
+            (click)="onClick(tableColumn, element, $event)" [disabled]="buttonDisabled"
+            type="button">
+            @if (tableColumn.icon) {
+              <mat-icon>{{iconName}}</mat-icon>
+            }
+            @if (stringRepresentation) {
+              <span style="padding: 2px 0"
+                [ngClass]="{'hidden': ((bpService.xs$ | async) && textHiddenXs) || (bpService.sm$ | async) && textHiddenSm}">
                 {{stringRepresentation}}
               </span>
-      </button>
-      <button *ngSwitchCase="buttonType.ICON" mat-icon-button [color]="tableColumn.buttonColor"
-              (click)="onClick(tableColumn, element, $event)" [disabled]="buttonDisabled"
-              type="button">
-        <mat-icon *ngIf="tableColumn.icon">{{iconName}}</mat-icon>
-      </button>
-    </ng-container>
-
-    <ng-container *ngSwitchCase="'form'" [ngSwitch]="formField.formType">
-      <mat-form-field *ngSwitchCase="formFieldType.TEXT" class="form-field"
-                      (keyup.enter)="save.emit({rowIndex: rowIndex, element: element})"
-                      (click)="$event.stopPropagation()">
-        <input matInput [formControl]="$any(formControl)" type="text"
-               [placeholder]="formField.placeholder"
-               [id]="inputId">
-        <mat-error *ngFor="let error of getCurrentErrors(formControl);">
-          {{error.msg}}
-        </mat-error>
-        <mat-hint>{{formField.hint}}</mat-hint>
-      </mat-form-field>
-      <mat-form-field *ngSwitchCase="formFieldType.NUMBER" class="form-field"
-                      (keyup.enter)="save.emit({rowIndex: rowIndex, element: element})"
-                      (click)="$event.stopPropagation()">
-        <input matInput type="number" [formControl]="$any(formControl)"
-               [placeholder]="formField.placeholder" [id]="inputId">
-        <mat-error *ngFor="let error of getCurrentErrors(formControl);">
-          {{error.msg}}
-        </mat-error>
-        <mat-hint>{{formField.hint}}</mat-hint>
-      </mat-form-field>
-      <mat-checkbox *ngSwitchCase="formFieldType.CHECKBOX"
-                    (keyup.enter)="save.emit({rowIndex: rowIndex, element: element})"
-                    [formControl]="$any(formControl)"
-                    style="padding: 0 5px"
-                    (click)="$event.stopPropagation()"
-      ></mat-checkbox>
-      <mat-form-field *ngSwitchCase="formFieldType.DATE" style="width: 98%;"
-                      (click)="$event.stopPropagation()">
-        <!-- For whatever reason, you cant wrap the date picker input in a ng-container -->
-        <input matInput [formControl]="$any(formControl)" [id]="inputId"
-               [ngStyle]="inputCssStyle" [matDatepicker]="picker" [matDatepickerFilter]="$any(formField).dateFilterFn"
-               [placeholder]="formField.placeholder"
-               (keyup.enter)="save.emit({rowIndex: rowIndex, element: element})">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-        <mat-error *ngFor="let error of getCurrentErrors(formControl);">
-          {{error.msg}}
-        </mat-error>
-        <mat-hint>{{formField.hint}}</mat-hint>
-      </mat-form-field>
-      <mat-form-field *ngSwitchCase="formFieldType.SELECT" class="form-field"
-                      (click)="$event.stopPropagation()">
-        <mat-select [formControl]="$any(formControl)"
-                    [placeholder]="formField.placeholder" [id]="inputId">
-          <!-- Options need to be accessed this way to avoid compile error -->
-          <!-- Cant cast to select form field in html, but we know it is one -->
-          <mat-option *ngFor="let option of getOptions(formField);" [value]="option.value">
-            {{option.display}}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngFor="let error of getCurrentErrors(formControl);">
-          {{error.msg}}
-        </mat-error>
-        <mat-hint>{{formField.hint}}</mat-hint>
-      </mat-form-field>
-      <mat-form-field *ngSwitchCase="formFieldType.LARGE_TEXT" class="form-field"
-                      (click)="$event.stopPropagation()">
-        <!-- Max/Min lines need to be accessed this way to avoid compile error -->
-        <!-- Cant cast to large text form field in html, but we know it is one -->
-        <textarea matInput [formControl]="$any(formControl)"
-                  style="width: 100%; padding: 2px 0;" [id]="inputId"
-                  cdkTextareaAutosize [cdkAutosizeMaxRows]="getMaxLines(formField)"
-                  [cdkAutosizeMinRows]="getMinLines(formField)"
-                  [placeholder]="formField.placeholder"></textarea>
-        <mat-error *ngFor="let error of getCurrentErrors(formControl);">
-          {{error.msg}}
-        </mat-error>
-        <mat-hint>{{formField.hint}}</mat-hint>
-      </mat-form-field>
-    </ng-container>
-
-
-    <ng-container *ngSwitchCase="'text'">
+            }
+          </button>
+        }
+        @case (buttonType.ICON) {
+          <button mat-icon-button [color]="tableColumn.buttonColor"
+            (click)="onClick(tableColumn, element, $event)" [disabled]="buttonDisabled"
+            type="button">
+            @if (tableColumn.icon) {
+              <mat-icon>{{iconName}}</mat-icon>
+            }
+          </button>
+        }
+      }
+    }
+    @case ('form') {
+      @switch (formField.formType) {
+        @case (formFieldType.TEXT) {
+          <mat-form-field class="form-field"
+            (keyup.enter)="save.emit({rowIndex: rowIndex, element: element})"
+            (click)="$event.stopPropagation()">
+            <input matInput [formControl]="$any(formControl)" type="text"
+              [placeholder]="formField.placeholder"
+              [id]="inputId">
+            @for (error of getCurrentErrors(formControl); track error) {
+              <mat-error>
+                {{error.msg}}
+              </mat-error>
+            }
+            <mat-hint>{{formField.hint}}</mat-hint>
+          </mat-form-field>
+        }
+        @case (formFieldType.NUMBER) {
+          <mat-form-field class="form-field"
+            (keyup.enter)="save.emit({rowIndex: rowIndex, element: element})"
+            (click)="$event.stopPropagation()">
+            <input matInput type="number" [formControl]="$any(formControl)"
+              [placeholder]="formField.placeholder" [id]="inputId">
+            @for (error of getCurrentErrors(formControl); track error) {
+              <mat-error>
+                {{error.msg}}
+              </mat-error>
+            }
+            <mat-hint>{{formField.hint}}</mat-hint>
+          </mat-form-field>
+        }
+        @case (formFieldType.CHECKBOX) {
+          <mat-checkbox
+            (keyup.enter)="save.emit({rowIndex: rowIndex, element: element})"
+            [formControl]="$any(formControl)"
+            style="padding: 0 5px"
+            (click)="$event.stopPropagation()"
+          ></mat-checkbox>
+        }
+        @case (formFieldType.DATE) {
+          <mat-form-field style="width: 98%;"
+            (click)="$event.stopPropagation()">
+            <!-- For whatever reason, you cant wrap the date picker input in a ng-container -->
+            <input matInput [formControl]="$any(formControl)" [id]="inputId"
+              [ngStyle]="inputCssStyle" [matDatepicker]="picker" [matDatepickerFilter]="$any(formField).dateFilterFn"
+              [placeholder]="formField.placeholder"
+              (keyup.enter)="save.emit({rowIndex: rowIndex, element: element})">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            @for (error of getCurrentErrors(formControl); track error) {
+              <mat-error>
+                {{error.msg}}
+              </mat-error>
+            }
+            <mat-hint>{{formField.hint}}</mat-hint>
+          </mat-form-field>
+        }
+        @case (formFieldType.SELECT) {
+          <mat-form-field class="form-field"
+            (click)="$event.stopPropagation()">
+            <mat-select [formControl]="$any(formControl)"
+              [placeholder]="formField.placeholder" [id]="inputId">
+              <!-- Options need to be accessed this way to avoid compile error -->
+              <!-- Cant cast to select form field in html, but we know it is one -->
+              @for (option of getOptions(formField); track option) {
+                <mat-option [value]="option.value">
+                  {{option.display}}
+                </mat-option>
+              }
+            </mat-select>
+            @for (error of getCurrentErrors(formControl); track error) {
+              <mat-error>
+                {{error.msg}}
+              </mat-error>
+            }
+            <mat-hint>{{formField.hint}}</mat-hint>
+          </mat-form-field>
+        }
+        @case (formFieldType.LARGE_TEXT) {
+          <mat-form-field class="form-field"
+            (click)="$event.stopPropagation()">
+            <!-- Max/Min lines need to be accessed this way to avoid compile error -->
+            <!-- Cant cast to large text form field in html, but we know it is one -->
+            <textarea matInput [formControl]="$any(formControl)"
+              style="width: 100%; padding: 2px 0;" [id]="inputId"
+              cdkTextareaAutosize [cdkAutosizeMaxRows]="getMaxLines(formField)"
+              [cdkAutosizeMinRows]="getMinLines(formField)"
+            [placeholder]="formField.placeholder"></textarea>
+            @for (error of getCurrentErrors(formControl); track error) {
+              <mat-error>
+                {{error.msg}}
+              </mat-error>
+            }
+            <mat-hint>{{formField.hint}}</mat-hint>
+          </mat-form-field>
+        }
+      }
+    }
+    @case ('text') {
       <!-- Standardcell: Icon + (Textarea or Span) -->
       <div class="text-cell"
-           [ngStyle]="tableColumnCellCssStyle">
-        <mat-icon *ngIf="tableColumn.icon">{{iconName}}</mat-icon>
+        [ngStyle]="tableColumnCellCssStyle">
+        @if (tableColumn.icon) {
+          <mat-icon>{{iconName}}</mat-icon>
+        }
         <!-- Warning: Do not introduce linebreaks into the textareas content as they will be displayed -->
         <!-- Be careful when formatting -->
-        <textarea *ngIf="tableColumn.maxLines && stringRepresentation"
-                  cdkTextareaAutosize [cdkAutosizeMaxRows]="tableColumn.maxLines"
-                  [cdkAutosizeMinRows]="tableColumn.minLines" [readonly]="true"
-                  [ngStyle]="inputCssStyle" class="empty-textarea"
-                  [ngClass]="{'hidden': ((bpService.xs$ | async) && textHiddenXs) || (bpService.sm$ | async) && textHiddenSm}"
-                  style="width: 100%; padding: 2px 0;">{{stringRepresentation}}</textarea>
-        <span [ngClass]="{'hidden': ((bpService.xs$ | async) && textHiddenXs) || (bpService.sm$ | async) && textHiddenSm}"
-              *ngIf="!tableColumn.maxLines && stringRepresentation" class="text-span">
-                      {{stringRepresentation}}
-                    </span>
+        @if (tableColumn.maxLines && stringRepresentation) {
+          <textarea
+            cdkTextareaAutosize [cdkAutosizeMaxRows]="tableColumn.maxLines"
+            [cdkAutosizeMinRows]="tableColumn.minLines" [readonly]="true"
+            [ngStyle]="inputCssStyle" class="empty-textarea"
+            [ngClass]="{'hidden': ((bpService.xs$ | async) && textHiddenXs) || (bpService.sm$ | async) && textHiddenSm}"
+          style="width: 100%; padding: 2px 0;">{{stringRepresentation}}</textarea>
+        }
+        @if (!tableColumn.maxLines && stringRepresentation) {
+          <span [ngClass]="{'hidden': ((bpService.xs$ | async) && textHiddenXs) || (bpService.sm$ | async) && textHiddenSm}"
+            class="text-span">
+            {{stringRepresentation}}
+          </span>
+        }
       </div>
-    </ng-container>
-
-    <ng-container *ngSwitchCase="'component'">
+    }
+    @case ('component') {
       <smc-external-component-wrapper
         [dataParent]="element" [tcolProperty]="tableColumn.property" [dataList]="dataList"
         [ngComponent]="tableColumn.ngComponent" [ngComponentInput]="tableColumn.ngComponentInput"
       ></smc-external-component-wrapper>
-    </ng-container>
-
-    <ng-container *ngSwitchCase="'directEdit'"
-                  [ngSwitch]="formField.formType">
-      <mat-form-field *ngSwitchCase="formFieldType.TEXT" class="form-field"
-                      (click)="$event.stopPropagation()">
-        <input matInput type="text" [placeholder]="formField.placeholder"
-               [ngModel]="element[tableColumn.property]"
-               (ngModelChange)="directEditElementChanged(tableColumn, element, $event)" [id]="inputId">
-        <mat-hint>{{formField.hint}}</mat-hint>
-      </mat-form-field>
-      <mat-form-field *ngSwitchCase="formFieldType.NUMBER" class="form-field"
-                      (click)="$event.stopPropagation()">
-        <input matInput type="number" [ngModel]="element[tableColumn.property]"
-               (ngModelChange)="directEditElementChanged(tableColumn, element, $event)"
-               [placeholder]="formField.placeholder" [id]="inputId">
-        <mat-hint>{{formField.hint}}</mat-hint>
-      </mat-form-field>
-      <mat-checkbox *ngSwitchCase="formFieldType.CHECKBOX" style="padding: 0 5px"
-                    [ngModel]="element[tableColumn.property]" (click)="$event.stopPropagation()"
-                    (ngModelChange)="directEditElementChanged(tableColumn, element, $event)"
-      ></mat-checkbox>
-      <mat-form-field *ngSwitchCase="formFieldType.DATE" style="width: 98%;" (click)="$event.stopPropagation()">
-        <!-- For whatever reason, you cant wrap the date picker input in a ng-container -->
-        <input matInput [id]="inputId" [ngModel]="element[tableColumn.property]"
-               (ngModelChange)="directEditElementChanged(tableColumn, element, $event)"
-               [ngStyle]="inputCssStyle" [matDatepicker]="picker" [matDatepickerFilter]="$any(formField).dateFilterFn"
-               [placeholder]="formField.placeholder">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-        <mat-hint>{{formField.hint}}</mat-hint>
-      </mat-form-field>
-      <mat-form-field *ngSwitchCase="formFieldType.SELECT" class="form-field"
-                      (click)="$event.stopPropagation()">
-        <mat-select [ngModel]="element[tableColumn.property]" [placeholder]="formField.placeholder"
-                    (ngModelChange)="directEditElementChanged(tableColumn, element, $event)" [id]="inputId">
-          <mat-option *ngFor="let option of getOptions(formField);" [value]="option.value">
-            {{option.display}}
-          </mat-option>
-        </mat-select>
-        <mat-hint>{{formField.hint}}</mat-hint>
-      </mat-form-field>
-      <mat-form-field *ngSwitchCase="formFieldType.LARGE_TEXT" class="form-field"
-                      (click)="$event.stopPropagation()">
-        <textarea matInput [ngModel]="element[tableColumn.property]"
-                  (ngModelChange)="directEditElementChanged(tableColumn, element, $event)"
-                  style="width: 100%; padding: 2px 0;" [id]="inputId"
-                  cdkTextareaAutosize
-                  [cdkAutosizeMaxRows]="getMaxLines(formField)"
-                  [cdkAutosizeMinRows]="getMinLines(formField)"
-                  [placeholder]="formField.placeholder"></textarea>
-        <mat-hint>{{formField.hint}}</mat-hint>
-      </mat-form-field>
-    </ng-container>
-  </ng-container>
+    }
+    @case ('directEdit') {
+      @switch (formField.formType) {
+        @case (formFieldType.TEXT) {
+          <mat-form-field class="form-field"
+            (click)="$event.stopPropagation()">
+            <input matInput type="text" [placeholder]="formField.placeholder"
+              [ngModel]="element[tableColumn.property]"
+              (ngModelChange)="directEditElementChanged(tableColumn, element, $event)" [id]="inputId">
+            <mat-hint>{{formField.hint}}</mat-hint>
+          </mat-form-field>
+        }
+        @case (formFieldType.NUMBER) {
+          <mat-form-field class="form-field"
+            (click)="$event.stopPropagation()">
+            <input matInput type="number" [ngModel]="element[tableColumn.property]"
+              (ngModelChange)="directEditElementChanged(tableColumn, element, $event)"
+              [placeholder]="formField.placeholder" [id]="inputId">
+            <mat-hint>{{formField.hint}}</mat-hint>
+          </mat-form-field>
+        }
+        @case (formFieldType.CHECKBOX) {
+          <mat-checkbox style="padding: 0 5px"
+            [ngModel]="element[tableColumn.property]" (click)="$event.stopPropagation()"
+            (ngModelChange)="directEditElementChanged(tableColumn, element, $event)"
+          ></mat-checkbox>
+        }
+        @case (formFieldType.DATE) {
+          <mat-form-field style="width: 98%;" (click)="$event.stopPropagation()">
+            <!-- For whatever reason, you cant wrap the date picker input in a ng-container -->
+            <input matInput [id]="inputId" [ngModel]="element[tableColumn.property]"
+              (ngModelChange)="directEditElementChanged(tableColumn, element, $event)"
+              [ngStyle]="inputCssStyle" [matDatepicker]="picker" [matDatepickerFilter]="$any(formField).dateFilterFn"
+              [placeholder]="formField.placeholder">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-hint>{{formField.hint}}</mat-hint>
+          </mat-form-field>
+        }
+        @case (formFieldType.SELECT) {
+          <mat-form-field class="form-field"
+            (click)="$event.stopPropagation()">
+            <mat-select [ngModel]="element[tableColumn.property]" [placeholder]="formField.placeholder"
+              (ngModelChange)="directEditElementChanged(tableColumn, element, $event)" [id]="inputId">
+              @for (option of getOptions(formField); track option) {
+                <mat-option [value]="option.value">
+                  {{option.display}}
+                </mat-option>
+              }
+            </mat-select>
+            <mat-hint>{{formField.hint}}</mat-hint>
+          </mat-form-field>
+        }
+        @case (formFieldType.LARGE_TEXT) {
+          <mat-form-field class="form-field"
+            (click)="$event.stopPropagation()">
+            <textarea matInput [ngModel]="element[tableColumn.property]"
+              (ngModelChange)="directEditElementChanged(tableColumn, element, $event)"
+              style="width: 100%; padding: 2px 0;" [id]="inputId"
+              cdkTextareaAutosize
+              [cdkAutosizeMaxRows]="getMaxLines(formField)"
+              [cdkAutosizeMinRows]="getMinLines(formField)"
+            [placeholder]="formField.placeholder"></textarea>
+            <mat-hint>{{formField.hint}}</mat-hint>
+          </mat-form-field>
+        }
+      }
+    }
+  }
 </div>

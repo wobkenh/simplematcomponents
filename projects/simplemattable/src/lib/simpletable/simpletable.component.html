@@ -1,75 +1,100 @@
 <cdk-virtual-scroll-viewport style="flex: 1 1 auto;"
-                             [ngStyle]="{height: autosizeHeight ? autosizeHeight + 'px' : undefined, minHeight: loading ? '180px' : undefined }"
-                             [itemSize]="itemSize + 1">
+  [ngStyle]="{height: autosizeHeight ? autosizeHeight + 'px' : undefined, minHeight: loading ? '180px' : undefined }"
+  [itemSize]="itemSize + 1">
   <table [ngClass]="resizableColumns ? 'resizable-table' : ''">
     <thead>
-    <tr [style.height]="itemSize + 'px'">
-      <th [style.top]="inverseOfTranslation" *ngIf="selectable" style="z-index: 9999; width: 40px">
-        <div class="overflow-container" [style.height]="itemSize + 'px'">
-          <button mat-icon-button (click)="selectAll()">
-            <mat-icon>select_all</mat-icon>
-          </button>
-        </div>
-      </th>
-      <th #th [style.top]="inverseOfTranslation" [style.width]="col.width" *ngFor="let col of displayedColumns"
-          (click)="sortColumn(col)" [matTooltip]="col.headerTooltip" [matTooltipPosition]="col.headerTooltipPosition">
-        <div class="header-cell-container">
-          {{ col.name }}
-          <ng-container *ngIf="currentSortColumn === col">
-            <mat-icon *ngIf="currentSortOrder === 'asc'">arrow_upward</mat-icon>
-            <mat-icon *ngIf="currentSortOrder === 'desc'">arrow_downward</mat-icon>
-          </ng-container>
-          <div #resizer *ngIf="resizableColumns" class="resizer"
-               (mousedown)="addResizeMouseHandler(resizer, th, $event)"></div>
-        </div>
-      </th>
-    </tr>
+      <tr [style.height]="itemSize + 'px'">
+        @if (selectable) {
+          <th [style.top]="inverseOfTranslation" style="z-index: 9999; width: 40px">
+            <div class="overflow-container" [style.height]="itemSize + 'px'">
+              <button mat-icon-button (click)="selectAll()">
+                <mat-icon>select_all</mat-icon>
+              </button>
+            </div>
+          </th>
+        }
+        @for (col of displayedColumns; track col) {
+          <th #th [style.top]="inverseOfTranslation" [style.width]="col.width"
+            (click)="sortColumn(col)" [matTooltip]="col.headerTooltip" [matTooltipPosition]="col.headerTooltipPosition">
+            <div class="header-cell-container">
+              {{ col.name }}
+              @if (currentSortColumn === col) {
+                @if (currentSortOrder === 'asc') {
+                  <mat-icon>arrow_upward</mat-icon>
+                }
+                @if (currentSortOrder === 'desc') {
+                  <mat-icon>arrow_downward</mat-icon>
+                }
+              }
+              @if (resizableColumns) {
+                <div #resizer class="resizer"
+                (mousedown)="addResizeMouseHandler(resizer, th, $event)"></div>
+              }
+            </div>
+          </th>
+        }
+      </tr>
     </thead>
     <tbody>
-    <ng-container *cdkVirtualFor="let element of data; let rowIndex = index">
-      <tr [ngClass]="rowClass" (click)="rowClicked(element)"
+      <ng-container *cdkVirtualFor="let element of data; let rowIndex = index">
+        <tr [ngClass]="rowClass" (click)="rowClicked(element)"
           [style.height]="itemSize + 'px'">
-        <td *ngIf="selectable">
-          <div class="overflow-container" [style.height]="itemSize + 'px'">
-            <mat-checkbox [formControl]="selectionFormControls.get(element)"
-                          (click)="$event.stopPropagation()"></mat-checkbox>
-          </div>
-        </td>
-        <td *ngFor="let col of displayedColumns; let columnIndex = index"
-            (click)="onClick(col, element, $event)">
-          <smc-table-cell
-            [stateService]="stateService" [dataParent]="element" [rowIndex]="rowIndex"
-            [minHeight]="itemSize" [rowClickable]="true"
-            [refreshTrigger]="refreshTrigger" [dataList]="data"
-            [columnIndex]="columnIndex" [tableColumnInput]="col"
-          ></smc-table-cell>
-        </td>
-      </tr>
-      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-      <tr class="smt-detail-row" *ngIf="detailRowComponent">
-        <td [colSpan]="columnCount">
-          <div
-            [@detailExpand]="element === stateService.expandedElement ? 'expanded' : 'collapsed'"
-            class="smt-element-detail">
-            <smc-external-detail-component-wrapper
-              *ngIf="element === stateService.expandedElement || element === stateService.lastExpandedElement"
-              [element]="element" [ngComponent]="detailRowComponent"
-              [dataList]="data"
-            ></smc-external-detail-component-wrapper>
-          </div>
-        </td>
-      </tr>
-    </ng-container>
+          @if (selectable) {
+            <td>
+              <div class="overflow-container" [style.height]="itemSize + 'px'">
+                <mat-checkbox [formControl]="selectionFormControls.get(element)"
+                (click)="$event.stopPropagation()"></mat-checkbox>
+              </div>
+            </td>
+          }
+          @for (col of displayedColumns; track col; let columnIndex = $index) {
+            <td
+              (click)="onClick(col, element, $event)">
+              <smc-table-cell
+                [stateService]="stateService" [dataParent]="element" [rowIndex]="rowIndex"
+                [minHeight]="itemSize" [rowClickable]="true"
+                [refreshTrigger]="refreshTrigger" [dataList]="data"
+                [columnIndex]="columnIndex" [tableColumnInput]="col"
+              ></smc-table-cell>
+            </td>
+          }
+        </tr>
+        <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+        @if (detailRowComponent) {
+          <tr class="smt-detail-row">
+            <td [colSpan]="columnCount">
+              <div
+                [@detailExpand]="element === stateService.expandedElement ? 'expanded' : 'collapsed'"
+                class="smt-element-detail">
+                @if (element === stateService.expandedElement || element === stateService.lastExpandedElement) {
+                  <smc-external-detail-component-wrapper
+                    [element]="element" [ngComponent]="detailRowComponent"
+                    [dataList]="data"
+                  ></smc-external-detail-component-wrapper>
+                }
+              </div>
+            </td>
+          </tr>
+        }
+      </ng-container>
     </tbody>
-    <tfoot *ngIf="hasFooter">
-    <tr (click)="footerRowClicked()" [ngStyle]="footerRowStyle" [ngClass]="footerRowClass">
-      <td *ngIf="selectable"></td>
-      <td *ngFor="let col of displayedColumns; let columnIndex = index"
-          [style.height]="itemSize + 'px'">
-        <smc-footer-cell *ngIf="col.footer" [tableColumnInput]="col" [dataParent]="data"></smc-footer-cell>
-      </td>
-    </tr>
-    </tfoot>
+    @if (hasFooter) {
+      <tfoot>
+        <tr (click)="footerRowClicked()" [ngStyle]="footerRowStyle" [ngClass]="footerRowClass">
+          @if (selectable) {
+            <td></td>
+          }
+          @for (col of displayedColumns; track col; let columnIndex = $index) {
+            <td
+              [style.height]="itemSize + 'px'">
+              @if (col.footer) {
+                <smc-footer-cell [tableColumnInput]="col" [dataParent]="data"></smc-footer-cell>
+              }
+            </td>
+          }
+        </tr>
+      </tfoot>
+    }
   </table>
   @if (loading) {
     <!-- Placeholder div with regular position within the virtual scolling content to fill enough space for the loading spinner: -->
