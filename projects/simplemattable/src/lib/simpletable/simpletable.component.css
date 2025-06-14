@@ -134,7 +134,7 @@ table {
 .resizer:hover,
 .resizing {
   /* uses default material primary color */
-  border-right: 4px solid var(--mdc-filled-text-field-caret-color);
+  border-right: 4px solid var(--mat-form-field-filled-caret-color);
 }
 .resizable-table {
   table-layout: fixed;
