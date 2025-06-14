@@ -776,6 +776,7 @@ There will be new versions when new features are added or a new Angular version 
 
 History (Version in parentheses is required Angular Version):
 
++ 20.0: Upgrade to Angular 20
 + 19.3: Add progress spinner for simpletable via loading input property
 + 19.2: Add autosize for simpletable
 + 19.1: Add classes for buttons
@@ -880,11 +881,11 @@ History (Version in parentheses is required Angular Version):
 Simplemattable only uses peer dependencies, so for the newest version of simplemattable you need the following packages (with compatible versions) in your package.json:
 
 ```
-"@angular/common": "^19.0.0",
-"@angular/core": "^19.0.0",
-"@angular/material": "^19.0.0",
-"@angular/cdk": "^19.0.0",
-"@angular/platform-browser": "^19.0.0"
+"@angular/common": "^20.0.0",
+"@angular/core": "^20.0.0",
+"@angular/material": "^20.0.0",
+"@angular/cdk": "^20.0.0",
+"@angular/platform-browser": "^20.0.0"
 ```  
 
 + For use with Angular >= 6.0 and < 6.1.8, use Version 1.2 of simplemattable.
