@@ -119,7 +119,7 @@
               <!-- Options need to be accessed this way to avoid compile error -->
               <!-- Cant cast to select form field in html, but we know it is one -->
               @for (option of getOptions(formField); track option) {
-                <mat-option [value]="option.value">
+                <mat-option [value]="option.value" [matTooltip]="option.tooltip">
                   {{option.display}}
                 </mat-option>
               }
@@ -227,7 +227,7 @@
             <mat-select [ngModel]="element[tableColumn.property]" [placeholder]="formField.placeholder"
               (ngModelChange)="directEditElementChanged(tableColumn, element, $event)" [id]="inputId">
               @for (option of getOptions(formField); track option) {
-                <mat-option [value]="option.value">
+                <mat-option [value]="option.value" [matTooltip]="option.tooltip">
                   {{option.display}}
                 </mat-option>
               }

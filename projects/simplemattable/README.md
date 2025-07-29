@@ -776,6 +776,7 @@ There will be new versions when new features are added or a new Angular version 
 
 History (Version in parentheses is required Angular Version):
 
++ 20.1: Add optional tooltip to select form field options
 + 20.0: Upgrade to Angular 20
 + 19.3: Add progress spinner for simpletable via loading input property
 + 19.2: Add autosize for simpletable
