@@ -10,12 +10,7 @@
     "inlineSources": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "types": [],
-    "lib": [
-      "dom",
-      "es2015",
-      "es2017"
-    ]
+    "types": []
   },
   "angularCompilerOptions": {
     "skipTemplateCodegen": true,

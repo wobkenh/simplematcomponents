@@ -3,7 +3,7 @@
   "license": "MIT",
   "description": "A simple info/error/warn/success alert component for Angular using @angular/material",
   "author": "Henning Wobken",
-  "version": "19.0.0",
+  "version": "21.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/wobkenh/simplematcomponents"
@@ -24,12 +24,13 @@
     "Angular 16",
     "Angular 17",
     "Angular 18",
-    "Angular 19"
+    "Angular 19",
+    "Angular 21"
   ],
   "peerDependencies": {
-    "@angular/common": "^19.0.0",
-    "@angular/core": "^19.0.0",
-    "@angular/material": "^19.0.0",
-    "@angular/platform-browser": "^19.0.0"
+    "@angular/common": "^21.0.0",
+    "@angular/core": "^21.0.0",
+    "@angular/material": "^21.0.0",
+    "@angular/platform-browser": "^21.0.0"
   }
 }
