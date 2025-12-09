@@ -1,6 +1,6 @@
-import {AbstractFormField} from './abstract-form-field.model';
-import {FormFieldType} from './form-field-type.model';
-import {SelectFormFieldOption} from './select-form-field-option.model';
+import { AbstractFormField } from './abstract-form-field.model';
+import { FormFieldType } from './form-field-type.model';
+import { SelectFormFieldOption } from './select-form-field-option.model';
 
 export class SelectFormField<T, P extends keyof T, F> extends AbstractFormField<T, P, F> {
 

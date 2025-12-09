@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
-import {TableColumn} from './model/table-column.model';
-import {Align} from './model/align.model';
+import { Injectable } from '@angular/core';
+import { TableColumn } from './model/table-column.model';
+import { Align } from './model/align.model';
 
 @Injectable({
   providedIn: 'root'
