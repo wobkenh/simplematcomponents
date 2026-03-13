@@ -854,7 +854,6 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
    * @param rowIndex for focus purposes
    */
   startEditElement(element: T, rowIndex: number) {
-    console.log(element, rowIndex);
     const status = this.dataStatus.has(element) ? this.dataStatus.get(element) : new DataStatus();
     status.editing = true;
     this.dataStatus.set(element, status);
