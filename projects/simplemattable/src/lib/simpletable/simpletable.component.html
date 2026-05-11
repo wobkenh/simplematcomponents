@@ -60,18 +60,14 @@
           }
         </tr>
         <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-        @if (detailRowComponent) {
+        @if (detailRowComponent && element === stateService.expandedElement) {
           <tr class="smt-detail-row">
             <td [colSpan]="columnCount">
-              <div
-                [@detailExpand]="element === stateService.expandedElement ? 'expanded' : 'collapsed'"
-                class="smt-element-detail">
-                @if (element === stateService.expandedElement || element === stateService.lastExpandedElement) {
-                  <smc-external-detail-component-wrapper
-                    [element]="element" [ngComponent]="detailRowComponent"
-                    [dataList]="data"
-                  ></smc-external-detail-component-wrapper>
-                }
+              <div @detailExpand class="smt-element-detail">
+                <smc-external-detail-component-wrapper
+                  [element]="element" [ngComponent]="detailRowComponent"
+                  [dataList]="data"
+                ></smc-external-detail-component-wrapper>
               </div>
             </td>
           </tr>
@@ -84,7 +80,7 @@
           @if (selectable) {
             <td></td>
           }
-          @for (col of displayedColumns; track col; let columnIndex = $index) {
+          @for (col of displayedColumns; track col) {
             <td
               [style.height]="itemSize + 'px'">
               @if (col.footer) {

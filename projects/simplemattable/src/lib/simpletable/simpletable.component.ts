@@ -19,7 +19,7 @@ import { SmcStateService } from '../smc-state.service';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { SmcTableService } from '../smc-table.service';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'smc-simpletable',
@@ -27,9 +27,13 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
   styleUrl: './simpletable.component.css',
   animations: [
     trigger('detailExpand', [
-      state('collapsed', style({ height: '0px', minHeight: '0' })),
-      state('expanded', style({ height: '*' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+      transition(':enter', [
+        style({ height: '0' }),
+        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)', style({ height: '*' })),
+      ]),
+      transition(':leave', [
+        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)', style({ height: '0' })),
+      ]),
     ]),
   ],
   standalone: false
@@ -310,7 +314,6 @@ export class SimpletableComponent<T> implements DoCheck, OnChanges, AfterViewIni
       this.selectionFormControls.get(row).patchValue(!this.selectionFormControls.get(row).value);
     }
     this.stateService.setExpandedElement(row);
-    this.changeDetectorRef.detectChanges();
   }
 
   footerRowClicked() {
