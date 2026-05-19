@@ -83,7 +83,7 @@ th:last-of-type {
   overflow: hidden;
 }
 
-.smt-element-row td {
+.smt-element-row.smt-expanded-row td {
   border-bottom-width: 0;
 }
 
