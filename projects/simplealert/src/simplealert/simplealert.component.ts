@@ -24,7 +24,7 @@ import { AlertType, AlertTypeString } from './alert-type.model';
 export class SimplealertComponent implements OnInit {
 
   isOpenState = false;
-  @Input() type: (AlertType | AlertTypeString);
+  @Input() type: (AlertType | AlertTypeString) = AlertType.INFO;
   @Output() isOpenChange = new EventEmitter();
 
   constructor() {

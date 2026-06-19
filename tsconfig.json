@@ -10,6 +10,9 @@
     "declaration": false,
     "moduleResolution": "bundler",
     "experimentalDecorators": true,
+    "strictNullChecks": false,
+    "strictPropertyInitialization": false,
+    "noImplicitAny": false,
     "target": "ES2022",
     "typeRoots": [
       "node_modules/@types"

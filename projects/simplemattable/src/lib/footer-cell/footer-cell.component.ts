@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { TableColumn } from '../model/table-column.model';
 import { Align } from '../model/align.model';
 import { SmcUtilService } from '../smc-util.service';
@@ -15,8 +15,8 @@ export class FooterCellComponent<T> implements OnInit {
 
   tableColumn: TableColumn<T, any>;
   elements: T[];
-  cellCssStyle: Object = {};
-  cellCssClass: Object = {};
+  cellCssStyle: { [p: string]: any } = {};
+  cellCssClass: { [p: string]: any } = {};
   stringRepresentation: string | number = '';
   transformSubscription: Subscription;
 
