@@ -1,6 +1,6 @@
 {
   "name": "simplemattable",
-  "version": "21.1.1",
+  "version": "22.0.0",
   "description": "A simplified, declarative table-library using @angular/material's MatTable with form capabilities for adding/editing/deleting data",
   "author": "Henning Wobken",
   "license": "MIT",
@@ -35,15 +35,16 @@
     "angular 19",
     "angular 20",
     "angular 21",
+    "Angular 22",
     "material",
     "form",
     "virtual scroll"
   ],
   "peerDependencies": {
-    "@angular/common": ">=21.0.0",
-    "@angular/core": ">=21.0.0",
-    "@angular/material": ">=21.0.0",
-    "@angular/cdk": ">=21.0.0",
-    "@angular/platform-browser": ">=21.0.0"
+    "@angular/common": ">=22.0.0",
+    "@angular/core": ">=22.0.0",
+    "@angular/material": ">=22.0.0",
+    "@angular/cdk": ">=22.0.0",
+    "@angular/platform-browser": ">=22.0.0"
   }
 }

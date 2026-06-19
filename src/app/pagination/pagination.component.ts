@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { PageSettings } from 'projects/simplemattable/src/lib/model/page-settings.model';
+import { PageSettings } from 'projects/simplemattable/src/public_api';
 import { TableColumn } from 'projects/simplemattable/src/public_api';
 import { TestData } from '../model/test-data.model';
 import { Observable, Subject } from 'rxjs';

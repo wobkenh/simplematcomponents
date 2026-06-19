@@ -1206,7 +1206,7 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
         let entry = mapEntries.next();
         while (!entry.done) {
           const tcol: TableColumn<T, any> = entry.value[0];
-          const control: UntypedFormControl = entry.value[1];
+          const control = entry.value[1];
           if (tcol.filterFn) {
             // custom filter
             if (!tcol.filterFn(control.value, data[tcol.property], data)) {
