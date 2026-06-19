@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { TableColumn } from '../../../projects/simplemattable/src/lib/model/table-column.model';
 import { Align } from '../../../projects/simplemattable/src/lib/model/align.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -7,6 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   selector: 'smc-footer',
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class FooterComponent implements OnInit {

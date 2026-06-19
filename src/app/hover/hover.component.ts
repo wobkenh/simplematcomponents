@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { MatDivider } from '@angular/material/divider';
 import { MatIcon } from '@angular/material/icon';
 import { MatTab, MatTabGroup, MatTabLabel } from '@angular/material/tabs';
@@ -19,6 +19,7 @@ import { Highlight } from 'ngx-highlightjs';
     Highlight
   ],
   templateUrl: './hover.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './hover.component.scss'
 })
 export class HoverComponent {

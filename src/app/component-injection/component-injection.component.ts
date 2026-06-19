@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ComplexTestData } from '../model/test-data.model';
 import { TableColumn } from '../../../projects/simplemattable/src/lib/model/table-column.model';
 import { CustomTableCellComponent } from '../custom-table-cell/custom-table-cell.component';
@@ -7,6 +7,7 @@ import { CustomTableCellComponent } from '../custom-table-cell/custom-table-cell
   selector: 'smc-component-injection',
   templateUrl: './component-injection.component.html',
   styleUrls: ['./component-injection.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class ComponentInjectionComponent implements OnInit {

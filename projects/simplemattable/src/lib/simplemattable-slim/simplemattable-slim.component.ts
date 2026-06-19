@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, DoCheck, EventEmitter, Input, OnChanges, Output, SimpleChanges, Type, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, DoCheck, EventEmitter, Input, OnChanges, Output, SimpleChanges, Type, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { SmcTableService } from '../smc-table.service';
 import { TableColumn } from '../model/table-column.model';
 import { MatSort, Sort } from '@angular/material/sort';
@@ -40,6 +40,7 @@ export class CustomVirtualScrollStrategy extends FixedSizeVirtualScrollStrategy 
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class SimplemattableSlimComponent<T> implements DoCheck, OnChanges {

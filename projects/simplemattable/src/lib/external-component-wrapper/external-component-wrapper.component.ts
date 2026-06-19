@@ -1,9 +1,10 @@
-import { Component, ComponentRef, Input, OnChanges, Type, ViewContainerRef } from '@angular/core';
+import { Component, ComponentRef, Input, OnChanges, Type, ViewContainerRef, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'smc-external-component-wrapper',
   templateUrl: './external-component-wrapper.component.html',
   styleUrls: ['./external-component-wrapper.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class ExternalComponentWrapperComponent implements OnChanges {

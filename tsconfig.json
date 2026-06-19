@@ -1,7 +1,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
     "importHelpers": true,
     "esModuleInterop": true,
     "module": "esnext",
@@ -10,16 +9,19 @@
     "declaration": false,
     "moduleResolution": "bundler",
     "experimentalDecorators": true,
+    "strictNullChecks": false,
+    "strictPropertyInitialization": false,
+    "noImplicitAny": false,
     "target": "ES2022",
     "typeRoots": [
       "node_modules/@types"
     ],
     "paths": {
-      "simplemattable": [
-        "dist/simplemattable"
+      "projects/simplemattable/src/public_api": [
+        "./projects/simplemattable/src/public_api"
       ],
-      "simplealert": [
-        "dist/simplealert"
+      "projects/simplealert/src/public_api": [
+        "./projects/simplealert/src/public_api"
       ]
     },
     "useDefineForClassFields": false

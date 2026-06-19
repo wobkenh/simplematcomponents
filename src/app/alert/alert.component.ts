@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AlertType } from 'projects/simplealert/src/public_api';
 
 @Component({
   selector: 'smc-alert',
   templateUrl: './alert.component.html',
   styleUrls: ['./alert.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class AlertComponent implements OnInit {

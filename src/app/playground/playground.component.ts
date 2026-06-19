@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { TableColumn } from '../../../projects/simplemattable/src/lib/model/table-column.model';
 
 @Component({
   selector: 'smc-playground',
   templateUrl: './playground.component.html',
   styleUrls: ['./playground.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class PlaygroundComponent implements OnInit {

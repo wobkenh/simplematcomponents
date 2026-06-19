@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ComplexTestData, TestData } from '../model/test-data.model';
 import { Align, ButtonType, Height, TableColumn, Width } from 'projects/simplemattable/src/public_api';
 import { AbstractControl, Validators } from '@angular/forms';
@@ -7,6 +7,7 @@ import { AbstractControl, Validators } from '@angular/forms';
   selector: 'smc-complete',
   templateUrl: './complete.component.html',
   styleUrls: ['./complete.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class CompleteComponent implements OnInit {

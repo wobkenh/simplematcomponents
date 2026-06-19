@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ComplexTestData } from '../model/test-data.model';
 import { TableColumn } from '../../../projects/simplemattable/src/lib/model/table-column.model';
 import { ExpandableRowDetailComponent } from '../expandable-row-detail/expandable-row-detail.component';
@@ -9,6 +9,7 @@ import { Width } from '../../../projects/simplemattable/src/lib/model/width.mode
   selector: 'smc-slim',
   templateUrl: './slim.component.html',
   styleUrl: './slim.component.css',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class SlimComponent {

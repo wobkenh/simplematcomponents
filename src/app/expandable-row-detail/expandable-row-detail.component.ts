@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { DetailRowComponent } from '../../../projects/simplemattable/src/lib/model/detail-row-component';
 import { ComplexTestData } from '../model/test-data.model';
 
@@ -6,6 +6,7 @@ import { ComplexTestData } from '../model/test-data.model';
   selector: 'smc-expandable-row-detail',
   templateUrl: './expandable-row-detail.component.html',
   styleUrls: ['./expandable-row-detail.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class ExpandableRowDetailComponent implements OnInit, DetailRowComponent<ComplexTestData> {
