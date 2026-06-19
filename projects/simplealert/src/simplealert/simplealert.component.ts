@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AlertType, AlertTypeString } from './alert-type.model';
 
@@ -18,6 +18,7 @@ import { AlertType, AlertTypeString } from './alert-type.model';
       ]),
     ]),
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class SimplealertComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { TableColumn } from '../model/table-column.model';
 import { Align } from '../model/align.model';
 import { SmcUtilService } from '../smc-util.service';
@@ -8,6 +8,7 @@ import { isObservable, Observable, of, Subscription } from 'rxjs';
   selector: 'smc-footer-cell',
   templateUrl: './footer-cell.component.html',
   styleUrls: ['./footer-cell.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class FooterCellComponent<T> implements OnInit {

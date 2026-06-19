@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Align, TableColumn, Width } from 'projects/simplemattable/src/public_api';
 import { ComplexTestData } from '../model/test-data.model';
 
@@ -6,6 +6,7 @@ import { ComplexTestData } from '../model/test-data.model';
   selector: 'smc-align',
   templateUrl: './align.component.html',
   styleUrls: ['./align.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class AlignComponent implements OnInit {

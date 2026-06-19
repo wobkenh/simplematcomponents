@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { TableColumn } from '../model/table-column.model';
 import { ButtonType } from '../model/button-type.model';
 import { SaveEvent } from '../model/table-cell-events.model';
@@ -19,6 +19,7 @@ import { SmcStateService } from '../smc-state.service';
   selector: 'smc-table-cell',
   templateUrl: './table-cell.component.html',
   styleUrls: ['./table-cell.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class TableCellComponent<T> implements OnInit, OnDestroy {

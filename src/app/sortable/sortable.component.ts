@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ComplexTestData, TestData } from '../model/test-data.model';
 import { TableColumn } from 'projects/simplemattable/src/public_api';
 
@@ -6,6 +6,7 @@ import { TableColumn } from 'projects/simplemattable/src/public_api';
   selector: 'smc-sortable',
   templateUrl: './sortable.component.html',
   styleUrls: ['./sortable.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class SortableComponent implements OnInit {

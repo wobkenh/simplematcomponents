@@ -11,7 +11,8 @@ import {
   Output,
   SimpleChanges,
   Type,
-  ViewChild
+  ViewChild,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { TableColumn } from '../model/table-column.model';
 import { Align } from '../model/align.model';
@@ -42,6 +43,7 @@ import { SmcStateService } from '../smc-state.service';
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, AfterViewInit {

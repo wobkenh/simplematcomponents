@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Height, TableColumn, Width } from 'projects/simplemattable/src/public_api';
 import { ComplexTestData } from '../model/test-data.model';
 
@@ -6,6 +6,7 @@ import { ComplexTestData } from '../model/test-data.model';
   selector: 'smc-width-height',
   templateUrl: './width-height.component.html',
   styleUrls: ['./width-height.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class WidthHeightComponent implements OnInit {

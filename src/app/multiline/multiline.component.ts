@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { TableColumn, Width } from 'projects/simplemattable/src/public_api';
 import { ComplexTestData } from '../model/test-data.model';
 
@@ -6,6 +6,7 @@ import { ComplexTestData } from '../model/test-data.model';
   selector: 'smc-multiline',
   templateUrl: './multiline.component.html',
   styleUrls: ['./multiline.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class MultilineComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ComplexTestData } from '../model/test-data.model';
 import { TableColumn } from '../../../projects/simplemattable/src/lib/model/table-column.model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -7,6 +7,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
   selector: 'smc-drag-n-drop-columns',
   templateUrl: './drag-n-drop-columns.component.html',
   styleUrls: ['./drag-n-drop-columns.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class DragNDropColumnsComponent implements OnInit {

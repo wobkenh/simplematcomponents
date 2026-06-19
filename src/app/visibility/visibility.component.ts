@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { TableColumn } from 'projects/simplemattable/src/public_api';
 import { ComplexTestData, TestData } from '../model/test-data.model';
 
@@ -6,6 +6,7 @@ import { ComplexTestData, TestData } from '../model/test-data.model';
   selector: 'smc-visibility',
   templateUrl: './visibility.component.html',
   styleUrls: ['./visibility.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class VisibilityComponent implements OnInit {

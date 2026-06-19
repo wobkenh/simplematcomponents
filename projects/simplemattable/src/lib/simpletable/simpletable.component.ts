@@ -11,7 +11,8 @@ import {
   Output,
   SimpleChanges,
   Type,
-  ViewChild
+  ViewChild,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { TableColumn } from '../model/table-column.model';
 import { DetailRowComponent } from '../model/detail-row-component';
@@ -36,6 +37,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
       ]),
     ]),
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class SimpletableComponent<T> implements DoCheck, OnChanges, AfterViewInit, OnDestroy {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ComplexTestData } from '../model/test-data.model';
 import { Align, ButtonType, TableColumn, Width } from 'projects/simplemattable/src/public_api';
 
@@ -6,6 +6,7 @@ import { Align, ButtonType, TableColumn, Width } from 'projects/simplemattable/s
   selector: 'smc-direct-edit',
   templateUrl: './direct-edit.component.html',
   styleUrls: ['./direct-edit.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class DirectEditComponent implements OnInit {

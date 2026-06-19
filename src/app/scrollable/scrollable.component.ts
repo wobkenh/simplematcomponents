@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { TableColumn } from 'projects/simplemattable/src/public_api';
 import { ComplexTestData } from '../model/test-data.model';
 
@@ -6,6 +6,7 @@ import { ComplexTestData } from '../model/test-data.model';
   selector: 'smc-scrollable',
   templateUrl: './scrollable.component.html',
   styleUrls: ['./scrollable.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class ScrollableComponent implements OnInit {

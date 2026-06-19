@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ComplexTestData } from '../model/test-data.model';
 import { TableColumn } from '../../../projects/simplemattable/src/lib/model/table-column.model';
 
@@ -6,6 +6,7 @@ import { TableColumn } from '../../../projects/simplemattable/src/lib/model/tabl
   selector: 'smc-tooltip',
   templateUrl: './tooltip.component.html',
   styleUrls: ['./tooltip.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class TooltipComponent implements OnInit {

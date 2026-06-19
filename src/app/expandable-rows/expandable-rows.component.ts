@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ComplexTestData } from '../model/test-data.model';
 import { TableColumn } from '../../../projects/simplemattable/src/lib/model/table-column.model';
 import { ExpandableRowDetailComponent } from '../expandable-row-detail/expandable-row-detail.component';
@@ -7,6 +7,7 @@ import { ExpandableRowDetailComponent } from '../expandable-row-detail/expandabl
   selector: 'smc-expandable-rows',
   templateUrl: './expandable-rows.component.html',
   styleUrls: ['./expandable-rows.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class ExpandableRowsComponent implements OnInit {

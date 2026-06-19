@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ComplexTestData } from '../model/test-data.model';
 import { TableColumn } from 'projects/simplemattable/src/public_api';
 
@@ -6,6 +6,7 @@ import { TableColumn } from 'projects/simplemattable/src/public_api';
   selector: 'smc-simple',
   templateUrl: './simple.component.html',
   styleUrls: ['./simple.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false
 })
 export class SimpleComponent implements OnInit {
