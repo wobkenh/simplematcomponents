@@ -1,5 +1,6 @@
+<!-- mouseenter/mouseleave are handled by the surrounding table component on the table cell itself,
+     so the whole cell (including its padding) is a hover target -->
 <div [ngClass]="cellCssClass" [ngStyle]="cellCssStyle" [matTooltip]="tooltip"
-  (mouseenter)="onMouseEnter($event)" (mouseleave)="onMouseLeave($event)"
   [matTooltipPosition]="tableColumn.tooltipPosition" class="table-cell-container">
 
 

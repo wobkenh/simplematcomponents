@@ -134,6 +134,38 @@ export class SimplemattableSlimComponent<T> implements DoCheck, OnChanges {
     }
   }
 
+  /**
+   * Executes the onMouseEnter function of the TableColumn.
+   * Hover callbacks are usually used to style cells depending on the current mouse position,
+   * so the refresh trigger is bumped afterwards to let the table cells recalculate their styling.
+   *
+   * @param tcol Hovered column
+   * @param element Hovered element
+   * @param event mouse event
+   */
+  onCellMouseEnter(tcol: TableColumn<T, any>, element: T, event: MouseEvent) {
+    if (tcol.onMouseEnter) {
+      tcol.onMouseEnter(element[tcol.property], element, this.data, event);
+      this.refreshTrigger++;
+    }
+  }
+
+  /**
+   * Executes the onMouseLeave function of the TableColumn.
+   * Hover callbacks are usually used to style cells depending on the current mouse position,
+   * so the refresh trigger is bumped afterwards to let the table cells recalculate their styling.
+   *
+   * @param tcol Hovered column
+   * @param element Hovered element
+   * @param event mouse event
+   */
+  onCellMouseLeave(tcol: TableColumn<T, any>, element: T, event: MouseEvent) {
+    if (tcol.onMouseLeave) {
+      tcol.onMouseLeave(element[tcol.property], element, this.data, event);
+      this.refreshTrigger++;
+    }
+  }
+
   private cleanUpAfterColChange() {
     this.oldColumns = this.columns.map(col => Object.assign({}, col)); // copy cols to lose references
   }

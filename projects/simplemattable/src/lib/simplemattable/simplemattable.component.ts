@@ -565,6 +565,50 @@ export class SimplemattableComponent<T> implements OnInit, DoCheck, OnChanges, A
     }
   }
 
+  /**
+   * Executes the onMouseEnter function of the TableColumn.
+   *
+   * @param tcol Hovered column
+   * @param element Hovered element
+   * @param event mouse event
+   */
+  onCellMouseEnter(tcol: TableColumn<T, any>, element: T, event: MouseEvent) {
+    if (tcol.onMouseEnter) {
+      tcol.onMouseEnter(element[tcol.property], element, this.data, event);
+      this.refreshStylesAfterHover();
+    }
+  }
+
+  /**
+   * Executes the onMouseLeave function of the TableColumn.
+   *
+   * @param tcol Hovered column
+   * @param element Hovered element
+   * @param event mouse event
+   */
+  onCellMouseLeave(tcol: TableColumn<T, any>, element: T, event: MouseEvent) {
+    if (tcol.onMouseLeave) {
+      tcol.onMouseLeave(element[tcol.property], element, this.data, event);
+      this.refreshStylesAfterHover();
+    }
+  }
+
+  /**
+   * Hover callbacks are usually used to style rows or cells depending on the current mouse position.
+   * Since both stylings are cached, they have to be invalidated after the callback ran,
+   * otherwise the styling change would not become visible until the next data or column change.
+   *
+   * Row styles/classes are served from a cache that is cleared here.
+   * Cell styles/classes live in the table cell components and are recalculated by bumping the refresh trigger.
+   *
+   * This is only done for columns that actually declare a hover callback,
+   * so tables without hover callbacks keep their caches untouched.
+   */
+  private refreshStylesAfterHover() {
+    this.clearCssCache();
+    this.refreshTrigger++;
+  }
+
   // start ---   Scrolling Methods
   /*
       Scrolling Events are relevant only for infiniteScrolling

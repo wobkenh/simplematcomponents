@@ -28,7 +28,9 @@
       <ng-container
         [matColumnDef]="columnIndex + '_' + col.property">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>{{col.name}}</th>
-        <td mat-cell *matCellDef="let element; let rowIndex = dataIndex;">
+        <td mat-cell *matCellDef="let element; let rowIndex = dataIndex;"
+          (mouseenter)="onCellMouseEnter(col, element, $event)"
+          (mouseleave)="onCellMouseLeave(col, element, $event)">
           <smc-table-cell
             [stateService]="stateService" [dataParent]="element" [rowIndex]="rowIndex"
             [minHeight]="itemSize"

@@ -27,6 +27,10 @@ export class HoverComponent {
   dataHover: ComplexTestData[] = [];
   columnsHover: TableColumn<any, any>[] = [];
 
+  // Row Highlighting Table
+  dataRowHover: ComplexTestData[] = [];
+  columnsRowHover: TableColumn<any, any>[] = [];
+
   // Code
   typescriptData = `this.dataHover = [
       new ComplexTestData(1, 40, 'test1', null, 'test2'),
@@ -38,18 +42,26 @@ export class HoverComponent {
       new TableColumn<ComplexTestData, 'id'>('My ID', 'id'),
       new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
         .withNgStyle((value) => this.hoveredValue === value ? ({background: 'lightblue'}) : ({}))
-        .withOnMouseEnter((value, element, dataList, event) => {
-          this.hoveredValue = value;
-          this.dataHover = this.dataHover.slice(0);
-        })
-        .withOnMouseLeave((value, element, dataList, event) => {
-          delete this.hoveredValue;
-          this.dataHover = this.dataHover.slice(0);
-        }),
+        .withOnMouseEnter((value) => this.hoveredValue = value)
+        .withOnMouseLeave(() => delete this.hoveredValue),
     ];`;
   html = '<smc-simplemattable [data]="dataSimple" [columns]="columnsSimple"></smc-simplemattable>';
+  typescriptRowColumns = `this.columnsRowHover = [
+      new TableColumn<ComplexTestData, 'id'>('My ID', 'id'),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withOnMouseEnter((value) => this.hoveredRowValue = value)
+        .withOnMouseLeave(() => delete this.hoveredRowValue),
+    ];
+    this.rowStyleFn = (element: ComplexTestData) =>
+      this.hoveredRowValue === element.value ? ({background: 'lightblue'}) : ({});`;
+  htmlRow = '<smc-simplemattable [data]="dataRowHover" [columns]="columnsRowHover"\n' +
+    '                    [rowNgStyle]="rowStyleFn"></smc-simplemattable>';
 
   hoveredValue: number;
+  hoveredRowValue: number;
+
+  rowStyleFn = (element: ComplexTestData) =>
+    this.hoveredRowValue === element.value ? ({ background: 'lightblue' }) : ({});
 
   constructor() {
   }
@@ -68,14 +80,24 @@ export class HoverComponent {
       new TableColumn<ComplexTestData, 'id'>('My ID', 'id'),
       new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
         .withNgStyle((value) => this.hoveredValue === value ? ({ background: 'lightblue' }) : ({}))
-        .withOnMouseEnter((value, element, dataList, event) => {
-          this.hoveredValue = value;
-          this.dataHover = this.dataHover.slice(0);
-        })
-        .withOnMouseLeave((value, element, dataList, event) => {
-          delete this.hoveredValue;
-          this.dataHover = this.dataHover.slice(0);
-        }),
+        .withOnMouseEnter((value) => this.hoveredValue = value)
+        .withOnMouseLeave(() => delete this.hoveredValue),
+    ];
+
+    /*
+        Row Highlighting Table
+     */
+    this.dataRowHover = [
+      new ComplexTestData(1, 40, 'test1', null, 'test2'),
+      new ComplexTestData(2, 42, 'test2', null, 'test3'),
+      new ComplexTestData(3, 40, 'test1', null, 'test2'),
+      new ComplexTestData(4, 42, 'test2', null, 'test3'),
+    ];
+    this.columnsRowHover = [
+      new TableColumn<ComplexTestData, 'id'>('My ID', 'id'),
+      new TableColumn<ComplexTestData, 'value'>('My Value', 'value')
+        .withOnMouseEnter((value) => this.hoveredRowValue = value)
+        .withOnMouseLeave(() => delete this.hoveredRowValue),
     ];
   }
 }

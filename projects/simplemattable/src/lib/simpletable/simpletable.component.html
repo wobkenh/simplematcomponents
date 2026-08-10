@@ -50,7 +50,9 @@
         }
         @for (col of displayedColumns; track col; let columnIndex = $index) {
           <td
-            (click)="onClick(col, element, $event)">
+            (click)="onClick(col, element, $event)"
+            (mouseenter)="onCellMouseEnter(col, element, $event)"
+            (mouseleave)="onCellMouseLeave(col, element, $event)">
             <smc-table-cell
               [stateService]="stateService" [dataParent]="element" [rowIndex]="rowIndex"
               [minHeight]="itemSize" [rowClickable]="true"

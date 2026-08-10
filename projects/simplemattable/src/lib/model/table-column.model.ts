@@ -360,6 +360,10 @@ export class TableColumn<T, P extends keyof T> {
    * OnMouseEnter enables the mouse listener for the table column. If the user moves the mouse into any cell of this column
    * (excluding the header cell), the function onMouseEnter will be executed.
    *
+   * After the function ran, the cell styling (ngStyle/ngClass) and the row styling (rowNgStyle/rowNgClass)
+   * are recalculated, so the callback can be used to style cells or rows depending on the current mouse position
+   * without having to change the data or the columns.
+   *
    * @param onMouseEnterFn
    * @returns this
    */
@@ -371,6 +375,10 @@ export class TableColumn<T, P extends keyof T> {
   /**
    * OnMouseLeave enables the mouse listener for the table column. If the user moves the mouse out of any cell of this column
    * (excluding the header cell), the function onMouseLeave will be executed.
+   *
+   * After the function ran, the cell styling (ngStyle/ngClass) and the row styling (rowNgStyle/rowNgClass)
+   * are recalculated, so the callback can be used to style cells or rows depending on the current mouse position
+   * without having to change the data or the columns.
    *
    * @param onMouseLeaveFn
    * @returns this

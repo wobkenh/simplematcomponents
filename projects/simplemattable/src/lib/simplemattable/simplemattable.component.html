@@ -82,7 +82,9 @@
         </th>
         <td mat-cell *matCellDef="let element; let rowIndex = dataIndex;"
           [ngClass]="{'hidden': ((bpService.xs$ | async) && (tcol.hiddenXs || tcol.hiddenSm)) || (bpService.sm$ | async) && tcol.hiddenSm}"
-          (click)="onClick(tcol, element, false, $event)">
+          (click)="onClick(tcol, element, false, $event)"
+          (mouseenter)="onCellMouseEnter(tcol, element, $event)"
+          (mouseleave)="onCellMouseLeave(tcol, element, $event)">
           <smc-table-cell [stateService]="stateService" [formControls]="formControls" [dataParent]="element"
             [rowIndex]="rowIndex"
             [refreshTrigger]="refreshTrigger" [dataList]="data"
